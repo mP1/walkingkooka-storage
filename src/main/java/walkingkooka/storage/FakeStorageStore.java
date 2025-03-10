@@ -17,24 +17,11 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.store.FakeStore;
 
-/**
- * A collection of {@link StorageStore}.
- */
-public final class StorageStores implements PublicStaticHelper {
+public class FakeStorageStore extends FakeStore<StorageKey, StorageValue> implements StorageStore {
 
-    /**
-     * {@see FakeStorageStore}
-     */
-    public static StorageStore fake() {
-        return new FakeStorageStore();
-    }
-
-    /**
-     * Stop creation
-     */
-    private StorageStores() {
-        throw new UnsupportedOperationException();
+    public FakeStorageStore() {
+        super();
     }
 }
