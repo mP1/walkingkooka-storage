@@ -250,6 +250,55 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.modifyTimestampAndCheck(info);
         this.modifyTimestampAndCheck(different);
     }
+
+    // setCreateTimestamp...............................................................................................
+
+    @Test
+    public void testSetCreateTimestampWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createObject()
+                .setCreateTimestamp(null)
+        );
+    }
+
+    @Test
+    public void testSetCreateTimestampWithSame() {
+        final StorageValueInfo info = this.createObject();
+
+        assertSame(
+            info,
+            info.setCreateTimestamp(CREATE_TIMESTAMP)
+        );
+    }
+
+    @Test
+    public void testSetCreateTimestampWithDifferent() {
+        final StorageValueInfo info = this.createObject();
+
+        final LocalDateTime differentCreateTimestamp = LocalDateTime.MIN;
+        final StorageValueInfo different = info.setCreateTimestamp(differentCreateTimestamp);
+
+        assertNotSame(
+            info,
+            different
+        );
+
+        this.keyAndCheck(info);
+        this.keyAndCheck(different);
+
+        this.createdByAndCheck(info);
+        this.createdByAndCheck(different);
+
+        this.createTimestampAndCheck(info);
+        this.createTimestampAndCheck(different, differentCreateTimestamp);
+
+        this.modifiedByAndCheck(info);
+        this.modifiedByAndCheck(different);
+
+        this.modifyTimestampAndCheck(info);
+        this.modifyTimestampAndCheck(different);
+    }
     
     // helper...........................................................................................................
 
