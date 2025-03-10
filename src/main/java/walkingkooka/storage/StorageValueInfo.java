@@ -143,6 +143,18 @@ public final class StorageValueInfo {
 
     private final LocalDateTime modifyTimestamp;
 
+    public StorageValueInfo setModifyTimestamp(final LocalDateTime modifyTimestamp) {
+        return this.modifyTimestamp.equals(modifyTimestamp) ?
+            this :
+            new StorageValueInfo(
+                this.key,
+                this.createdBy,
+                createTimestamp,
+                this.modifiedBy,
+                Objects.requireNonNull(modifyTimestamp, "modifyTimestamp")
+            );
+    }
+
     // Object...........................................................................................................
 
     @Override
