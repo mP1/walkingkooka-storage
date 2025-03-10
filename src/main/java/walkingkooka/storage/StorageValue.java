@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.HasId;
 import walkingkooka.ToStringBuilder;
 import walkingkooka.Value;
+import walkingkooka.net.header.MediaType;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -33,18 +34,23 @@ public final class StorageValue implements Value<Optional<Object>>,
     HasId<Optional<StorageKey>>,
     Comparable<StorageValue> {
 
+    public final static MediaType DEFAULT_CONTENT_TYPE = MediaType.BINARY;
+
     public static StorageValue with(final StorageKey key,
                                     final Optional<Object> value) {
         return new StorageValue(
             Objects.requireNonNull(key, "key"),
-            Objects.requireNonNull(value, "value")
+            Objects.requireNonNull(value, "value"),
+            MediaType.BINARY
         );
     }
 
     private StorageValue(final StorageKey key,
-                         final Optional<Object> value) {
+                         final Optional<Object> value,
+                         final MediaType contentType) {
         this.key = key;
         this.value = value;
+        this.contentType = contentType;
     }
 
     // Value............................................................................................................
@@ -64,7 +70,8 @@ public final class StorageValue implements Value<Optional<Object>>,
             this :
             new StorageValue(
                 this.key,
-                Objects.requireNonNull(value, "value")
+                Objects.requireNonNull(value, "value"),
+                this.contentType
             );
     }
 
@@ -86,11 +93,36 @@ public final class StorageValue implements Value<Optional<Object>>,
             this :
             new StorageValue(
                 Objects.requireNonNull(key, "key"),
-                this.value
+                this.value,
+                this.contentType
             );
     }
 
     private final StorageKey key;
+
+    // ContentType......................................................................................................
+
+    public MediaType contentType() {
+        return this.contentType;
+    }
+
+    private final MediaType contentType;
+
+    /**
+     * Would be setter that returns a StorageValue with the given contentType creating a new instance if necessary.
+     */
+    public StorageValue setContentType(final MediaType contentType) {
+        return this.contentType.equals(contentType) ?
+            this :
+            new StorageValue(
+                this.key,
+                this.value,
+                Objects.requireNonNull(
+                    contentType,
+                    "contentType"
+                )
+            );
+    }
 
     // Object...........................................................................................................
 
@@ -98,7 +130,8 @@ public final class StorageValue implements Value<Optional<Object>>,
     public int hashCode() {
         return Objects.hash(
             this.key,
-            this.value
+            this.value,
+            this.contentType
         );
     }
 
@@ -111,7 +144,8 @@ public final class StorageValue implements Value<Optional<Object>>,
 
     private boolean equals0(final StorageValue other) {
         return this.key.equals(other.key) &&
-            this.value.equals(other.value);
+            this.value.equals(other.value) &&
+            this.contentType.equals(other.contentType);
     }
 
     @Override
@@ -120,6 +154,8 @@ public final class StorageValue implements Value<Optional<Object>>,
             .label(this.key.toString())
             .separator("=")
             .value(this.value)
+            .separator(" ")
+            .value(this.contentType)
             .build();
     }
 
