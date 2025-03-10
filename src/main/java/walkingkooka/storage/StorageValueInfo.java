@@ -31,13 +31,13 @@ public final class StorageValueInfo {
                                         final EmailAddress createdBy,
                                         final LocalDateTime createTimestamp,
                                         final EmailAddress modifiedBy,
-                                        final LocalDateTime modifyTimestamp) {
+                                        final LocalDateTime modifiedTimestamp) {
         return new StorageValueInfo(
             Objects.requireNonNull(key, "key"),
             Objects.requireNonNull(createdBy, "createdBy"),
             Objects.requireNonNull(createTimestamp, "createTimestamp"),
             Objects.requireNonNull(modifiedBy, "modifiedBy"),
-            Objects.requireNonNull(modifyTimestamp, "modifyTimestamp")
+            Objects.requireNonNull(modifiedTimestamp, "modifiedTimestamp")
         );
     }
 
@@ -45,15 +45,15 @@ public final class StorageValueInfo {
                              final EmailAddress createdBy,
                              final LocalDateTime createTimestamp,
                              final EmailAddress modifiedBy,
-                             final LocalDateTime modifyTimestamp) {
+                             final LocalDateTime modifiedTimestamp) {
         this.key = key;
         this.createdBy = createdBy;
         this.createTimestamp = createTimestamp;
         this.modifiedBy = modifiedBy;
-        this.modifyTimestamp = modifyTimestamp;
+        this.modifiedTimestamp = modifiedTimestamp;
 
-        if (modifyTimestamp.isBefore(createTimestamp)) {
-            throw new IllegalArgumentException("ModifyTimestamp " + modifyTimestamp + " < createTimestamp " + createTimestamp);
+        if (modifiedTimestamp.isBefore(createTimestamp)) {
+            throw new IllegalArgumentException("ModifiedTimestamp " + modifiedTimestamp + " < createTimestamp " + createTimestamp);
         }
     }
 
@@ -71,7 +71,7 @@ public final class StorageValueInfo {
                 this.createdBy,
                 this.createTimestamp,
                 this.modifiedBy,
-                this.modifyTimestamp
+                this.modifiedTimestamp
             );
     }
 
@@ -93,7 +93,7 @@ public final class StorageValueInfo {
                 Objects.requireNonNull(createdBy, "createdBy"),
                 this.createTimestamp,
                 this.modifiedBy,
-                this.modifyTimestamp
+                this.modifiedTimestamp
             );
     }
 
@@ -113,7 +113,7 @@ public final class StorageValueInfo {
                 this.createdBy,
                 Objects.requireNonNull(createTimestamp, "createTimestamp"),
                 this.modifiedBy,
-                this.modifyTimestamp
+                this.modifiedTimestamp
             );
     }
 
@@ -133,25 +133,25 @@ public final class StorageValueInfo {
                 this.createdBy,
                 this.createTimestamp,
                 Objects.requireNonNull(modifiedBy, "modifiedBy"),
-                this.modifyTimestamp
+                this.modifiedTimestamp
             );
     }
 
-    public LocalDateTime modifyTimestamp() {
-        return this.modifyTimestamp;
+    public LocalDateTime modifiedTimestamp() {
+        return this.modifiedTimestamp;
     }
 
-    private final LocalDateTime modifyTimestamp;
+    private final LocalDateTime modifiedTimestamp;
 
-    public StorageValueInfo setModifyTimestamp(final LocalDateTime modifyTimestamp) {
-        return this.modifyTimestamp.equals(modifyTimestamp) ?
+    public StorageValueInfo setModifiedTimestamp(final LocalDateTime modifiedTimestamp) {
+        return this.modifiedTimestamp.equals(modifiedTimestamp) ?
             this :
             new StorageValueInfo(
                 this.key,
                 this.createdBy,
                 createTimestamp,
                 this.modifiedBy,
-                Objects.requireNonNull(modifyTimestamp, "modifyTimestamp")
+                Objects.requireNonNull(modifiedTimestamp, "modifiedTimestamp")
             );
     }
 
@@ -179,7 +179,7 @@ public final class StorageValueInfo {
                 this.createdBy.equals(other.createdBy) &&
                 this.createTimestamp.equals(other.createTimestamp) &&
                 this.modifiedBy.equals(other.modifiedBy) &&
-                this.modifyTimestamp.equals(other.modifyTimestamp);
+                this.modifiedTimestamp.equals(other.modifiedTimestamp);
     }
 
     @Override
@@ -192,6 +192,6 @@ public final class StorageValueInfo {
             " " +
             this.modifiedBy +
             " " +
-            this.modifyTimestamp;
+            this.modifiedTimestamp;
     }
 }
