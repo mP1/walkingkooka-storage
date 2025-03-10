@@ -57,8 +57,22 @@ public final class StorageValueInfo {
         }
     }
 
+    // key..............................................................................................................
+
     public StorageKey key() {
         return this.key;
+    }
+
+    public StorageValueInfo setKey(final StorageKey key) {
+        return this.key.equals(key) ?
+            this :
+            new StorageValueInfo(
+                Objects.requireNonNull(key, "key"),
+                this.createdBy,
+                this.createTimestamp,
+                this.modifiedBy,
+                this.modifyTimestamp
+            );
     }
 
     private final StorageKey key;

@@ -26,6 +26,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2<StorageValueInfo>,
@@ -150,6 +152,57 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.modifiedByAndCheck(info);
         this.modifyTimestampAndCheck(info);
     }
+
+    // setKey...........................................................................................................
+
+    @Test
+    public void testSetKeyWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createObject()
+                .setKey(null)
+        );
+    }
+
+    @Test
+    public void testSetKeyWithSame() {
+        final StorageValueInfo info = this.createObject();
+
+        assertSame(
+            info,
+            info.setKey(KEY)
+        );
+    }
+
+    @Test
+    public void testSetKeyWithDifferent() {
+        final StorageValueInfo info = this.createObject();
+
+        final StorageKey differentKey = StorageKey.with("different.key");
+        final StorageValueInfo different = info.setKey(differentKey);
+
+        assertNotSame(
+            info,
+            different
+        );
+
+        this.keyAndCheck(info);
+        this.keyAndCheck(different, differentKey);
+
+        this.createdByAndCheck(info);
+        this.createdByAndCheck(different);
+
+        this.createTimestampAndCheck(info);
+        this.createTimestampAndCheck(different);
+
+        this.modifiedByAndCheck(info);
+        this.modifiedByAndCheck(different);
+
+        this.modifyTimestampAndCheck(info);
+        this.modifyTimestampAndCheck(different);
+    }
+
+    // helper...........................................................................................................
 
     private void keyAndCheck(final StorageValueInfo info) {
         this.keyAndCheck(
