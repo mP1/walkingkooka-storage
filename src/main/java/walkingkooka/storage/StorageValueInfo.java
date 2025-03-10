@@ -117,11 +117,25 @@ public final class StorageValueInfo {
             );
     }
 
+    // modifiedBy.......................................................................................................
+
     public EmailAddress modifiedBy() {
         return this.modifiedBy;
     }
 
     private final EmailAddress modifiedBy;
+
+    public StorageValueInfo setModifiedBy(final EmailAddress modifiedBy) {
+        return this.modifiedBy.equals(modifiedBy) ?
+            this :
+            new StorageValueInfo(
+                this.key,
+                this.createdBy,
+                this.createTimestamp,
+                Objects.requireNonNull(modifiedBy, "modifiedBy"),
+                this.modifyTimestamp
+            );
+    }
 
     public LocalDateTime modifyTimestamp() {
         return this.modifyTimestamp;
