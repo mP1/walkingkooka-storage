@@ -38,7 +38,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
 
     private final static EmailAddress CREATED_BY = EmailAddress.parse("created-by@example.com");
 
-    private final static LocalDateTime CREATE_TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
+    private final static LocalDateTime CREATED_TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
 
     private final static EmailAddress MODIFIED_BY = EmailAddress.parse("modified-by@example.com");
 
@@ -53,7 +53,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             () -> StorageValueInfo.with(
                 null,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 MODIFY_TIMESTAMP
             )
@@ -67,7 +67,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             () -> StorageValueInfo.with(
                 KEY,
                 null,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 MODIFY_TIMESTAMP
             )
@@ -75,7 +75,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     }
 
     @Test
-    public void testWithNullCreateTimestampFails() {
+    public void testWithNullCreatedTimestampFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
@@ -95,7 +95,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             () -> StorageValueInfo.with(
                 KEY,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 null,
                 MODIFY_TIMESTAMP
             )
@@ -109,7 +109,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             () -> StorageValueInfo.with(
                 KEY,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 null
             )
@@ -123,14 +123,14 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             () -> StorageValueInfo.with(
                 KEY,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
-                CREATE_TIMESTAMP.minusDays(1)
+                CREATED_TIMESTAMP.minusDays(1)
             )
         );
 
         this.checkEquals(
-            "ModifyTimestamp 1999-12-30T12:58:59 < createTimestamp 1999-12-31T12:58:59",
+            "ModifyTimestamp 1999-12-30T12:58:59 < createdTimestamp 1999-12-31T12:58:59",
             thrown.getMessage(),
             "message"
         );
@@ -141,14 +141,14 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         final StorageValueInfo info = StorageValueInfo.with(
             KEY,
             CREATED_BY,
-            CREATE_TIMESTAMP,
+            CREATED_TIMESTAMP,
             MODIFIED_BY,
             MODIFY_TIMESTAMP
         );
 
         this.keyAndCheck(info);
         this.createdByAndCheck(info);
-        this.createTimestampAndCheck(info);
+        this.createdTimestampAndCheck(info);
         this.modifiedByAndCheck(info);
         this.modifyTimestampAndCheck(info);
     }
@@ -192,8 +192,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
 
-        this.createTimestampAndCheck(info);
-        this.createTimestampAndCheck(different);
+        this.createdTimestampAndCheck(info);
+        this.createdTimestampAndCheck(different);
 
         this.modifiedByAndCheck(info);
         this.modifiedByAndCheck(different);
@@ -241,8 +241,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.createdByAndCheck(info);
         this.createdByAndCheck(different, differentCreatedBy);
 
-        this.createTimestampAndCheck(info);
-        this.createTimestampAndCheck(different);
+        this.createdTimestampAndCheck(info);
+        this.createdTimestampAndCheck(different);
 
         this.modifiedByAndCheck(info);
         this.modifiedByAndCheck(different);
@@ -251,33 +251,33 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.modifyTimestampAndCheck(different);
     }
 
-    // setCreateTimestamp...............................................................................................
+    // setCreatedTimestamp...............................................................................................
 
     @Test
-    public void testSetCreateTimestampWithNullFails() {
+    public void testSetCreatedTimestampWithNullFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createObject()
-                .setCreateTimestamp(null)
+                .setCreatedTimestamp(null)
         );
     }
 
     @Test
-    public void testSetCreateTimestampWithSame() {
+    public void testSetCreatedTimestampWithSame() {
         final StorageValueInfo info = this.createObject();
 
         assertSame(
             info,
-            info.setCreateTimestamp(CREATE_TIMESTAMP)
+            info.setCreatedTimestamp(CREATED_TIMESTAMP)
         );
     }
 
     @Test
-    public void testSetCreateTimestampWithDifferent() {
+    public void testSetCreatedTimestampWithDifferent() {
         final StorageValueInfo info = this.createObject();
 
-        final LocalDateTime differentCreateTimestamp = LocalDateTime.MIN;
-        final StorageValueInfo different = info.setCreateTimestamp(differentCreateTimestamp);
+        final LocalDateTime differentCreatedTimestamp = LocalDateTime.MIN;
+        final StorageValueInfo different = info.setCreatedTimestamp(differentCreatedTimestamp);
 
         assertNotSame(
             info,
@@ -290,8 +290,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
 
-        this.createTimestampAndCheck(info);
-        this.createTimestampAndCheck(different, differentCreateTimestamp);
+        this.createdTimestampAndCheck(info);
+        this.createdTimestampAndCheck(different, differentCreatedTimestamp);
 
         this.modifiedByAndCheck(info);
         this.modifiedByAndCheck(different);
@@ -339,8 +339,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
 
-        this.createTimestampAndCheck(info);
-        this.createTimestampAndCheck(different);
+        this.createdTimestampAndCheck(info);
+        this.createdTimestampAndCheck(different);
 
         this.modifiedByAndCheck(info);
         this.modifiedByAndCheck(different, differentModifiedBy);
@@ -388,8 +388,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
 
-        this.createTimestampAndCheck(info);
-        this.createTimestampAndCheck(different);
+        this.createdTimestampAndCheck(info);
+        this.createdTimestampAndCheck(different);
 
         this.modifiedByAndCheck(info);
         this.modifiedByAndCheck(different);
@@ -430,18 +430,18 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         );
     }
 
-    private void createTimestampAndCheck(final StorageValueInfo info) {
-        this.createTimestampAndCheck(
+    private void createdTimestampAndCheck(final StorageValueInfo info) {
+        this.createdTimestampAndCheck(
             info,
-            CREATE_TIMESTAMP
+            CREATED_TIMESTAMP
         );
     }
 
-    private void createTimestampAndCheck(final StorageValueInfo info,
+    private void createdTimestampAndCheck(final StorageValueInfo info,
                                          final LocalDateTime expected) {
         this.checkEquals(
             expected,
-            info.createTimestamp()
+            info.createdTimestamp()
         );
     }
 
@@ -483,7 +483,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             StorageValueInfo.with(
                 StorageKey.with("different"),
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 MODIFY_TIMESTAMP
             )
@@ -496,7 +496,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             StorageValueInfo.with(
                 KEY,
                 EmailAddress.parse("different@example.com"),
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 MODIFY_TIMESTAMP
             )
@@ -504,7 +504,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     }
 
     @Test
-    public void testEqualsDifferentCreateTimestamp() {
+    public void testEqualsDifferentCreatedTimestamp() {
         this.checkNotEquals(
             StorageValueInfo.with(
                 KEY,
@@ -522,7 +522,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             StorageValueInfo.with(
                 KEY,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 EmailAddress.parse("different@example.com"),
                 MODIFY_TIMESTAMP
             )
@@ -535,7 +535,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             StorageValueInfo.with(
                 KEY,
                 CREATED_BY,
-                CREATE_TIMESTAMP,
+                CREATED_TIMESTAMP,
                 MODIFIED_BY,
                 LocalDateTime.MAX
             )
@@ -547,7 +547,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         return StorageValueInfo.with(
             KEY,
             CREATED_BY,
-            CREATE_TIMESTAMP,
+            CREATED_TIMESTAMP,
             MODIFIED_BY,
             MODIFY_TIMESTAMP
         );
