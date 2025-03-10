@@ -32,6 +32,13 @@ public final class StorageStores implements PublicStaticHelper {
     }
 
     /**
+     * {@see TreeMapStoreStorageStore}
+     */
+    public static StorageStore tree() {
+        return TreeMapStoreStorageStore.empty();
+    }
+
+    /**
      * Stop creation
      */
     private StorageStores() {
