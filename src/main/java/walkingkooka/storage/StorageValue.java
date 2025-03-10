@@ -31,10 +31,10 @@ import java.util.Optional;
  */
 public final class StorageValue implements Value<Optional<Object>>,
     HasId<Optional<StorageKey>>,
-    Comparable<StorageValue>{
+    Comparable<StorageValue> {
 
     public static StorageValue with(final StorageKey key,
-                                  final Optional<Object> value) {
+                                    final Optional<Object> value) {
         return new StorageValue(
             Objects.requireNonNull(key, "key"),
             Objects.requireNonNull(value, "value")
