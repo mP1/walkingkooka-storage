@@ -299,6 +299,55 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.modifyTimestampAndCheck(info);
         this.modifyTimestampAndCheck(different);
     }
+
+    // setModifiedBy...............................................................................................
+
+    @Test
+    public void testSetModifiedByWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createObject()
+                .setModifiedBy(null)
+        );
+    }
+
+    @Test
+    public void testSetModifiedByWithSame() {
+        final StorageValueInfo info = this.createObject();
+
+        assertSame(
+            info,
+            info.setModifiedBy(MODIFIED_BY)
+        );
+    }
+
+    @Test
+    public void testSetModifiedByWithDifferent() {
+        final StorageValueInfo info = this.createObject();
+
+        final EmailAddress differentModifiedBy = EmailAddress.parse("different@example.com");
+        final StorageValueInfo different = info.setModifiedBy(differentModifiedBy);
+
+        assertNotSame(
+            info,
+            different
+        );
+
+        this.keyAndCheck(info);
+        this.keyAndCheck(different);
+
+        this.createdByAndCheck(info);
+        this.createdByAndCheck(different);
+
+        this.createTimestampAndCheck(info);
+        this.createTimestampAndCheck(different);
+
+        this.modifiedByAndCheck(info);
+        this.modifiedByAndCheck(different, differentModifiedBy);
+
+        this.modifyTimestampAndCheck(info);
+        this.modifyTimestampAndCheck(different);
+    }
     
     // helper...........................................................................................................
 
