@@ -77,11 +77,25 @@ public final class StorageValueInfo {
 
     private final StorageKey key;
 
+    // createdBy........................................................................................................
+
     public EmailAddress createdBy() {
         return this.createdBy;
     }
 
     private final EmailAddress createdBy;
+
+    public StorageValueInfo setCreatedBy(final EmailAddress createdBy) {
+        return this.createdBy.equals(createdBy) ?
+            this :
+            new StorageValueInfo(
+                this.key,
+                Objects.requireNonNull(createdBy, "createdBy"),
+                this.createTimestamp,
+                this.modifiedBy,
+                this.modifyTimestamp
+            );
+    }
 
     public LocalDateTime createTimestamp() {
         return this.createTimestamp;
