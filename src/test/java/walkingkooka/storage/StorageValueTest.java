@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.net.header.MediaType;
 
 import java.util.Optional;
 
@@ -33,6 +34,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     private final static StorageKey KEY = StorageKey.with("key123");
 
     private final static Optional<Object> VALUE = Optional.of("Hello");
+
+    private final static MediaType CONTENT_TYPE = MediaType.TEXT_PLAIN;
 
     @Test
     public void testWithWithNullKeyFails() {
@@ -127,7 +130,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
             value.key()
         );
     }
-    
+
     // setValue.........................................................................................................
 
     @Test
@@ -172,6 +175,58 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         );
     }
 
+    // setContentType...................................................................................................
+
+    @Test
+    public void testSetContentTypeWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createObject().setContentType(null)
+        );
+    }
+
+    @Test
+    public void testSetContentTypeWithSame() {
+        final StorageValue storageValue = StorageValue.with(
+            KEY,
+            VALUE
+        );
+
+        assertSame(
+            storageValue,
+            storageValue.setContentType(StorageValue.DEFAULT_CONTENT_TYPE)
+        );
+    }
+
+    @Test
+    public void testSetContentTypeWithDifferent() {
+        final StorageValue storageValue = StorageValue.with(
+            KEY,
+            VALUE
+        );
+
+        final MediaType differentContentType = CONTENT_TYPE;
+
+        final StorageValue different = storageValue.setContentType(differentContentType);
+        assertNotSame(
+            storageValue,
+            different
+        );
+
+        this.contentTypeAndCheck(
+            different,
+            differentContentType
+        );
+    }
+
+    private void contentTypeAndCheck(final StorageValue value,
+                                     final MediaType expected) {
+        this.checkEquals(
+            expected,
+            value.contentType()
+        );
+    }
+
     // Object...........................................................................................................
 
     @Test
@@ -196,6 +251,18 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         );
     }
 
+    @Test
+    public void testEqualsDifferentContentType() {
+        this.checkNotEquals(
+            StorageValue.with(
+                KEY,
+                Optional.of(
+                    VALUE
+                )
+            ).setContentType(CONTENT_TYPE)
+        );
+    }
+
     @Override
     public StorageValue createObject() {
         return StorageValue.with(
@@ -209,8 +276,9 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            this.createObject(),
-            "key123=\"Hello\""
+            this.createObject()
+                .setContentType(CONTENT_TYPE),
+            "key123=\"Hello\" text/plain"
         );
     }
 
