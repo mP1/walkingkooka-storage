@@ -22,6 +22,8 @@ import walkingkooka.HasId;
 import walkingkooka.ToStringBuilder;
 import walkingkooka.Value;
 import walkingkooka.net.header.MediaType;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -32,7 +34,8 @@ import java.util.Optional;
  */
 public final class StorageValue implements Value<Optional<Object>>,
     HasId<Optional<StorageKey>>,
-    Comparable<StorageValue> {
+    Comparable<StorageValue>,
+    TreePrintable {
 
     public final static MediaType DEFAULT_CONTENT_TYPE = MediaType.BINARY;
 
@@ -164,5 +167,43 @@ public final class StorageValue implements Value<Optional<Object>>,
     @Override
     public int compareTo(final StorageValue other) {
         return this.key.compareTo(other.key());
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.key.toString());
+
+        printer.indent();
+        {
+            boolean indentValue = false;
+
+            final MediaType contentType = this.contentType;
+            if(false == contentType.equals(MediaType.BINARY)) {
+                printer.print("contentType: ");
+                printer.println(contentType.toString());
+
+                indentValue=true;
+            }
+
+            final Optional<Object> value = this.value;
+            if(value.isPresent()) {
+                if(indentValue) {
+                    printer.indent();
+                }
+
+                TreePrintable.printTreeOrToString(
+                    value.get(),
+                    printer
+                );
+
+                if(indentValue) {
+                    printer.outdent();
+                }
+            }
+
+        }
+        printer.outdent();
     }
 }
