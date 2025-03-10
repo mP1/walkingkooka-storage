@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.net.header.MediaType;
+import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
 
@@ -29,7 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<StorageValue>,
-    ToStringTesting<StorageValue> {
+    ToStringTesting<StorageValue>,
+    TreePrintableTesting {
 
     private final static StorageKey KEY = StorageKey.with("key123");
 
@@ -279,6 +281,39 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
             this.createObject()
                 .setContentType(CONTENT_TYPE),
             "key123=\"Hello\" text/plain"
+        );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testTreePrintableWithoutValue() {
+        this.treePrintAndCheck(
+            StorageValue.with(
+                KEY,
+                Optional.empty()
+            ),
+            "key123\n"
+        );
+    }
+
+    @Test
+    public void testTreePrintableWithValue() {
+        this.treePrintAndCheck(
+            this.createObject(),
+            "key123\n" +
+                "  Hello"
+        );
+    }
+
+    @Test
+    public void testTreePrintableContentTypeNotBinary() {
+        this.treePrintAndCheck(
+            this.createObject()
+                .setContentType(MediaType.TEXT_PLAIN),
+            "key123\n" +
+                "  contentType: text/plain\n" +
+                "    Hello"
         );
     }
 
