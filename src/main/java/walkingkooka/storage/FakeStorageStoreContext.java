@@ -17,24 +17,7 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.environment.FakeEnvironmentContext;
 
-/**
- * A collection of {@link StorageStore}.
- */
-public final class StorageStoreContexts implements PublicStaticHelper {
-
-    /**
-     * {@see FakeStorageStoreContext}
-     */
-    public static StorageStoreContext fake() {
-        return new FakeStorageStoreContext();
-    }
-
-    /**
-     * Stop creation
-     */
-    private StorageStoreContexts() {
-        throw new UnsupportedOperationException();
-    }
+public class FakeStorageStoreContext extends FakeEnvironmentContext implements StorageStoreContext {
 }
