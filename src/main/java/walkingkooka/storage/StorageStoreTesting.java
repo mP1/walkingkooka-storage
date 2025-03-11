@@ -17,7 +17,72 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.store.StoreTesting;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StorageKey, StorageValue> {
+
+    @Test
+    default void testStorageValueInfosWithNegativeOffsetFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> this.createStore()
+                .storageValueInfos(
+                    -1,
+                    1
+                )
+        );
+
+        this.checkEquals(
+            "Invalid offset -1 < 0",
+            thrown.getMessage()
+        );
+    }
+
+    @Test
+    default void testStorageValueInfosWithNegativeCountFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> this.createStore()
+                .storageValueInfos(
+                    0,
+                    -1
+                )
+        );
+
+        this.checkEquals(
+            "Invalid count -1 < 0",
+            thrown.getMessage()
+        );
+    }
+
+    default void storageValueInfosAndCheck(final StorageStore store,
+                                           final int offset,
+                                           final int count,
+                                           final StorageValueInfo... expected) {
+        this.storageValueInfosAndCheck(
+            store,
+            offset,
+            count,
+            Lists.of(expected)
+        );
+    }
+
+    default void storageValueInfosAndCheck(final StorageStore store,
+                                           final int offset,
+                                           final int count,
+                                           final List<StorageValueInfo> expected) {
+        this.checkEquals(
+            expected,
+            store.storageValueInfos(
+                offset,
+                count
+            )
+        );
+    }
 }

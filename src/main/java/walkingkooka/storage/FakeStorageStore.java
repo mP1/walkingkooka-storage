@@ -19,9 +19,17 @@ package walkingkooka.storage;
 
 import walkingkooka.store.FakeStore;
 
+import java.util.List;
+
 public class FakeStorageStore extends FakeStore<StorageKey, StorageValue> implements StorageStore {
 
     public FakeStorageStore() {
         super();
+    }
+
+    @Override
+    public List<StorageValueInfo> storageValueInfos(final int offset,
+                                                    final int count) {
+        throw new UnsupportedOperationException();
     }
 }
