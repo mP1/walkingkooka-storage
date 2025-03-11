@@ -17,46 +17,92 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.store.Store;
 import walkingkooka.store.Stores;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 final class TreeMapStoreStorageStore implements StorageStore {
 
-    static TreeMapStoreStorageStore empty() {
-        return new TreeMapStoreStorageStore();
-    }
-
-    private TreeMapStoreStorageStore() {
-        this.store = Stores.treeMap(
-            Comparator.naturalOrder(),
-            TreeMapStoreStorageStore::idSetter
+    static TreeMapStoreStorageStore with(final StorageStoreContext context) {
+        return new TreeMapStoreStorageStore(
+            Objects.requireNonNull(context, "context")
         );
     }
 
-    private static StorageValue idSetter(final StorageKey id,
-                                         final StorageValue value) {
-        return value.setKey(id);
+    private TreeMapStoreStorageStore(final StorageStoreContext context) {
+        this.store = Stores.treeMap(
+            Comparator.naturalOrder(),
+            this::idSetter
+        );
+        this.context = context;
+    }
+
+    private TreeMapStoreStorageStoreValue idSetter(final StorageKey key,
+                                                   final TreeMapStoreStorageStoreValue treeMapStoreStorageStoreValue) {
+        return  treeMapStoreStorageStoreValue.setKey(key);
     }
 
     @Override
     public Optional<StorageValue> load(final StorageKey storageKey) {
-        return this.store.load(storageKey);
+        return this.store.load(storageKey)
+            .map(TreeMapStoreStorageStoreValue::value);
     }
 
     @Override
     public StorageValue save(final StorageValue storageValue) {
-        return this.store.save(storageValue);
+        Objects.requireNonNull(storageValue, "storageValue");
+
+        final StorageKey key = storageValue.key();
+
+        final StorageStoreContext context = this.context;
+        final EmailAddress user = context.userOrFail();
+        final LocalDateTime now = context.now();
+
+        final Store<StorageKey, TreeMapStoreStorageStoreValue> store = this.store;
+
+        TreeMapStoreStorageStoreValue newSave = store.load(key)
+            .orElse(null);
+
+        if (null != newSave) {
+            // update modify
+            newSave = newSave.setInfo(
+                newSave.info.setModifiedBy(user)
+                    .setModifiedTimestamp(now)
+            );
+        } else {
+            // set creator and modified
+            newSave = TreeMapStoreStorageStoreValue.with(
+                StorageValueInfo.with(
+                    key,
+                    user, // creator
+                    now, // created-timestamp
+                    user, // modified by
+                    now // modified-timestamp
+                ),
+                storageValue
+            );
+        }
+
+        return this.store.save(newSave)
+            .value;
     }
 
     @Override
     public Runnable addSaveWatcher(final Consumer<StorageValue> watcher) {
-        return this.store.addSaveWatcher(watcher);
+        Objects.requireNonNull(watcher, "watcher");
+
+        return this.store.addSaveWatcher(
+            (v) -> watcher.accept(v.value)
+        );
     }
 
     @Override
@@ -86,25 +132,50 @@ final class TreeMapStoreStorageStore implements StorageStore {
     @Override
     public List<StorageValue> values(final int offset,
                                      final int count) {
-        return this.store.values(
-            offset,
-            count
+        return toStorageValues(
+            this.store.values(
+                offset,
+                count
+            )
         );
     }
 
     @Override
     public List<StorageValue> between(final StorageKey from,
                                       final StorageKey to) {
-        return this.store.between(
-            from,
-            to
+        return toStorageValues(
+            this.store.between(
+                from,
+                to
+            )
         );
     }
 
-    private final Store<StorageKey, StorageValue> store;
+    @Override
+    public List<StorageValueInfo> storageValueInfos(final int offset,
+                                                    final int count) {
+        return this.store.values(
+            offset,
+            count
+        ).stream()
+            .map(TreeMapStoreStorageStoreValue::info)
+            .collect(Collectors.toList());
+    }
+
+    private final Store<StorageKey, TreeMapStoreStorageStoreValue> store;
+
+    private final StorageStoreContext context;
 
     @Override
     public String toString() {
         return this.store.toString();
+    }
+
+    // helpers..........................................................................................................
+
+    private static List<StorageValue> toStorageValues(final List<TreeMapStoreStorageStoreValue> values) {
+        return values.stream()
+            .map(TreeMapStoreStorageStoreValue::value)
+            .collect(Collectors.toList());
     }
 }
