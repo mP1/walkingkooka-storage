@@ -17,12 +17,7 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.Context;
-import walkingkooka.datetime.HasNow;
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.environment.EnvironmentContext;
 
-public interface StorageStoreContext extends Context,
-    HasNow {
-
-    EmailAddress user();
+public interface StorageStoreContext extends EnvironmentContext {
 }

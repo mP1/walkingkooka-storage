@@ -17,26 +17,7 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.ContextTesting;
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.environment.EnvironmentContextTesting2;
 
-import java.time.LocalDateTime;
-
-public interface StorageStoreContextTesting<C extends StorageStoreContext> extends ContextTesting<C> {
-
-    default void nowAndCheck(final StorageStoreContext context,
-                             final LocalDateTime expected) {
-        this.checkEquals(
-            context.now(),
-            expected
-        );
-    }
-
-    default void userAndCheck(final StorageStoreContext context,
-                              final EmailAddress expected) {
-        this.checkEquals(
-            context.user(),
-            expected
-        );
-    }
+public interface StorageStoreContextTesting<C extends StorageStoreContext> extends EnvironmentContextTesting2<C> {
 }
