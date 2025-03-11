@@ -17,6 +17,7 @@
   -->
 
 <module>
+    <inherits name="walkingkooka.environment.Environment"/>
     <inherits name="walkingkooka.store.Store"/>
     <source path=""/>
 </module>
