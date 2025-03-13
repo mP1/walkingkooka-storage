@@ -86,7 +86,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         this.rootCheck(path);
         this.nameCheck(
             path,
-            StoragePath.ROOT_NAME
+            StorageName.ROOT
         );
         this.parentAbsentCheck(path);
     }
@@ -183,7 +183,10 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final StoragePath path = StoragePath.ROOT;
         this.rootCheck(path);
         this.valueCheck(path, "/");
-        this.nameSameCheck(path, StoragePath.ROOT_NAME);
+        this.nameSameCheck(
+            path,
+            StorageName.ROOT
+        );
         this.parentAbsentCheck(path);
     }
 
