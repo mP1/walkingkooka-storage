@@ -152,12 +152,17 @@ final class TreeMapStoreStorageStore implements StorageStore {
     }
 
     @Override
-    public List<StorageValueInfo> storageValueInfos(final int offset,
+    public List<StorageValueInfo> storageValueInfos(final StoragePath parent,
+                                                    final int offset,
                                                     final int count) {
-        return this.store.values(
-            offset,
-            count
-        ).stream()
+        Objects.requireNonNull(parent, "parent");
+        Store.checkOffsetAndCount(offset, count);
+
+        return this.store.all()
+            .stream()
+            .filter(i -> parent.equals(i.path().parent().orElse(null)))
+            .skip(offset)
+            .limit(count)
             .map(TreeMapStoreStorageStoreValue::info)
             .collect(Collectors.toList());
     }

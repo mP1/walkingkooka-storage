@@ -26,6 +26,7 @@ public interface StorageStore extends Store<StoragePath, StorageValue> {
     /**
      * Gets the {@link StorageValueInfo} for the given range.
      */
-    List<StorageValueInfo> storageValueInfos(final int offset,
+    List<StorageValueInfo> storageValueInfos(final StoragePath parent,
+                                             final int offset,
                                              final int count);
 }

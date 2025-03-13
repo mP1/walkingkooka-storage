@@ -28,11 +28,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StoragePath, StorageValue> {
 
     @Test
+    default void testStorageValueInfosWithNullParentFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStore()
+                .storageValueInfos(
+                    null,
+                    0,
+                    0
+                )
+        );
+    }
+
+    @Test
     default void testStorageValueInfosWithNegativeOffsetFails() {
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> this.createStore()
                 .storageValueInfos(
+                    StoragePath.ROOT,
                     -1,
                     1
                 )
@@ -50,6 +64,7 @@ public interface StorageStoreTesting<S extends StorageStore> extends StoreTestin
             IllegalArgumentException.class,
             () -> this.createStore()
                 .storageValueInfos(
+                    StoragePath.ROOT,
                     0,
                     -1
                 )
@@ -62,11 +77,13 @@ public interface StorageStoreTesting<S extends StorageStore> extends StoreTestin
     }
 
     default void storageValueInfosAndCheck(final StorageStore store,
+                                           final StoragePath parent,
                                            final int offset,
                                            final int count,
                                            final StorageValueInfo... expected) {
         this.storageValueInfosAndCheck(
             store,
+            parent,
             offset,
             count,
             Lists.of(expected)
@@ -74,15 +91,18 @@ public interface StorageStoreTesting<S extends StorageStore> extends StoreTestin
     }
 
     default void storageValueInfosAndCheck(final StorageStore store,
+                                           final StoragePath parent,
                                            final int offset,
                                            final int count,
                                            final List<StorageValueInfo> expected) {
         this.checkEquals(
             expected,
             store.storageValueInfos(
+                parent,
                 offset,
                 count
-            )
+            ),
+            () -> "storageValueInfos parent=" + parent + " offset=" + offset + " count=" + count
         );
     }
 }
