@@ -25,7 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StorageKey, StorageValue> {
+public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StoragePath, StorageValue> {
 
     @Test
     default void testStorageValueInfosWithNegativeOffsetFails() {

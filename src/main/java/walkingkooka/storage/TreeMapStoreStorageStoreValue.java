@@ -27,7 +27,7 @@ import java.util.Optional;
  * A value type that combines the audit info and stored value into a single value which will be saved in the wrapped
  * {@link walkingkooka.store.Store}.
  */
-final class TreeMapStoreStorageStoreValue implements HasId<Optional<StorageKey>> {
+final class TreeMapStoreStorageStoreValue implements HasId<Optional<StoragePath>> {
 
     static TreeMapStoreStorageStoreValue with(final StorageValueInfo info,
                                               final StorageValue value) {
@@ -43,9 +43,9 @@ final class TreeMapStoreStorageStoreValue implements HasId<Optional<StorageKey>>
         this.value = value;
     }
 
-    TreeMapStoreStorageStoreValue setKey(final StorageKey key) {
-        final StorageValueInfo info = this.info.setKey(key);
-        final StorageValue value = this.value.setKey(key);
+    TreeMapStoreStorageStoreValue setPath(final StoragePath path) {
+        final StorageValueInfo info = this.info.setPath(path);
+        final StorageValue value = this.value.setPath(path);
 
         return this.info.equals(info) && this.value.equals(value) ?
             this :
@@ -58,14 +58,14 @@ final class TreeMapStoreStorageStoreValue implements HasId<Optional<StorageKey>>
     // HasId............................................................................................................
 
     @Override
-    public Optional<StorageKey> id() {
+    public Optional<StoragePath> id() {
         return Optional.of(
-            this.key()
+            this.path()
         );
     }
 
-    StorageKey key() {
-        return this.value.key();
+    StoragePath path() {
+        return this.value.path();
     }
 
     // info.............................................................................................................

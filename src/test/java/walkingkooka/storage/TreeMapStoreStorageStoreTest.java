@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMapStoreStorageStore> {
 
-    private final static StorageKey KEY = StorageKey.with("key123");
+    private final static StoragePath PATH = StoragePath.parse("/path123");
 
     private final static String VALUE = "value456";
 
@@ -44,7 +44,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
         this.loadAndCheck(
             store,
-            value.key(),
+            value.path(),
             value
         );
     }
@@ -63,7 +63,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             0,
             2,
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 USER,
                 TIMESTAMP,
                 USER,
@@ -85,7 +85,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
         store.save(
             StorageValue.with(
-                KEY,
+                PATH,
                 Optional.of("different-value-6666")
             )
         );
@@ -95,7 +95,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             0,
             2,
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 USER,
                 TIMESTAMP,
                 USER,
@@ -146,8 +146,8 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Override
-    public StorageKey id() {
-        return KEY;
+    public StoragePath id() {
+        return PATH;
     }
 
     @Override

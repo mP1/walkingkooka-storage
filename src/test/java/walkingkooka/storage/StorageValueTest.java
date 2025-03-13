@@ -33,14 +33,14 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     ToStringTesting<StorageValue>,
     TreePrintableTesting {
 
-    private final static StorageKey KEY = StorageKey.with("key123");
+    private final static StoragePath PATH = StoragePath.parse("/path123");
 
     private final static Optional<Object> VALUE = Optional.of("Hello");
 
     private final static MediaType CONTENT_TYPE = MediaType.TEXT_PLAIN;
 
     @Test
-    public void testWithWithNullKeyFails() {
+    public void testWithWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageValue.with(
@@ -55,7 +55,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         assertThrows(
             NullPointerException.class,
             () -> StorageValue.with(
-                KEY,
+                PATH,
                 null
             )
         );
@@ -64,7 +64,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testWith() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
         this.valueAndCheck(
@@ -81,55 +81,55 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         );
     }
 
-    // setKey...........................................................................................................
+    // setPath...........................................................................................................
 
     @Test
-    public void testSetKeyWithNullFails() {
+    public void testSetPathWithNullFails() {
         assertThrows(
             NullPointerException.class,
-            () -> this.createObject().setKey(null)
+            () -> this.createObject().setPath(null)
         );
     }
 
     @Test
-    public void testSetKeyWithSame() {
+    public void testSetPathWithSame() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
         assertSame(
             storageValue,
-            storageValue.setKey(KEY)
+            storageValue.setPath(PATH)
         );
     }
 
     @Test
-    public void testSetKeyWithDifferent() {
+    public void testSetPathWithDifferent() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
-        final StorageKey differentKey = StorageKey.with("Different");
+        final StoragePath differentPath = StoragePath.parse("/Different");
 
-        final StorageValue different = storageValue.setKey(differentKey);
+        final StorageValue different = storageValue.setPath(differentPath);
         assertNotSame(
             storageValue,
             different
         );
 
-        this.keyAndCheck(
+        this.pathAndCheck(
             different,
-            differentKey
+            differentPath
         );
     }
 
-    private void keyAndCheck(final StorageValue value,
-                             final StorageKey expected) {
+    private void pathAndCheck(final StorageValue value,
+                              final StoragePath expected) {
         this.checkEquals(
             expected,
-            value.key()
+            value.path()
         );
     }
 
@@ -146,7 +146,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testSetValueWithSame() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
@@ -159,7 +159,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testSetValueWithDifferent() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
@@ -190,7 +190,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testSetContentTypeWithSame() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
@@ -203,7 +203,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testSetContentTypeWithDifferent() {
         final StorageValue storageValue = StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
 
@@ -232,10 +232,10 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     // Object...........................................................................................................
 
     @Test
-    public void testEqualsDifferentKey() {
+    public void testEqualsDifferentPath() {
         this.checkNotEquals(
             StorageValue.with(
-                StorageKey.with("different123"),
+                StoragePath.parse("/different123"),
                 VALUE
             )
         );
@@ -245,7 +245,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testEqualsDifferentValue() {
         this.checkNotEquals(
             StorageValue.with(
-                KEY,
+                PATH,
                 Optional.of(
                     "different " + VALUE
                 )
@@ -257,7 +257,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testEqualsDifferentContentType() {
         this.checkNotEquals(
             StorageValue.with(
-                KEY,
+                PATH,
                 Optional.of(
                     VALUE
                 )
@@ -268,7 +268,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Override
     public StorageValue createObject() {
         return StorageValue.with(
-            KEY,
+            PATH,
             VALUE
         );
     }
@@ -280,7 +280,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.toStringAndCheck(
             this.createObject()
                 .setContentType(CONTENT_TYPE),
-            "key123=\"Hello\" text/plain"
+            "/path123=\"Hello\" text/plain"
         );
     }
 
@@ -290,10 +290,10 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testTreePrintableWithoutValue() {
         this.treePrintAndCheck(
             StorageValue.with(
-                KEY,
+                PATH,
                 Optional.empty()
             ),
-            "key123\n"
+            "/path123\n"
         );
     }
 
@@ -301,7 +301,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testTreePrintableWithValue() {
         this.treePrintAndCheck(
             this.createObject(),
-            "key123\n" +
+            "/path123\n" +
                 "  Hello"
         );
     }
@@ -311,7 +311,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.treePrintAndCheck(
             this.createObject()
                 .setContentType(MediaType.TEXT_PLAIN),
-            "key123\n" +
+            "/path123\n" +
                 "  contentType: text/plain\n" +
                 "    Hello"
         );

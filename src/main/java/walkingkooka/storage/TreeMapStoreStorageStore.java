@@ -46,14 +46,14 @@ final class TreeMapStoreStorageStore implements StorageStore {
         this.context = context;
     }
 
-    private TreeMapStoreStorageStoreValue idSetter(final StorageKey key,
+    private TreeMapStoreStorageStoreValue idSetter(final StoragePath path,
                                                    final TreeMapStoreStorageStoreValue treeMapStoreStorageStoreValue) {
-        return  treeMapStoreStorageStoreValue.setKey(key);
+        return treeMapStoreStorageStoreValue.setPath(path);
     }
 
     @Override
-    public Optional<StorageValue> load(final StorageKey storageKey) {
-        return this.store.load(storageKey)
+    public Optional<StorageValue> load(final StoragePath storagePath) {
+        return this.store.load(storagePath)
             .map(TreeMapStoreStorageStoreValue::value);
     }
 
@@ -61,15 +61,15 @@ final class TreeMapStoreStorageStore implements StorageStore {
     public StorageValue save(final StorageValue storageValue) {
         Objects.requireNonNull(storageValue, "storageValue");
 
-        final StorageKey key = storageValue.key();
+        final StoragePath path = storageValue.path();
 
         final StorageStoreContext context = this.context;
         final EmailAddress user = context.userOrFail();
         final LocalDateTime now = context.now();
 
-        final Store<StorageKey, TreeMapStoreStorageStoreValue> store = this.store;
+        final Store<StoragePath, TreeMapStoreStorageStoreValue> store = this.store;
 
-        TreeMapStoreStorageStoreValue newSave = store.load(key)
+        TreeMapStoreStorageStoreValue newSave = store.load(path)
             .orElse(null);
 
         if (null != newSave) {
@@ -82,7 +82,7 @@ final class TreeMapStoreStorageStore implements StorageStore {
             // set creator and modified
             newSave = TreeMapStoreStorageStoreValue.with(
                 StorageValueInfo.with(
-                    key,
+                    path,
                     user, // creator
                     now, // created-timestamp
                     user, // modified by
@@ -106,12 +106,12 @@ final class TreeMapStoreStorageStore implements StorageStore {
     }
 
     @Override
-    public void delete(final StorageKey storageKey) {
-        this.store.delete(storageKey);
+    public void delete(final StoragePath storagePath) {
+        this.store.delete(storagePath);
     }
 
     @Override
-    public Runnable addDeleteWatcher(final Consumer<StorageKey> watcher) {
+    public Runnable addDeleteWatcher(final Consumer<StoragePath> watcher) {
         return this.store.addDeleteWatcher(watcher);
     }
 
@@ -121,7 +121,7 @@ final class TreeMapStoreStorageStore implements StorageStore {
     }
 
     @Override
-    public Set<StorageKey> ids(final int offset,
+    public Set<StoragePath> ids(final int offset,
                                final int count) {
         return this.store.ids(
             offset,
@@ -141,8 +141,8 @@ final class TreeMapStoreStorageStore implements StorageStore {
     }
 
     @Override
-    public List<StorageValue> between(final StorageKey from,
-                                      final StorageKey to) {
+    public List<StorageValue> between(final StoragePath from,
+                                      final StoragePath to) {
         return toStorageValues(
             this.store.between(
                 from,
@@ -162,7 +162,7 @@ final class TreeMapStoreStorageStore implements StorageStore {
             .collect(Collectors.toList());
     }
 
-    private final Store<StorageKey, TreeMapStoreStorageStoreValue> store;
+    private final Store<StoragePath, TreeMapStoreStorageStoreValue> store;
 
     private final StorageStoreContext context;
 

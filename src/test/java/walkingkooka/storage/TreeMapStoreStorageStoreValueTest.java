@@ -35,7 +35,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     ClassTesting2<TreeMapStoreStorageStoreValue>,
     ToStringTesting<TreeMapStoreStorageStoreValue> {
 
-    private final static StorageKey KEY = StorageKey.with("key123");
+    private final static StoragePath PATH = StoragePath.parse("/path123");
 
     private final static EmailAddress CREATED_BY = EmailAddress.parse("created-by@example.com");
 
@@ -50,12 +50,12 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
         final String value = "Value999";
 
         VALUE = StorageValue.with(
-            KEY,
+            PATH,
             Optional.of(value)
         );
 
         INFO = StorageValueInfo.with(
-            KEY,
+            PATH,
             CREATED_BY,
             CREATED_TIMESTAMP,
             MODIFIED_BY,
@@ -180,60 +180,60 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
         this.valueAndCheck(value);
     }
     
-    // setKey...........................................................................................................
+    // setPath...........................................................................................................
 
     @Test
-    public void testSetKeyWithNullFails() {
+    public void testSetPathWithNullFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createObject()
-                .setKey(null)
+                .setPath(null)
         );
     }
 
     @Test
-    public void testSetKeyWithSame() {
+    public void testSetPathWithSame() {
         final TreeMapStoreStorageStoreValue value = this.createObject();
         assertSame(
             value,
-            value.setKey(KEY)
+            value.setPath(PATH)
         );
     }
 
     @Test
-    public void testSetKeyWithDifferent() {
+    public void testSetPathWithDifferent() {
         final TreeMapStoreStorageStoreValue value = this.createObject();
 
-        final StorageKey differentKey = StorageKey.with("different.key");
-        final TreeMapStoreStorageStoreValue different = value.setKey(differentKey);
+        final StoragePath differentPath = StoragePath.parse("/different.path");
+        final TreeMapStoreStorageStoreValue different = value.setPath(differentPath);
 
         assertNotSame(
             value,
             different
         );
 
-        this.valueAndCheck(different, VALUE.setKey(differentKey));
+        this.valueAndCheck(different, VALUE.setPath(differentPath));
         this.valueAndCheck(value);
 
-        this.keyAndCheck(
+        this.pathAndCheck(
             different,
-            differentKey
+            differentPath
         );
-        this.keyAndCheck(value);
+        this.pathAndCheck(value);
     }
 
-    private void keyAndCheck(final TreeMapStoreStorageStoreValue value) {
-        this.keyAndCheck(
+    private void pathAndCheck(final TreeMapStoreStorageStoreValue value) {
+        this.pathAndCheck(
             value,
-            KEY
+            PATH
         );
     }
 
-    private void keyAndCheck(final TreeMapStoreStorageStoreValue value,
-                              final StorageKey expected) {
+    private void pathAndCheck(final TreeMapStoreStorageStoreValue value,
+                              final StoragePath expected) {
         this.checkEquals(
             expected,
-            value.key()
+            value.path()
         );
     }
     
@@ -307,7 +307,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "key123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 key123=\"Value999\" application/octet-stream"
+            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\" application/octet-stream"
         );
     }
 

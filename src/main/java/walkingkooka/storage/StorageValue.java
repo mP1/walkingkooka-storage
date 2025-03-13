@@ -33,25 +33,25 @@ import java.util.Optional;
  * Instances are not meant be marshalled to JSON or serializable.
  */
 public final class StorageValue implements Value<Optional<Object>>,
-    HasId<Optional<StorageKey>>,
+    HasId<Optional<StoragePath>>,
     Comparable<StorageValue>,
     TreePrintable {
 
     public final static MediaType DEFAULT_CONTENT_TYPE = MediaType.BINARY;
 
-    public static StorageValue with(final StorageKey key,
+    public static StorageValue with(final StoragePath path,
                                     final Optional<Object> value) {
         return new StorageValue(
-            Objects.requireNonNull(key, "key"),
+            Objects.requireNonNull(path, "path"),
             Objects.requireNonNull(value, "value"),
             MediaType.BINARY
         );
     }
 
-    private StorageValue(final StorageKey key,
+    private StorageValue(final StoragePath path,
                          final Optional<Object> value,
                          final MediaType contentType) {
-        this.key = key;
+        this.path = path;
         this.value = value;
         this.contentType = contentType;
     }
@@ -72,7 +72,7 @@ public final class StorageValue implements Value<Optional<Object>>,
         return this.value.equals(value) ?
             this :
             new StorageValue(
-                this.key,
+                this.path,
                 Objects.requireNonNull(value, "value"),
                 this.contentType
             );
@@ -81,27 +81,27 @@ public final class StorageValue implements Value<Optional<Object>>,
     // HasId............................................................................................................
 
     @Override
-    public Optional<StorageKey> id() {
+    public Optional<StoragePath> id() {
         return Optional.of(
-            this.key()
+            this.path()
         );
     }
 
-    public StorageKey key() {
-        return this.key;
+    public StoragePath path() {
+        return this.path;
     }
 
-    public StorageValue setKey(final StorageKey key) {
-        return this.key.equals(key) ?
+    public StorageValue setPath(final StoragePath path) {
+        return this.path.equals(path) ?
             this :
             new StorageValue(
-                Objects.requireNonNull(key, "key"),
+                Objects.requireNonNull(path, "path"),
                 this.value,
                 this.contentType
             );
     }
 
-    private final StorageKey key;
+    private final StoragePath path;
 
     // ContentType......................................................................................................
 
@@ -118,7 +118,7 @@ public final class StorageValue implements Value<Optional<Object>>,
         return this.contentType.equals(contentType) ?
             this :
             new StorageValue(
-                this.key,
+                this.path,
                 this.value,
                 Objects.requireNonNull(
                     contentType,
@@ -132,7 +132,7 @@ public final class StorageValue implements Value<Optional<Object>>,
     @Override
     public int hashCode() {
         return Objects.hash(
-            this.key,
+            this.path,
             this.value,
             this.contentType
         );
@@ -146,7 +146,7 @@ public final class StorageValue implements Value<Optional<Object>>,
     }
 
     private boolean equals0(final StorageValue other) {
-        return this.key.equals(other.key) &&
+        return this.path.equals(other.path) &&
             this.value.equals(other.value) &&
             this.contentType.equals(other.contentType);
     }
@@ -154,7 +154,7 @@ public final class StorageValue implements Value<Optional<Object>>,
     @Override
     public String toString() {
         return ToStringBuilder.empty()
-            .label(this.key.toString())
+            .label(this.path.toString())
             .separator("=")
             .value(this.value)
             .separator(" ")
@@ -166,14 +166,14 @@ public final class StorageValue implements Value<Optional<Object>>,
 
     @Override
     public int compareTo(final StorageValue other) {
-        return this.key.compareTo(other.key());
+        return this.path.compareTo(other.path());
     }
 
     // TreePrintable....................................................................................................
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        printer.println(this.key.toString());
+        printer.println(this.path.toString());
 
         printer.indent();
         {

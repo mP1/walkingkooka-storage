@@ -23,17 +23,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Holds the metadata for a single {@link StorageKey}.
+ * Holds the metadata for a single {@link StoragePath}.
  */
 public final class StorageValueInfo {
 
-    public static StorageValueInfo with(final StorageKey key,
+    public static StorageValueInfo with(final StoragePath path,
                                         final EmailAddress createdBy,
                                         final LocalDateTime createdTimestamp,
                                         final EmailAddress modifiedBy,
                                         final LocalDateTime modifiedTimestamp) {
         return new StorageValueInfo(
-            Objects.requireNonNull(key, "key"),
+            Objects.requireNonNull(path, "path"),
             Objects.requireNonNull(createdBy, "createdBy"),
             Objects.requireNonNull(createdTimestamp, "createdTimestamp"),
             Objects.requireNonNull(modifiedBy, "modifiedBy"),
@@ -41,12 +41,12 @@ public final class StorageValueInfo {
         );
     }
 
-    private StorageValueInfo(final StorageKey key,
+    private StorageValueInfo(final StoragePath path,
                              final EmailAddress createdBy,
                              final LocalDateTime createdTimestamp,
                              final EmailAddress modifiedBy,
                              final LocalDateTime modifiedTimestamp) {
-        this.key = key;
+        this.path = path;
         this.createdBy = createdBy;
         this.createdTimestamp = createdTimestamp;
         this.modifiedBy = modifiedBy;
@@ -57,17 +57,17 @@ public final class StorageValueInfo {
         }
     }
 
-    // key..............................................................................................................
+    // path..............................................................................................................
 
-    public StorageKey key() {
-        return this.key;
+    public StoragePath path() {
+        return this.path;
     }
 
-    public StorageValueInfo setKey(final StorageKey key) {
-        return this.key.equals(key) ?
+    public StorageValueInfo setPath(final StoragePath path) {
+        return this.path.equals(path) ?
             this :
             new StorageValueInfo(
-                Objects.requireNonNull(key, "key"),
+                Objects.requireNonNull(path, "path"),
                 this.createdBy,
                 this.createdTimestamp,
                 this.modifiedBy,
@@ -75,7 +75,7 @@ public final class StorageValueInfo {
             );
     }
 
-    private final StorageKey key;
+    private final StoragePath path;
 
     // createdBy........................................................................................................
 
@@ -89,7 +89,7 @@ public final class StorageValueInfo {
         return this.createdBy.equals(createdBy) ?
             this :
             new StorageValueInfo(
-                this.key,
+                this.path,
                 Objects.requireNonNull(createdBy, "createdBy"),
                 this.createdTimestamp,
                 this.modifiedBy,
@@ -109,7 +109,7 @@ public final class StorageValueInfo {
         return this.createdTimestamp.equals(createdTimestamp) ?
             this :
             new StorageValueInfo(
-                this.key,
+                this.path,
                 this.createdBy,
                 Objects.requireNonNull(createdTimestamp, "createdTimestamp"),
                 this.modifiedBy,
@@ -129,7 +129,7 @@ public final class StorageValueInfo {
         return this.modifiedBy.equals(modifiedBy) ?
             this :
             new StorageValueInfo(
-                this.key,
+                this.path,
                 this.createdBy,
                 this.createdTimestamp,
                 Objects.requireNonNull(modifiedBy, "modifiedBy"),
@@ -147,7 +147,7 @@ public final class StorageValueInfo {
         return this.modifiedTimestamp.equals(modifiedTimestamp) ?
             this :
             new StorageValueInfo(
-                this.key,
+                this.path,
                 this.createdBy,
                 createdTimestamp,
                 this.modifiedBy,
@@ -160,7 +160,7 @@ public final class StorageValueInfo {
     @Override
     public int hashCode() {
         return Objects.hash(
-            this.key,
+            this.path,
             this.createdBy,
             this.createdTimestamp,
             this.modifiedBy,
@@ -175,7 +175,7 @@ public final class StorageValueInfo {
 
     private boolean equals0(final StorageValueInfo other) {
         return
-            this.key.equals(other.key) &&
+            this.path.equals(other.path) &&
                 this.createdBy.equals(other.createdBy) &&
                 this.createdTimestamp.equals(other.createdTimestamp) &&
                 this.modifiedBy.equals(other.modifiedBy) &&
@@ -184,7 +184,7 @@ public final class StorageValueInfo {
 
     @Override
     public String toString() {
-        return this.key +
+        return this.path +
             " " +
             this.createdBy +
             " " +
