@@ -34,6 +34,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
 import walkingkooka.text.CharSequences;
@@ -214,10 +215,7 @@ final public class StoragePath
     }
 
     private boolean equals0(final StoragePath other) {
-        return StorageName.CASE_SENSITIVITY.equals(
-            this.path,
-            other.path
-        );
+        return this.compareTo(other) == Comparators.EQUAL;
     }
 
     @Override
