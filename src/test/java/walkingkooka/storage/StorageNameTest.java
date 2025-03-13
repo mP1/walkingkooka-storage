@@ -36,7 +36,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.io.FileExtension;
-import walkingkooka.naming.NameTesting;
+import walkingkooka.naming.NameTesting2;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
@@ -47,7 +47,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageNameTest implements ClassTesting2<StorageName>,
-        NameTesting<StorageName, StorageName> {
+    NameTesting2<StorageName, StorageName> {
 
     // fileExtension........................................................................................................
 
@@ -133,6 +133,16 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
         return "abc.txt";
     }
 
+    @Override
+    public String possibleValidChars(final int i) {
+        return ASCII_LETTERS_DIGITS;
+    }
+
+    @Override
+    public String possibleInvalidChars(final int i) {
+        return "/" + CONTROL;
+    }
+
     // MIN_LENGTH.......................................................................................................
 
     @Test
@@ -161,9 +171,19 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
         );
 
         this.checkEquals(
-            "Length 256 of \"filename\" not between 1..255 = \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"",
+            "Length 256 of \"name\" not between 1..255 = \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"",
             thrown.getMessage()
         );
+    }
+
+    @Override
+    public int minLength() {
+        return StorageName.MIN_LENGTH;
+    }
+
+    @Override
+    public int maxLength() {
+        return StorageName.MAX_LENGTH;
     }
 
     // class............................................................................................................

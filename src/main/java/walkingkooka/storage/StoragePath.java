@@ -54,16 +54,12 @@ final public class StoragePath
      */
     public final static PathSeparator SEPARATOR = PathSeparator.requiredAtStart('/');
 
-    final static StorageName ROOT_NAME = StorageName.with(
-        StoragePath.SEPARATOR.string()
-    );
-
     /**
      * Convenient constant holding the root.
      */
     public final static StoragePath ROOT = new StoragePath(
         StoragePath.SEPARATOR.string(),
-        StoragePath.ROOT_NAME,
+        StorageName.ROOT,
         Optional.empty()
     );
 
@@ -134,7 +130,7 @@ final public class StoragePath
     public StoragePath append(final StorageName name) {
         Objects.requireNonNull(name, "name");
 
-        return StoragePath.ROOT_NAME.equals(name) ?
+        return StorageName.ROOT.equals(name) ?
             this :
             this.appendNonRootName(name);
     }

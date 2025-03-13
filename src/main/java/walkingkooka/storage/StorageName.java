@@ -38,6 +38,8 @@ import walkingkooka.Cast;
 import walkingkooka.InvalidTextLengthException;
 import walkingkooka.io.FileExtension;
 import walkingkooka.naming.Name;
+import walkingkooka.predicate.character.CharPredicate;
+import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.CharSequences;
 
@@ -58,23 +60,39 @@ public final class StorageName implements Name,
 
     public final static int MAX_LENGTH = 255;
 
+    final static StorageName ROOT = new StorageName(
+        StoragePath.SEPARATOR.string()
+    );
+
+    private final static CharPredicate CHARACTERS = CharPredicates.printable().andNot(
+        CharPredicates.is(
+            StoragePath.SEPARATOR.character()
+        )
+    );
+
     /**
      * Factory that creates a new {@link StorageName}
      */
     public static StorageName with(final String name) {
+        InvalidTextLengthException.throwIfFail(
+            "name",
+            name,
+            MIN_LENGTH,
+            MAX_LENGTH
+        );
+        CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
+            name,
+            "name",
+            CHARACTERS, // initial
+            CHARACTERS // part
+        );
+
         return new StorageName(
                 CharSequences.failIfNullOrEmpty(name, "name")
         );
     }
 
     private StorageName(final String name) {
-        InvalidTextLengthException.throwIfFail(
-            "filename",
-            name,
-            MIN_LENGTH,
-            MAX_LENGTH
-        );
-
         this.name = name;
     }
 
