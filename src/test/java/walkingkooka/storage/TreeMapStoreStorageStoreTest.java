@@ -94,10 +94,95 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
         this.storageValueInfosAndCheck(
             store,
+            PATH.parent()
+                .get(),
             0,
             2,
             StorageValueInfo.with(
                 PATH,
+                USER,
+                TIMESTAMP,
+                USER,
+                TIMESTAMP
+            )
+        );
+    }
+
+    @Test
+    public void testSaveAndStorageValueInfosMixedParents() {
+        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TreeMapStoreStorageStore store = this.createStore(context);
+
+        final StoragePath base = StoragePath.parse("/base");
+
+        final StorageValue value1 = StorageValue.with(
+            base.append(
+                StorageName.with("file1.txt")
+            ),
+            Optional.of("value1")
+        );
+
+        store.save(value1);
+
+        final StorageValue value2 = StorageValue.with(
+            base.append(
+                StorageName.with("file2.txt")
+            ),
+            Optional.of("value2")
+        );
+
+        store.save(value2);
+
+        final StorageValue value3 = StorageValue.with(
+            base.append(
+                StorageName.with("file3.txt")
+            ),
+            Optional.of("value3")
+        );
+
+        store.save(value3);
+
+        final StorageValue value4 = StorageValue.with(
+            base.append(
+                StorageName.with("file4.txt")
+            ),
+            Optional.of("value4")
+        );
+
+        store.save(value4);
+
+        final StorageValue subsub = StorageValue.with(
+            base.append(
+                StoragePath.parse("/sub")
+            ).append(
+                StorageName.with("sub.txt")
+            ),
+            Optional.of("subsub")
+        );
+
+        store.save(subsub);
+
+        final StorageValue rootfile = StorageValue.with(
+            StoragePath.parse("/root.txt"),
+            Optional.of("root")
+        );
+
+        store.save(rootfile);
+
+        this.storageValueInfosAndCheck(
+            store,
+            base,
+            1,
+            2,
+            StorageValueInfo.with(
+                value2.path(),
+                USER,
+                TIMESTAMP,
+                USER,
+                TIMESTAMP
+            ),
+            StorageValueInfo.with(
+                value3.path(),
                 USER,
                 TIMESTAMP,
                 USER,
@@ -126,6 +211,8 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
         this.storageValueInfosAndCheck(
             store,
+            PATH.parent()
+                .get(),
             0,
             2,
             StorageValueInfo.with(

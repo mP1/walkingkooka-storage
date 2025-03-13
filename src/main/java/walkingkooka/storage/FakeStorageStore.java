@@ -28,7 +28,8 @@ public class FakeStorageStore extends FakeStore<StoragePath, StorageValue> imple
     }
 
     @Override
-    public List<StorageValueInfo> storageValueInfos(final int offset,
+    public List<StorageValueInfo> storageValueInfos(final StoragePath parent,
+                                                    final int offset,
                                                     final int count) {
         throw new UnsupportedOperationException();
     }
