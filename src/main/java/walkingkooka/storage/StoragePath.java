@@ -119,40 +119,39 @@ final public class StoragePath
         this.parent = parent;
     }
 
+    // value............................................................................................................
+
+    @Override
+    public String value() {
+        return this.path;
+    }
+
     private final String path;
 
-    // Path
+    // append...........................................................................................................
 
     @Override
     public StoragePath append(final StorageName name) {
         Objects.requireNonNull(name, "name");
 
-        if (StoragePath.ROOT_NAME.equals(name)) {
-            throw new IllegalArgumentException(StoragePath.CANNOT_APPEND_ROOT_NAME);
-        }
+        return StoragePath.ROOT_NAME.equals(name) ?
+            this :
+            this.appendNonRootName(name);
+    }
 
+    private StoragePath appendNonRootName(final StorageName name) {
         final StringBuilder path = new StringBuilder();
+        path.append(this.path);
         if (false == this.isRoot()) {
-            path.append(this.path);
+            path.append(SEPARATOR);
         }
-        path.append(StoragePath.SEPARATOR.character());
         path.append(name.value());
 
         return new StoragePath(
-            path.toString(),
+            path.toString(), // path
             name,
-            Optional.of(this)
+            Optional.of(this) // parent
         );
-    }
-
-    /**
-     * Thrown when attempting to add the root name to this {@link StoragePath}.
-     */
-    private final static String CANNOT_APPEND_ROOT_NAME = "Cannot append root name.";
-
-    @Override
-    public String value() {
-        return this.path;
     }
 
     private final Optional<StoragePath> parent;
