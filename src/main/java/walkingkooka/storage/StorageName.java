@@ -49,9 +49,9 @@ public final class StorageName implements Name,
         Comparable<StorageName> {
 
     /**
-     * Resource names are case-sensitive.
+     * storage names are case-sensitive.
      */
-    private final static CaseSensitivity CASE_SENSITIVITY = CaseSensitivity.SENSITIVE;
+    final static CaseSensitivity CASE_SENSITIVITY = CaseSensitivity.SENSITIVE;
 
     /**
      * Factory that creates a new {@link StorageName}
