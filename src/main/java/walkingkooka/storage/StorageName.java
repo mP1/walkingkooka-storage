@@ -35,6 +35,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.Cast;
+import walkingkooka.InvalidTextLengthException;
 import walkingkooka.io.FileExtension;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CaseSensitivity;
@@ -53,6 +54,10 @@ public final class StorageName implements Name,
      */
     final static CaseSensitivity CASE_SENSITIVITY = CaseSensitivity.SENSITIVE;
 
+    public final static int MIN_LENGTH = 1;
+
+    public final static int MAX_LENGTH = 255;
+
     /**
      * Factory that creates a new {@link StorageName}
      */
@@ -63,6 +68,13 @@ public final class StorageName implements Name,
     }
 
     private StorageName(final String name) {
+        InvalidTextLengthException.throwIfFail(
+            "filename",
+            name,
+            MIN_LENGTH,
+            MAX_LENGTH
+        );
+
         this.name = name;
     }
 
