@@ -50,6 +50,40 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Test
+    public void testBuildPathSaveAndLoad() {
+        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TreeMapStoreStorageStore store = this.createStore(context);
+
+        final StoragePath base = StoragePath.parse("/base");
+
+        final StorageValue value1 = StorageValue.with(
+            base.append(StorageName.with("file1.txt")),
+            Optional.of("value1")
+        );
+
+        store.save(value1);
+
+        this.loadAndCheck(
+            store,
+            StoragePath.parse("/base/file1.txt"),
+            value1
+        );
+
+        final StorageValue value2 = StorageValue.with(
+            base.append(StorageName.with("file2.txt")),
+            Optional.of("value2")
+        );
+
+        store.save(value2);
+
+        this.loadAndCheck(
+            store,
+            StoragePath.parse("/base/file2.txt"),
+            value2
+        );
+    }
+
+    @Test
     public void testSaveAndStorageValueInfos() {
         final TestStorageStoreContext context = new TestStorageStoreContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
