@@ -34,7 +34,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     ClassTesting2<StorageValueInfo>,
     TreePrintableTesting {
 
-    private final static StorageKey KEY = StorageKey.with("key123");
+    private final static StoragePath PATH = StoragePath.parse("/path123");
 
     private final static EmailAddress CREATED_BY = EmailAddress.parse("created-by@example.com");
 
@@ -47,7 +47,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     // with.............................................................................................................
 
     @Test
-    public void testWithNullKeyFails() {
+    public void testWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
@@ -65,7 +65,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
-                KEY,
+                PATH,
                 null,
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -79,7 +79,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 null,
                 MODIFIED_BY,
@@ -93,7 +93,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 null,
@@ -107,7 +107,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -121,7 +121,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -139,55 +139,55 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     @Test
     public void testWith() {
         final StorageValueInfo info = StorageValueInfo.with(
-            KEY,
+            PATH,
             CREATED_BY,
             CREATED_TIMESTAMP,
             MODIFIED_BY,
             MODIFIED_TIMESTAMP
         );
 
-        this.keyAndCheck(info);
+        this.pathAndCheck(info);
         this.createdByAndCheck(info);
         this.createdTimestampAndCheck(info);
         this.modifiedByAndCheck(info);
         this.modifiedTimestampAndCheck(info);
     }
 
-    // setKey...........................................................................................................
+    // setPath..........................................................................................................
 
     @Test
-    public void testSetKeyWithNullFails() {
+    public void testSetPathWithNullFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createObject()
-                .setKey(null)
+                .setPath(null)
         );
     }
 
     @Test
-    public void testSetKeyWithSame() {
+    public void testSetPathWithSame() {
         final StorageValueInfo info = this.createObject();
 
         assertSame(
             info,
-            info.setKey(KEY)
+            info.setPath(PATH)
         );
     }
 
     @Test
-    public void testSetKeyWithDifferent() {
+    public void testSetPathWithDifferent() {
         final StorageValueInfo info = this.createObject();
 
-        final StorageKey differentKey = StorageKey.with("different.key");
-        final StorageValueInfo different = info.setKey(differentKey);
+        final StoragePath differentPath = StoragePath.parse("/different.path");
+        final StorageValueInfo different = info.setPath(differentPath);
 
         assertNotSame(
             info,
             different
         );
 
-        this.keyAndCheck(info);
-        this.keyAndCheck(different, differentKey);
+        this.pathAndCheck(info);
+        this.pathAndCheck(different, differentPath);
 
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
@@ -235,8 +235,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             different
         );
 
-        this.keyAndCheck(info);
-        this.keyAndCheck(different);
+        this.pathAndCheck(info);
+        this.pathAndCheck(different);
 
         this.createdByAndCheck(info);
         this.createdByAndCheck(different, differentCreatedBy);
@@ -284,8 +284,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             different
         );
 
-        this.keyAndCheck(info);
-        this.keyAndCheck(different);
+        this.pathAndCheck(info);
+        this.pathAndCheck(different);
 
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
@@ -333,8 +333,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             different
         );
 
-        this.keyAndCheck(info);
-        this.keyAndCheck(different);
+        this.pathAndCheck(info);
+        this.pathAndCheck(different);
 
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
@@ -382,8 +382,8 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             different
         );
 
-        this.keyAndCheck(info);
-        this.keyAndCheck(different);
+        this.pathAndCheck(info);
+        this.pathAndCheck(different);
 
         this.createdByAndCheck(info);
         this.createdByAndCheck(different);
@@ -400,18 +400,18 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     
     // helper...........................................................................................................
 
-    private void keyAndCheck(final StorageValueInfo info) {
-        this.keyAndCheck(
+    private void pathAndCheck(final StorageValueInfo info) {
+        this.pathAndCheck(
             info,
-            KEY
+            PATH
         );
     }
 
-    private void keyAndCheck(final StorageValueInfo info,
-                             final StorageKey expected) {
+    private void pathAndCheck(final StorageValueInfo info,
+                             final StoragePath expected) {
         this.checkEquals(
             expected,
-            info.key()
+            info.path()
         );
     }
 
@@ -478,10 +478,10 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     // equals...........................................................................................................
 
     @Test
-    public void testEqualsDifferentKey() {
+    public void testEqualsDifferentPath() {
         this.checkNotEquals(
             StorageValueInfo.with(
-                StorageKey.with("different"),
+                StoragePath.parse("/different"),
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -494,7 +494,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public void testEqualsDifferentCreatedBy() {
         this.checkNotEquals(
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 EmailAddress.parse("different@example.com"),
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -507,7 +507,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public void testEqualsDifferentCreatedTimestamp() {
         this.checkNotEquals(
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 LocalDateTime.MIN,
                 MODIFIED_BY,
@@ -520,7 +520,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public void testEqualsDifferentModifiedBy() {
         this.checkNotEquals(
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 EmailAddress.parse("different@example.com"),
@@ -533,7 +533,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public void testEqualsDifferentLastTimestamp() {
         this.checkNotEquals(
             StorageValueInfo.with(
-                KEY,
+                PATH,
                 CREATED_BY,
                 CREATED_TIMESTAMP,
                 MODIFIED_BY,
@@ -545,7 +545,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     @Override
     public StorageValueInfo createObject() {
         return StorageValueInfo.with(
-            KEY,
+            PATH,
             CREATED_BY,
             CREATED_TIMESTAMP,
             MODIFIED_BY,

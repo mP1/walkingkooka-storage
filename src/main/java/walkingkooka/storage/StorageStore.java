@@ -21,7 +21,7 @@ import walkingkooka.store.Store;
 
 import java.util.List;
 
-public interface StorageStore extends Store<StorageKey, StorageValue> {
+public interface StorageStore extends Store<StoragePath, StorageValue> {
 
     /**
      * Gets the {@link StorageValueInfo} for the given range.

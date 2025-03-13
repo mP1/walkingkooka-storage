@@ -21,7 +21,7 @@ import walkingkooka.store.FakeStore;
 
 import java.util.List;
 
-public class FakeStorageStore extends FakeStore<StorageKey, StorageValue> implements StorageStore {
+public class FakeStorageStore extends FakeStore<StoragePath, StorageValue> implements StorageStore {
 
     public FakeStorageStore() {
         super();
