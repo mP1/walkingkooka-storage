@@ -187,6 +187,94 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         this.parentAbsentCheck(path);
     }
 
+    // appendName.......................................................................................................
+
+    @Test
+    public void testAppendNameToRoot2() {
+        final StorageName name = StorageName.with("name1");
+
+        final StoragePath path = StoragePath.ROOT.append(name);
+        this.rootNotCheck(path);
+        this.valueCheck(path, "/name1");
+        this.nameCheck(
+            path,
+            name
+        );
+    }
+
+    @Test
+    public void testAppendNameToNonRoot() {
+        final StoragePath parent = StoragePath.parse("/parent1");
+        final StorageName name = StorageName.with("name2");
+
+        final StoragePath path = parent.append(name);
+        this.rootNotCheck(path);
+        this.valueCheck(path, "/parent1/name2");
+        this.nameCheck(
+            path,
+            name
+        );
+    }
+
+    // appendPath.......................................................................................................
+
+    @Test
+    public void testAppendPathToRoot2() {
+        final StorageName name = StorageName.with("name1");
+
+        final StoragePath parent = StoragePath.ROOT.append(name);
+        this.rootNotCheck(parent);
+        this.valueCheck(parent, "/name1");
+        this.nameCheck(
+            parent,
+            name
+        );
+    }
+
+    @Test
+    public void testAppendPathToNonRoot() {
+        final StoragePath parent = StoragePath.parse("/parent1");
+        final StoragePath path2 = StoragePath.parse("/path2");
+
+        final StoragePath path = parent.append(path2);
+        this.rootNotCheck(path);
+        this.valueCheck(
+            path,
+            "/parent1/path2"
+        );
+        this.nameCheck(
+            path,
+            StorageName.with("path2")
+        );
+        this.parentCheck(
+            path,
+            "/parent1"
+        );
+    }
+
+    @Test
+    public void testAppendPathToNonRootTwice() {
+        final StoragePath parent = StoragePath.parse("/parent1");
+        final StoragePath path2 = StoragePath.parse("/path2");
+        final StoragePath path34 = StoragePath.parse("/path3/path4");
+
+        final StoragePath path = parent.append(path2)
+            .append(path34);
+        this.rootNotCheck(path);
+        this.valueCheck(
+            path,
+            "/parent1/path2/path3/path4"
+        );
+        this.nameCheck(
+            path,
+            StorageName.with("path4")
+        );
+        this.parentCheck(
+            path,
+            "/parent1/path2/path3"
+        );
+    }
+    
     // equals/Compare...................................................................................................
 
     @Test
