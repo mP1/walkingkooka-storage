@@ -130,9 +130,24 @@ final public class StoragePath
     public StoragePath append(final StorageName name) {
         Objects.requireNonNull(name, "name");
 
-        return StorageName.ROOT.equals(name) ?
-            this :
-            this.appendNonRootName(name);
+        StoragePath appended;
+
+        switch (name.value()) {
+            case "/":
+                appended = this;
+                break;
+            case ".":
+                appended = this; // ignore
+                break;
+            case "..":
+                appended = this.parent.orElse(ROOT);
+                break;
+            default:
+                appended = this.appendNonRootName(name);
+                break;
+        }
+
+        return appended;
     }
 
     private StoragePath appendNonRootName(final StorageName name) {

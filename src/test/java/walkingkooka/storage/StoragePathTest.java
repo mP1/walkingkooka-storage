@@ -159,6 +159,82 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    @Test
+    public void testParseIncludesDot() {
+        final StoragePath path = StoragePath.parse("/path1/./path2/./path3");
+        this.valueCheck(
+            path,
+            "/path1/path2/path3"
+        );
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path3")
+        );
+
+        this.parentCheck(
+            path,
+            "/path1/path2"
+        );
+    }
+
+    @Test
+    public void testParseIncludesTrailingDot() {
+        final StoragePath path = StoragePath.parse("/path1/path2/path3/.");
+        this.valueCheck(
+            path,
+            "/path1/path2/path3"
+        );
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path3")
+        );
+
+        this.parentCheck(
+            path,
+            "/path1/path2"
+        );
+    }
+
+    @Test
+    public void testParseIncludesDoubleDot() {
+        final StoragePath path = StoragePath.parse("/path1/./path2/../path3");
+        this.valueCheck(
+            path,
+            "/path1/path3"
+        );
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path3")
+        );
+
+        this.parentCheck(
+            path,
+            "/path1"
+        );
+    }
+
+    @Test
+    public void testParseIncludesTrailingDoubleDot() {
+        final StoragePath path = StoragePath.parse("/path1/path2/path3/..");
+        this.valueCheck(
+            path,
+            "/path1/path2"
+        );
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path2")
+        );
+
+        this.parentCheck(
+            path,
+            "/path1"
+        );
+    }
+
     // ParseStringTesting ..............................................................................................
 
     @Override
