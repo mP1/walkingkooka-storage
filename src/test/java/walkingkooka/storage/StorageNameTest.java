@@ -115,7 +115,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
 
     @Override
     public CaseSensitivity caseSensitivity() {
-        return CaseSensitivity.fileSystem();
+        return CaseSensitivity.SENSITIVE;
     }
 
     @Override
