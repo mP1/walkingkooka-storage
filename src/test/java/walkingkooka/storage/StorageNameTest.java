@@ -40,8 +40,11 @@ import walkingkooka.naming.NameTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
+import walkingkooka.text.CharSequences;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageNameTest implements ClassTesting2<StorageName>,
         NameTesting<StorageName, StorageName> {
@@ -128,6 +131,39 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     @Override
     public String nameTextLess() {
         return "abc.txt";
+    }
+
+    // MIN_LENGTH.......................................................................................................
+
+    @Test
+    public void testWithMinLengthFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StorageName.with("")
+        );
+
+        this.checkEquals(
+            "Empty \"name\"",
+            thrown.getMessage()
+        );
+    }
+
+    // MAX_LENGTH.......................................................................................................
+
+    @Test
+    public void testWithMaxLengthFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StorageName.with(
+                CharSequences.repeating('A', StorageName.MAX_LENGTH + 1)
+                    .toString()
+            )
+        );
+
+        this.checkEquals(
+            "Length 256 of \"filename\" not between 1..255 = \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"",
+            thrown.getMessage()
+        );
     }
 
     // class............................................................................................................
