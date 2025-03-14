@@ -25,6 +25,13 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageStores implements PublicStaticHelper {
 
     /**
+     * {@see EmptyStorageStore}
+     */
+    public static StorageStore empty() {
+        return EmptyStorageStore.INSTANCE;
+    }
+
+    /**
      * {@see FakeStorageStore}
      */
     public static StorageStore fake() {
