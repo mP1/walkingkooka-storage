@@ -20,12 +20,14 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.store.StoreTesting;
+import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StoragePath, StorageValue> {
+public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StoragePath, StorageValue>,
+    TreePrintableTesting {
 
     @Test
     default void testStorageValueInfosWithNullParentFails() {
