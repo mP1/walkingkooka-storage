@@ -17,12 +17,21 @@
 
 package walkingkooka.storage.convert;
 
+import walkingkooka.convert.Converter;
+import walkingkooka.convert.ConverterContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 /**
  * Factories for Storage {@link walkingkooka.convert.Converter}.
  */
 public final class StorageConverters implements PublicStaticHelper {
+
+    /**
+     * {@see StoragePathConverter}
+     */
+    public static <C extends ConverterContext> Converter<C> stringToStoragePath() {
+        return StoragePathConverter.instance();
+    }
 
     /**
      * Stop creation
