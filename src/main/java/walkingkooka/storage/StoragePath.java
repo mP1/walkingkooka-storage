@@ -215,4 +215,12 @@ final public class StoragePath
     public String toString() {
         return this.path;
     }
+
+    CharSequence quotedAppendedWithStar() {
+        return CharSequences.quoteAndEscape(
+            this.isRoot() ?
+                "/*" :
+                this.path + "/*"
+        );
+    }
 }
