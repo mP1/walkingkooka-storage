@@ -17,6 +17,8 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.set.Sets;
 import walkingkooka.store.Store;
 
 import java.util.List;
@@ -85,14 +87,14 @@ final class EmptyStorageStore implements StorageStore {
     public Set<StoragePath> ids(final int offset,
                                 final int count) {
         Store.checkOffsetAndCount(offset, count);
-        return Set.of();
+        return Sets.of();
     }
 
     @Override
     public List<StorageValue> values(final int offset,
                                      final int count) {
         Store.checkOffsetAndCount(offset, count);
-        return List.of();
+        return Lists.of();
     }
 
     @Override
@@ -101,7 +103,7 @@ final class EmptyStorageStore implements StorageStore {
         Objects.requireNonNull(from, "from");
         Objects.requireNonNull(to, "to");
 
-        return List.of();
+        return Lists.of();
     }
 
     // StorageStore.....................................................................................................
@@ -114,7 +116,7 @@ final class EmptyStorageStore implements StorageStore {
         Store.checkOffsetAndCount(offset, count);
 
         // always returns nothing
-        return List.of();
+        return Lists.of();
     }
 
     @Override
