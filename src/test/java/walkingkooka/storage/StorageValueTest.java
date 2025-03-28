@@ -302,7 +302,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.treePrintAndCheck(
             this.createObject(),
             "/path123\n" +
-                "  Hello"
+                "  \"Hello\"\n"
         );
     }
 
@@ -313,7 +313,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
                 .setContentType(MediaType.TEXT_PLAIN),
             "/path123\n" +
                 "  contentType: text/plain\n" +
-                "    Hello"
+                "    \"Hello\"\n"
         );
     }
 
