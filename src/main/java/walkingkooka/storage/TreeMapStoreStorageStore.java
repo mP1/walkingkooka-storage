@@ -17,11 +17,10 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
 import walkingkooka.store.Stores;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -64,8 +63,6 @@ final class TreeMapStoreStorageStore implements StorageStore {
         final StoragePath path = storageValue.path();
 
         final StorageStoreContext context = this.context;
-        final EmailAddress user = context.userOrFail();
-        final LocalDateTime now = context.now();
 
         final Store<StoragePath, TreeMapStoreStorageStoreValue> store = this.store;
 
@@ -74,19 +71,19 @@ final class TreeMapStoreStorageStore implements StorageStore {
 
         if (null != newSave) {
             // update modify
+            final AuditInfo auditInfo = newSave.info.auditInfo();
+
             newSave = newSave.setInfo(
-                newSave.info.setModifiedBy(user)
-                    .setModifiedTimestamp(now)
+                newSave.info.setAuditInfo(
+                    context.refreshModifiedAuditInfo(auditInfo)
+                )
             );
         } else {
             // set creator and modified
             newSave = TreeMapStoreStorageStoreValue.with(
                 StorageValueInfo.with(
                     path,
-                    user, // creator
-                    now, // created-timestamp
-                    user, // modified by
-                    now // modified-timestamp
+                    context.createdAuditInfo()
                 ),
                 storageValue
             );

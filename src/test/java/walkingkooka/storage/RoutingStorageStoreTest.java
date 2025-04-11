@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
@@ -900,10 +901,12 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
     private StorageValueInfo storageValueInfo(final String path) {
         return StorageValueInfo.with(
             StoragePath.parse(path),
-            USER,
-            NOW,
-            USER,
-            NOW
+            AuditInfo.with(
+                USER,
+                NOW,
+                USER,
+                NOW
+            )
         );
     }
 

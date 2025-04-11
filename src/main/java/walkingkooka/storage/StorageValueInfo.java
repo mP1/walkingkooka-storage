@@ -17,9 +17,8 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.environment.AuditInfo;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -28,33 +27,17 @@ import java.util.Objects;
 public final class StorageValueInfo {
 
     public static StorageValueInfo with(final StoragePath path,
-                                        final EmailAddress createdBy,
-                                        final LocalDateTime createdTimestamp,
-                                        final EmailAddress modifiedBy,
-                                        final LocalDateTime modifiedTimestamp) {
+                                        final AuditInfo auditInfo) {
         return new StorageValueInfo(
             Objects.requireNonNull(path, "path"),
-            Objects.requireNonNull(createdBy, "createdBy"),
-            Objects.requireNonNull(createdTimestamp, "createdTimestamp"),
-            Objects.requireNonNull(modifiedBy, "modifiedBy"),
-            Objects.requireNonNull(modifiedTimestamp, "modifiedTimestamp")
+            Objects.requireNonNull(auditInfo, "auditInfo")
         );
     }
 
     private StorageValueInfo(final StoragePath path,
-                             final EmailAddress createdBy,
-                             final LocalDateTime createdTimestamp,
-                             final EmailAddress modifiedBy,
-                             final LocalDateTime modifiedTimestamp) {
+                             final AuditInfo auditInfo) {
         this.path = path;
-        this.createdBy = createdBy;
-        this.createdTimestamp = createdTimestamp;
-        this.modifiedBy = modifiedBy;
-        this.modifiedTimestamp = modifiedTimestamp;
-
-        if (modifiedTimestamp.isBefore(createdTimestamp)) {
-            throw new IllegalArgumentException("ModifiedTimestamp " + modifiedTimestamp + " < createdTimestamp " + createdTimestamp);
-        }
+        this.auditInfo = auditInfo;
     }
 
     // path..............................................................................................................
@@ -68,90 +51,26 @@ public final class StorageValueInfo {
             this :
             new StorageValueInfo(
                 Objects.requireNonNull(path, "path"),
-                this.createdBy,
-                this.createdTimestamp,
-                this.modifiedBy,
-                this.modifiedTimestamp
+                this.auditInfo
             );
     }
 
     private final StoragePath path;
 
-    // createdBy........................................................................................................
+    // auditInfo........................................................................................................
 
-    public EmailAddress createdBy() {
-        return this.createdBy;
+    public AuditInfo auditInfo() {
+        return this.auditInfo;
     }
 
-    private final EmailAddress createdBy;
+    private final AuditInfo auditInfo;
 
-    public StorageValueInfo setCreatedBy(final EmailAddress createdBy) {
-        return this.createdBy.equals(createdBy) ?
+    public StorageValueInfo setAuditInfo(final AuditInfo auditInfo) {
+        return this.auditInfo.equals(auditInfo) ?
             this :
             new StorageValueInfo(
                 this.path,
-                Objects.requireNonNull(createdBy, "createdBy"),
-                this.createdTimestamp,
-                this.modifiedBy,
-                this.modifiedTimestamp
-            );
-    }
-
-    // createdTimestamp.................................................................................................
-
-    public LocalDateTime createdTimestamp() {
-        return this.createdTimestamp;
-    }
-
-    private final LocalDateTime createdTimestamp;
-
-    public StorageValueInfo setCreatedTimestamp(final LocalDateTime createdTimestamp) {
-        return this.createdTimestamp.equals(createdTimestamp) ?
-            this :
-            new StorageValueInfo(
-                this.path,
-                this.createdBy,
-                Objects.requireNonNull(createdTimestamp, "createdTimestamp"),
-                this.modifiedBy,
-                this.modifiedTimestamp
-            );
-    }
-
-    // modifiedBy.......................................................................................................
-
-    public EmailAddress modifiedBy() {
-        return this.modifiedBy;
-    }
-
-    private final EmailAddress modifiedBy;
-
-    public StorageValueInfo setModifiedBy(final EmailAddress modifiedBy) {
-        return this.modifiedBy.equals(modifiedBy) ?
-            this :
-            new StorageValueInfo(
-                this.path,
-                this.createdBy,
-                this.createdTimestamp,
-                Objects.requireNonNull(modifiedBy, "modifiedBy"),
-                this.modifiedTimestamp
-            );
-    }
-
-    public LocalDateTime modifiedTimestamp() {
-        return this.modifiedTimestamp;
-    }
-
-    private final LocalDateTime modifiedTimestamp;
-
-    public StorageValueInfo setModifiedTimestamp(final LocalDateTime modifiedTimestamp) {
-        return this.modifiedTimestamp.equals(modifiedTimestamp) ?
-            this :
-            new StorageValueInfo(
-                this.path,
-                this.createdBy,
-                createdTimestamp,
-                this.modifiedBy,
-                Objects.requireNonNull(modifiedTimestamp, "modifiedTimestamp")
+                Objects.requireNonNull(auditInfo, "auditInfo")
             );
     }
 
@@ -161,10 +80,7 @@ public final class StorageValueInfo {
     public int hashCode() {
         return Objects.hash(
             this.path,
-            this.createdBy,
-            this.createdTimestamp,
-            this.modifiedBy,
-            this.modifiedTimestamp
+            this.auditInfo
         );
     }
 
@@ -176,22 +92,13 @@ public final class StorageValueInfo {
     private boolean equals0(final StorageValueInfo other) {
         return
             this.path.equals(other.path) &&
-                this.createdBy.equals(other.createdBy) &&
-                this.createdTimestamp.equals(other.createdTimestamp) &&
-                this.modifiedBy.equals(other.modifiedBy) &&
-                this.modifiedTimestamp.equals(other.modifiedTimestamp);
+                this.auditInfo.equals(other.auditInfo);
     }
 
     @Override
     public String toString() {
         return this.path +
             " " +
-            this.createdBy +
-            " " +
-            this.createdTimestamp +
-            " " +
-            this.modifiedBy +
-            " " +
-            this.modifiedTimestamp;
+            this.auditInfo;
     }
 }

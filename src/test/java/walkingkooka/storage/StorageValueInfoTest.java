@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
@@ -44,6 +45,20 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
 
     private final static LocalDateTime MODIFIED_TIMESTAMP = LocalDateTime.parse("2000-01-02T12:58:59");
 
+    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
+        CREATED_BY,
+        CREATED_TIMESTAMP,
+        MODIFIED_BY,
+        MODIFIED_TIMESTAMP
+    );
+
+    private final static AuditInfo DIFFERENT_AUDIT_INFO = AuditInfo.with(
+        CREATED_BY,
+        CREATED_TIMESTAMP,
+        EmailAddress.parse("different-modified-by@example.com"),
+        MODIFIED_TIMESTAMP
+    );
+
     // with.............................................................................................................
 
     @Test
@@ -52,87 +67,19 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
             NullPointerException.class,
             () -> StorageValueInfo.with(
                 null,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
+                AUDIT_INFO
             )
         );
     }
 
     @Test
-    public void testWithNullCreatedByFails() {
+    public void testWithNullAuditInfoFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageValueInfo.with(
                 PATH,
-                null,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testWithNullCreatedTimestampFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                null,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testWithNullModifiedByFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                null,
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testWithNullModifiedTimestampFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
                 null
             )
-        );
-    }
-
-    @Test
-    public void testWithModifiedTimestampBeforeCreatedByFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                CREATED_TIMESTAMP.minusDays(1)
-            )
-        );
-
-        this.checkEquals(
-            "ModifiedTimestamp 1999-12-30T12:58:59 < createdTimestamp 1999-12-31T12:58:59",
-            thrown.getMessage(),
-            "message"
         );
     }
 
@@ -140,17 +87,11 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public void testWith() {
         final StorageValueInfo info = StorageValueInfo.with(
             PATH,
-            CREATED_BY,
-            CREATED_TIMESTAMP,
-            MODIFIED_BY,
-            MODIFIED_TIMESTAMP
+            AUDIT_INFO
         );
 
         this.pathAndCheck(info);
-        this.createdByAndCheck(info);
-        this.createdTimestampAndCheck(info);
-        this.modifiedByAndCheck(info);
-        this.modifiedTimestampAndCheck(info);
+        this.auditInfoAndCheck(info);
     }
 
     // setPath..........................................................................................................
@@ -189,216 +130,9 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.pathAndCheck(info);
         this.pathAndCheck(different, differentPath);
 
-        this.createdByAndCheck(info);
-        this.createdByAndCheck(different);
-
-        this.createdTimestampAndCheck(info);
-        this.createdTimestampAndCheck(different);
-
-        this.modifiedByAndCheck(info);
-        this.modifiedByAndCheck(different);
-
-        this.modifiedTimestampAndCheck(info);
-        this.modifiedTimestampAndCheck(different);
+        this.auditInfoAndCheck(info);
+        this.auditInfoAndCheck(different);
     }
-
-    // setCreatedBy...........................................................................................................
-
-    @Test
-    public void testSetCreatedByWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createObject()
-                .setCreatedBy(null)
-        );
-    }
-
-    @Test
-    public void testSetCreatedByWithSame() {
-        final StorageValueInfo info = this.createObject();
-
-        assertSame(
-            info,
-            info.setCreatedBy(CREATED_BY)
-        );
-    }
-
-    @Test
-    public void testSetCreatedByWithDifferent() {
-        final StorageValueInfo info = this.createObject();
-
-        final EmailAddress differentCreatedBy = EmailAddress.parse("different@example.com");
-        final StorageValueInfo different = info.setCreatedBy(differentCreatedBy);
-
-        assertNotSame(
-            info,
-            different
-        );
-
-        this.pathAndCheck(info);
-        this.pathAndCheck(different);
-
-        this.createdByAndCheck(info);
-        this.createdByAndCheck(different, differentCreatedBy);
-
-        this.createdTimestampAndCheck(info);
-        this.createdTimestampAndCheck(different);
-
-        this.modifiedByAndCheck(info);
-        this.modifiedByAndCheck(different);
-
-        this.modifiedTimestampAndCheck(info);
-        this.modifiedTimestampAndCheck(different);
-    }
-
-    // setCreatedTimestamp...............................................................................................
-
-    @Test
-    public void testSetCreatedTimestampWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createObject()
-                .setCreatedTimestamp(null)
-        );
-    }
-
-    @Test
-    public void testSetCreatedTimestampWithSame() {
-        final StorageValueInfo info = this.createObject();
-
-        assertSame(
-            info,
-            info.setCreatedTimestamp(CREATED_TIMESTAMP)
-        );
-    }
-
-    @Test
-    public void testSetCreatedTimestampWithDifferent() {
-        final StorageValueInfo info = this.createObject();
-
-        final LocalDateTime differentCreatedTimestamp = LocalDateTime.MIN;
-        final StorageValueInfo different = info.setCreatedTimestamp(differentCreatedTimestamp);
-
-        assertNotSame(
-            info,
-            different
-        );
-
-        this.pathAndCheck(info);
-        this.pathAndCheck(different);
-
-        this.createdByAndCheck(info);
-        this.createdByAndCheck(different);
-
-        this.createdTimestampAndCheck(info);
-        this.createdTimestampAndCheck(different, differentCreatedTimestamp);
-
-        this.modifiedByAndCheck(info);
-        this.modifiedByAndCheck(different);
-
-        this.modifiedTimestampAndCheck(info);
-        this.modifiedTimestampAndCheck(different);
-    }
-
-    // setModifiedBy...............................................................................................
-
-    @Test
-    public void testSetModifiedByWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createObject()
-                .setModifiedBy(null)
-        );
-    }
-
-    @Test
-    public void testSetModifiedByWithSame() {
-        final StorageValueInfo info = this.createObject();
-
-        assertSame(
-            info,
-            info.setModifiedBy(MODIFIED_BY)
-        );
-    }
-
-    @Test
-    public void testSetModifiedByWithDifferent() {
-        final StorageValueInfo info = this.createObject();
-
-        final EmailAddress differentModifiedBy = EmailAddress.parse("different@example.com");
-        final StorageValueInfo different = info.setModifiedBy(differentModifiedBy);
-
-        assertNotSame(
-            info,
-            different
-        );
-
-        this.pathAndCheck(info);
-        this.pathAndCheck(different);
-
-        this.createdByAndCheck(info);
-        this.createdByAndCheck(different);
-
-        this.createdTimestampAndCheck(info);
-        this.createdTimestampAndCheck(different);
-
-        this.modifiedByAndCheck(info);
-        this.modifiedByAndCheck(different, differentModifiedBy);
-
-        this.modifiedTimestampAndCheck(info);
-        this.modifiedTimestampAndCheck(different);
-    }
-
-    // setModifiedTimestamp.............................................................................................
-
-    @Test
-    public void testSetModifiedTimestampWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createObject()
-                .setModifiedTimestamp(null)
-        );
-    }
-
-    @Test
-    public void testSetModifiedTimestampWithSame() {
-        final StorageValueInfo info = this.createObject();
-
-        assertSame(
-            info,
-            info.setModifiedTimestamp(MODIFIED_TIMESTAMP)
-        );
-    }
-
-    @Test
-    public void testSetModifiedTimestampWithDifferent() {
-        final StorageValueInfo info = this.createObject();
-
-        final LocalDateTime differentModifiedTimestamp = LocalDateTime.MAX;
-        final StorageValueInfo different = info.setModifiedTimestamp(differentModifiedTimestamp);
-
-        assertNotSame(
-            info,
-            different
-        );
-
-        this.pathAndCheck(info);
-        this.pathAndCheck(different);
-
-        this.createdByAndCheck(info);
-        this.createdByAndCheck(different);
-
-        this.createdTimestampAndCheck(info);
-        this.createdTimestampAndCheck(different);
-
-        this.modifiedByAndCheck(info);
-        this.modifiedByAndCheck(different);
-
-        this.modifiedTimestampAndCheck(info);
-        this.modifiedTimestampAndCheck(different, differentModifiedTimestamp);
-    }
-    
-    // helper...........................................................................................................
 
     private void pathAndCheck(final StorageValueInfo info) {
         this.pathAndCheck(
@@ -408,70 +142,64 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     }
 
     private void pathAndCheck(final StorageValueInfo info,
-                             final StoragePath expected) {
+                              final StoragePath expected) {
         this.checkEquals(
             expected,
             info.path()
         );
     }
 
-    private void createdByAndCheck(final StorageValueInfo info) {
-        this.createdByAndCheck(
-            info,
-            CREATED_BY
+    // setAuditInfo.....................................................................................................
+
+    @Test
+    public void testSetAuditInfoWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createObject()
+                .setAuditInfo(null)
         );
     }
 
-    private void createdByAndCheck(final StorageValueInfo info,
-                                   final EmailAddress expected) {
+    @Test
+    public void testSetAuditInfoWithSame() {
+        final StorageValueInfo info = this.createObject();
+
+        assertSame(
+            info,
+            info.setAuditInfo(AUDIT_INFO)
+        );
+    }
+
+    @Test
+    public void testSetAuditInfoWithDifferent() {
+        final StorageValueInfo info = this.createObject();
+
+        final StorageValueInfo different = info.setAuditInfo(DIFFERENT_AUDIT_INFO);
+
+        assertNotSame(
+            info,
+            different
+        );
+
+        this.pathAndCheck(info);
+        this.pathAndCheck(different);
+
+        this.auditInfoAndCheck(info);
+        this.auditInfoAndCheck(different, DIFFERENT_AUDIT_INFO);
+    }
+
+    private void auditInfoAndCheck(final StorageValueInfo info) {
+        this.auditInfoAndCheck(
+            info,
+            AUDIT_INFO
+        );
+    }
+
+    private void auditInfoAndCheck(final StorageValueInfo info,
+                                   final AuditInfo expected) {
         this.checkEquals(
             expected,
-            info.createdBy()
-        );
-    }
-
-    private void createdTimestampAndCheck(final StorageValueInfo info) {
-        this.createdTimestampAndCheck(
-            info,
-            CREATED_TIMESTAMP
-        );
-    }
-
-    private void createdTimestampAndCheck(final StorageValueInfo info,
-                                         final LocalDateTime expected) {
-        this.checkEquals(
-            expected,
-            info.createdTimestamp()
-        );
-    }
-
-    private void modifiedByAndCheck(final StorageValueInfo info) {
-        this.modifiedByAndCheck(
-            info,
-            MODIFIED_BY
-        );
-    }
-
-    private void modifiedByAndCheck(final StorageValueInfo info,
-                                    final EmailAddress expected) {
-        this.checkEquals(
-            expected,
-            info.modifiedBy()
-        );
-    }
-
-    private void modifiedTimestampAndCheck(final StorageValueInfo info) {
-        this.modifiedTimestampAndCheck(
-            info,
-            MODIFIED_TIMESTAMP
-        );
-    }
-
-    private void modifiedTimestampAndCheck(final StorageValueInfo info,
-                                         final LocalDateTime expected) {
-        this.checkEquals(
-            expected,
-            info.modifiedTimestamp()
+            info.auditInfo()
         );
     }
 
@@ -482,10 +210,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.checkNotEquals(
             StorageValueInfo.with(
                 StoragePath.parse("/different"),
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
+                AUDIT_INFO
             )
         );
     }
@@ -495,49 +220,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         this.checkNotEquals(
             StorageValueInfo.with(
                 PATH,
-                EmailAddress.parse("different@example.com"),
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testEqualsDifferentCreatedTimestamp() {
-        this.checkNotEquals(
-            StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                LocalDateTime.MIN,
-                MODIFIED_BY,
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testEqualsDifferentModifiedBy() {
-        this.checkNotEquals(
-            StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                EmailAddress.parse("different@example.com"),
-                MODIFIED_TIMESTAMP
-            )
-        );
-    }
-
-    @Test
-    public void testEqualsDifferentLastTimestamp() {
-        this.checkNotEquals(
-            StorageValueInfo.with(
-                PATH,
-                CREATED_BY,
-                CREATED_TIMESTAMP,
-                MODIFIED_BY,
-                LocalDateTime.MAX
+                DIFFERENT_AUDIT_INFO
             )
         );
     }
@@ -546,10 +229,7 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
     public StorageValueInfo createObject() {
         return StorageValueInfo.with(
             PATH,
-            CREATED_BY,
-            CREATED_TIMESTAMP,
-            MODIFIED_BY,
-            MODIFIED_TIMESTAMP
+            AUDIT_INFO
         );
     }
 

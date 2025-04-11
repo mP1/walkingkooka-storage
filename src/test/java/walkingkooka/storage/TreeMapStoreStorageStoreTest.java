@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,13 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     private final static EmailAddress USER = EmailAddress.parse("user123@example.com");
 
     private final static LocalDateTime TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
+
+    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
+        USER,
+        TIMESTAMP,
+        USER,
+        TIMESTAMP
+    );
 
     @Test
     public void testSaveAndLoad() {
@@ -100,10 +108,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             2,
             StorageValueInfo.with(
                 PATH,
-                USER,
-                TIMESTAMP,
-                USER,
-                TIMESTAMP
+                AUDIT_INFO
             )
         );
     }
@@ -176,17 +181,11 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             2,
             StorageValueInfo.with(
                 value2.path(),
-                USER,
-                TIMESTAMP,
-                USER,
-                TIMESTAMP
+                AUDIT_INFO
             ),
             StorageValueInfo.with(
                 value3.path(),
-                USER,
-                TIMESTAMP,
-                USER,
-                TIMESTAMP
+                AUDIT_INFO
             )
         );
     }
@@ -217,10 +216,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             2,
             StorageValueInfo.with(
                 PATH,
-                USER,
-                TIMESTAMP,
-                USER,
-                modifiedTimestamp
+                AUDIT_INFO.setModifiedTimestamp(modifiedTimestamp)
             )
         );
     }
