@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
@@ -45,6 +46,12 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
 
     private final static LocalDateTime MODIFIED_TIMESTAMP = LocalDateTime.parse("2000-01-02T12:58:59");
 
+    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
+        CREATED_BY,
+        CREATED_TIMESTAMP,
+        MODIFIED_BY,
+        MODIFIED_TIMESTAMP
+    );
 
     static {
         final String value = "Value999";
@@ -54,16 +61,13 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
             Optional.of(value)
         );
 
-        INFO = StorageValueInfo.with(
+        STORAGE_VALUE_INFO = StorageValueInfo.with(
             PATH,
-            CREATED_BY,
-            CREATED_TIMESTAMP,
-            MODIFIED_BY,
-            MODIFIED_TIMESTAMP
+            AUDIT_INFO
         );
     }
     
-    final static StorageValueInfo INFO;
+    final static StorageValueInfo STORAGE_VALUE_INFO;
     final static StorageValue VALUE;
 
     // with.............................................................................................................
@@ -84,7 +88,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
         assertThrows(
             NullPointerException.class,
             () -> TreeMapStoreStorageStoreValue.with(
-                INFO,
+                STORAGE_VALUE_INFO,
                 null
             )
         );
@@ -93,7 +97,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     @Test
     public void testWith() {
         final TreeMapStoreStorageStoreValue value = TreeMapStoreStorageStoreValue.with(
-                    INFO,
+            STORAGE_VALUE_INFO,
                     VALUE
                 );
         this.valueAndCheck(value);
@@ -116,7 +120,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
         final TreeMapStoreStorageStoreValue value = this.createObject();
         assertSame(
             value,
-            value.setInfo(INFO)
+            value.setInfo(STORAGE_VALUE_INFO)
         );
     }
 
@@ -124,7 +128,9 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     public void testSetInfoWithDifferent() {
         final TreeMapStoreStorageStoreValue value = this.createObject();
 
-        final StorageValueInfo differentInfo = INFO.setModifiedBy(EmailAddress.parse("different@example.com"));
+        final StorageValueInfo differentInfo = STORAGE_VALUE_INFO.setAuditInfo(
+            AUDIT_INFO.setModifiedBy(EmailAddress.parse("different@example.com"))
+        );
         final TreeMapStoreStorageStoreValue different = value.setInfo(differentInfo);
 
         assertNotSame(
@@ -240,7 +246,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     private void infoAndCheck(final TreeMapStoreStorageStoreValue value) {
         this.infoAndCheck(
             value,
-            INFO
+            STORAGE_VALUE_INFO
         );
     }
 
@@ -273,8 +279,10 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     public void testEqualsDifferentInfo() {
         this.checkNotEquals(
             TreeMapStoreStorageStoreValue.with(
-                INFO.setModifiedTimestamp(
-                    MODIFIED_TIMESTAMP.plusYears(1)
+                STORAGE_VALUE_INFO.setAuditInfo(
+                    AUDIT_INFO.setModifiedTimestamp(
+                        MODIFIED_TIMESTAMP.plusYears(1)
+                    )
                 ),
                 VALUE
             )
@@ -285,7 +293,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     public void testEqualsDifferentValue() {
         this.checkNotEquals(
             TreeMapStoreStorageStoreValue.with(
-                INFO,
+                STORAGE_VALUE_INFO,
                 VALUE.setValue(
                     Optional.of("Different")
                 )
@@ -296,7 +304,7 @@ public final class TreeMapStoreStorageStoreValueTest implements HashCodeEqualsDe
     @Override 
     public TreeMapStoreStorageStoreValue createObject() {
         return TreeMapStoreStorageStoreValue.with(
-            INFO,
+            STORAGE_VALUE_INFO,
             VALUE
         );
     }
