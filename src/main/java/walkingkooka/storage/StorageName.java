@@ -24,7 +24,6 @@ import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
-import walkingkooka.text.CharSequences;
 
 import java.util.Optional;
 
@@ -63,15 +62,14 @@ public final class StorageName implements Name,
             MIN_LENGTH,
             MAX_LENGTH
         );
-        CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-            name,
-            "name",
-            CHARACTERS, // initial
-            CHARACTERS // part
-        );
 
         return new StorageName(
-                CharSequences.failIfNullOrEmpty(name, "name")
+            CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
+                name,
+                "name",
+                CHARACTERS, // initial
+                CHARACTERS // part
+            )
         );
     }
 
