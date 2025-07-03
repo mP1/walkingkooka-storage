@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright 2025 Miroslav Pokorny (github.com/mP1)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
 <settings>
     <profiles>
         <profile>
@@ -21,31 +38,6 @@
                 <repository>
                     <id>github-mp1-appengine-repo</id>
                     <url>https://maven-repo-254709.appspot.com</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                </repository>
-                <repository>
-                    <id>vertispan-releases</id>
-                    <name>Vertispan hosted artifacts-releases</name>
-                    <url>https://repo.vertispan.com/j2cl</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                </repository>
-                <repository>
-                    <id>vertispan-gwt-snapshots</id>
-                    <url>https://repo.vertispan.com/gwt-snapshot/</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>daily</updatePolicy>
