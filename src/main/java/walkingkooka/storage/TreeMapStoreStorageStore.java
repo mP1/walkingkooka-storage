@@ -43,6 +43,20 @@ final class TreeMapStoreStorageStore implements StorageStore {
             this::idSetter
         );
         this.context = context;
+
+        // save root entry
+        this.store.save(
+            TreeMapStoreStorageStoreValue.with(
+                StorageValueInfo.with(
+                    StoragePath.ROOT,
+                    context.createdAuditInfo()
+                ),
+                StorageValue.with(
+                    StoragePath.ROOT,
+                    StorageValue.NO_VALUE
+                )
+            )
+        );
     }
 
     private TreeMapStoreStorageStoreValue idSetter(final StoragePath path,
@@ -87,9 +101,38 @@ final class TreeMapStoreStorageStore implements StorageStore {
                 ),
                 storageValue
             );
+
+            // create parent directories as necessary
+            StoragePath parentPath = path.parent()
+                .orElse(null);
+
+            while(null != parentPath && false == parentPath.isRoot()) {
+                final TreeMapStoreStorageStoreValue parent = store.load(parentPath)
+                    .orElse(null);
+                if(null != parent) {
+                    break;
+                }
+
+                // create parent entry
+                store.save(
+                    TreeMapStoreStorageStoreValue.with(
+                        StorageValueInfo.with(
+                            parentPath,
+                            context.createdAuditInfo()
+                        ),
+                        StorageValue.with(
+                            parentPath,
+                            StorageValue.NO_VALUE
+                        )
+                    )
+                );
+
+                parentPath = parentPath.parent()
+                    .orElse(null);
+            }
         }
 
-        return this.store.save(newSave)
+        return store.save(newSave)
             .value;
     }
 

@@ -29,6 +29,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface StorageStoreTesting<S extends StorageStore> extends StoreTesting<S, StoragePath, StorageValue>,
     TreePrintableTesting {
 
+    @Override
+    default void testAllWhenEmpty() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void testFirstIdWhenEmpty() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void testFirstValueWhenEmpty() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     default void testStorageValueInfosWithNullParentFails() {
         assertThrows(

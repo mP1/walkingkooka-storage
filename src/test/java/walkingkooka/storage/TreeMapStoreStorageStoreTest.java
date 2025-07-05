@@ -226,7 +226,15 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         final TestStorageStoreContext context = new TestStorageStoreContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
-        final StoragePath file2 = StoragePath.parse("/file2.txt");
+        final StoragePath file1 = StoragePath.parse("/file1.txt");
+        store.save(
+            StorageValue.with(
+                file1,
+                Optional.of("file1-value")
+            )
+        );
+
+        final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
         store.save(
             StorageValue.with(
                 file2,
@@ -234,7 +242,53 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             )
         );
 
-        final StoragePath file3 = StoragePath.parse("/file3.txt");
+        final StoragePath file5 = StoragePath.parse("/dir2/dir3/file3.txt");
+        store.save(
+            StorageValue.with(
+                file5,
+                Optional.of("file3-value")
+            )
+        );
+
+        // listing alpha sorted
+        this.storageValueInfosAndCheck(
+            store,
+            StoragePath.ROOT,
+            0,
+            4,
+            StorageValueInfo.with(
+                StoragePath.parse("/dir2/"),
+                AUDIT_INFO
+            ),
+            StorageValueInfo.with(
+                file1,
+                AUDIT_INFO
+            )
+        );
+    }
+
+    @Test
+    public void testStorageValueInfosSubdirectory() {
+        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TreeMapStoreStorageStore store = this.createStore(context);
+
+        final StoragePath file1 = StoragePath.parse("/file1.txt");
+        store.save(
+            StorageValue.with(
+                file1,
+                Optional.of("file1-value")
+            )
+        );
+
+        final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
+        store.save(
+            StorageValue.with(
+                file2,
+                Optional.of("file2-value")
+            )
+        );
+
+        final StoragePath file3 = StoragePath.parse("/dir2/file3.txt");
         store.save(
             StorageValue.with(
                 file3,
@@ -245,16 +299,16 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
         store.save(
             StorageValue.with(
-                file4,
+                file3,
                 Optional.of("file4-value")
             )
         );
 
         this.storageValueInfosAndCheck(
             store,
-            StoragePath.ROOT,
+            StoragePath.parse("/dir2/"),
             0,
-            2,
+            10,
             StorageValueInfo.with(
                 file2,
                 AUDIT_INFO
