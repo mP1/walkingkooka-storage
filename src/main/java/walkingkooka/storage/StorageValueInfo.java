@@ -18,7 +18,15 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
+import walkingkooka.net.email.EmailAddress;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonPropertyName;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.text.Normalizer.Form;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -100,5 +108,88 @@ public final class StorageValueInfo {
         return this.path +
             " " +
             this.auditInfo;
+    }
+
+    // Json.............................................................................................................
+
+    private final static String PATH_PROPERTY_STRING = "path";
+
+    final static JsonPropertyName PATH_PROPERTY = JsonPropertyName.with(PATH_PROPERTY_STRING);
+
+    private final static String AUDIT_INFO_PROPERTY_STRING = "auditInfo";
+
+    final static JsonPropertyName AUDIT_INFO_PROPERTY = JsonPropertyName.with(AUDIT_INFO_PROPERTY_STRING);
+
+    static StorageValueInfo unmarshall(final JsonNode node,
+                                       final JsonNodeUnmarshallContext context) {
+        StoragePath path = null;
+        AuditInfo auditInfo = null;
+
+        for (JsonNode child : node.objectOrFail().children()) {
+            final JsonPropertyName name = child.name();
+            switch (name.value()) {
+                case PATH_PROPERTY_STRING:
+                    path = context.unmarshall(
+                        child,
+                        StoragePath.class
+                    );
+                    break;
+                case AUDIT_INFO_PROPERTY_STRING:
+                    auditInfo = context.unmarshall(
+                        child,
+                        AuditInfo.class
+                    );
+                    break;
+                default:
+                    JsonNodeUnmarshallContext.unknownPropertyPresent(name, node);
+                    break;
+            }
+        }
+
+        if (null == path) {
+            JsonNodeUnmarshallContext.missingProperty(
+                PATH_PROPERTY,
+                node
+            );
+        }
+        if (null == auditInfo) {
+            JsonNodeUnmarshallContext.missingProperty(
+                AUDIT_INFO_PROPERTY,
+                node
+            );
+        }
+
+        return with(
+            path,
+            auditInfo
+        );
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        return JsonNode.object()
+            .set(
+                PATH_PROPERTY,
+                context.marshall(this.path)
+            ).set(
+                AUDIT_INFO_PROPERTY,
+                context.marshall(this.auditInfo)
+            );
+    }
+
+    static {
+        StoragePath.ROOT.isRoot();
+        AuditInfo.with(
+            EmailAddress.parse("user@example.com"),
+            LocalDateTime.MIN,
+            EmailAddress.parse("user@example.com"),
+            LocalDateTime.MIN
+        );
+
+        JsonNodeContext.register(
+            JsonNodeContext.computeTypeName(Form.class),
+            StorageValueInfo::unmarshall,
+            StorageValueInfo::marshall,
+            StorageValueInfo.class
+        );
     }
 }
