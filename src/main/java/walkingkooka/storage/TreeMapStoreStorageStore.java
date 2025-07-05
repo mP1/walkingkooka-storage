@@ -161,7 +161,12 @@ final class TreeMapStoreStorageStore implements StorageStore {
             .skip(offset)
             .limit(count)
             .map(TreeMapStoreStorageStoreValue::info)
-            .collect(Collectors.toList());
+            .collect(
+                Collectors.collectingAndThen(
+                    Collectors.toList(),
+                    StorageValueInfoList::with
+                )
+            );
     }
 
     private final Store<StoragePath, TreeMapStoreStorageStoreValue> store;
