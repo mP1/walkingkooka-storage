@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -32,7 +34,7 @@ import java.util.Objects;
 /**
  * Holds the metadata for a single {@link StoragePath}.
  */
-public final class StorageValueInfo {
+public final class StorageValueInfo implements TreePrintable {
 
     public static StorageValueInfo with(final StoragePath path,
                                         final AuditInfo auditInfo) {
@@ -191,5 +193,18 @@ public final class StorageValueInfo {
             StorageValueInfo::marshall,
             StorageValueInfo.class
         );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.path.toString());
+
+        printer.indent();
+        {
+            this.auditInfo.printTree(printer);
+        }
+        printer.outdent();
     }
 }
