@@ -24,7 +24,8 @@ import java.util.List;
 public interface StorageStore extends Store<StoragePath, StorageValue> {
 
     /**
-     * Gets the {@link StorageValueInfo} for the given range.
+     * Gets the {@link StorageValueInfo} for the given range.<br>
+     * Conceptually equivalent to getting a directory listing.
      */
     List<StorageValueInfo> storageValueInfos(final StoragePath parent,
                                              final int offset,
