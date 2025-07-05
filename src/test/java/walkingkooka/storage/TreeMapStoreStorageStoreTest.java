@@ -221,6 +221,51 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         );
     }
 
+    @Test
+    public void testStorageValueInfosRootPath() {
+        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TreeMapStoreStorageStore store = this.createStore(context);
+
+        final StoragePath file2 = StoragePath.parse("/file2.txt");
+        store.save(
+            StorageValue.with(
+                file2,
+                Optional.of("file2-value")
+            )
+        );
+
+        final StoragePath file3 = StoragePath.parse("/file3.txt");
+        store.save(
+            StorageValue.with(
+                file3,
+                Optional.of("file3-value")
+            )
+        );
+
+        final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
+        store.save(
+            StorageValue.with(
+                file4,
+                Optional.of("file4-value")
+            )
+        );
+
+        this.storageValueInfosAndCheck(
+            store,
+            StoragePath.ROOT,
+            0,
+            2,
+            StorageValueInfo.with(
+                file2,
+                AUDIT_INFO
+            ),
+            StorageValueInfo.with(
+                file3,
+                AUDIT_INFO
+            )
+        );
+    }
+
     @Override
     public TreeMapStoreStorageStore createStore() {
         return this.createStore(
