@@ -21,6 +21,10 @@ import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
 import walkingkooka.text.CharSequences;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -221,6 +225,28 @@ final public class StoragePath
             this.isRoot() ?
                 "/*" :
                 this.path + "/*"
+        );
+    }
+
+    // json.............................................................................................................
+
+    static StoragePath unmarshall(final JsonNode node,
+                                  final JsonNodeUnmarshallContext context) {
+        return parse(
+            node.stringOrFail()
+        );
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        return JsonNode.string(this.path);
+    }
+
+    static {
+        JsonNodeContext.register(
+            JsonNodeContext.computeTypeName(StoragePath.class),
+            StoragePath::unmarshall,
+            StoragePath::marshall,
+            StoragePath.class
         );
     }
 }
