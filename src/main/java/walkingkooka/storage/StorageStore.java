@@ -21,6 +21,9 @@ import walkingkooka.store.Store;
 
 import java.util.List;
 
+/**
+ * A {@link Store} that supports storing values including support for tree or directory structure.
+ */
 public interface StorageStore extends Store<StoragePath, StorageValue> {
 
     /**
