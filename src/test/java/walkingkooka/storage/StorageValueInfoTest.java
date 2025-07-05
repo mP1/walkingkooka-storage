@@ -18,7 +18,9 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.collect.iterator.IteratorTesting;
+import walkingkooka.collect.set.SortedSets;
+import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting2;
@@ -29,15 +31,17 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2<StorageValueInfo>,
+public final class StorageValueInfoTest implements ComparableTesting2<StorageValueInfo>,
     ClassTesting2<StorageValueInfo>,
     TreePrintableTesting,
-    JsonNodeMarshallingTesting<StorageValueInfo> {
+    JsonNodeMarshallingTesting<StorageValueInfo>,
+    IteratorTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -229,8 +233,36 @@ public final class StorageValueInfoTest implements HashCodeEqualsDefinedTesting2
         );
     }
 
+    @Test
+    public void testCompareUsingTreeSet() {
+        final StorageValueInfo info1 = StorageValueInfo.with(
+            StoragePath.parse("/file1.txt"),
+            DIFFERENT_AUDIT_INFO
+        );
+        final StorageValueInfo info2 = StorageValueInfo.with(
+            StoragePath.parse("/file2.txt"),
+            DIFFERENT_AUDIT_INFO
+        );
+        final StorageValueInfo info3 = StorageValueInfo.with(
+            StoragePath.parse("/zzzdir3/file3.txt"),
+            DIFFERENT_AUDIT_INFO
+        );
+
+        final Set<StorageValueInfo> set = SortedSets.tree();
+        set.add(info3);
+        set.add(info1);
+        set.add(info2);
+
+        this.iterateAndCheck(
+            set.iterator(),
+            info1,
+            info2,
+            info3
+        );
+    }
+
     @Override
-    public StorageValueInfo createObject() {
+    public StorageValueInfo createComparable() {
         return StorageValueInfo.with(
             PATH,
             AUDIT_INFO

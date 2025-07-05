@@ -34,7 +34,8 @@ import java.util.Objects;
 /**
  * Holds the metadata for a single {@link StoragePath}.
  */
-public final class StorageValueInfo implements TreePrintable {
+public final class StorageValueInfo implements Comparable<StorageValueInfo>,
+    TreePrintable {
 
     public static StorageValueInfo with(final StoragePath path,
                                         final AuditInfo auditInfo) {
@@ -82,6 +83,16 @@ public final class StorageValueInfo implements TreePrintable {
                 this.path,
                 Objects.requireNonNull(auditInfo, "auditInfo")
             );
+    }
+
+    // Comparable.......................................................................................................
+
+    /**
+     * Only compares the path ignoring the audit component.
+     */
+    @Override
+    public int compareTo(final StorageValueInfo other) {
+        return this.path.compareTo(other.path);
     }
 
     // Object...........................................................................................................
