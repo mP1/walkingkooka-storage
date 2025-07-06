@@ -27,7 +27,6 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -199,7 +198,7 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
         );
 
         JsonNodeContext.register(
-            JsonNodeContext.computeTypeName(Form.class),
+            JsonNodeContext.computeTypeName(StorageValueInfo.class),
             StorageValueInfo::unmarshall,
             StorageValueInfo::marshall,
             StorageValueInfo.class
