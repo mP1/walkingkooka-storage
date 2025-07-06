@@ -23,6 +23,7 @@ import walkingkooka.naming.PathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
@@ -32,7 +33,8 @@ import java.util.Set;
 final public class StoragePathTest implements PathTesting<StoragePath, StorageName>,
     ClassTesting2<StoragePath>,
     ParseStringTesting<StoragePath>,
-    JsonNodeMarshallingTesting<StoragePath> {
+    JsonNodeMarshallingTesting<StoragePath>,
+    TreePrintableTesting {
 
     @Override
     public void testAllConstructorsVisibility() {
@@ -393,6 +395,16 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Override
     public StoragePath createComparable() {
         return StoragePath.parse("/path");
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testTreePrint() {
+        this.treePrintAndCheck(
+            this.createComparable(),
+            "/path\n"
+        );
     }
 
     // json.............................................................................................................

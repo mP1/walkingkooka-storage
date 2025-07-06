@@ -21,6 +21,8 @@ import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -34,7 +36,8 @@ import java.util.Optional;
  */
 final public class StoragePath
     implements Path<StoragePath, StorageName>,
-    Comparable<StoragePath> {
+    Comparable<StoragePath>,
+    TreePrintable {
 
     /**
      * {@link PathSeparator} instance
@@ -226,6 +229,17 @@ final public class StoragePath
                 "/*" :
                 this.path + "/*"
         );
+    }
+
+    // TreePrintable....................................................................................................
+
+    /**
+     * Implemented so that test failures comparing a Collection of {@link StoragePath} will print vertically instead of
+     * a long line. The former is easier to see differences in Intellij.
+     */
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.path);
     }
 
     // json.............................................................................................................
