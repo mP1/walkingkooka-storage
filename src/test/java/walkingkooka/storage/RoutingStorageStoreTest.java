@@ -60,6 +60,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
             this.storageValue(
                 "/file1",
                 VALUE1
@@ -85,6 +86,19 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
+            StorageValue.with(
+                StoragePath.parse("/dir1/"),
+                StorageValue.NO_VALUE
+            ),
+            StorageValue.with(
+                StoragePath.parse("/dir1/dir11/"),
+                StorageValue.NO_VALUE
+            ),
+            StorageValue.with(
+                StoragePath.parse("/dir1/dir11/dir111/"),
+                StorageValue.NO_VALUE
+            ),
             this.storageValue(
                 "/dir1/dir11/dir111/file1",
                 VALUE1
@@ -129,6 +143,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
             this.storageValue(
                 "/file1",
                 VALUE1
@@ -136,7 +151,8 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         );
 
         this.allAndCheck(
-            store2
+            store2,
+            StorageValue.ROOT
         );
     }
 
@@ -158,6 +174,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
             this.storageValue(
                 "/file1",
                 VALUE1
@@ -229,6 +246,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
             this.storageValue(
                 "/file1",
                 VALUE1
@@ -240,7 +258,8 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         );
 
         this.allAndCheck(
-            store1
+            store1,
+            StorageValue.ROOT
         );
     }
 
@@ -268,6 +287,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.allAndCheck(
             store1,
+            StorageValue.ROOT,
             this.storageValue(
                 "/file1",
                 VALUE1
@@ -282,7 +302,8 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         );
 
         this.allAndCheck(
-            store1
+            store1,
+            StorageValue.ROOT
         );
 
         this.checkEquals(
@@ -293,7 +314,8 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         );
 
         this.allAndCheck(
-            store2
+            store2,
+            StorageValue.ROOT
         );
     }
 
@@ -329,6 +351,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
             routingStorageStore,
             0,
             3,
+            StoragePath.parse("/mount1/"),
             value1.path(),
             value2.path()
         );
@@ -384,9 +407,10 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
             routingStorageStore,
             1,
             4,
+            value1.path(),
             value2.path(),
-            value3.path(),
-            value4.path()
+            StoragePath.parse("/mount2/"),
+            value3.path()
         );
     }
 
@@ -439,8 +463,10 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         this.idsAndCheck(
             routingStorageStore,
             1,
-            2,
+            4,
+            value1.path(),
             value2.path(),
+            StoragePath.parse("/mount2/"),
             value3.path()
         );
     }
@@ -477,6 +503,10 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
             routingStorageStore,
             0,
             3,
+            StorageValue.with(
+                StoragePath.parse("/mount1/"),
+                StorageValue.NO_VALUE
+            ),
             value1,
             value2
         );
@@ -532,9 +562,13 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
             routingStorageStore,
             1,
             4,
+            value1,
             value2,
-            value3,
-            value4
+            StorageValue.with(
+                StoragePath.parse("/mount2/"),
+                StorageValue.NO_VALUE
+            ),
+            value3
         );
     }
 
@@ -587,9 +621,13 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
         this.valuesAndCheck(
             routingStorageStore,
             1,
-            2,
+            3,
+            value1,
             value2,
-            value3
+            StorageValue.with(
+                StoragePath.parse("/mount2/"),
+                StorageValue.NO_VALUE
+            )
         );
     }
 
@@ -650,10 +688,19 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
         this.betweenAndCheck(
             routingStorageStore,
-            value2.path(),
+            StoragePath.parse("/mount1/"),
             value4.path(),
+            StorageValue.with(
+                StoragePath.parse("/mount1/"),
+                StorageValue.NO_VALUE
+            ),
+            value1,
             value2,
             value3,
+            StorageValue.with(
+                StoragePath.parse("/mount2/"),
+                StorageValue.NO_VALUE
+            ),
             value4
         );
     }
