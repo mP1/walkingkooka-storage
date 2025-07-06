@@ -81,6 +81,17 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         );
     }
 
+    @Test
+    public void testWithRootAndNotValue() {
+        assertSame(
+            StorageValue.ROOT,
+            StorageValue.with(
+                StoragePath.ROOT,
+                StorageValue.NO_VALUE
+            )
+        );
+    }
+
     // setPath...........................................................................................................
 
     @Test

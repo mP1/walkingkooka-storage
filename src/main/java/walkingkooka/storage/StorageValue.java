@@ -41,13 +41,22 @@ public final class StorageValue implements Value<Optional<Object>>,
 
     public final static Optional<Object> NO_VALUE = Optional.empty();
 
+    public final static StorageValue ROOT = new StorageValue(
+        StoragePath.ROOT,
+        NO_VALUE,
+        MediaType.BINARY
+    );
+
     public static StorageValue with(final StoragePath path,
                                     final Optional<Object> value) {
-        return new StorageValue(
-            Objects.requireNonNull(path, "path"),
-            Objects.requireNonNull(value, "value"),
-            MediaType.BINARY
-        );
+        return StoragePath.ROOT.equals(path) &&
+            NO_VALUE.equals(value) ?
+            ROOT :
+            new StorageValue(
+                Objects.requireNonNull(path, "path"),
+                Objects.requireNonNull(value, "value"),
+                MediaType.BINARY
+            );
     }
 
     private StorageValue(final StoragePath path,
@@ -96,11 +105,15 @@ public final class StorageValue implements Value<Optional<Object>>,
     public StorageValue setPath(final StoragePath path) {
         return this.path.equals(path) ?
             this :
-            new StorageValue(
-                Objects.requireNonNull(path, "path"),
-                this.value,
-                this.contentType
-            );
+            StoragePath.ROOT.equals(path) &&
+                NO_VALUE.equals(this.value) &&
+                MediaType.BINARY.equals(this.contentType) ?
+                ROOT :
+                new StorageValue(
+                    Objects.requireNonNull(path, "path"),
+                    this.value,
+                    this.contentType
+                );
     }
 
     private final StoragePath path;
