@@ -39,6 +39,8 @@ public final class StorageValue implements Value<Optional<Object>>,
 
     public final static MediaType DEFAULT_CONTENT_TYPE = MediaType.BINARY;
 
+    public final static Optional<Object> NO_VALUE = Optional.empty();
+
     public static StorageValue with(final StoragePath path,
                                     final Optional<Object> value) {
         return new StorageValue(
