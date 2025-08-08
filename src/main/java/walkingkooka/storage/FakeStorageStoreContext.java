@@ -17,7 +17,18 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 
+import java.util.Objects;
+
 public class FakeStorageStoreContext extends FakeEnvironmentContext implements StorageStoreContext {
+
+    @Override
+    public <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                       final T value) {
+        Objects.requireNonNull(name, "name");
+        Objects.requireNonNull(value, "value");
+        throw new UnsupportedOperationException();
+    }
 }
