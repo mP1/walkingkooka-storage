@@ -24,5 +24,8 @@ public interface StorageStoreContext extends EnvironmentContext {
 
     @Override
     <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value);
+                                                final T value);
+
+    @Override
+    StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name);
 }
