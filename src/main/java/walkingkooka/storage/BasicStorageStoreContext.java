@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
+import walkingkooka.environment.EnvironmentValueName;
 
 import java.util.Objects;
 
@@ -32,6 +33,17 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
 
     private BasicStorageStoreContext(final EnvironmentContext environmentContext) {
         this.environmentContext = environmentContext;
+    }
+
+    @Override
+    public <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> environmentValueName,
+                                                       final T value) {
+        this.environmentContext()
+            .setEnvironmentValue(
+                environmentValueName,
+                value
+            );
+        return this;
     }
 
     @Override
