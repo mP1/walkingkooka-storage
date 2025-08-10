@@ -31,4 +31,10 @@ public class FakeStorageStoreContext extends FakeEnvironmentContext implements S
         Objects.requireNonNull(value, "value");
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        Objects.requireNonNull(name, "name");
+        throw new UnsupportedOperationException();
+    }
 }

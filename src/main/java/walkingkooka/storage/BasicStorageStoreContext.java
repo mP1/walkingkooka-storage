@@ -43,6 +43,12 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
     }
 
     @Override
+    public StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        this.environmentContext.removeEnvironmentValue(name);
+        return this;
+    }
+
+    @Override
     public EnvironmentContext environmentContext() {
         return environmentContext;
     }
