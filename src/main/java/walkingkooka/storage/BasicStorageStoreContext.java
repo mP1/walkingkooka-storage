@@ -21,6 +21,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
 
+import java.util.Locale;
 import java.util.Objects;
 
 final class BasicStorageStoreContext implements StorageStoreContext, EnvironmentContextDelegator {
@@ -33,6 +34,14 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
 
     private BasicStorageStoreContext(final EnvironmentContext environmentContext) {
         this.environmentContext = environmentContext;
+    }
+
+    @Override
+    public StorageStoreContext setLocale(final Locale locale) {
+        return this.setEnvironmentValue(
+            EnvironmentValueName.LOCALE,
+            locale
+        );
     }
 
     @Override
