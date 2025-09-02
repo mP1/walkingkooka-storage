@@ -22,6 +22,7 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,6 +41,7 @@ public final class BasicStorageStoreContextTest implements StorageStoreContextTe
     public BasicStorageStoreContext createContext() {
         return BasicStorageStoreContext.with(
             EnvironmentContexts.empty(
+                Locale.FRANCE,
                 LocalDateTime::now,
                 Optional.of(
                     EmailAddress.parse("user@example.com")
