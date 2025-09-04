@@ -45,6 +45,16 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
     }
 
     @Override
+    public StorageStoreContext cloneEnvironment() {
+        final EnvironmentContext environmentContext = this.environmentContext;
+        final EnvironmentContext cloned = environmentContext.cloneEnvironment();
+
+        return environmentContext.equals(cloned) ?
+            this :
+            with(cloned);
+    }
+
+    @Override
     public <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                                        final T value) {
         this.environmentContext.setEnvironmentValue(name, value);
