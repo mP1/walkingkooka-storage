@@ -49,7 +49,8 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
         final EnvironmentContext environmentContext = this.environmentContext;
         final EnvironmentContext cloned = environmentContext.cloneEnvironment();
 
-        return environmentContext.equals(cloned) ?
+        // only re-create if different instance
+        return environmentContext == cloned ?
             this :
             with(cloned);
     }
