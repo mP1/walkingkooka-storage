@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class RoutingStorageStoreRouteTest implements ClassTesting2<RoutingStorageStoreRoute> {
+public final class RoutingStorageRouteTest implements ClassTesting2<RoutingStorageRoute> {
 
     // add...........................................................................................................
 
@@ -81,7 +81,7 @@ public final class RoutingStorageStoreRouteTest implements ClassTesting2<Routing
         );
     }
 
-    private void addAndCheck(final RoutingStorageStoreRoute route,
+    private void addAndCheck(final RoutingStorageRoute route,
                              final StoragePath path,
                              final StoragePath expected) {
         this.checkEquals(
@@ -149,7 +149,7 @@ public final class RoutingStorageStoreRouteTest implements ClassTesting2<Routing
         );
     }
 
-    private void removeAndCheck(final RoutingStorageStoreRoute route,
+    private void removeAndCheck(final RoutingStorageRoute route,
                                 final StoragePath path,
                                 final StoragePath expected) {
         this.checkEquals(
@@ -253,7 +253,7 @@ public final class RoutingStorageStoreRouteTest implements ClassTesting2<Routing
         );
     }
 
-    private void isMatchAndCheck(final RoutingStorageStoreRoute route,
+    private void isMatchAndCheck(final RoutingStorageRoute route,
                                  final StoragePath path,
                                  final boolean expected) {
         this.checkEquals(
@@ -265,18 +265,18 @@ public final class RoutingStorageStoreRouteTest implements ClassTesting2<Routing
 
     // helpers..........................................................................................................
 
-    private RoutingStorageStoreRoute createRoute(final StoragePath path) {
-        return RoutingStorageStoreRoute.with(
+    private RoutingStorageRoute createRoute(final StoragePath path) {
+        return RoutingStorageRoute.with(
             path,
-            StorageStores.fake()
+            Storages.fake()
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<RoutingStorageStoreRoute> type() {
-        return RoutingStorageStoreRoute.class;
+    public Class<RoutingStorageRoute> type() {
+        return RoutingStorageRoute.class;
     }
 
     @Override

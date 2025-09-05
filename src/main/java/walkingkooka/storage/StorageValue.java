@@ -195,16 +195,16 @@ public final class StorageValue implements Value<Optional<Object>>,
             boolean indentValue = false;
 
             final MediaType contentType = this.contentType;
-            if(false == contentType.equals(MediaType.BINARY)) {
+            if (false == contentType.equals(MediaType.BINARY)) {
                 printer.print("contentType: ");
                 printer.println(contentType.toString());
 
-                indentValue=true;
+                indentValue = true;
             }
 
             final Optional<Object> value = this.value;
-            if(value.isPresent()) {
-                if(indentValue) {
+            if (value.isPresent()) {
+                if (indentValue) {
                     printer.indent();
                 }
 
@@ -213,7 +213,7 @@ public final class StorageValue implements Value<Optional<Object>>,
                     printer
                 );
 
-                if(indentValue) {
+                if (indentValue) {
                     printer.outdent();
                 }
             }

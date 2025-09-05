@@ -18,19 +18,20 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.build.BuilderTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class RoutingStorageStoreBuilderTest implements BuilderTesting<RoutingStorageStoreBuilder, StorageStore> {
+public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingStorageBuilder<StorageContext>, Storage<StorageContext>> {
 
     private final static StoragePath PATH = StoragePath.ROOT;
 
-    private final static StorageStore STORE = new FakeStorageStore() {
+    private final static Storage<StorageContext> STORE = new FakeStorage<>() {
 
         @Override
         public String toString() {
-            return FakeStorageStore.class.getSimpleName();
+            return FakeStorage.class.getSimpleName();
         }
     };
 
@@ -40,7 +41,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
     public void testStartWithWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> RoutingStorageStoreBuilder.empty()
+            () -> RoutingStorageBuilder.empty()
                 .startsWith(
                     null,
                     STORE
@@ -52,7 +53,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
     public void testStartWithWithNullStoreFails() {
         assertThrows(
             NullPointerException.class,
-            () -> RoutingStorageStoreBuilder.empty()
+            () -> RoutingStorageBuilder.empty()
                 .startsWith(
                     PATH,
                     null
@@ -62,7 +63,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
 
     @Test
     public void testStartWithShadowedFails() {
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 PATH,
                 STORE
@@ -71,13 +72,13 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> builder.startsWith(
-                    PATH.append(StorageName.with("222")),
-                    STORE
-                )
+                PATH.append(StorageName.with("222")),
+                STORE
+            )
         );
 
         this.checkEquals(
-            "Invalid path \"/222/*\" would be shadowed by \"/*\" FakeStorageStore",
+            "Invalid path \"/222/*\" would be shadowed by \"/*\" FakeStorage",
             thrown.getMessage()
         );
     }
@@ -86,7 +87,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
     public void testStartWithShadowedFails2() {
         final StoragePath path = StoragePath.parse("/mount111");
 
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 path,
                 STORE
@@ -101,7 +102,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
         );
 
         this.checkEquals(
-            "Invalid path \"/mount111/222/*\" would be shadowed by \"/mount111/*\" FakeStorageStore",
+            "Invalid path \"/mount111/222/*\" would be shadowed by \"/mount111/*\" FakeStorage",
             thrown.getMessage()
         );
     }
@@ -110,13 +111,13 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
     public void testStartWithShadowedFails3() {
         final StoragePath path = StoragePath.parse("/mount222");
 
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
                 STORE
             ).startsWith(
-                    path,
-                    STORE
+                path,
+                STORE
             );
 
         final IllegalArgumentException thrown = assertThrows(
@@ -128,14 +129,14 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
         );
 
         this.checkEquals(
-            "Invalid path \"/mount222/999/*\" would be shadowed by \"/mount222/*\" FakeStorageStore",
+            "Invalid path \"/mount222/999/*\" would be shadowed by \"/mount222/*\" FakeStorage",
             thrown.getMessage()
         );
     }
 
     @Test
     public void testStartsWith() {
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
                 STORE
@@ -147,7 +148,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
 
     @Test
     public void testStartsWith2() {
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
                 STORE
@@ -161,7 +162,7 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
 
     @Test
     public void testBuild() {
-        final RoutingStorageStoreBuilder builder = RoutingStorageStoreBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
                 STORE
@@ -173,19 +174,19 @@ public final class RoutingStorageStoreBuilderTest implements BuilderTesting<Rout
     }
 
     @Override
-    public RoutingStorageStoreBuilder createBuilder() {
-        return RoutingStorageStoreBuilder.empty();
+    public RoutingStorageBuilder<StorageContext> createBuilder() {
+        return RoutingStorageBuilder.empty();
     }
 
     @Override
-    public Class<StorageStore> builderProductType() {
-        return StorageStore.class;
+    public Class<Storage<StorageContext>> builderProductType() {
+        return Cast.to(Storage.class);
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<RoutingStorageStoreBuilder> type() {
-        return RoutingStorageStoreBuilder.class;
+    public Class<RoutingStorageBuilder<StorageContext>> type() {
+        return Cast.to(RoutingStorageBuilder.class);
     }
 }

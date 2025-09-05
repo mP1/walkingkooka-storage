@@ -20,23 +20,23 @@ package walkingkooka.storage;
 import java.util.Objects;
 
 /**
- * A single mount within a {@link RoutingStorageStore}.
+ * A single mount within a {@link RoutingStorage}.
  */
-final class RoutingStorageStoreRoute {
+final class RoutingStorageRoute<C extends StorageContext> {
 
-    static RoutingStorageStoreRoute with(final StoragePath path,
-                                         final StorageStore store) {
+    static <C extends StorageContext> RoutingStorageRoute<C> with(final StoragePath path,
+                                                                  final Storage<C> store) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(store, "store");
 
-        return new RoutingStorageStoreRoute(
+        return new RoutingStorageRoute<>(
             path,
             store
         );
     }
 
-    private RoutingStorageStoreRoute(final StoragePath path,
-                                     final StorageStore store) {
+    private RoutingStorageRoute(final StoragePath path,
+                                final Storage<C> store) {
         super();
         this.path = path;
         this.store = store;
@@ -82,7 +82,7 @@ final class RoutingStorageStoreRoute {
 
     final StoragePath path;
 
-    final StorageStore store;
+    final Storage<C> store;
 
     // Object...........................................................................................................
 
@@ -97,10 +97,10 @@ final class RoutingStorageStoreRoute {
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof RoutingStorageStoreRoute && this.equals0((RoutingStorageStoreRoute) other);
+            other instanceof RoutingStorageRoute && this.equals0((RoutingStorageRoute) other);
     }
 
-    private boolean equals0(final RoutingStorageStoreRoute other) {
+    private boolean equals0(final RoutingStorageRoute other) {
         return this.path.equals(other.path) &&
             this.store.equals(other.store);
     }

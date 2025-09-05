@@ -37,55 +37,55 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     @Test
     public void testFileExtensionMissing() {
         this.fileExtensionAndCheck(
-                StorageName.with("xyz")
+            StorageName.with("xyz")
         );
     }
 
     @Test
     public void testFileExtensionEmpty() {
         this.fileExtensionAndCheck(
-                StorageName.with("xyz."),
-                FileExtension.with("")
+            StorageName.with("xyz."),
+            FileExtension.with("")
         );
     }
 
     @Test
     public void testFileExtensionPresent() {
         this.fileExtensionAndCheck(
-                StorageName.with("xyz.txt"),
-                FileExtension.with("txt")
+            StorageName.with("xyz.txt"),
+            FileExtension.with("txt")
         );
     }
 
     @Test
     public void testFileExtensionPresent2() {
         this.fileExtensionAndCheck(
-                StorageName.with("xyz.EXE"),
-                FileExtension.with("EXE")
+            StorageName.with("xyz.EXE"),
+            FileExtension.with("EXE")
         );
     }
 
     private void fileExtensionAndCheck(final StorageName name) {
         this.fileExtensionAndCheck(
-                name,
-                Optional.empty()
+            name,
+            Optional.empty()
         );
     }
 
     private void fileExtensionAndCheck(final StorageName name,
                                        final FileExtension extension) {
         this.fileExtensionAndCheck(
-                name,
-                Optional.of(extension)
+            name,
+            Optional.of(extension)
         );
     }
 
     private void fileExtensionAndCheck(final StorageName name,
                                        final Optional<FileExtension> extension) {
         this.checkEquals(
-                extension,
-                name.fileExtension(),
-                "file extension within " + name
+            extension,
+            name.fileExtension(),
+            "file extension within " + name
         );
     }
 

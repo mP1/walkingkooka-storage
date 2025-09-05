@@ -22,11 +22,11 @@ import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
 
-public final class StorageStoresTest implements PublicStaticHelperTesting<StorageStores> {
+public final class StoragesTest implements PublicStaticHelperTesting<Storages> {
 
     @Override
-    public Class<StorageStores> type() {
-        return StorageStores.class;
+    public Class<Storages> type() {
+        return Storages.class;
     }
 
     @Override
