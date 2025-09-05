@@ -17,20 +17,29 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.store.Store;
-
 import java.util.List;
+import java.util.Optional;
 
 /**
- * A {@link Store} that supports storing values including support for tree or directory structure.
+ * A {@link Storage} that supports storing values including support for tree or directory structure.
  */
-public interface StorageStore extends Store<StoragePath, StorageValue> {
+public interface Storage<C extends StorageContext> {
+
+    Optional<StorageValue> load(final StoragePath path,
+                                final C context);
+
+    StorageValue save(final StorageValue value,
+                      final C context);
+
+    void delete(final StoragePath path,
+                final C context);
 
     /**
      * Gets the {@link StorageValueInfo} for the given range.<br>
      * Conceptually equivalent to getting a directory listing.
      */
-    List<StorageValueInfo> storageValueInfos(final StoragePath parent,
-                                             final int offset,
-                                             final int count);
+    List<StorageValueInfo> list(final StoragePath parent,
+                                final int offset,
+                                final int count,
+                                final C context);
 }

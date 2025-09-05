@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
-        ClassTesting<StorageValueInfoList>,
-        ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
-        JsonNodeMarshallingTesting<StorageValueInfoList> {
+    ClassTesting<StorageValueInfoList>,
+    ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
+    JsonNodeMarshallingTesting<StorageValueInfoList> {
 
     private final static AuditInfo AUDIT_INFO = AuditInfo.with(
         EmailAddress.parse("user@example.com"),
@@ -59,8 +59,8 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Test
     public void testWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> StorageValueInfoList.with(null)
+            NullPointerException.class,
+            () -> StorageValueInfoList.with(null)
         );
     }
 
@@ -68,18 +68,18 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     public void testWithDoesntDoubleWrap() {
         final StorageValueInfoList list = this.createList();
         assertSame(
-                list,
-                StorageValueInfoList.with(list)
+            list,
+            StorageValueInfoList.with(list)
         );
     }
 
     @Test
     public void testWithEmpty() {
         assertSame(
-                StorageValueInfoList.EMPTY,
-                StorageValueInfoList.with(
-                        Lists.empty()
-                )
+            StorageValueInfoList.EMPTY,
+            StorageValueInfoList.with(
+                Lists.empty()
+            )
         );
     }
 
@@ -88,27 +88,27 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Test
     public void testGet() {
         this.getAndCheck(
-                this.createList(),
-                0, // index
-                FILE1 // expected
+            this.createList(),
+            0, // index
+            FILE1 // expected
         );
     }
 
     @Test
     public void testGet2() {
         this.getAndCheck(
-                this.createList(),
-                1, // index
-                FILE2 // expected
+            this.createList(),
+            1, // index
+            FILE2 // expected
         );
     }
 
     @Test
     public void testSetFails() {
         this.setFails(
-                this.createList(),
-                0, // index
-                FILE1 // expected
+            this.createList(),
+            0, // index
+            FILE1 // expected
         );
     }
 
@@ -117,8 +117,8 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         final StorageValueInfoList list = this.createList();
 
         this.removeIndexFails(
-                list,
-                0
+            list,
+            0
         );
     }
 
@@ -127,36 +127,36 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         final StorageValueInfoList list = this.createList();
 
         this.removeFails(
-                list,
-                list.get(0)
+            list,
+            list.get(0)
         );
     }
 
     @Test
     public void testSetElementsIncludesNullFails() {
         final NullPointerException thrown = assertThrows(
-                NullPointerException.class,
-                () -> this.createList()
-                        .setElements(
-                                Lists.of(
-                                        FILE1,
-                                        null
-                                )
-                        )
+            NullPointerException.class,
+            () -> this.createList()
+                .setElements(
+                    Lists.of(
+                        FILE1,
+                        null
+                    )
+                )
         );
         this.checkEquals(
-                "includes null StorageValueInfo",
-                thrown.getMessage()
+            "includes null StorageValueInfo",
+            thrown.getMessage()
         );
     }
 
     @Override
     public StorageValueInfoList createList() {
         return StorageValueInfoList.with(
-                Lists.of(
-                        FILE1,
-                        FILE2
-                )
+            Lists.of(
+                FILE1,
+                FILE2
+            )
         );
     }
 

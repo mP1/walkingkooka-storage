@@ -20,11 +20,13 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.storage.TreeMapStoreStorageTest.TestStorageContext;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMapStoreStorageStore> {
+public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage, TestStorageContext> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -41,26 +43,35 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         TIMESTAMP
     );
 
+    private final static StorageValue STORAGE_VALUE = StorageValue.with(
+        PATH,
+        Optional.of(VALUE)
+    );
+
     @Test
     public void testSaveAndLoad() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
-        final StorageValue value = this.value();
+        final StorageValue value = STORAGE_VALUE;
 
-        store.save(value);
+        store.save(
+            value,
+            context
+        );
 
         this.loadAndCheck(
             store,
             value.path(),
+            context,
             value
         );
     }
 
     @Test
     public void testBuildPathSaveAndLoad() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath base = StoragePath.parse("/base");
 
@@ -69,11 +80,15 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value1")
         );
 
-        store.save(value1);
+        store.save(
+            value1,
+            context
+        );
 
         this.loadAndCheck(
             store,
             StoragePath.parse("/base/file1.txt"),
+            context,
             value1
         );
 
@@ -82,30 +97,38 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value2")
         );
 
-        store.save(value2);
+        store.save(
+            value2,
+            context
+        );
 
         this.loadAndCheck(
             store,
             StoragePath.parse("/base/file2.txt"),
+            context,
             value2
         );
     }
 
     @Test
-    public void testSaveAndStorageValueInfos() {
+    public void testSaveAndList() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
-        final StorageValue value = this.value();
+        final StorageValue value = STORAGE_VALUE;
 
-        store.save(value);
+        store.save(
+            value,
+            context
+        );
 
-        this.storageValueInfosAndCheck(
+        this.listAndCheck(
             store,
             PATH.parent()
                 .get(),
             0,
             2,
+            context,
             StorageValueInfo.with(
                 PATH,
                 AUDIT_INFO
@@ -114,9 +137,9 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Test
-    public void testSaveAndStorageValueInfosMixedParents() {
+    public void testSaveAndListMixedParents() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath base = StoragePath.parse("/base");
 
@@ -127,7 +150,10 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value1")
         );
 
-        store.save(value1);
+        store.save(
+            value1,
+            context
+        );
 
         final StorageValue value2 = StorageValue.with(
             base.append(
@@ -136,7 +162,10 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value2")
         );
 
-        store.save(value2);
+        store.save(
+            value2,
+            context
+        );
 
         final StorageValue value3 = StorageValue.with(
             base.append(
@@ -145,7 +174,10 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value3")
         );
 
-        store.save(value3);
+        store.save(
+            value3,
+            context
+        );
 
         final StorageValue value4 = StorageValue.with(
             base.append(
@@ -154,7 +186,10 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("value4")
         );
 
-        store.save(value4);
+        store.save(
+            value4,
+            context
+        );
 
         final StorageValue subsub = StorageValue.with(
             base.append(
@@ -165,20 +200,27 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             Optional.of("subsub")
         );
 
-        store.save(subsub);
+        store.save(
+            subsub,
+            context
+        );
 
         final StorageValue rootfile = StorageValue.with(
             StoragePath.parse("/root.txt"),
             Optional.of("root")
         );
 
-        store.save(rootfile);
+        store.save(
+            rootfile,
+            context
+        );
 
-        this.storageValueInfosAndCheck(
+        this.listAndCheck(
             store,
             base,
             1,
             2,
+            context,
             StorageValueInfo.with(
                 value2.path(),
                 AUDIT_INFO
@@ -191,12 +233,15 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Test
-    public void testSaveUpdateAndStorageValueInfos() {
+    public void testSaveUpdateAndList() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
-        final StorageValue value = this.value();
-        store.save(value);
+        final StorageValue value = STORAGE_VALUE;
+        store.save(
+            value,
+            context
+        );
 
         final LocalDateTime modifiedTimestamp = TIMESTAMP.plusYears(10);
         context.now = modifiedTimestamp;
@@ -205,15 +250,17 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 PATH,
                 Optional.of("different-value-6666")
-            )
+            ),
+            context
         );
 
-        this.storageValueInfosAndCheck(
+        this.listAndCheck(
             store,
             PATH.parent()
                 .get(),
             0,
             2,
+            context,
             StorageValueInfo.with(
                 PATH,
                 AUDIT_INFO.setModifiedTimestamp(modifiedTimestamp)
@@ -222,16 +269,17 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Test
-    public void testStorageValueInfosRootPath() {
+    public void testListRootPath() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
         store.save(
             StorageValue.with(
                 file1,
                 Optional.of("file1-value")
-            )
+            ),
+            context
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
@@ -239,7 +287,8 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 file2,
                 Optional.of("file2-value")
-            )
+            ),
+            context
         );
 
         final StoragePath file5 = StoragePath.parse("/dir2/dir3/file3.txt");
@@ -247,15 +296,17 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 file5,
                 Optional.of("file3-value")
-            )
+            ),
+            context
         );
 
         // listing alpha sorted
-        this.storageValueInfosAndCheck(
+        this.listAndCheck(
             store,
             StoragePath.ROOT,
             0,
             4,
+            context,
             StorageValueInfo.with(
                 StoragePath.parse("/dir2/"),
                 AUDIT_INFO
@@ -268,16 +319,17 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Test
-    public void testStorageValueInfosSubdirectory() {
+    public void testListSubdirectory() {
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
-        final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
         store.save(
             StorageValue.with(
                 file1,
                 Optional.of("file1-value")
-            )
+            ),
+            context
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
@@ -285,7 +337,8 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 file2,
                 Optional.of("file2-value")
-            )
+            ),
+            context
         );
 
         final StoragePath file3 = StoragePath.parse("/dir2/file3.txt");
@@ -293,7 +346,8 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 file3,
                 Optional.of("file3-value")
-            )
+            ),
+            context
         );
 
         final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
@@ -301,14 +355,16 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
             StorageValue.with(
                 file3,
                 Optional.of("file4-value")
-            )
+            ),
+            context
         );
 
-        this.storageValueInfosAndCheck(
+        this.listAndCheck(
             store,
             StoragePath.parse("/dir2/"),
             0,
             10,
+            context,
             StorageValueInfo.with(
                 file2,
                 AUDIT_INFO
@@ -321,25 +377,13 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     }
 
     @Override
-    public TreeMapStoreStorageStore createStore() {
-        return this.createStore(
-            new FakeStorageContext() {
-
-                @Override
-                public LocalDateTime now() {
-                    return TIMESTAMP;
-                }
-
-                @Override
-                public Optional<EmailAddress> user() {
-                    return Optional.of(USER);
-                }
-            }
-        );
+    public TreeMapStoreStorage createStorage() {
+        return TreeMapStoreStorage.empty();
     }
 
-    private TreeMapStoreStorageStore createStore(final StorageContext context) {
-        return TreeMapStoreStorageStore.with(context);
+    @Override
+    public TestStorageContext createContext() {
+        return new TestStorageContext();
     }
 
     final static class TestStorageContext extends FakeStorageContext implements StorageContext {
@@ -361,23 +405,15 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         LocalDateTime now;
     }
 
-    @Override
-    public StoragePath id() {
-        return PATH;
-    }
-
-    @Override
-    public StorageValue value() {
-        return StorageValue.with(
-            this.id(),
-            Optional.of(VALUE)
-        );
-    }
-
     // class............................................................................................................
 
     @Override
-    public Class<TreeMapStoreStorageStore> type() {
-        return TreeMapStoreStorageStore.class;
+    public Class<TreeMapStoreStorage> type() {
+        return TreeMapStoreStorage.class;
+    }
+
+    @Override
+    public JavaVisibility typeVisibility() {
+        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

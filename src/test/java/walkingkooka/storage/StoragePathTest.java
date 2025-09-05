@@ -341,7 +341,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
             "/parent1/path2/path3"
         );
     }
-    
+
     // equals/Compare...................................................................................................
 
     @Test

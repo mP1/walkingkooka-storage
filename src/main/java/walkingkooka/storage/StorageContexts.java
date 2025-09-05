@@ -21,7 +21,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 /**
- * A collection of {@link StorageContext} that accompany a {@link StorageStore}.
+ * A collection of {@link StorageContext} that accompany a {@link Storage}.
  */
 public final class StorageContexts implements PublicStaticHelper {
 

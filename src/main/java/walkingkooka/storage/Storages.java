@@ -17,20 +17,38 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.store.FakeStore;
+import walkingkooka.reflect.PublicStaticHelper;
 
-import java.util.List;
+/**
+ * A collection of {@link Storage}.
+ */
+public final class Storages implements PublicStaticHelper {
 
-public class FakeStorageStore extends FakeStore<StoragePath, StorageValue> implements StorageStore {
-
-    public FakeStorageStore() {
-        super();
+    /**
+     * {@see EmptyStorage}
+     */
+    public static <C extends StorageContext> Storage<C> empty() {
+        return EmptyStorage.instance();
     }
 
-    @Override
-    public List<StorageValueInfo> storageValueInfos(final StoragePath parent,
-                                                    final int offset,
-                                                    final int count) {
+    /**
+     * {@see FakeStorage}
+     */
+    public static <C extends StorageContext> Storage<C> fake() {
+        return new FakeStorage<>();
+    }
+
+    /**
+     * {@see TreeMapStoreStorage}
+     */
+    public static <C extends StorageContext> Storage<C> tree() {
+        return TreeMapStoreStorage.empty();
+    }
+
+    /**
+     * Stop creation
+     */
+    private Storages() {
         throw new UnsupportedOperationException();
     }
 }

@@ -31,7 +31,7 @@ import java.util.Optional;
  * The name portion of a {@link StoragePath}
  */
 public final class StorageName implements Name,
-        Comparable<StorageName> {
+    Comparable<StorageName> {
 
     /**
      * storage names are case-sensitive.
@@ -109,8 +109,8 @@ public final class StorageName implements Name,
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof StorageName &&
-                        this.equals0(Cast.to(other));
+            other instanceof StorageName &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final StorageName other) {
@@ -127,7 +127,7 @@ public final class StorageName implements Name,
     @Override
     public int compareTo(final StorageName other) {
         return CASE_SENSITIVITY.comparator()
-                .compare(this.name, other.name);
+            .compare(this.name, other.name);
     }
 
     // HasCaseSensitivity...............................................................................................
