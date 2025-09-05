@@ -22,11 +22,11 @@ import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
 
-public final class StorageStoreContextsTest implements PublicStaticHelperTesting<StorageStoreContexts> {
+public final class StorageContextsTest implements PublicStaticHelperTesting<StorageContexts> {
 
     @Override
-    public Class<StorageStoreContexts> type() {
-        return StorageStoreContexts.class;
+    public Class<StorageContexts> type() {
+        return StorageContexts.class;
     }
 
     @Override

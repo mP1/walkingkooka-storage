@@ -923,7 +923,7 @@ public final class RoutingStorageStoreTest implements StorageStoreTesting<Routin
 
     private StorageStore treeStore() {
         return StorageStores.tree(
-            new FakeStorageStoreContext() {
+            new FakeStorageContext() {
                 @Override
                 public LocalDateTime now() {
                     return NOW;

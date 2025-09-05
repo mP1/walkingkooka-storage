@@ -43,7 +43,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testSaveAndLoad() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StorageValue value = this.value();
@@ -59,7 +59,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath base = StoragePath.parse("/base");
@@ -93,7 +93,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testSaveAndStorageValueInfos() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StorageValue value = this.value();
@@ -115,7 +115,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testSaveAndStorageValueInfosMixedParents() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath base = StoragePath.parse("/base");
@@ -192,7 +192,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testSaveUpdateAndStorageValueInfos() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StorageValue value = this.value();
@@ -223,7 +223,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testStorageValueInfosRootPath() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -269,7 +269,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
 
     @Test
     public void testStorageValueInfosSubdirectory() {
-        final TestStorageStoreContext context = new TestStorageStoreContext();
+        final TestStorageContext context = new TestStorageContext();
         final TreeMapStoreStorageStore store = this.createStore(context);
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -323,7 +323,7 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
     @Override
     public TreeMapStoreStorageStore createStore() {
         return this.createStore(
-            new FakeStorageStoreContext() {
+            new FakeStorageContext() {
 
                 @Override
                 public LocalDateTime now() {
@@ -338,13 +338,13 @@ public class TreeMapStoreStorageStoreTest implements StorageStoreTesting<TreeMap
         );
     }
 
-    private TreeMapStoreStorageStore createStore(final StorageStoreContext context) {
+    private TreeMapStoreStorageStore createStore(final StorageContext context) {
         return TreeMapStoreStorageStore.with(context);
     }
 
-    final static class TestStorageStoreContext extends FakeStorageStoreContext implements StorageStoreContext {
+    final static class TestStorageContext extends FakeStorageContext implements StorageContext {
 
-        TestStorageStoreContext() {
+        TestStorageContext() {
             this.now = TIMESTAMP;
         }
 

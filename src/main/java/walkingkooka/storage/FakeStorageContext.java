@@ -22,18 +22,18 @@ import walkingkooka.environment.FakeEnvironmentContext;
 
 import java.util.Objects;
 
-public class FakeStorageStoreContext extends FakeEnvironmentContext implements StorageStoreContext {
+public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
 
     @Override
-    public <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value) {
+    public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                  final T value) {
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(value, "value");
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+    public StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
         Objects.requireNonNull(name, "name");
         throw new UnsupportedOperationException();
     }

@@ -31,13 +31,13 @@ import java.util.stream.Collectors;
 
 final class TreeMapStoreStorageStore implements StorageStore {
 
-    static TreeMapStoreStorageStore with(final StorageStoreContext context) {
+    static TreeMapStoreStorageStore with(final StorageContext context) {
         return new TreeMapStoreStorageStore(
             Objects.requireNonNull(context, "context")
         );
     }
 
-    private TreeMapStoreStorageStore(final StorageStoreContext context) {
+    private TreeMapStoreStorageStore(final StorageContext context) {
         this.store = Stores.treeMap(
             Comparator.naturalOrder(),
             this::idSetter
@@ -76,7 +76,7 @@ final class TreeMapStoreStorageStore implements StorageStore {
 
         final StoragePath path = storageValue.path();
 
-        final StorageStoreContext context = this.context;
+        final StorageContext context = this.context;
 
         final Store<StoragePath, TreeMapStoreStorageStoreValue> store = this.store;
 
@@ -214,7 +214,7 @@ final class TreeMapStoreStorageStore implements StorageStore {
 
     private final Store<StoragePath, TreeMapStoreStorageStoreValue> store;
 
-    private final StorageStoreContext context;
+    private final StorageContext context;
 
     @Override
     public String toString() {

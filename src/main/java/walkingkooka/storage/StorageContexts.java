@@ -21,28 +21,28 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 /**
- * A collection of {@link StorageStore}.
+ * A collection of {@link StorageContext} that accompany a {@link StorageStore}.
  */
-public final class StorageStoreContexts implements PublicStaticHelper {
+public final class StorageContexts implements PublicStaticHelper {
 
     /**
-     * {@see BasicStorageStoreContext}
+     * {@see BasicStorageContext}
      */
-    public static StorageStoreContext basic(final EnvironmentContext environmentContext) {
-        return BasicStorageStoreContext.with(environmentContext);
+    public static StorageContext basic(final EnvironmentContext environmentContext) {
+        return BasicStorageContext.with(environmentContext);
     }
 
     /**
-     * {@see FakeStorageStoreContext}
+     * {@see FakeStorageContext}
      */
-    public static StorageStoreContext fake() {
-        return new FakeStorageStoreContext();
+    public static StorageContext fake() {
+        return new FakeStorageContext();
     }
 
     /**
      * Stop creation
      */
-    private StorageStoreContexts() {
+    private StorageContexts() {
         throw new UnsupportedOperationException();
     }
 }
