@@ -59,8 +59,8 @@ public final class EmptyStorageStoreTest implements StorageStoreTesting<EmptySto
     }
 
     @Test
-    public void testLoadFails() {
-        this.loadFailCheck(
+    public void testLoadMissing() {
+        this.loadAndCheck(
             this.createStore(),
             this.id()
         );
