@@ -17,12 +17,10 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.store.FakeStore;
-
 import java.util.List;
 import java.util.Optional;
 
-public class FakeStorage<C extends StorageContext> extends FakeStore<StoragePath, StorageValue> implements Storage<C> {
+public class FakeStorage<C extends StorageContext> implements Storage<C> {
 
     public FakeStorage() {
         super();
