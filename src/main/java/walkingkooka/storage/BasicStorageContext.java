@@ -24,20 +24,20 @@ import walkingkooka.environment.EnvironmentValueName;
 import java.util.Locale;
 import java.util.Objects;
 
-final class BasicStorageStoreContext implements StorageStoreContext, EnvironmentContextDelegator {
+final class BasicStorageContext implements StorageContext, EnvironmentContextDelegator {
 
-    static BasicStorageStoreContext with(final EnvironmentContext environmentContext) {
-        return new BasicStorageStoreContext(
+    static BasicStorageContext with(final EnvironmentContext environmentContext) {
+        return new BasicStorageContext(
             Objects.requireNonNull(environmentContext, "environmentContext")
         );
     }
 
-    private BasicStorageStoreContext(final EnvironmentContext environmentContext) {
+    private BasicStorageContext(final EnvironmentContext environmentContext) {
         this.environmentContext = environmentContext;
     }
 
     @Override
-    public StorageStoreContext setLocale(final Locale locale) {
+    public StorageContext setLocale(final Locale locale) {
         return this.setEnvironmentValue(
             EnvironmentValueName.LOCALE,
             locale
@@ -45,7 +45,7 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
     }
 
     @Override
-    public StorageStoreContext cloneEnvironment() {
+    public StorageContext cloneEnvironment() {
         final EnvironmentContext environmentContext = this.environmentContext;
         final EnvironmentContext cloned = environmentContext.cloneEnvironment();
 
@@ -56,14 +56,14 @@ final class BasicStorageStoreContext implements StorageStoreContext, Environment
     }
 
     @Override
-    public <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value) {
+    public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                  final T value) {
         this.environmentContext.setEnvironmentValue(name, value);
         return this;
     }
 
     @Override
-    public StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+    public StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
         this.environmentContext.removeEnvironmentValue(name);
         return this;
     }

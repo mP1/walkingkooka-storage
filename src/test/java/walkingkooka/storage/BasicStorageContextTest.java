@@ -27,19 +27,19 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageStoreContextTest implements StorageStoreContextTesting<BasicStorageStoreContext> {
+public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext> {
 
     @Test
     public void testWithNullEnvironmentContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageStoreContext.with(null)
+            () -> BasicStorageContext.with(null)
         );
     }
 
     @Override
-    public BasicStorageStoreContext createContext() {
-        return BasicStorageStoreContext.with(
+    public BasicStorageContext createContext() {
+        return BasicStorageContext.with(
             EnvironmentContexts.empty(
                 Locale.FRANCE,
                 LocalDateTime::now,
@@ -51,7 +51,7 @@ public final class BasicStorageStoreContextTest implements StorageStoreContextTe
     }
 
     @Override
-    public Class<BasicStorageStoreContext> type() {
-        return BasicStorageStoreContext.class;
+    public Class<BasicStorageContext> type() {
+        return BasicStorageContext.class;
     }
 }

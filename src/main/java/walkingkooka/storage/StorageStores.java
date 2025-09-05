@@ -41,7 +41,7 @@ public final class StorageStores implements PublicStaticHelper {
     /**
      * {@see TreeMapStoreStorageStore}
      */
-    public static StorageStore tree(final StorageStoreContext context) {
+    public static StorageStore tree(final StorageContext context) {
         return TreeMapStoreStorageStore.with(context);
     }
 

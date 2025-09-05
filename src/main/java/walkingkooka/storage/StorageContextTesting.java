@@ -19,10 +19,10 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContextTesting2;
 
-public interface StorageStoreContextTesting<C extends StorageStoreContext> extends EnvironmentContextTesting2<C> {
+public interface StorageContextTesting<C extends StorageContext> extends EnvironmentContextTesting2<C> {
 
     @Override
     default String typeNameSuffix() {
-        return StorageStoreContext.class.getSimpleName();
+        return StorageContext.class.getSimpleName();
     }
 }

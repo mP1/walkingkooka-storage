@@ -20,12 +20,12 @@ package walkingkooka.storage;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 
-public interface StorageStoreContext extends EnvironmentContext {
+public interface StorageContext extends EnvironmentContext {
 
     @Override
-    <T> StorageStoreContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                final T value);
+    <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                           final T value);
 
     @Override
-    StorageStoreContext removeEnvironmentValue(final EnvironmentValueName<?> name);
+    StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name);
 }
