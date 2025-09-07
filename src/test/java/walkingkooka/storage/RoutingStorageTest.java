@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public final class RoutingStorageTest implements StorageTesting<RoutingStorage, StorageContext> {
+public final class RoutingStorageTest implements StorageTesting<RoutingStorage<StorageContext>, StorageContext> {
 
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
@@ -55,9 +56,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSave() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             Storages.fake()
         );
@@ -83,9 +84,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSaveExtraLongPath() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             Storages.fake()
         );
@@ -141,9 +142,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSave2ndMount() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             Storages.fake(),
             store1
         );
@@ -169,9 +170,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSaveAndLoad() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             Storages.fake()
         );
@@ -196,9 +197,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSaveAndLoadExtraLongPath() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             Storages.fake()
         );
@@ -223,9 +224,9 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testSaveAndDelete() {
-        final Storage store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             Storages.fake()
         );
@@ -262,10 +263,10 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testAddDeleteSaveAndDelete() {
-        final Storage store1 = Storages.tree();
-        final Storage store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store2 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             store2
         );
@@ -312,10 +313,10 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testList() {
-        final Storage store1 = Storages.tree();
-        final Storage store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store2 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             store2
         );
@@ -383,10 +384,10 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
 
     @Test
     public void testListSubDirectoryOfMount() {
-        final Storage store1 = Storages.tree();
-        final Storage store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store2 = Storages.tree();
 
-        final RoutingStorage routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
             store2
         );
@@ -443,21 +444,21 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
     }
 
     @Override
-    public RoutingStorage createStorage() {
+    public RoutingStorage<StorageContext> createStorage() {
         return this.createStorage(
             Storages.tree(),// /mount1
             Storages.tree() // /mount2
         );
     }
 
-    private RoutingStorage createStorage(final Storage... stores) {
+    private RoutingStorage<StorageContext> createStorage(final Storage<StorageContext>... stores) {
         return this.createStorage(
             Lists.of(stores)
         );
     }
 
-    private RoutingStorage createStorage(final List<Storage> stores) {
-        final RoutingStorageBuilder b = RoutingStorageBuilder.empty();
+    private RoutingStorage<StorageContext> createStorage(final List<Storage<StorageContext>> stores) {
+        final RoutingStorageBuilder<StorageContext> b = RoutingStorageBuilder.empty();
 
         int i = 1;
         for (Storage store : stores) {
@@ -469,7 +470,7 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
             i++;
         }
 
-        return (RoutingStorage) b.build();
+        return (RoutingStorage<StorageContext>) b.build();
     }
 
     @Override
@@ -507,8 +508,8 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage, 
     // class............................................................................................................
 
     @Override
-    public Class<RoutingStorage> type() {
-        return RoutingStorage.class;
+    public Class<RoutingStorage<StorageContext>> type() {
+        return Cast.to(RoutingStorage.class);
     }
 
     @Override

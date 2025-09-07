@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageTesting<S extends Storage, C extends StorageContext> extends ClassTesting<S>,
+public interface StorageTesting<S extends Storage<C>, C extends StorageContext> extends ClassTesting<S>,
     TreePrintableTesting {
 
     // load.............................................................................................................
