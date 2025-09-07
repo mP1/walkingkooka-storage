@@ -56,7 +56,7 @@ public interface StorageTesting<S extends Storage, C extends StorageContext> ext
         );
     }
 
-    default void loadAndCheck(final Storage store,
+    default void loadAndCheck(final Storage<C> store,
                               final StoragePath path,
                               final C context) {
         this.loadAndCheck(
@@ -67,7 +67,7 @@ public interface StorageTesting<S extends Storage, C extends StorageContext> ext
         );
     }
 
-    default void loadAndCheck(final Storage store,
+    default void loadAndCheck(final Storage<C> store,
                               final StoragePath path,
                               final C context,
                               final StorageValue expected) {
@@ -79,7 +79,7 @@ public interface StorageTesting<S extends Storage, C extends StorageContext> ext
         );
     }
 
-    default void loadAndCheck(final Storage store,
+    default void loadAndCheck(final Storage<C> store,
                               final StoragePath path,
                               final C context,
                               final Optional<StorageValue> expected) {
@@ -213,7 +213,7 @@ public interface StorageTesting<S extends Storage, C extends StorageContext> ext
         );
     }
 
-    default void listAndCheck(final Storage store,
+    default void listAndCheck(final Storage<C> store,
                               final StoragePath parent,
                               final int offset,
                               final int count,
@@ -229,11 +229,11 @@ public interface StorageTesting<S extends Storage, C extends StorageContext> ext
         );
     }
 
-    default void listAndCheck(final Storage store,
+    default void listAndCheck(final Storage<C> store,
                               final StoragePath parent,
                               final int offset,
                               final int count,
-                              final StorageContext context,
+                              final C context,
                               final List<StorageValueInfo> expected) {
         this.checkEquals(
             expected,
