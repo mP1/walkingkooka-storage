@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.JavaVisibility;
@@ -26,7 +27,7 @@ import walkingkooka.storage.TreeMapStoreStorageTest.TestStorageContext;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage, TestStorageContext> {
+public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage<TestStorageContext>, TestStorageContext> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -50,7 +51,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndLoad() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -70,7 +71,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -112,7 +113,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndList() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -138,7 +139,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndListMixedParents() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -270,7 +271,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListRootPath() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -320,7 +321,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListSubdirectory() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -377,7 +378,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     }
 
     @Override
-    public TreeMapStoreStorage createStorage() {
+    public TreeMapStoreStorage<TestStorageContext> createStorage() {
         return TreeMapStoreStorage.empty();
     }
 
@@ -408,8 +409,8 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     // class............................................................................................................
 
     @Override
-    public Class<TreeMapStoreStorage> type() {
-        return TreeMapStoreStorage.class;
+    public Class<TreeMapStoreStorage<TestStorageContext>> type() {
+        return Cast.to(TreeMapStoreStorage.class);
     }
 
     @Override
