@@ -56,40 +56,40 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> store,
+    default void loadAndCheck(final Storage<C> storage,
                               final StoragePath path,
                               final C context) {
         this.loadAndCheck(
-            store,
+            storage,
             path,
             context,
             Optional.empty()
         );
     }
 
-    default void loadAndCheck(final Storage<C> store,
+    default void loadAndCheck(final Storage<C> storage,
                               final StoragePath path,
                               final C context,
                               final StorageValue expected) {
         this.loadAndCheck(
-            store,
+            storage,
             path,
             context,
             Optional.of(expected)
         );
     }
 
-    default void loadAndCheck(final Storage<C> store,
+    default void loadAndCheck(final Storage<C> storage,
                               final StoragePath path,
                               final C context,
                               final Optional<StorageValue> expected) {
         this.checkEquals(
             expected,
-            store.load(
+            storage.load(
                 path,
                 context
             ),
-            () -> " store load " + path
+            () -> " storage load " + path
         );
     }
 
@@ -119,13 +119,13 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void saveAndCheck(final Storage<C> store,
+    default void saveAndCheck(final Storage<C> storage,
                               final StorageValue value,
                               final C context,
                               final StorageValue expected) {
         this.checkEquals(
             expected,
-            store.save(
+            storage.save(
                 value,
                 context
             ),
@@ -227,14 +227,14 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void listAndCheck(final Storage<C> store,
+    default void listAndCheck(final Storage<C> storage,
                               final StoragePath parent,
                               final int offset,
                               final int count,
                               final C context,
                               final StorageValueInfo... expected) {
         this.listAndCheck(
-            store,
+            storage,
             parent,
             offset,
             count,
@@ -243,7 +243,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void listAndCheck(final Storage<C> store,
+    default void listAndCheck(final Storage<C> storage,
                               final StoragePath parent,
                               final int offset,
                               final int count,
@@ -251,7 +251,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
                               final List<StorageValueInfo> expected) {
         this.checkEquals(
             expected,
-            store.list(
+            storage.list(
                 parent,
                 offset,
                 count,
