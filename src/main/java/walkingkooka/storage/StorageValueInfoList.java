@@ -28,6 +28,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
 import java.util.AbstractList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,7 +48,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     /**
      * Factory that creates a {@link StorageValueInfoList} from the list of {@link StorageValueInfo infos}.
      */
-    public static StorageValueInfoList with(final List<StorageValueInfo> infos) {
+    public static StorageValueInfoList with(final Collection<StorageValueInfo> infos) {
         Objects.requireNonNull(infos, "infos");
 
         StorageValueInfoList StorageValueInfoList;
@@ -97,7 +98,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     }
 
     @Override
-    public StorageValueInfoList setElements(final List<StorageValueInfo> infos) {
+    public StorageValueInfoList setElements(final Collection<StorageValueInfo> infos) {
         final StorageValueInfoList copy = with(infos);
         return this.equals(copy) ?
             this :
