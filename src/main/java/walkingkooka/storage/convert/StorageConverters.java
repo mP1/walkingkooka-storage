@@ -27,10 +27,10 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {@see StoragePathConverter}
+     * {@see StorageConverterTextToStoragePath}
      */
     public static <C extends ConverterContext> Converter<C> stringToStoragePath() {
-        return StoragePathConverter.instance();
+        return StorageConverterTextToStoragePath.instance();
     }
 
     /**

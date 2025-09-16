@@ -28,8 +28,8 @@ import walkingkooka.convert.Converters;
 import walkingkooka.convert.FakeConverterContext;
 import walkingkooka.storage.StoragePath;
 
-public final class StoragePathConverterTest implements ConverterTesting2<StoragePathConverter<FakeConverterContext>, FakeConverterContext>,
-    ToStringTesting<StoragePathConverter<FakeConverterContext>> {
+public final class StorageConverterTextToStoragePathTest implements ConverterTesting2<StorageConverterTextToStoragePath<FakeConverterContext>, FakeConverterContext>,
+    ToStringTesting<StorageConverterTextToStoragePath<FakeConverterContext>> {
 
     @Test
     public void testConvertNullFails() {
@@ -70,8 +70,8 @@ public final class StoragePathConverterTest implements ConverterTesting2<Storage
     }
 
     @Override
-    public StoragePathConverter<FakeConverterContext> createConverter() {
-        return StoragePathConverter.instance();
+    public StorageConverterTextToStoragePath<FakeConverterContext> createConverter() {
+        return StorageConverterTextToStoragePath.instance();
     }
 
     @Override
@@ -107,7 +107,7 @@ public final class StoragePathConverterTest implements ConverterTesting2<Storage
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StoragePathConverter.instance(),
+            StorageConverterTextToStoragePath.instance(),
             "String -> StoragePath"
         );
     }
@@ -115,7 +115,17 @@ public final class StoragePathConverterTest implements ConverterTesting2<Storage
     // class............................................................................................................
 
     @Override
-    public Class<StoragePathConverter<FakeConverterContext>> type() {
-        return Cast.to(StoragePathConverter.class);
+    public Class<StorageConverterTextToStoragePath<FakeConverterContext>> type() {
+        return Cast.to(StorageConverterTextToStoragePath.class);
+    }
+
+    @Override
+    public String typeNamePrefix() {
+        return "StorageConverter";
+    }
+
+    @Override
+    public String typeNameSuffix() {
+        return "";
     }
 }
