@@ -26,18 +26,18 @@ import walkingkooka.storage.StoragePath;
 /**
  * A {@link Converter} that converts {@link String} to {@link StoragePath}.
  */
-final class StoragePathConverter<C extends ConverterContext> implements TextToTryingShortCircuitingConverter<C> {
+final class StorageConverterTextToStoragePath<C extends ConverterContext> implements TextToTryingShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends ConverterContext> StoragePathConverter<C> instance() {
+    static <C extends ConverterContext> StorageConverterTextToStoragePath<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StoragePathConverter<?> INSTANCE = new StoragePathConverter<>();
+    private final static StorageConverterTextToStoragePath<?> INSTANCE = new StorageConverterTextToStoragePath<>();
 
-    private StoragePathConverter() {
+    private StorageConverterTextToStoragePath() {
         super();
     }
 
