@@ -19,8 +19,12 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.Either;
 import walkingkooka.ToStringTesting;
+import walkingkooka.convert.Converter;
+import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterTesting2;
+import walkingkooka.convert.Converters;
 import walkingkooka.convert.FakeConverterContext;
 import walkingkooka.storage.StoragePath;
 
@@ -54,6 +58,17 @@ public final class StoragePathConverterTest implements ConverterTesting2<Storage
         );
     }
 
+    @Test
+    public void testConvertCharSequence() {
+        final String text = "/path123/file456.txt";
+
+        this.convertAndCheck(
+            new StringBuilder(text),
+            StoragePath.class,
+            StoragePath.parse(text)
+        );
+    }
+
     @Override
     public StoragePathConverter<FakeConverterContext> createConverter() {
         return StoragePathConverter.instance();
@@ -61,7 +76,30 @@ public final class StoragePathConverterTest implements ConverterTesting2<Storage
 
     @Override
     public FakeConverterContext createContext() {
-        return new FakeConverterContext();
+        return new FakeConverterContext() {
+
+            @Override
+            public boolean canConvert(final Object value,
+                                      final Class<?> type) {
+                return this.converter.canConvert(
+                    value,
+                    type,
+                    this
+                );
+            }
+
+            @Override
+            public <T> Either<T, String> convert(final Object value,
+                                                 final Class<T> target) {
+                return this.converter.convert(
+                    value,
+                    target,
+                    this
+                );
+            }
+
+            private final Converter<ConverterContext> converter = Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString();
+        };
     }
 
     // ToString.........................................................................................................

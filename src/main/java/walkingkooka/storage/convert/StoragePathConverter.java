@@ -18,17 +18,15 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
-import walkingkooka.Either;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
+import walkingkooka.convert.TextToTryingShortCircuitingConverter;
 import walkingkooka.storage.StoragePath;
-
-import java.util.Objects;
 
 /**
  * A {@link Converter} that converts {@link String} to {@link StoragePath}.
  */
-final class StoragePathConverter<C extends ConverterContext> implements Converter<C> {
+final class StoragePathConverter<C extends ConverterContext> implements TextToTryingShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
@@ -44,40 +42,17 @@ final class StoragePathConverter<C extends ConverterContext> implements Converte
     }
 
     @Override
-    public boolean canConvert(final Object value,
-                              final Class<?> type,
-                              final C context) {
-        Objects.requireNonNull(type, "type");
-        Objects.requireNonNull(context, "context");
-
-        return value instanceof String && type == StoragePath.class;
+    public boolean isTargetType(final Object value,
+                                final Class<?> type,
+                                final C context) {
+        return StoragePath.class == type;
     }
 
     @Override
-    public <T> Either<T, String> convert(final Object value,
-                                         final Class<T> type,
-                                         final C context) {
-        return this.canConvert(
-            value,
-            type,
-            context
-        ) ?
-            this.convertString(
-                (String) value,
-                type
-            ) :
-            this.failConversion(
-                value,
-                type
-            );
-    }
-
-    private <T> Either<T, String> convertString(final String value,
-                                                final Class<T> type) {
-        return this.successfulConversion(
-            StoragePath.parse(value),
-            type
-        );
+    public Object parseText(final String text,
+                            final Class<?> type,
+                            final C context) {
+        return StoragePath.parse(text);
     }
 
     @Override
