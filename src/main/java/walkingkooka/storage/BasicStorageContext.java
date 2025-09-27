@@ -20,9 +20,11 @@ package walkingkooka.storage;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
 final class BasicStorageContext implements StorageContext, EnvironmentContextDelegator {
 
@@ -42,6 +44,16 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
             EnvironmentValueName.LOCALE,
             locale
         );
+    }
+
+    @Override
+    public StorageContext setUser(final Optional<EmailAddress> user) {
+        return user.isPresent() ?
+            this.setEnvironmentValue(
+                EnvironmentValueName.USER,
+                user.orElse(null)
+            ) :
+            this.removeEnvironmentValue(EnvironmentValueName.USER);
     }
 
     @Override

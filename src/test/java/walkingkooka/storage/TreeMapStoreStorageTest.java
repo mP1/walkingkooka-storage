@@ -25,6 +25,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.storage.TreeMapStoreStorageTest.TestStorageContext;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage<TestStorageContext>, TestStorageContext> {
@@ -396,6 +397,12 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
         @Override
         public Optional<EmailAddress> user() {
             return Optional.ofNullable(USER);
+        }
+
+        @Override
+        public StorageContext setUser(final Optional<EmailAddress> user) {
+            Objects.requireNonNull(user, "user");
+            throw new UnsupportedOperationException();
         }
 
         @Override

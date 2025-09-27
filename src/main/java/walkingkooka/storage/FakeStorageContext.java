@@ -19,10 +19,18 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
+import walkingkooka.net.email.EmailAddress;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
+
+    @Override
+    public StorageContext setUser(final Optional<EmailAddress> user) {
+        Objects.requireNonNull(user, "user");
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
