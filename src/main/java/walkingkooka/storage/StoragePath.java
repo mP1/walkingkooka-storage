@@ -39,6 +39,8 @@ final public class StoragePath
     Comparable<StoragePath>,
     TreePrintable {
 
+    final static String SEPARATOR_STRING = "/";
+
     /**
      * {@link PathSeparator} instance
      */
@@ -62,7 +64,7 @@ final public class StoragePath
         final StoragePath storagePath;
 
         switch (path) {
-            case "/":
+            case SEPARATOR_STRING:
                 storagePath = ROOT;
                 break;
             default:
@@ -123,7 +125,7 @@ final public class StoragePath
         StoragePath appended;
 
         switch (name.value()) {
-            case "/":
+            case SEPARATOR_STRING:
                 appended = this;
                 break;
             case ".":
