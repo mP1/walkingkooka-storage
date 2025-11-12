@@ -116,6 +116,45 @@ final public class StoragePath
 
     private final String path;
 
+    // prepend..........................................................................................................
+
+    /**
+     * Returns a {@link StoragePath} with the given {@link StorageName} prefixed.
+     */
+    public StoragePath prepend(final StorageName name) {
+        Objects.requireNonNull(name, "name");
+
+        final StoragePath prepended;
+
+        switch (name.value()) {
+            case SEPARATOR_STRING:
+                prepended = this;
+                break;
+            case CURRENT:
+                prepended = this; // ignore
+                break;
+            case PARENT:
+                prepended = this.parent.orElse(ROOT);
+                break;
+            default:
+                prepended = this.prepend(
+                    ROOT.append(name)
+                );
+                break;
+        }
+
+        return prepended;
+    }
+
+    /**
+     * Returns a {@link StoragePath} with the given {@link StoragePath} prefixed.
+     */
+    public StoragePath prepend(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+
+        return path.append(this);
+    }
+
     // append...........................................................................................................
 
     @Override
