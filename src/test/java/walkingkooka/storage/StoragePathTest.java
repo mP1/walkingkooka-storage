@@ -31,6 +31,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final public class StoragePathTest implements PathTesting<StoragePath, StorageName>,
     ClassTesting2<StoragePath>,
@@ -346,6 +347,178 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         this.parentCheck(
             path,
             "/parent1/path2/path3"
+        );
+    }
+
+    // prepend(StorageName).............................................................................................
+
+    @Test
+    public void testPrependNameWithNullNameFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StoragePath.ROOT.prepend(
+                (StorageName) null
+            )
+        );
+    }
+
+    @Test
+    public void testPrependNameWithRoot() {
+        this.prependNameAndCheck(
+            StoragePath.parse("/path1"),
+            StorageName.ROOT
+        );
+    }
+
+    @Test
+    public void testPrependNameWithCurrent() {
+        this.prependNameAndCheck(
+            "/path1",
+            ".",
+            "/path1"
+        );
+    }
+
+    @Test
+    public void testPrependNameWithParent() {
+        this.prependNameAndCheck(
+            "/path1",
+            "..",
+            "/"
+        );
+    }
+
+    @Test
+    public void testPrependName() {
+        this.prependNameAndCheck(
+            "/path2",
+            "path1",
+            "/path1/path2"
+        );
+    }
+
+    private void prependNameAndCheck(final StoragePath path,
+                                     final StorageName name) {
+        assertSame(
+            path,
+            path.prepend(name),
+            () -> path + " prepend " + name
+        );
+    }
+
+    private void prependNameAndCheck(final String path,
+                                     final String name,
+                                     final String expected) {
+        this.prependNameAndCheck(
+            this.parsePath(path),
+            StorageName.with(name),
+            this.parsePath(expected)
+        );
+    }
+
+    private void prependNameAndCheck(final StoragePath path,
+                                     final StorageName name,
+                                     final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.prepend(name),
+            () -> path + " prepend " + name
+        );
+    }
+
+    // prepend(StoragePath).............................................................................................
+
+    @Test
+    public void testPrependPathWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StoragePath.ROOT.prepend(
+                (StoragePath) null
+            )
+        );
+    }
+
+    @Test
+    public void testPrependPathWithRootPath() {
+        this.prependPathAndCheck(
+            StoragePath.parse("/path1"),
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testPrependPathWithCurrent() {
+        final StoragePath parent = StoragePath.parse("/path1");
+
+        assertSame(
+            parent,
+            parent.prepend(
+                this.parsePath("/.")
+            )
+        );
+    }
+
+    @Test
+    public void testPrependPath() {
+        this.prependPathAndCheck(
+            "/path1",
+            "/path2",
+            "/path2/path1"
+        );
+    }
+
+    @Test
+    public void testPrependPath2() {
+        this.prependPathAndCheck(
+            "/path3/path4",
+            "/path1/path2",
+            "/path1/path2/path3/path4"
+        );
+    }
+
+    @Test
+    public void testPrependPath3() {
+        this.prependPathAndCheck(
+            "/path3/path4",
+            "/path1/./lost/../path2",
+            "/path1/path2/path3/path4"
+        );
+    }
+
+    private void prependPathAndCheck(final String path,
+                                     final String prepend) {
+        this.prependPathAndCheck(
+            this.parsePath(path),
+            this.parsePath(prepend)
+        );
+    }
+
+    private void prependPathAndCheck(final StoragePath path,
+                                     final StoragePath prepend) {
+        assertSame(
+            path,
+            path.prepend(prepend),
+            () -> path + " prepend " + prepend
+        );
+    }
+
+    private void prependPathAndCheck(final String path,
+                                     final String prepend,
+                                     final String expected) {
+        this.prependPathAndCheck(
+            this.parsePath(path),
+            this.parsePath(prepend),
+            this.parsePath(expected)
+        );
+    }
+
+    private void prependPathAndCheck(final StoragePath path,
+                                     final StoragePath prepend,
+                                     final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.prepend(prepend),
+            () -> path + " prepend " + prepend
         );
     }
 
