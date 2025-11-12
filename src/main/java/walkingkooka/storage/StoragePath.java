@@ -247,7 +247,7 @@ final public class StoragePath
 
     @Override
     public int hashCode() {
-        return this.path.hashCode();
+        return StorageName.CASE_SENSITIVITY.hash(this.path);
     }
 
     @Override
