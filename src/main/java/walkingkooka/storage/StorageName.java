@@ -43,7 +43,7 @@ public final class StorageName implements Name,
     public final static int MAX_LENGTH = 255;
 
     final static StorageName ROOT = new StorageName(
-        StoragePath.SEPARATOR.string()
+        StoragePath.SEPARATOR_STRING
     );
 
     private final static CharPredicate CHARACTERS = CharPredicates.printable().andNot(
@@ -63,14 +63,16 @@ public final class StorageName implements Name,
             MAX_LENGTH
         );
 
-        return new StorageName(
-            CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-                name,
-                "name",
-                CHARACTERS, // initial
-                CHARACTERS // part
-            )
-        );
+        return name.equals(StoragePath.SEPARATOR_STRING) ?
+            ROOT :
+            new StorageName(
+                CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
+                    name,
+                    "name",
+                    CHARACTERS, // initial
+                    CHARACTERS // part
+                )
+            );
     }
 
     private StorageName(final String name) {
