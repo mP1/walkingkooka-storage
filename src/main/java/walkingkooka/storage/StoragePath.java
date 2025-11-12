@@ -56,7 +56,8 @@ final public class StoragePath
     );
 
     /**
-     * Parses the {@link String} into a {@link StoragePath}
+     * Parses the {@link String} into a {@link StoragePath}. Not path navigation components such as DOT and DOUBLE DOT
+     * are processed and the path normalized.
      */
     public static StoragePath parse(final String path) {
         SEPARATOR.checkBeginning(path);
