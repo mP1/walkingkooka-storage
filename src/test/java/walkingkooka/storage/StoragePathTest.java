@@ -30,6 +30,8 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 final public class StoragePathTest implements PathTesting<StoragePath, StorageName>,
     ClassTesting2<StoragePath>,
     ParseStringTesting<StoragePath>,
@@ -257,7 +259,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     // appendName.......................................................................................................
 
     @Test
-    public void testAppendNameToRoot2() {
+    public void testAppendNameWithRoot() {
         final StorageName name = StorageName.with("name1");
 
         final StoragePath path = StoragePath.ROOT.append(name);
@@ -286,15 +288,20 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     // appendPath.......................................................................................................
 
     @Test
-    public void testAppendPathToRoot2() {
-        final StorageName name = StorageName.with("name1");
+    public void testAppendPathWithRoot() {
+        final StoragePath path = StoragePath.parse("/path1");
+        assertSame(
+            path,
+            path.append(StoragePath.ROOT)
+        );
+    }
 
-        final StoragePath parent = StoragePath.ROOT.append(name);
-        this.rootNotCheck(parent);
-        this.valueCheck(parent, "/name1");
-        this.nameCheck(
-            parent,
-            name
+    @Test
+    public void testAppendPathWithRoot2() {
+        final StoragePath path = StoragePath.parse("/path1/path2");
+        assertSame(
+            path,
+            path.append(StoragePath.ROOT)
         );
     }
 
