@@ -128,10 +128,10 @@ final public class StoragePath
             case SEPARATOR_STRING:
                 appended = this;
                 break;
-            case ".":
+            case CURRENT:
                 appended = this; // ignore
                 break;
-            case "..":
+            case PARENT:
                 appended = this.parent.orElse(ROOT);
                 break;
             default:
