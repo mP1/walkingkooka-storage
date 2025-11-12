@@ -27,10 +27,21 @@ import walkingkooka.text.CharSequences;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageNameTest implements ClassTesting2<StorageName>,
     NameTesting2<StorageName, StorageName> {
+
+    // with.............................................................................................................
+
+    @Test
+    public void testWithRoot() {
+        assertSame(
+            StorageName.ROOT,
+            StorageName.with("/")
+        );
+    }
 
     // fileExtension........................................................................................................
 
@@ -123,7 +134,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
 
     @Override
     public String possibleInvalidChars(final int i) {
-        return "/" + CONTROL;
+        return CONTROL;
     }
 
     // MIN_LENGTH.......................................................................................................
