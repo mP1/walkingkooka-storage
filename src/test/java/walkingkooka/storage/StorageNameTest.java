@@ -35,11 +35,16 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
 
     // with.............................................................................................................
 
+    @Override
+    public void testEmptyFails() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     public void testWithRoot() {
         assertSame(
             StorageName.ROOT,
-            StorageName.with("/")
+            StorageName.with("")
         );
     }
 
@@ -135,21 +140,6 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     @Override
     public String possibleInvalidChars(final int i) {
         return CONTROL;
-    }
-
-    // MIN_LENGTH.......................................................................................................
-
-    @Test
-    public void testWithMinLengthFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> StorageName.with("")
-        );
-
-        this.checkEquals(
-            "Empty \"name\"",
-            thrown.getMessage()
-        );
     }
 
     // MAX_LENGTH.......................................................................................................
