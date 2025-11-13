@@ -56,8 +56,8 @@ final public class StoragePath
     );
 
     /**
-     * Parses the {@link String} into a {@link StoragePath}. Not path navigation components such as DOT and DOUBLE DOT
-     * are processed and the path normalized.
+     * Parses the {@link String} into a {@link StoragePath}. Not path navigation components such as EMPTY, DOT and
+     * DOUBLE DOT are processed and the path normalized.
      */
     public static StoragePath parse(final String path) {
         SEPARATOR.checkBeginning(path);
@@ -128,7 +128,7 @@ final public class StoragePath
         final StoragePath prepended;
 
         switch (name.value()) {
-            case SEPARATOR_STRING:
+            case StorageName.ROOT_NAME:
                 prepended = this;
                 break;
             case CURRENT:
@@ -165,7 +165,7 @@ final public class StoragePath
         StoragePath appended;
 
         switch (name.value()) {
-            case SEPARATOR_STRING:
+            case StorageName.ROOT_NAME:
                 appended = this;
                 break;
             case CURRENT:

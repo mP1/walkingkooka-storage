@@ -42,9 +42,9 @@ public final class StorageName implements Name,
 
     public final static int MAX_LENGTH = 255;
 
-    final static StorageName ROOT = new StorageName(
-        StoragePath.SEPARATOR_STRING
-    );
+    final static String ROOT_NAME = "";
+
+    final static StorageName ROOT = new StorageName(ROOT_NAME);
 
     private final static CharPredicate CHARACTERS = CharPredicates.printable().andNot(
         CharPredicates.is(
@@ -56,18 +56,16 @@ public final class StorageName implements Name,
      * Factory that creates a new {@link StorageName}
      */
     public static StorageName with(final String name) {
-        InvalidTextLengthException.throwIfFail(
-            "name",
-            name,
-            MIN_LENGTH,
-            MAX_LENGTH
-        );
-
-        return name.equals(StoragePath.SEPARATOR_STRING) ?
+        return ROOT.value().equals(name) ?
             ROOT :
             new StorageName(
                 CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-                    name,
+                    InvalidTextLengthException.throwIfFail(
+                        "name",
+                        name,
+                        MIN_LENGTH,
+                        MAX_LENGTH
+                    ),
                     "name",
                     CHARACTERS, // initial
                     CHARACTERS // part

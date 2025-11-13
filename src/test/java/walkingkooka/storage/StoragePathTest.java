@@ -58,14 +58,6 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Test
-    public void testParseEmptyComponentFails() {
-        this.parseStringFails(
-            "/before//after",
-            IllegalArgumentException.class
-        );
-    }
-
-    @Test
     public void testParseSlash() {
         final String value = "/";
 
@@ -96,6 +88,23 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         this.parentSame(
             path,
             StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testParseEmptyComponentNormalized() {
+        final String value = "/path1//path2";
+
+        final StoragePath path = StoragePath.parse(value);
+        this.valueCheck(path, "/path1/path2"); // normalized
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path2")
+        );
+        this.parentCheck(
+            path,
+            "/path1"
         );
     }
 
