@@ -531,6 +531,108 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    // removePrefix.....................................................................................................
+
+    @Test
+    public void testRemovePrefixWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StoragePath.parse("/path123")
+                .removePrefix(null)
+        );
+    }
+
+    @Test
+    public void testRemovePrefixWithRoot() {
+        final StoragePath path = StoragePath.parse("/path123");
+
+        assertSame(
+            path,
+            path.removePrefix(
+                StoragePath.ROOT
+            )
+        );
+    }
+
+    @Test
+    public void testRemovePrefixWithSelf() {
+        final StoragePath path = StoragePath.parse("/path123");
+
+        assertSame(
+            StoragePath.ROOT,
+            path.removePrefix(path)
+        );
+    }
+
+    @Test
+    public void testRemovePrefixDifferentFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StoragePath.parse("/path123")
+                .removePrefix(
+                    StoragePath.parse("/diff")
+                )
+        );
+    }
+
+    @Test
+    public void testRemovePrefixDifferentFails2() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StoragePath.parse("/path123")
+                .removePrefix(
+                    StoragePath.parse("/path")
+                )
+        );
+    }
+
+    @Test
+    public void testRemovePrefix() {
+        this.removePrefixAndCheck(
+            "/path123/path456",
+            "/path123",
+            "/path456"
+        );
+    }
+
+    @Test
+    public void testRemovePrefix2() {
+        this.removePrefixAndCheck(
+            "/path123/path456/path789",
+            "/path123",
+            "/path456/path789"
+        );
+    }
+
+    @Test
+    public void testRemovePrefix3() {
+        this.removePrefixAndCheck(
+            "/path123/path456/path789",
+            "/path123/path456",
+            "/path789"
+        );
+    }
+
+    private void removePrefixAndCheck(final String path,
+                                      final String prefix,
+                                      final String expected) {
+        this.removePrefixAndCheck(
+            parsePath(path),
+            parsePath(prefix),
+            parsePath(expected)
+        );
+    }
+
+    private void removePrefixAndCheck(final StoragePath path,
+                                      final StoragePath prefix,
+                                      final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.removePrefix(prefix),
+            () -> path + " removePrefix " + prefix
+        );
+    }
+
     // equals/Compare...................................................................................................
 
     @Test
