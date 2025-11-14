@@ -116,6 +116,22 @@ public final class StorageValue implements Value<Optional<Object>>,
                 );
     }
 
+    // PrefixedStorage...................................................................................................
+
+    StorageValue prependPath(final StoragePath prefix) {
+        return this.setPath(
+            this.path()
+                .prepend(prefix)
+        );
+    }
+
+    StorageValue removePrefixPath(final StoragePath prefix) {
+        return this.setPath(
+            this.path()
+                .removePrefix(prefix)
+        );
+    }
+
     private final StoragePath path;
 
     // ContentType......................................................................................................

@@ -42,4 +42,14 @@ public interface Storage<C extends StorageContext> {
                                 final int offset,
                                 final int count,
                                 final C context);
+
+    /**
+     * Returns a {@link Storage} with an additional prefix to all its {@link StoragePath}.
+     */
+    default Storage<C> setPrefix(final StoragePath prefix) {
+        return PrefixedStorage.with(
+            prefix,
+            this
+        );
+    }
 }
