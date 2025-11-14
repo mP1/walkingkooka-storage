@@ -39,6 +39,17 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see PrefixedStorage}
+     */
+    public static <C extends StorageContext> Storage<C> prefixed(final StoragePath prefix,
+                                                                 final Storage<C> storage) {
+        return PrefixedStorage.with(
+            prefix,
+            storage
+        );
+    }
+
+    /**
      * {@see TreeMapStoreStorage}
      */
     public static <C extends StorageContext> Storage<C> tree() {
