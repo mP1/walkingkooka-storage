@@ -117,6 +117,43 @@ final public class StoragePath
 
     private final String path;
 
+    // removePrefix.....................................................................................................
+
+    /**
+     * Removes the required given prefix, throwing an {@link IllegalArgumentException} if the prefix is missing.
+     */
+    public StoragePath removePrefix(final StoragePath prefix) {
+        StoragePath removed;
+
+        if (ROOT.equals(prefix)) {
+            removed = this;
+        } else {
+            final String path = this.path;
+            final String prefixString = prefix.toString();
+
+            if (StorageName.CASE_SENSITIVITY.equals(path, prefixString)) {
+                removed = ROOT;
+            } else {
+                if (false == StorageName.CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
+                    throw new IllegalArgumentException("Path missing prefix " + CharSequences.quoteAndEscape(prefixString));
+                }
+
+
+                if (false == StorageName.CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
+                    throw new IllegalArgumentException("Path missing prefix " + CharSequences.quoteAndEscape(prefixString));
+                }
+
+                removed = parse(
+                    path.substring(
+                        prefixString.length()
+                    )
+                );
+            }
+        }
+
+        return removed;
+    }
+
     // prepend..........................................................................................................
 
     /**
