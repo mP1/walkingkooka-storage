@@ -573,6 +573,11 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                     StoragePath.parse("/diff")
                 )
         );
+
+        this.checkEquals(
+            "Path missing prefix \"/diff\"",
+            thrown.getMessage()
+        );
     }
 
     @Test
@@ -583,6 +588,11 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                 .removePrefix(
                     StoragePath.parse("/path")
                 )
+        );
+
+        this.checkEquals(
+            "Path missing prefix \"/path\"",
+            thrown.getMessage()
         );
     }
 
