@@ -91,8 +91,11 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     @Override
     public void delete(final StoragePath path,
                        final C context) {
+        Objects.requireNonNull(path, "path");
+        Objects.requireNonNull(context, "context");
+
         this.storage.delete(
-            path.removePrefix(path),
+            path.removePrefix(this.prefix),
             context
         );
     }
