@@ -396,7 +396,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.ofNullable(USER);
+            return Optional.ofNullable(TreeMapStoreStorageTest.USER);
         }
 
         @Override

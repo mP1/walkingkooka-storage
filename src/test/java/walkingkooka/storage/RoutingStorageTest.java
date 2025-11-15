@@ -50,7 +50,7 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage<S
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.of(USER);
+            return Optional.of(RoutingStorageTest.USER);
         }
     };
 
