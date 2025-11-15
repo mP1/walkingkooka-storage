@@ -176,24 +176,54 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     // delete...........................................................................................................
 
     @Test
-    public void testDelete() {
+    public void testDeleteWithUnknownPath() {
         final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
-        final StoragePath path = StoragePath.parse(PREFIX + "/value111");
+        final StoragePath path = StoragePath.parse("/value111");
 
         final StorageValue value = StorageValue.with(
             path,
             Optional.of(999)
         );
 
-        storage.save(
+        storage.storage.save(
             value,
             context
         );
 
         storage.delete(
+            StoragePath.parse(PREFIX + "/unknown404"),
+            context
+        );
+
+        this.loadAndCheck(
+            storage.storage,
             path,
+            context,
+            value
+        );
+    }
+
+    @Test
+    public void testDelete() {
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        final StoragePath path = StoragePath.parse("/value111");
+
+        final StorageValue value = StorageValue.with(
+            path,
+            Optional.of(999)
+        );
+
+        storage.storage.save(
+            value,
+            context
+        );
+
+        storage.delete(
+            StoragePath.parse(PREFIX + "/value111"),
             context
         );
 
