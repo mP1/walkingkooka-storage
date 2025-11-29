@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -41,6 +42,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     public BasicStorageContext createContext() {
         return BasicStorageContext.with(
             EnvironmentContexts.empty(
+                LineEnding.NL,
                 Locale.FRANCE,
                 LocalDateTime::now,
                 Optional.of(
