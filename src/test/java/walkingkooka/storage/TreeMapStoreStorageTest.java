@@ -38,9 +38,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     private final static LocalDateTime TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
 
-    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
-        USER,
-        TIMESTAMP,
+    private final static AuditInfo AUDIT_INFO = AuditInfo.create(
         USER,
         TIMESTAMP
     );

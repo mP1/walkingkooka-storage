@@ -39,9 +39,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallingTesting<StorageValueInfoList> {
 
-    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
-        EmailAddress.parse("user@example.com"),
-        LocalDateTime.MIN,
+    private final static AuditInfo AUDIT_INFO = AuditInfo.create(
         EmailAddress.parse("user@example.com"),
         LocalDateTime.MIN
     );
