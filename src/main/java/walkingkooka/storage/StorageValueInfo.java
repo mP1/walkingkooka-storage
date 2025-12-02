@@ -18,7 +18,6 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -27,7 +26,6 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -197,14 +195,6 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
     }
 
     static {
-        StoragePath.ROOT.isRoot();
-        AuditInfo.with(
-            EmailAddress.parse("user@example.com"),
-            LocalDateTime.MIN,
-            EmailAddress.parse("user@example.com"),
-            LocalDateTime.MIN
-        );
-
         JsonNodeContext.register(
             JsonNodeContext.computeTypeName(StorageValueInfo.class),
             StorageValueInfo::unmarshall,

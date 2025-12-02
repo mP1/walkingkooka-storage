@@ -17,9 +17,13 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.NetStartup;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
+
+import java.time.LocalDateTime;
 
 /**
  * Used to force all values types to {@link JsonNodeContext#register}
@@ -32,6 +36,13 @@ public final class StorageStartup implements PublicStaticHelper {
         // register json marshallers/unmarshallers.
         Storages.empty()
             .hashCode();
+
+        StoragePath.ROOT.isRoot();
+
+        AuditInfo.create(
+            EmailAddress.parse("user@example.com"),
+            LocalDateTime.MIN
+        );
     }
 
     public static void init() {
