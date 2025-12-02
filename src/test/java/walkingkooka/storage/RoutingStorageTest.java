@@ -489,9 +489,7 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage<S
     private static StorageValueInfo storageValueInfo(final String path) {
         return StorageValueInfo.with(
             StoragePath.parse(path),
-            AuditInfo.with(
-                USER,
-                NOW,
+            AuditInfo.create(
                 USER,
                 NOW
             )

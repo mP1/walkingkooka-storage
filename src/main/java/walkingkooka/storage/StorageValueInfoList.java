@@ -124,9 +124,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     static {
         StorageValueInfo.with(
             StoragePath.parse("/hello"),
-            AuditInfo.with(
-                EmailAddress.parse("hello@example.com"),
-                LocalDateTime.MIN,
+            AuditInfo.create(
                 EmailAddress.parse("hello@example.com"),
                 LocalDateTime.MIN
             )
