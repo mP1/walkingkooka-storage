@@ -18,6 +18,9 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.datetime.HasNow;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.LineEnding;
@@ -26,9 +29,13 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext> {
+public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
+    HashCodeEqualsDefinedTesting2<BasicStorageContext> {
+
+    private final static HasNow HAS_NOW = LocalDateTime::now;
 
     @Test
     public void testWithNullEnvironmentContextFails() {
@@ -38,19 +45,69 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         );
     }
 
+    @Test
+    public void testSetEnvironmentContext() {
+        final BasicStorageContext context = this.createContext();
+
+        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            LineEnding.CRNL,
+            Locale.GERMAN,
+            HAS_NOW,
+            Optional.of(
+                EmailAddress.parse("different@example.com")
+            )
+        );
+
+        final StorageContext after = context.setEnvironmentContext(environmentContext);
+        assertNotSame(
+            context,
+            after
+        );
+
+        this.checkEquals(
+            BasicStorageContext.with(environmentContext),
+            after
+        );
+    }
+
     @Override
     public BasicStorageContext createContext() {
         return BasicStorageContext.with(
             EnvironmentContexts.empty(
                 LineEnding.NL,
                 Locale.FRANCE,
-                LocalDateTime::now,
+                HAS_NOW,
                 Optional.of(
                     EmailAddress.parse("user@example.com")
                 )
             )
         );
     }
+
+    // hashCode/equals..................................................................................................
+
+    @Test
+    public void testEqualsDifferentEnvironmentContext() {
+        this.checkNotEquals(
+            BasicStorageContext.with(
+                EnvironmentContexts.empty(
+                    LineEnding.CR,
+                    Locale.GERMAN,
+                    LocalDateTime::now,
+                    Optional.of(
+                        EmailAddress.parse("user@example.com")
+                    )
+                )
+            )
+        );
+    }
+
+    @Override
+    public BasicStorageContext createObject() {
+        return this.createContext();
+    }
+
+    // class............................................................................................................
 
     @Override
     public Class<BasicStorageContext> type() {

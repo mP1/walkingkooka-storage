@@ -68,6 +68,17 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
     }
 
     @Override
+    public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+        final EnvironmentContext before = this.environmentContext;
+        final EnvironmentContext after = this.environmentContext.setEnvironmentContext(environmentContext);
+
+        // only re-create if different instance
+        return before.equals(after) ?
+            this :
+            with(after);
+    }
+
+    @Override
     public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                                   final T value) {
         this.environmentContext.setEnvironmentValue(name, value);
@@ -88,6 +99,22 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
     private final EnvironmentContext environmentContext;
 
     // Object...........................................................................................................
+
+    @Override
+    public int hashCode() {
+        return this.environmentContext.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this == other ||
+            (other instanceof BasicStorageContext &&
+                this.equals0((BasicStorageContext) other));
+    }
+
+    private boolean equals0(final BasicStorageContext other) {
+        return this.environmentContext.equals(other.environmentContext);
+    }
 
     @Override
     public String toString() {
