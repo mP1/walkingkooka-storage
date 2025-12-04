@@ -69,13 +69,10 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
 
     @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        final EnvironmentContext before = this.environmentContext;
-        final EnvironmentContext after = this.environmentContext.setEnvironmentContext(environmentContext);
-
         // only re-create if different instance
-        return before.equals(after) ?
+        return this.environmentContext == environmentContext ?
             this :
-            with(after);
+            with(environmentContext);
     }
 
     @Override
