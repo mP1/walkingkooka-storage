@@ -58,13 +58,9 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
 
     @Override
     public StorageContext cloneEnvironment() {
-        final EnvironmentContext environmentContext = this.environmentContext;
-        final EnvironmentContext cloned = environmentContext.cloneEnvironment();
-
-        // only re-create if different instance
-        return environmentContext == cloned ?
-            this :
-            with(cloned);
+        return this.setEnvironmentContext(
+            this.environmentContext.cloneEnvironment()
+        );
     }
 
     @Override
