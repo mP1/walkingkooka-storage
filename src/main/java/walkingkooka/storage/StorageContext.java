@@ -23,6 +23,9 @@ import walkingkooka.environment.EnvironmentValueName;
 public interface StorageContext extends EnvironmentContext {
 
     @Override
+    StorageContext cloneEnvironment();
+
+    @Override
     StorageContext setEnvironmentContext(final EnvironmentContext environmentContext);
 
     @Override

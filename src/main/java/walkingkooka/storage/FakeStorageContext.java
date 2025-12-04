@@ -28,6 +28,11 @@ import java.util.Optional;
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
 
     @Override
+    public StorageContext cloneEnvironment() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
         throw new UnsupportedOperationException();
     }
