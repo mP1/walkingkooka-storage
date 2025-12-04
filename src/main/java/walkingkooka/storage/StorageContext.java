@@ -23,6 +23,9 @@ import walkingkooka.environment.EnvironmentValueName;
 public interface StorageContext extends EnvironmentContext {
 
     @Override
+    StorageContext setEnvironmentContext(final EnvironmentContext environmentContext);
+
+    @Override
     <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                            final T value);
 
