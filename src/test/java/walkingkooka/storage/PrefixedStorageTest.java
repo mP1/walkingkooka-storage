@@ -317,7 +317,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
         return new FakeStorageContext() {
             @Override
             public LocalDateTime now() {
-                return NOW;
+                return PrefixedStorageTest.NOW;
             }
 
             @Override

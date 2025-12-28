@@ -73,12 +73,14 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     @Override
     public BasicStorageContext createContext() {
         return BasicStorageContext.with(
-            EnvironmentContexts.empty(
-                LineEnding.NL,
-                Locale.FRANCE,
-                HAS_NOW,
-                Optional.of(
-                    EmailAddress.parse("user@example.com")
+            EnvironmentContexts.map(
+                EnvironmentContexts.empty(
+                    LineEnding.NL,
+                    Locale.FRANCE,
+                    HAS_NOW,
+                    Optional.of(
+                        EmailAddress.parse("user@example.com")
+                    )
                 )
             )
         );

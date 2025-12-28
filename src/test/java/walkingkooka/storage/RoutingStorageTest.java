@@ -45,7 +45,7 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage<S
     private final static StorageContext CONTEXT = new FakeStorageContext() {
         @Override
         public LocalDateTime now() {
-            return NOW;
+            return RoutingStorageTest.NOW;
         }
 
         @Override
