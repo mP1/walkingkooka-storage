@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
     HashCodeEqualsDefinedTesting2<BasicStorageContext> {
 
-    private final static HasNow HAS_NOW = LocalDateTime::now;
+    private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     @Test
     public void testWithNullEnvironmentContextFails() {
