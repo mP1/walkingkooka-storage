@@ -29,7 +29,7 @@ public final class StorageConverters implements PublicStaticHelper {
     /**
      * {@see StorageConverterTextToStoragePath}
      */
-    public static <C extends ConverterContext> Converter<C> stringToStoragePath() {
+    public static <C extends ConverterContext> Converter<C> textToStoragePath() {
         return StorageConverterTextToStoragePath.instance();
     }
 
