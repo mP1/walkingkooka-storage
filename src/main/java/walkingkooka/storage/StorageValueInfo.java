@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.naming.HasPath;
+import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -34,6 +35,7 @@ import java.util.Objects;
  */
 public final class StorageValueInfo implements Comparable<StorageValueInfo>,
     HasPath<StoragePath>,
+    HasText,
     TreePrintable {
 
     public static StorageValueInfo with(final StoragePath path,
@@ -91,6 +93,13 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
                 this.path,
                 Objects.requireNonNull(auditInfo, "auditInfo")
             );
+    }
+
+    // HasText..........................................................................................................
+
+    @Override
+    public String text() {
+        return this.path.text();
     }
 
     // Comparable.......................................................................................................
