@@ -25,6 +25,7 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
@@ -39,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueInfoTest implements ComparableTesting2<StorageValueInfo>,
     ClassTesting2<StorageValueInfo>,
+    HasTextTesting,
     TreePrintableTesting,
     JsonNodeMarshallingTesting<StorageValueInfo>,
     IteratorTesting {
@@ -208,6 +210,21 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
         this.checkEquals(
             expected,
             info.auditInfo()
+        );
+    }
+
+    // HasText..........................................................................................................
+
+    @Test
+    public void testText() {
+        final String text = "/path1/file2.txt";
+
+        this.textAndCheck(
+            StorageValueInfo.with(
+                StoragePath.parse(text),
+                AUDIT_INFO
+            ),
+            text
         );
     }
 
