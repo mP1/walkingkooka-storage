@@ -19,14 +19,11 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.environment.AuditInfo;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.time.LocalDateTime;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.List;
@@ -122,14 +119,6 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     }
 
     static {
-        StorageValueInfo.with(
-            StoragePath.parse("/hello"),
-            AuditInfo.create(
-                EmailAddress.parse("hello@example.com"),
-                LocalDateTime.MIN
-            )
-        );
-
         JsonNodeContext.register(
             JsonNodeContext.computeTypeName(StorageValueInfoList.class),
             StorageValueInfoList::unmarshall,
