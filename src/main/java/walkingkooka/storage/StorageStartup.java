@@ -37,7 +37,20 @@ public final class StorageStartup implements PublicStaticHelper {
         Storages.empty()
             .hashCode();
 
-        StoragePath.ROOT.isRoot();
+        StorageValue.with(
+            StoragePath.ROOT,
+            StorageValue.NO_VALUE
+        );
+
+        StorageValueInfoList.EMPTY.concat(
+            StorageValueInfo.with(
+                StoragePath.parse("/hello"),
+                AuditInfo.create(
+                    EmailAddress.parse("hello@example.com"),
+                    LocalDateTime.MIN
+                )
+            )
+        );
 
         AuditInfo.create(
             EmailAddress.parse("user@example.com"),
