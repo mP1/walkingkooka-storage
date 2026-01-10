@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -33,7 +35,8 @@ import java.util.Objects;
  * An immutable list of {@link StorageValueInfo}.
  */
 public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
-    implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo> {
+    implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo>,
+    TreePrintable {
 
     /**
      * An empty {@link StorageValueInfoList}.
@@ -125,5 +128,18 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
             StorageValueInfoList::marshall,
             StorageValueInfoList.class
         );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+
+        printer.indent();
+        {
+            this.infos.forEach(i -> i.printTree(printer));
+        }
+        printer.outdent();
     }
 }
