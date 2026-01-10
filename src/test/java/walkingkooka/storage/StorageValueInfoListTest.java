@@ -25,6 +25,7 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
@@ -37,7 +38,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
     ClassTesting<StorageValueInfoList>,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
-    JsonNodeMarshallingTesting<StorageValueInfoList> {
+    JsonNodeMarshallingTesting<StorageValueInfoList>,
+    TreePrintableTesting {
 
     private final static AuditInfo AUDIT_INFO = AuditInfo.create(
         EmailAddress.parse("user@example.com"),
@@ -226,6 +228,26 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Override
     public StorageValueInfoList createJsonNodeMarshallingValue() {
         return this.createList();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        this.treePrintAndCheck(
+            this.createList(),
+            "StorageValueInfoList\n" +
+                "  /file1\n" +
+                "    created\n" +
+                "      user@example.com -999999999-01-01T00:00\n" +
+                "    modified\n" +
+                "      user@example.com -999999999-01-01T00:00\n" +
+                "  /file2\n" +
+                "    created\n" +
+                "      user@example.com -999999999-01-01T00:00\n" +
+                "    modified\n" +
+                "      user@example.com -999999999-01-01T00:00\n"
+        );
     }
 
     // class............................................................................................................
