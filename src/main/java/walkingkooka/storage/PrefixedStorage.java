@@ -29,28 +29,28 @@ import java.util.stream.Collectors;
  * {@link StorageValueInfo}.
  * This is particularly useful for a {@link Storage} that unites one or more {@link Storage} at different mount points.
  */
-final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
+final class PrefixedStorage implements Storage {
 
-    static <C extends StorageContext> Storage<C> with(final StoragePath prefix,
-                                                      final Storage<C> storage) {
+    static Storage with(final StoragePath prefix,
+                        final Storage storage) {
         Objects.requireNonNull(prefix, "prefix");
         Objects.requireNonNull(storage, "storage");
 
-        final Storage<C> result;
+        final Storage result;
 
         if (prefix.equals(StoragePath.ROOT)) {
             result = storage;
         } else {
             StoragePath wrapPrefix = prefix;
-            Storage<C> wrapStoraage = storage;
+            Storage wrapStoraage = storage;
 
             if (storage instanceof PrefixedStorage) {
-                final PrefixedStorage<C> prefixedStorage = (PrefixedStorage<C>) storage;
+                final PrefixedStorage prefixedStorage = (PrefixedStorage) storage;
                 wrapPrefix = prefix.append(prefixedStorage.prefix);
                 wrapStoraage = prefixedStorage.storage;
             }
 
-            result = new PrefixedStorage<C>(
+            result = new PrefixedStorage(
                 wrapPrefix,
                 wrapStoraage
             );
@@ -60,14 +60,14 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     }
 
     private PrefixedStorage(final StoragePath prefix,
-                            final Storage<C> storage) {
+                            final Storage storage) {
         this.prefix = prefix;
         this.storage = storage;
     }
 
     @Override
     public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -81,7 +81,7 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public StorageValue save(final StorageValue value,
-                             final C context) {
+                             final StorageContext context) {
         return this.storage.save(
             value.removePrefixPath(this.prefix),
             context
@@ -90,7 +90,7 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public void delete(final StoragePath path,
-                       final C context) {
+                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -104,7 +104,7 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     public List<StorageValueInfo> list(final StoragePath parent,
                                        final int offset,
                                        final int count,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(parent, "parent");
         Store.checkOffsetAndCount(
             offset,
@@ -126,7 +126,7 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     final StoragePath prefix;
 
     // @VisibleForTesting
-    final Storage<C> storage;
+    final Storage storage;
 
     // Object...........................................................................................................
 

@@ -27,9 +27,9 @@ import java.util.Optional;
 /**
  * A {@link Storage} that is always empty and does not support saving, and deletes will fail.
  */
-final class EmptyStorage<C extends StorageContext> implements Storage<C> {
+final class EmptyStorage implements Storage {
 
-    static <C extends StorageContext> EmptyStorage<C> instance() {
+    static EmptyStorage instance() {
         return INSTANCE;
     }
 
@@ -46,7 +46,7 @@ final class EmptyStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -55,7 +55,7 @@ final class EmptyStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public StorageValue save(final StorageValue value,
-                             final C context) {
+                             final StorageContext context) {
         Objects.requireNonNull(value, "value");
         Objects.requireNonNull(context, "context");
 
@@ -64,7 +64,7 @@ final class EmptyStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public void delete(final StoragePath path,
-                       final C context) {
+                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -75,7 +75,7 @@ final class EmptyStorage<C extends StorageContext> implements Storage<C> {
     public List<StorageValueInfo> list(final StoragePath parent,
                                        final int offset,
                                        final int count,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(parent, "parent");
         Store.checkOffsetAndCount(offset, count);
         Objects.requireNonNull(context, "context");

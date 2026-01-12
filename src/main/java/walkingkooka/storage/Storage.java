@@ -23,16 +23,16 @@ import java.util.Optional;
 /**
  * A {@link Storage} that supports storing values including support for tree or directory structure.
  */
-public interface Storage<C extends StorageContext> {
+public interface Storage {
 
     Optional<StorageValue> load(final StoragePath path,
-                                final C context);
+                                final StorageContext context);
 
     StorageValue save(final StorageValue value,
-                      final C context);
+                      final StorageContext context);
 
     void delete(final StoragePath path,
-                final C context);
+                final StorageContext context);
 
     /**
      * Gets the {@link StorageValueInfo} for the given range.<br>
@@ -41,12 +41,12 @@ public interface Storage<C extends StorageContext> {
     List<StorageValueInfo> list(final StoragePath parent,
                                 final int offset,
                                 final int count,
-                                final C context);
+                                final StorageContext context);
 
     /**
      * Returns a {@link Storage} with an additional prefix to all its {@link StoragePath}.
      */
-    default Storage<C> setPrefix(final StoragePath prefix) {
+    default Storage setPrefix(final StoragePath prefix) {
         return PrefixedStorage.with(
             prefix,
             this

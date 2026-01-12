@@ -28,14 +28,14 @@ import java.util.Optional;
 /**
  * A {@link Storage} that uses the mounts defined by an instance of {@link RoutingStorageBuilder}.
  */
-final class RoutingStorage<C extends StorageContext> implements Storage<C> {
+final class RoutingStorage implements Storage {
 
     // assumes a defensive copy was given.
-    static <C extends StorageContext> RoutingStorage<C> with(final List<RoutingStorageRoute<C>> routes) {
-        return new RoutingStorage<>(routes);
+    static <C extends StorageContext> RoutingStorage with(final List<RoutingStorageRoute> routes) {
+        return new RoutingStorage(routes);
     }
 
-    private RoutingStorage(final List<RoutingStorageRoute<C>> routes) {
+    private RoutingStorage(final List<RoutingStorageRoute> routes) {
         this.routes = routes;
     }
 
@@ -43,12 +43,12 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
         Optional<StorageValue> value = Optional.empty();
-        RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
+        RoutingStorageRoute route = this.firstRouteStartingWith(path);
         if (null != route) {
             value = route.store.load(
                 route.remove(path),
@@ -65,11 +65,11 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public StorageValue save(final StorageValue value,
-                             final C context) {
+                             final StorageContext context) {
         Objects.requireNonNull(value, "value");
         Objects.requireNonNull(context, "context");
 
-        RoutingStorageRoute<C> route = this.firstRouteStartingWith(value.path());
+        RoutingStorageRoute route = this.firstRouteStartingWith(value.path());
         if (null != route) {
             final StorageValue saved = route.store.save(
                 value.setPath(
@@ -90,11 +90,11 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public void delete(final StoragePath path,
-                       final C context) {
+                       final StorageContext context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
-        RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
+        RoutingStorageRoute route = this.firstRouteStartingWith(path);
         if (null != route) {
             route.store.delete(
                 route.remove(path),
@@ -111,7 +111,7 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     public List<StorageValueInfo> list(final StoragePath parent,
                                        final int offset,
                                        final int count,
-                                       final C context) {
+                                       final StorageContext context) {
         Objects.requireNonNull(parent, "parent");
         Store.checkOffsetAndCount(
             offset,
@@ -121,7 +121,7 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
 
         final List<StorageValueInfo> storageValueInfos;
 
-        RoutingStorageRoute<C> route = this.firstRouteStartingWith(parent);
+        RoutingStorageRoute route = this.firstRouteStartingWith(parent);
         if (null != route) {
             storageValueInfos = route.store.list(
                     route.remove(parent),
@@ -144,10 +144,10 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     /**
      * Selects the first {@link RoutingStorageRoute} that matches the given path, returning null if none matched.
      */
-    private RoutingStorageRoute<C> firstRouteStartingWith(final StoragePath path) {
-        RoutingStorageRoute<C> dest = null;
+    private RoutingStorageRoute firstRouteStartingWith(final StoragePath path) {
+        RoutingStorageRoute dest = null;
 
-        for (final RoutingStorageRoute<C> possible : this.routes) {
+        for (final RoutingStorageRoute possible : this.routes) {
             if (possible.isMatch(path)) {
                 dest = possible;
                 break;
@@ -157,7 +157,7 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
         return dest;
     }
 
-    private final List<RoutingStorageRoute<C>> routes;
+    private final List<RoutingStorageRoute> routes;
 
     // Object...........................................................................................................
 

@@ -20,7 +20,7 @@ package walkingkooka.storage;
 import java.util.List;
 import java.util.Optional;
 
-public class FakeStorage<C extends StorageContext> implements Storage<C> {
+public class FakeStorage implements Storage {
 
     public FakeStorage() {
         super();
@@ -28,19 +28,19 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
+                                       final StorageContext context) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public StorageValue save(final StorageValue value,
-                             final C context) {
+                             final StorageContext context) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(final StoragePath path,
-                       final C context) {
+                       final StorageContext context) {
         throw new UnsupportedOperationException();
     }
 
@@ -48,7 +48,7 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
     public List<StorageValueInfo> list(final StoragePath parent,
                                        final int offset,
                                        final int count,
-                                       final C context) {
+                                       final StorageContext context) {
         throw new UnsupportedOperationException();
     }
 }

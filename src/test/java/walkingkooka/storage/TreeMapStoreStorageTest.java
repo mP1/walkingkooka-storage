@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage<TestStorageContext>, TestStorageContext> {
+public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage, TestStorageContext> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -50,7 +50,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndLoad() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -70,7 +70,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -112,7 +112,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndList() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -138,7 +138,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndListMixedParents() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -270,7 +270,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListRootPath() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -320,7 +320,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListSubdirectory() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final TreeMapStoreStorage store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -377,7 +377,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     }
 
     @Override
-    public TreeMapStoreStorage<TestStorageContext> createStorage() {
+    public TreeMapStoreStorage createStorage() {
         return TreeMapStoreStorage.empty();
     }
 
@@ -414,7 +414,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     // class............................................................................................................
 
     @Override
-    public Class<TreeMapStoreStorage<TestStorageContext>> type() {
+    public Class<TreeMapStoreStorage> type() {
         return Cast.to(TreeMapStoreStorage.class);
     }
 

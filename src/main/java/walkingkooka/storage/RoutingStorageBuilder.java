@@ -26,9 +26,9 @@ import java.util.List;
 /**
  * A {@link Builder} that may be used to add one more mounted {@link Storage}.
  */
-public final class RoutingStorageBuilder<C extends StorageContext> implements Builder<Storage<C>> {
+public final class RoutingStorageBuilder implements Builder<Storage> {
 
-    public static <C extends StorageContext> RoutingStorageBuilder<C> empty() {
+    public static RoutingStorageBuilder empty() {
         return new RoutingStorageBuilder();
     }
 
@@ -40,14 +40,14 @@ public final class RoutingStorageBuilder<C extends StorageContext> implements Bu
      * Adds a mount at the given path. If this mount is shadowed by previous addition a {@link IllegalArgumentException}
      * will be thrown.
      */
-    public RoutingStorageBuilder<C> startsWith(final StoragePath path,
-                                               final Storage store) {
-        final RoutingStorageRoute<C> newRoute = RoutingStorageRoute.with(
+    public RoutingStorageBuilder startsWith(final StoragePath path,
+                                            final Storage store) {
+        final RoutingStorageRoute newRoute = RoutingStorageRoute.with(
             path,
             store
         );
 
-        for (final RoutingStorageRoute<C> route : this.routes) {
+        for (final RoutingStorageRoute route : this.routes) {
             if (route.isMatch(path)) {
                 throw new IllegalArgumentException("Invalid path " + path.quotedAppendedWithStar() + " would be shadowed by " + route);
             }
@@ -58,8 +58,8 @@ public final class RoutingStorageBuilder<C extends StorageContext> implements Bu
     }
 
     @Override
-    public Storage<C> build() throws BuilderException {
-        final List<RoutingStorageRoute<C>> copy = Lists.array();
+    public Storage build() throws BuilderException {
+        final List<RoutingStorageRoute> copy = Lists.array();
         copy.addAll(this.routes);
 
         switch (copy.size()) {
@@ -70,7 +70,7 @@ public final class RoutingStorageBuilder<C extends StorageContext> implements Bu
         }
     }
 
-    private final List<RoutingStorageRoute<C>> routes;
+    private final List<RoutingStorageRoute> routes;
 
     @Override
     public String toString() {
