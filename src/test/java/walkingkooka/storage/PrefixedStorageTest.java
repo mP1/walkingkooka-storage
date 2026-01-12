@@ -29,8 +29,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage, FakeStorageContext>,
-    ToStringTesting<PrefixedStorage> {
+public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage<FakeStorageContext>, FakeStorageContext>,
+    ToStringTesting<PrefixedStorage<FakeStorageContext>> {
 
     private final static String PREFIX = "/prefix111";
 
@@ -69,7 +69,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testWithRoot() {
-        final Storage storage = Storages.fake();
+        final Storage<FakeStorageContext> storage = Storages.fake();
 
         assertSame(
             storage,
@@ -82,11 +82,11 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testWithPrefixedStorage() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
 
         final StoragePath prefix2 = StoragePath.parse("/prefix222");
 
-        final PrefixedStorage prefixedStorage = Cast.to(
+        final PrefixedStorage<FakeStorageContext> prefixedStorage = Cast.to(
             PrefixedStorage.with(
                 prefix2,
                 storage
@@ -119,7 +119,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testLoad() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
@@ -146,7 +146,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testSave() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/value111");
@@ -177,7 +177,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testDeleteWithUnknownPath() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -207,7 +207,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testDelete() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -238,7 +238,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testList() {
-        final PrefixedStorage storage = this.createStorage();
+        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(PREFIX + "/value111");
@@ -303,7 +303,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     }
 
     @Override
-    public PrefixedStorage createStorage() {
+    public PrefixedStorage<FakeStorageContext> createStorage() {
         return Cast.to(
             PrefixedStorage.with(
                 StoragePath.parse(PREFIX),
@@ -342,7 +342,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     // class............................................................................................................
 
     @Override
-    public Class<PrefixedStorage> type() {
+    public Class<PrefixedStorage<FakeStorageContext>> type() {
         return Cast.to(PrefixedStorage.class);
     }
 

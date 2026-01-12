@@ -27,22 +27,22 @@ public final class Storages implements PublicStaticHelper {
     /**
      * {@see EmptyStorage}
      */
-    public static Storage empty() {
+    public static <C extends StorageContext> Storage<C> empty() {
         return EmptyStorage.instance();
     }
 
     /**
      * {@see FakeStorage}
      */
-    public static Storage fake() {
-        return new FakeStorage();
+    public static <C extends StorageContext> Storage<C> fake() {
+        return new FakeStorage<>();
     }
 
     /**
      * {@see PrefixedStorage}
      */
-    public static Storage prefixed(final StoragePath prefix,
-                                   final Storage storage) {
+    public static <C extends StorageContext> Storage<C> prefixed(final StoragePath prefix,
+                                                                 final Storage<C> storage) {
         return PrefixedStorage.with(
             prefix,
             storage
@@ -52,7 +52,7 @@ public final class Storages implements PublicStaticHelper {
     /**
      * {@see TreeMapStoreStorage}
      */
-    public static Storage tree() {
+    public static <C extends StorageContext> Storage<C> tree() {
         return TreeMapStoreStorage.empty();
     }
 

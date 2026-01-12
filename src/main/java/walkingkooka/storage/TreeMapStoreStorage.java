@@ -27,10 +27,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-final class TreeMapStoreStorage implements Storage {
+final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> {
 
-    static TreeMapStoreStorage empty() {
-        return new TreeMapStoreStorage();
+    static <C extends StorageContext> TreeMapStoreStorage<C> empty() {
+        return new TreeMapStoreStorage<>();
     }
 
     private TreeMapStoreStorage() {
@@ -47,7 +47,7 @@ final class TreeMapStoreStorage implements Storage {
 
     @Override
     public Optional<StorageValue> load(final StoragePath path,
-                                       final StorageContext context) {
+                                       final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -57,7 +57,7 @@ final class TreeMapStoreStorage implements Storage {
 
     @Override
     public StorageValue save(final StorageValue value,
-                             final StorageContext context) {
+                             final C context) {
         Objects.requireNonNull(value, "storageValue");
         Objects.requireNonNull(context, "context");
 
@@ -125,7 +125,7 @@ final class TreeMapStoreStorage implements Storage {
 
     @Override
     public void delete(final StoragePath path,
-                       final StorageContext context) {
+                       final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -136,7 +136,7 @@ final class TreeMapStoreStorage implements Storage {
     public List<StorageValueInfo> list(final StoragePath parent,
                                        final int offset,
                                        final int count,
-                                       final StorageContext context) {
+                                       final C context) {
         Objects.requireNonNull(parent, "parent");
         Store.checkOffsetAndCount(offset, count);
         Objects.requireNonNull(context, "context");

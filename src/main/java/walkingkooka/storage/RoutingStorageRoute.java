@@ -22,21 +22,21 @@ import java.util.Objects;
 /**
  * A single mount within a {@link RoutingStorage}.
  */
-final class RoutingStorageRoute {
+final class RoutingStorageRoute<C extends StorageContext> {
 
-    static RoutingStorageRoute with(final StoragePath path,
-                                    final Storage store) {
+    static <C extends StorageContext> RoutingStorageRoute<C> with(final StoragePath path,
+                                                                  final Storage<C> store) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(store, "store");
 
-        return new RoutingStorageRoute(
+        return new RoutingStorageRoute<>(
             path,
             store
         );
     }
 
     private RoutingStorageRoute(final StoragePath path,
-                                final Storage store) {
+                                final Storage<C> store) {
         super();
         this.path = path;
         this.store = store;
@@ -82,7 +82,7 @@ final class RoutingStorageRoute {
 
     final StoragePath path;
 
-    final Storage store;
+    final Storage<C> store;
 
     // Object...........................................................................................................
 
