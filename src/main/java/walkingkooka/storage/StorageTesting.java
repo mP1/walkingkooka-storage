@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageTesting<S extends Storage<C>, C extends StorageContext> extends ClassTesting<S>,
+public interface StorageTesting<S extends Storage, C extends StorageContext> extends ClassTesting<S>,
     TreePrintableTesting {
 
     // load.............................................................................................................
@@ -56,7 +56,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> storage,
+    default void loadAndCheck(final Storage storage,
                               final StoragePath path,
                               final C context) {
         this.loadAndCheck(
@@ -67,7 +67,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> storage,
+    default void loadAndCheck(final Storage storage,
                               final StoragePath path,
                               final C context,
                               final StorageValue expected) {
@@ -79,7 +79,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> storage,
+    default void loadAndCheck(final Storage storage,
                               final StoragePath path,
                               final C context,
                               final Optional<StorageValue> expected) {
@@ -119,7 +119,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void saveAndCheck(final Storage<C> storage,
+    default void saveAndCheck(final Storage storage,
                               final StorageValue value,
                               final C context,
                               final StorageValue expected) {
@@ -227,7 +227,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void listAndCheck(final Storage<C> storage,
+    default void listAndCheck(final Storage storage,
                               final StoragePath parent,
                               final int offset,
                               final int count,
@@ -243,7 +243,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void listAndCheck(final Storage<C> storage,
+    default void listAndCheck(final Storage storage,
                               final StoragePath parent,
                               final int offset,
                               final int count,
