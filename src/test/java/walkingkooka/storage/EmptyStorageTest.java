@@ -24,8 +24,8 @@ import walkingkooka.reflect.JavaVisibility;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class EmptyStorageTest implements StorageTesting<EmptyStorage, StorageContext>,
-    ToStringTesting<EmptyStorage> {
+public final class EmptyStorageTest implements StorageTesting<EmptyStorage<StorageContext>, StorageContext>,
+    ToStringTesting<EmptyStorage<StorageContext>> {
 
     @Test
     public void testLoadMissing() {
@@ -97,7 +97,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage, Stor
     // class............................................................................................................
 
     @Override
-    public Class<EmptyStorage> type() {
+    public Class<EmptyStorage<StorageContext>> type() {
         return Cast.to(EmptyStorage.class);
     }
 

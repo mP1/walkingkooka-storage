@@ -23,11 +23,11 @@ import walkingkooka.build.BuilderTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingStorageBuilder, Storage> {
+public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingStorageBuilder<StorageContext>, Storage<StorageContext>> {
 
     private final static StoragePath PATH = StoragePath.ROOT;
 
-    private final static Storage STORE = new FakeStorage() {
+    private final static Storage<StorageContext> STORE = new FakeStorage<>() {
 
         @Override
         public String toString() {
@@ -63,7 +63,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
 
     @Test
     public void testStartWithShadowedFails() {
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 PATH,
                 STORE
@@ -87,7 +87,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
     public void testStartWithShadowedFails2() {
         final StoragePath path = StoragePath.parse("/mount111");
 
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 path,
                 STORE
@@ -111,7 +111,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
     public void testStartWithShadowedFails3() {
         final StoragePath path = StoragePath.parse("/mount222");
 
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
                 STORE
@@ -136,7 +136,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
 
     @Test
     public void testStartsWith() {
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
                 STORE
@@ -148,7 +148,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
 
     @Test
     public void testStartsWith2() {
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
                 STORE
@@ -162,7 +162,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
 
     @Test
     public void testBuild() {
-        final RoutingStorageBuilder builder = RoutingStorageBuilder.empty()
+        final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
                 STORE
@@ -174,19 +174,19 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
     }
 
     @Override
-    public RoutingStorageBuilder createBuilder() {
+    public RoutingStorageBuilder<StorageContext> createBuilder() {
         return RoutingStorageBuilder.empty();
     }
 
     @Override
-    public Class<Storage> builderProductType() {
+    public Class<Storage<StorageContext>> builderProductType() {
         return Cast.to(Storage.class);
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<RoutingStorageBuilder> type() {
+    public Class<RoutingStorageBuilder<StorageContext>> type() {
         return Cast.to(RoutingStorageBuilder.class);
     }
 }
