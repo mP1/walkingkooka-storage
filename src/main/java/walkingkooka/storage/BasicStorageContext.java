@@ -23,7 +23,6 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.LineEnding;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,14 +43,6 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         return this.setEnvironmentValue(
             LINE_ENDING,
             lineEnding
-        );
-    }
-    
-    @Override
-    public StorageContext setLocale(final Locale locale) {
-        return this.setEnvironmentValue(
-            EnvironmentValueName.LOCALE,
-            locale
         );
     }
 
