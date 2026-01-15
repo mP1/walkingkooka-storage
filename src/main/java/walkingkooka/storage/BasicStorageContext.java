@@ -19,12 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.net.email.EmailAddress;
-import walkingkooka.text.LineEnding;
 
 import java.util.Objects;
-import java.util.Optional;
 
 final class BasicStorageContext implements StorageContext, EnvironmentContextDelegator {
 
@@ -36,24 +32,6 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
 
     private BasicStorageContext(final EnvironmentContext environmentContext) {
         this.environmentContext = environmentContext;
-    }
-
-    @Override
-    public StorageContext setLineEnding(final LineEnding lineEnding) {
-        return this.setEnvironmentValue(
-            LINE_ENDING,
-            lineEnding
-        );
-    }
-
-    @Override
-    public StorageContext setUser(final Optional<EmailAddress> user) {
-        return user.isPresent() ?
-            this.setEnvironmentValue(
-                EnvironmentValueName.USER,
-                user.orElse(null)
-            ) :
-            this.removeEnvironmentValue(EnvironmentValueName.USER);
     }
 
     @Override
@@ -69,19 +47,6 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         return this.environmentContext == environmentContext ?
             this :
             with(environmentContext);
-    }
-
-    @Override
-    public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                  final T value) {
-        this.environmentContext.setEnvironmentValue(name, value);
-        return this;
-    }
-
-    @Override
-    public StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
-        this.environmentContext.removeEnvironmentValue(name);
-        return this;
     }
 
     @Override

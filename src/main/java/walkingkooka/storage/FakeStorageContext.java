@@ -18,13 +18,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
-import walkingkooka.net.email.EmailAddress;
-import walkingkooka.text.LineEnding;
-
-import java.util.Objects;
-import java.util.Optional;
 
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
 
@@ -35,32 +29,6 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
 
     @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                  final T value) {
-        Objects.requireNonNull(name, "name");
-        Objects.requireNonNull(value, "value");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
-        Objects.requireNonNull(name, "name");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public StorageContext setLineEnding(final LineEnding lineEnding) {
-        Objects.requireNonNull(lineEnding, "lineEnding");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public StorageContext setUser(final Optional<EmailAddress> user) {
-        Objects.requireNonNull(user, "user");
         throw new UnsupportedOperationException();
     }
 }

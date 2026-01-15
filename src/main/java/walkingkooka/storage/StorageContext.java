@@ -18,11 +18,6 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.net.email.EmailAddress;
-import walkingkooka.text.LineEnding;
-
-import java.util.Optional;
 
 public interface StorageContext extends EnvironmentContext {
 
@@ -31,17 +26,4 @@ public interface StorageContext extends EnvironmentContext {
 
     @Override
     StorageContext setEnvironmentContext(final EnvironmentContext environmentContext);
-
-    @Override
-    <T> StorageContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                           final T value);
-
-    @Override
-    StorageContext removeEnvironmentValue(final EnvironmentValueName<?> name);
-
-    @Override
-    StorageContext setLineEnding(final LineEnding lineEnding);
-
-    @Override
-    StorageContext setUser(final Optional<EmailAddress> optional);
 }
