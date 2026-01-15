@@ -23,7 +23,6 @@ import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.LineEnding;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -56,12 +55,6 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
     @Override
     public StorageContext setLineEnding(final LineEnding lineEnding) {
         Objects.requireNonNull(lineEnding, "lineEnding");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public StorageContext setLocale(final Locale locale) {
-        Objects.requireNonNull(locale, "locale");
         throw new UnsupportedOperationException();
     }
 
