@@ -18,7 +18,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
-import walkingkooka.net.NetStartup;
+import walkingkooka.environment.EnvironmentStartup;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 public final class StorageStartup implements PublicStaticHelper {
 
     static {
-        NetStartup.init();
+        EnvironmentStartup.init();
 
         // register json marshallers/unmarshallers.
         Storages.empty()
