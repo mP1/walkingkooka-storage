@@ -312,7 +312,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
                 PATH,
                 Optional.empty()
             ),
-            "/path123\n"
+            "StorageValue\n" +
+                "  /path123\n"
         );
     }
 
@@ -320,8 +321,9 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testTreePrintableWithValue() {
         this.treePrintAndCheck(
             this.createObject(),
-            "/path123\n" +
-                "  \"Hello\"\n"
+            "StorageValue\n" +
+                "  /path123\n" +
+                "    \"Hello\"\n"
         );
     }
 
@@ -330,9 +332,10 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.treePrintAndCheck(
             this.createObject()
                 .setContentType(MediaType.TEXT_PLAIN),
-            "/path123\n" +
-                "  contentType: text/plain\n" +
-                "    \"Hello\"\n"
+            "StorageValue\n" +
+                "  /path123\n" +
+                "    contentType: text/plain\n" +
+                "      \"Hello\"\n"
         );
     }
 

@@ -210,36 +210,40 @@ public final class StorageValue implements Value<Optional<Object>>,
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        printer.println(this.path.toString());
-
+        printer.println(this.getClass().getSimpleName());
         printer.indent();
         {
-            boolean indentValue = false;
+            printer.println(this.path.toString());
 
-            final MediaType contentType = this.contentType;
-            if (false == contentType.equals(MediaType.BINARY)) {
-                printer.print("contentType: ");
-                printer.println(contentType.toString());
+            printer.indent();
+            {
+                boolean indentValue = false;
 
-                indentValue = true;
-            }
+                final MediaType contentType = this.contentType;
+                if (false == contentType.equals(MediaType.BINARY)) {
+                    printer.print("contentType: ");
+                    printer.println(contentType.toString());
 
-            final Optional<Object> value = this.value;
-            if (value.isPresent()) {
-                if (indentValue) {
-                    printer.indent();
+                    indentValue = true;
                 }
 
-                TreePrintable.printTreeOrToString(
-                    value.get(),
-                    printer
-                );
+                final Optional<Object> value = this.value;
+                if (value.isPresent()) {
+                    if (indentValue) {
+                        printer.indent();
+                    }
 
-                if (indentValue) {
-                    printer.outdent();
+                    TreePrintable.printTreeOrToString(
+                        value.get(),
+                        printer
+                    );
+
+                    if (indentValue) {
+                        printer.outdent();
+                    }
                 }
             }
-
+            printer.outdent();
         }
         printer.outdent();
     }
