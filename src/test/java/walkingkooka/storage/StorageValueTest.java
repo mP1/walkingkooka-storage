@@ -22,6 +22,9 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.TreePrintableTesting;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Optional;
 
@@ -31,7 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<StorageValue>,
     ToStringTesting<StorageValue>,
-    TreePrintableTesting {
+    TreePrintableTesting,
+    JsonNodeMarshallingTesting<StorageValue> {
+
+    {
+        StorageStartup.init();
+    }
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -326,6 +334,81 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
                 "  contentType: text/plain\n" +
                 "    \"Hello\"\n"
         );
+    }
+
+    // json.............................................................................................................
+
+    @Test
+    public void testMarshallWithEmptyValue() {
+        this.marshallAndCheck(
+            StorageValue.with(
+                PATH,
+                Optional.empty()
+            ),
+            "{\n" +
+                "  \"path\": \"/path123\",\n" +
+                "  \"value\": null\n" +
+                "}"
+        );
+    }
+
+    @Test
+    public void testMarshallWithContentType() {
+        this.marshallAndCheck(
+            StorageValue.with(
+                PATH,
+                VALUE
+            ).setContentType(
+                MediaType.APPLICATION_JSON
+            ),
+            "{\n" +
+                "  \"path\": \"/path123\",\n" +
+                "  \"value\": \"Hello\",\n" +
+                "  \"contentType\": \"application/json\"\n" +
+                "}"
+        );
+    }
+
+    @Test
+    public void testMarshallWithDefaultContentType() {
+        this.marshallAndCheck(
+            StorageValue.with(
+                PATH,
+                VALUE
+            ),
+            "{\n" +
+                "  \"path\": \"/path123\",\n" +
+                "  \"value\": \"Hello\"\n" +
+                "}"
+        );
+    }
+
+    @Test
+    public void testUnmarshallWithEmptyValue() {
+        this.unmarshallAndCheck(
+            "{\n" +
+                "  \"path\": \"/path123\",\n" +
+                "  \"value\": null\n" +
+                "}",
+            StorageValue.with(
+                PATH,
+                Optional.empty()
+            )
+        );
+    }
+
+    @Override
+    public StorageValue unmarshall(final JsonNode json,
+                                   final JsonNodeUnmarshallContext context) {
+        return StorageValue.unmarshall(
+            json,
+            context
+        );
+    }
+
+    @Override
+    public StorageValue createJsonNodeMarshallingValue() {
+        return this.createObject();
     }
 
     // class............................................................................................................

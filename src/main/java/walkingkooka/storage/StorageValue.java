@@ -24,6 +24,12 @@ import walkingkooka.Value;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonObject;
+import walkingkooka.tree.json.JsonPropertyName;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -236,5 +242,98 @@ public final class StorageValue implements Value<Optional<Object>>,
 
         }
         printer.outdent();
+    }
+
+    // Json.............................................................................................................
+
+    private final static String PATH_PROPERTY_STRING = "path";
+
+    final static JsonPropertyName PATH_PROPERTY = JsonPropertyName.with(PATH_PROPERTY_STRING);
+
+    private final static String CONTENT_TYPE_PROPERTY_STRING = "contentType";
+
+    final static JsonPropertyName CONTENT_TYPE_PROPERTY = JsonPropertyName.with(CONTENT_TYPE_PROPERTY_STRING);
+
+    private final static String VALUE_PROPERTY_STRING = "value";
+
+    final static JsonPropertyName VALUE_PROPERTY = JsonPropertyName.with(VALUE_PROPERTY_STRING);
+
+    static StorageValue unmarshall(final JsonNode node,
+                                   final JsonNodeUnmarshallContext context) {
+        StoragePath path = null;
+        MediaType contentType = DEFAULT_CONTENT_TYPE;
+        Optional<Object> value = null;
+
+        for (JsonNode child : node.objectOrFail().children()) {
+            final JsonPropertyName name = child.name();
+            switch (name.value()) {
+                case PATH_PROPERTY_STRING:
+                    path = context.unmarshall(
+                        child,
+                        StoragePath.class
+                    );
+                    break;
+                case CONTENT_TYPE_PROPERTY_STRING:
+                    contentType = context.unmarshall(
+                        child,
+                        MediaType.class
+                    );
+                    break;
+                case VALUE_PROPERTY_STRING:
+                    value = context.unmarshallOptionalWithType(child);
+                    break;
+                default:
+                    JsonNodeUnmarshallContext.unknownPropertyPresent(name, node);
+                    break;
+            }
+        }
+
+        if (null == path) {
+            JsonNodeUnmarshallContext.missingProperty(
+                PATH_PROPERTY,
+                node
+            );
+        }
+        if (null == value) {
+            JsonNodeUnmarshallContext.missingProperty(
+                VALUE_PROPERTY,
+                node
+            );
+        }
+
+        return with(
+            path,
+            value
+        ).setContentType(contentType);
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        JsonObject json = JsonNode.object()
+            .set(
+                PATH_PROPERTY,
+                context.marshall(this.path)
+            ).set(
+                VALUE_PROPERTY,
+                context.marshallOptionalWithType(this.value)
+            );
+
+        // dont marshall contentType if its default.
+        final MediaType contentType = this.contentType;
+        if (false == contentType.equals(DEFAULT_CONTENT_TYPE)) {
+            json = json.set(
+                CONTENT_TYPE_PROPERTY,
+                context.marshall(contentType)
+            );
+        }
+        return json;
+    }
+
+    static {
+        JsonNodeContext.register(
+            JsonNodeContext.computeTypeName(StorageValue.class),
+            StorageValue::unmarshall,
+            StorageValue::marshall,
+            StorageValue.class
+        );
     }
 }
