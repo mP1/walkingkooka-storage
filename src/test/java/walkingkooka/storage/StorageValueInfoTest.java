@@ -325,10 +325,11 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
         this.treePrintAndCheck(
             this.createObject(),
             "/path123\n" +
-                "  created\n" +
-                "    created-by@example.com 1999-12-31T12:58:59\n" +
-                "  modified\n" +
-                "    modified-by@example.com 2000-01-02T12:58:59\n"
+                "  AuditInfo\n" +
+                "    created\n" +
+                "      created-by@example.com 1999-12-31T12:58:59\n" +
+                "    modified\n" +
+                "      modified-by@example.com 2000-01-02T12:58:59\n"
         );
     }
 

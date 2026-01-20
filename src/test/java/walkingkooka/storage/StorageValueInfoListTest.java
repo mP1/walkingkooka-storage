@@ -238,15 +238,17 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
             this.createList(),
             "StorageValueInfoList\n" +
                 "  /file1\n" +
-                "    created\n" +
-                "      user@example.com -999999999-01-01T00:00\n" +
-                "    modified\n" +
-                "      user@example.com -999999999-01-01T00:00\n" +
+                "    AuditInfo\n" +
+                "      created\n" +
+                "        user@example.com -999999999-01-01T00:00\n" +
+                "      modified\n" +
+                "        user@example.com -999999999-01-01T00:00\n" +
                 "  /file2\n" +
-                "    created\n" +
-                "      user@example.com -999999999-01-01T00:00\n" +
-                "    modified\n" +
-                "      user@example.com -999999999-01-01T00:00\n"
+                "    AuditInfo\n" +
+                "      created\n" +
+                "        user@example.com -999999999-01-01T00:00\n" +
+                "      modified\n" +
+                "        user@example.com -999999999-01-01T00:00\n"
         );
     }
 
