@@ -23,6 +23,7 @@ import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
@@ -50,6 +51,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         final BasicStorageContext context = this.createContext();
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            Indentation.SPACES2,
             LineEnding.CRNL,
             Locale.GERMAN,
             HAS_NOW,
@@ -75,6 +77,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         return BasicStorageContext.with(
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    Indentation.SPACES2,
                     LineEnding.NL,
                     Locale.FRANCE,
                     HAS_NOW,
@@ -93,6 +96,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         this.checkNotEquals(
             BasicStorageContext.with(
                 EnvironmentContexts.empty(
+                    Indentation.SPACES2,
                     LineEnding.CR,
                     Locale.GERMAN,
                     LocalDateTime::now,
