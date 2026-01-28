@@ -22,8 +22,11 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.TextToTryingShortCircuitingConverter;
 import walkingkooka.storage.StoragePath;
 
+import java.util.Objects;
+
 /**
- * A {@link Converter} that converts {@link String} to {@link StoragePath}.
+ * A {@link Converter} that converts {@link String} to {@link StoragePath}.<br>
+ * If a relative path is given the {@link StorageConverterContext#currentWorkingDirectory()} is prepended.
  */
 final class StorageConverterTextToStoragePath<C extends StorageConverterContext> implements TextToTryingShortCircuitingConverter<C> {
 
@@ -51,7 +54,25 @@ final class StorageConverterTextToStoragePath<C extends StorageConverterContext>
     public Object parseText(final String text,
                             final Class<?> type,
                             final C context) {
-        return StoragePath.parse(text);
+        Objects.requireNonNull(text, "text");
+
+        return text.isEmpty() ?
+            currentWorkingDirectoryOrRoot(context) :
+            StoragePath.parse(
+                text.startsWith(
+                    StoragePath.SEPARATOR.string()
+                ) ?
+                    text :
+                    currentWorkingDirectoryOrRoot(context)
+                        .value() +
+                        StoragePath.SEPARATOR.character() +
+                        text
+            );
+    }
+
+    private static StoragePath currentWorkingDirectoryOrRoot(final StorageConverterContext context) {
+        return context.currentWorkingDirectory()
+            .orElse(StoragePath.ROOT);
     }
 
     @Override

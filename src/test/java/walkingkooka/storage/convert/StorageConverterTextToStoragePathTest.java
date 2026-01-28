@@ -27,8 +27,12 @@ import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.convert.Converters;
 import walkingkooka.storage.StoragePath;
 
+import java.util.Optional;
+
 public final class StorageConverterTextToStoragePathTest implements ConverterTesting2<StorageConverterTextToStoragePath<FakeStorageConverterContext>, FakeStorageConverterContext>,
     ToStringTesting<StorageConverterTextToStoragePath<FakeStorageConverterContext>> {
+
+    private final static String CWD = "/current1/working2/directory3";
 
     @Test
     public void testConvertNullFails() {
@@ -47,7 +51,16 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     }
 
     @Test
-    public void testConvertString() {
+    public void testConvertEmptyString() {
+        this.convertAndCheck(
+            "",
+            StoragePath.class,
+            StoragePath.parse(CWD)
+        );
+    }
+
+    @Test
+    public void testConvertStringWithAbsolutePath() {
         final String text = "/path123/file456.txt";
 
         this.convertAndCheck(
@@ -58,13 +71,41 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     }
 
     @Test
-    public void testConvertCharSequence() {
+    public void testConvertCharSequenceWithAbsolutePath() {
         final String text = "/path123/file456.txt";
 
         this.convertAndCheck(
             new StringBuilder(text),
             StoragePath.class,
             StoragePath.parse(text)
+        );
+    }
+
+    @Test
+    public void testConvertRelativePath() {
+        final String text = "after4.txt";
+
+        this.convertAndCheck(
+            text,
+            StoragePath.class,
+            StoragePath.parse(CWD + "/" + text)
+        );
+    }
+
+    @Test
+    public void testConvertRelativePathAndCurrentWorkingDirectoryWithEndingSlash() {
+        final String text = "after4.txt";
+
+        this.convertAndCheck(
+            this.createConverter(),
+            text,
+            StoragePath.class,
+            this.createContext(
+                Optional.of(
+                    StoragePath.parse(CWD + "/")
+                )
+            ),
+            StoragePath.parse(CWD + "/" + text)
         );
     }
 
@@ -75,6 +116,14 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
 
     @Override
     public FakeStorageConverterContext createContext() {
+        return this.createContext(
+            Optional.of(
+                StoragePath.parse(CWD)
+            )
+        );
+    }
+
+    public FakeStorageConverterContext createContext(final Optional<StoragePath> currentWorkingDirectory) {
         return new FakeStorageConverterContext() {
 
             @Override
@@ -98,6 +147,11 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
             }
 
             private final Converter<ConverterContext> converter = Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString();
+
+            @Override
+            public Optional<StoragePath> currentWorkingDirectory() {
+                return currentWorkingDirectory;
+            }
         };
     }
 
