@@ -18,36 +18,8 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContextTesting;
-import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.HasCurrentWorkingDirectoryTesting;
 
-import java.util.Optional;
-
-public interface StorageConverterContextTesting<C extends StorageConverterContext> extends ConverterContextTesting<C> {
-
-    // currentWorkingDirectory..........................................................................................
-
-    default void currentWorkingDirectoryAndCheck(final C context) {
-        this.currentWorkingDirectoryAndCheck(
-            context,
-            Optional.empty()
-        );
-    }
-
-    default void currentWorkingDirectoryAndCheck(final C context,
-                                                 final StoragePath expected) {
-        this.currentWorkingDirectoryAndCheck(
-            context,
-            Optional.of(expected)
-        );
-    }
-
-
-    default void currentWorkingDirectoryAndCheck(final C context,
-                                                 final Optional<StoragePath> expected) {
-        this.checkEquals(
-            expected,
-            context.currentWorkingDirectory(),
-            context::toString
-        );
-    }
+public interface StorageConverterContextTesting<C extends StorageConverterContext> extends ConverterContextTesting<C>,
+    HasCurrentWorkingDirectoryTesting {
 }
