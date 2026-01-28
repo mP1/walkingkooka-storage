@@ -17,12 +17,27 @@
 
 package walkingkooka.storage.convert;
 
+import walkingkooka.convert.ConverterContext;
 import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.storage.StoragePath;
+
+import java.util.Optional;
 
 /**
  * Factories for Storage {@link StorageConverterContext}.
  */
 public final class StorageConverterContexts implements PublicStaticHelper {
+
+    /**
+     * {@see BasicStorageConverterContext}
+     */
+    public static StorageConverterContext basic(final Optional<StoragePath> currentWorkingDirectory,
+                                                final ConverterContext context) {
+        return BasicStorageConverterContext.with(
+            currentWorkingDirectory,
+            context
+        );
+    }
 
     /**
      * {@see FakeStorageConverterContext}
