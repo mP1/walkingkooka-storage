@@ -25,11 +25,10 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.convert.Converters;
-import walkingkooka.convert.FakeConverterContext;
 import walkingkooka.storage.StoragePath;
 
-public final class StorageConverterTextToStoragePathTest implements ConverterTesting2<StorageConverterTextToStoragePath<FakeConverterContext>, FakeConverterContext>,
-    ToStringTesting<StorageConverterTextToStoragePath<FakeConverterContext>> {
+public final class StorageConverterTextToStoragePathTest implements ConverterTesting2<StorageConverterTextToStoragePath<FakeStorageConverterContext>, FakeStorageConverterContext>,
+    ToStringTesting<StorageConverterTextToStoragePath<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertNullFails() {
@@ -70,13 +69,13 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     }
 
     @Override
-    public StorageConverterTextToStoragePath<FakeConverterContext> createConverter() {
+    public StorageConverterTextToStoragePath<FakeStorageConverterContext> createConverter() {
         return StorageConverterTextToStoragePath.instance();
     }
 
     @Override
-    public FakeConverterContext createContext() {
-        return new FakeConverterContext() {
+    public FakeStorageConverterContext createContext() {
+        return new FakeStorageConverterContext() {
 
             @Override
             public boolean canConvert(final Object value,
@@ -115,7 +114,7 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     // class............................................................................................................
 
     @Override
-    public Class<StorageConverterTextToStoragePath<FakeConverterContext>> type() {
+    public Class<StorageConverterTextToStoragePath<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterTextToStoragePath.class);
     }
 

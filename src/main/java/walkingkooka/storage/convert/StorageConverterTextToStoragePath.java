@@ -19,19 +19,18 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
 import walkingkooka.convert.Converter;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.TextToTryingShortCircuitingConverter;
 import walkingkooka.storage.StoragePath;
 
 /**
  * A {@link Converter} that converts {@link String} to {@link StoragePath}.
  */
-final class StorageConverterTextToStoragePath<C extends ConverterContext> implements TextToTryingShortCircuitingConverter<C> {
+final class StorageConverterTextToStoragePath<C extends StorageConverterContext> implements TextToTryingShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends ConverterContext> StorageConverterTextToStoragePath<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterTextToStoragePath<C> instance() {
         return Cast.to(INSTANCE);
     }
 

@@ -25,7 +25,6 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.convert.Converters;
-import walkingkooka.convert.FakeConverterContext;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.storage.StoragePath;
@@ -35,8 +34,8 @@ import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 
-public class StorageConverterStorageValueInfoListToTextTest implements ConverterTesting2<StorageConverterStorageValueInfoListToText<FakeConverterContext>, FakeConverterContext>,
-    ToStringTesting<StorageConverterStorageValueInfoListToText<FakeConverterContext>> {
+public class StorageConverterStorageValueInfoListToTextTest implements ConverterTesting2<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>, FakeStorageConverterContext>,
+    ToStringTesting<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertNullFails() {
@@ -80,13 +79,13 @@ public class StorageConverterStorageValueInfoListToTextTest implements Converter
     }
 
     @Override
-    public StorageConverterStorageValueInfoListToText<FakeConverterContext> createConverter() {
+    public StorageConverterStorageValueInfoListToText<FakeStorageConverterContext> createConverter() {
         return StorageConverterStorageValueInfoListToText.instance();
     }
 
     @Override
-    public FakeConverterContext createContext() {
-        return new FakeConverterContext() {
+    public FakeStorageConverterContext createContext() {
+        return new FakeStorageConverterContext() {
 
             @Override
             public LineEnding lineEnding() {
@@ -130,7 +129,7 @@ public class StorageConverterStorageValueInfoListToTextTest implements Converter
     // class............................................................................................................
 
     @Override
-    public Class<StorageConverterStorageValueInfoListToText<FakeConverterContext>> type() {
+    public Class<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageValueInfoListToText.class);
     }
 

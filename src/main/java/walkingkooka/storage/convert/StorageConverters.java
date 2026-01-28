@@ -18,7 +18,6 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.convert.Converter;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 /**
@@ -29,14 +28,14 @@ public final class StorageConverters implements PublicStaticHelper {
     /**
      * {@see StorageConverterStorageValueInfoListToText}
      */
-    public static <C extends ConverterContext> Converter<C> storageValueInfoListToText() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueInfoListToText() {
         return StorageConverterStorageValueInfoListToText.instance();
     }
 
     /**
      * {@see StorageConverterTextToStoragePath}
      */
-    public static <C extends ConverterContext> Converter<C> textToStoragePath() {
+    public static <C extends StorageConverterContext> Converter<C> textToStoragePath() {
         return StorageConverterTextToStoragePath.instance();
     }
 
