@@ -17,24 +17,19 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.convert.FakeConverterContext;
+import walkingkooka.storage.StoragePath;
 
-/**
- * Factories for Storage {@link StorageConverterContext}.
- */
-public final class StorageConverterContexts implements PublicStaticHelper {
+import java.util.Optional;
 
-    /**
-     * {@see FakeStorageConverterContext}
-     */
-    public static FakeStorageConverterContext fake() {
-        return new FakeStorageConverterContext();
+public class FakeStorageConverterContext extends FakeConverterContext implements StorageConverterContext {
+
+    public FakeStorageConverterContext() {
+        super();
     }
 
-    /**
-     * Stop creation
-     */
-    private StorageConverterContexts() {
+    @Override
+    public Optional<StoragePath> currentWorkingDirectory() {
         throw new UnsupportedOperationException();
     }
 }
