@@ -18,6 +18,14 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContext;
+import walkingkooka.storage.StoragePath;
+
+import java.util.Optional;
 
 public interface StorageConverterContext extends ConverterContext {
+
+    /**
+     * Returns the current working directory.
+     */
+    Optional<StoragePath> currentWorkingDirectory();
 }
