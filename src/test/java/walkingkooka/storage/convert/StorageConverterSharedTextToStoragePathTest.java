@@ -20,17 +20,14 @@ package walkingkooka.storage.convert;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.ToStringTesting;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
-import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.convert.Converters;
 import walkingkooka.storage.StoragePath;
 
 import java.util.Optional;
 
-public final class StorageConverterTextToStoragePathTest implements ConverterTesting2<StorageConverterTextToStoragePath<FakeStorageConverterContext>, FakeStorageConverterContext>,
-    ToStringTesting<StorageConverterTextToStoragePath<FakeStorageConverterContext>> {
+public final class StorageConverterSharedTextToStoragePathTest extends StorageConverterSharedTestCase<StorageConverterSharedTextToStoragePath<FakeStorageConverterContext>> {
 
     private final static String CWD = "/current1/working2/directory3";
 
@@ -110,8 +107,8 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     }
 
     @Override
-    public StorageConverterTextToStoragePath<FakeStorageConverterContext> createConverter() {
-        return StorageConverterTextToStoragePath.instance();
+    public StorageConverterSharedTextToStoragePath<FakeStorageConverterContext> createConverter() {
+        return StorageConverterSharedTextToStoragePath.instance();
     }
 
     @Override
@@ -160,7 +157,7 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StorageConverterTextToStoragePath.instance(),
+            StorageConverterSharedTextToStoragePath.instance(),
             "String -> StoragePath"
         );
     }
@@ -168,17 +165,7 @@ public final class StorageConverterTextToStoragePathTest implements ConverterTes
     // class............................................................................................................
 
     @Override
-    public Class<StorageConverterTextToStoragePath<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterTextToStoragePath.class);
-    }
-
-    @Override
-    public String typeNamePrefix() {
-        return "StorageConverter";
-    }
-
-    @Override
-    public String typeNameSuffix() {
-        return "";
+    public Class<StorageConverterSharedTextToStoragePath<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterSharedTextToStoragePath.class);
     }
 }
