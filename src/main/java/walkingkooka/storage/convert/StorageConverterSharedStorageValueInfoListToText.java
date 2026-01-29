@@ -30,19 +30,20 @@ import java.util.stream.Collectors;
  * A {@link walkingkooka.convert.Converter} that converts a {@link StorageValueInfoList} into lines of text, with one
  * per item.
  */
-final class StorageConverterStorageValueInfoListToText<C extends StorageConverterContext> implements ShortCircuitingConverter<C> {
+final class StorageConverterSharedStorageValueInfoListToText<C extends StorageConverterContext> extends StorageConverterShared<C>
+    implements ShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageValueInfoListToText<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterSharedStorageValueInfoListToText<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageValueInfoListToText<?> INSTANCE = new StorageConverterStorageValueInfoListToText<>();
+    private final static StorageConverterSharedStorageValueInfoListToText<?> INSTANCE = new StorageConverterSharedStorageValueInfoListToText<>();
 
 
-    private StorageConverterStorageValueInfoListToText() {
+    private StorageConverterSharedStorageValueInfoListToText() {
         super();
     }
 

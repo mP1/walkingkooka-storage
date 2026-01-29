@@ -20,10 +20,8 @@ package walkingkooka.storage.convert;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.ToStringTesting;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
-import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.convert.Converters;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
@@ -34,8 +32,7 @@ import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 
-public class StorageConverterStorageValueInfoListToTextTest implements ConverterTesting2<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>, FakeStorageConverterContext>,
-    ToStringTesting<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> {
+public class StorageConverterSharedStorageValueInfoListToTextTest extends StorageConverterSharedTestCase<StorageConverterSharedStorageValueInfoListToText<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertNullFails() {
@@ -79,8 +76,8 @@ public class StorageConverterStorageValueInfoListToTextTest implements Converter
     }
 
     @Override
-    public StorageConverterStorageValueInfoListToText<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStorageValueInfoListToText.instance();
+    public StorageConverterSharedStorageValueInfoListToText<FakeStorageConverterContext> createConverter() {
+        return StorageConverterSharedStorageValueInfoListToText.instance();
     }
 
     @Override
@@ -121,7 +118,7 @@ public class StorageConverterStorageValueInfoListToTextTest implements Converter
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StorageConverterStorageValueInfoListToText.instance(),
+            StorageConverterSharedStorageValueInfoListToText.instance(),
             "StorageValueInfoList -> Text"
         );
     }
@@ -129,17 +126,7 @@ public class StorageConverterStorageValueInfoListToTextTest implements Converter
     // class............................................................................................................
 
     @Override
-    public Class<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStorageValueInfoListToText.class);
-    }
-
-    @Override
-    public String typeNamePrefix() {
-        return "StorageConverter";
-    }
-
-    @Override
-    public String typeNameSuffix() {
-        return "";
+    public Class<StorageConverterSharedStorageValueInfoListToText<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterSharedStorageValueInfoListToText.class);
     }
 }
