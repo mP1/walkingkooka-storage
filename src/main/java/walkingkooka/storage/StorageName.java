@@ -99,6 +99,25 @@ public final class StorageName implements Name,
      */
     transient Optional<FileExtension> fileExtension;
 
+    /**
+     * The name without any file extension.
+     */
+    public String withoutFileExtension() {
+        final String value = this.value();
+        return this.fileExtension()
+            .map(e ->
+                name.substring(
+                    0,
+                    Math.max(
+                        0,
+                        value.length() - e.value().length() - 1 // dont include DOT
+                    )
+                )
+            ).orElse(value);
+    }
+
+    transient Optional<String> valueWithoutFileExtension;
+
     // Object...........................................................................................................
 
     @Override
