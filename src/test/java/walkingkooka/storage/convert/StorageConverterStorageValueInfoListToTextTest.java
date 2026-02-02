@@ -23,13 +23,16 @@ import walkingkooka.Either;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.environment.AuditInfo;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.storage.StorageValueInfoList;
+import walkingkooka.text.LineEnding;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
-public final class StorageConverterSharedTextToStoragePathTest extends StorageConverterSharedTestCase<StorageConverterSharedTextToStoragePath<FakeStorageConverterContext>> {
-
-    private final static String CWD = "/current1/working2/directory3";
+public class StorageConverterStorageValueInfoListToTextTest extends StorageConverterTestCase<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertNullFails() {
@@ -40,88 +43,51 @@ public final class StorageConverterSharedTextToStoragePathTest extends StorageCo
     }
 
     @Test
-    public void testConvertNonStringFails() {
+    public void testConvertNonStorageValueInfoListFails() {
         this.convertFails(
             123,
-            StoragePath.class
+            String.class
         );
     }
 
     @Test
-    public void testConvertEmptyString() {
+    public void testConvertStorageValueInfoListToString() {
         this.convertAndCheck(
-            "",
-            StoragePath.class,
-            StoragePath.parse(CWD)
-        );
-    }
-
-    @Test
-    public void testConvertStringWithAbsolutePath() {
-        final String text = "/path123/file456.txt";
-
-        this.convertAndCheck(
-            text,
-            StoragePath.class,
-            StoragePath.parse(text)
-        );
-    }
-
-    @Test
-    public void testConvertCharSequenceWithAbsolutePath() {
-        final String text = "/path123/file456.txt";
-
-        this.convertAndCheck(
-            new StringBuilder(text),
-            StoragePath.class,
-            StoragePath.parse(text)
-        );
-    }
-
-    @Test
-    public void testConvertRelativePath() {
-        final String text = "after4.txt";
-
-        this.convertAndCheck(
-            text,
-            StoragePath.class,
-            StoragePath.parse(CWD + "/" + text)
-        );
-    }
-
-    @Test
-    public void testConvertRelativePathAndCurrentWorkingDirectoryWithEndingSlash() {
-        final String text = "after4.txt";
-
-        this.convertAndCheck(
-            this.createConverter(),
-            text,
-            StoragePath.class,
-            this.createContext(
-                Optional.of(
-                    StoragePath.parse(CWD + "/")
+            StorageValueInfoList.EMPTY.concat(
+                StorageValueInfo.with(
+                    StoragePath.parse("/1st"),
+                    AuditInfo.create(
+                        EmailAddress.parse("user@example.com"),
+                        LocalDateTime.MIN
+                    )
+                )
+            ).concat(
+                StorageValueInfo.with(
+                    StoragePath.parse("/2nd"),
+                    AuditInfo.create(
+                        EmailAddress.parse("user@example.com"),
+                        LocalDateTime.MIN
+                    )
                 )
             ),
-            StoragePath.parse(CWD + "/" + text)
+            String.class,
+            "/1st\n/2nd\n"
         );
     }
 
     @Override
-    public StorageConverterSharedTextToStoragePath<FakeStorageConverterContext> createConverter() {
-        return StorageConverterSharedTextToStoragePath.instance();
+    public StorageConverterStorageValueInfoListToText<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageValueInfoListToText.instance();
     }
 
     @Override
     public FakeStorageConverterContext createContext() {
-        return this.createContext(
-            Optional.of(
-                StoragePath.parse(CWD)
-            )
-        );
-    }
-
-    public FakeStorageConverterContext createContext(final Optional<StoragePath> currentWorkingDirectory) {
         return new FakeStorageConverterContext() {
+
+            @Override
+            public LineEnding lineEnding() {
+                return LineEnding.NL;
+            }
 
             @Override
             public boolean canConvert(final Object value,
@@ -144,11 +110,6 @@ public final class StorageConverterSharedTextToStoragePathTest extends StorageCo
             }
 
             private final Converter<ConverterContext> converter = Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString();
-
-            @Override
-            public Optional<StoragePath> currentWorkingDirectory() {
-                return currentWorkingDirectory;
-            }
         };
     }
 
@@ -157,15 +118,15 @@ public final class StorageConverterSharedTextToStoragePathTest extends StorageCo
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StorageConverterSharedTextToStoragePath.instance(),
-            "String -> StoragePath"
+            StorageConverterStorageValueInfoListToText.instance(),
+            "StorageValueInfoList -> Text"
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageConverterSharedTextToStoragePath<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterSharedTextToStoragePath.class);
+    public Class<StorageConverterStorageValueInfoListToText<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageValueInfoListToText.class);
     }
 }

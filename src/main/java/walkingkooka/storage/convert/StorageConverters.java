@@ -26,17 +26,17 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {@see StorageConverterSharedStorageValueInfoListToText}
+     * {@see StorageConverterStorageValueInfoListToText}
      */
     public static <C extends StorageConverterContext> Converter<C> storageValueInfoListToText() {
-        return StorageConverterSharedStorageValueInfoListToText.instance();
+        return StorageConverterStorageValueInfoListToText.instance();
     }
 
     /**
-     * {@see StorageConverterSharedTextToStoragePath}
+     * {@see StorageConverterTextToStoragePath}
      */
     public static <C extends StorageConverterContext> Converter<C> textToStoragePath() {
-        return StorageConverterSharedTextToStoragePath.instance();
+        return StorageConverterTextToStoragePath.instance();
     }
 
     /**

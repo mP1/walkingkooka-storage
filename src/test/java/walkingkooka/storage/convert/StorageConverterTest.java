@@ -21,11 +21,11 @@ import walkingkooka.Cast;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class StorageConverterSharedTest implements ClassTesting<StorageConverterShared<?>> {
+public final class StorageConverterTest implements ClassTesting<StorageConverter<?>> {
 
     @Override
-    public Class<StorageConverterShared<?>> type() {
-        return Cast.to(StorageConverterShared.class);
+    public Class<StorageConverter<?>> type() {
+        return Cast.to(StorageConverter.class);
     }
 
     @Override
