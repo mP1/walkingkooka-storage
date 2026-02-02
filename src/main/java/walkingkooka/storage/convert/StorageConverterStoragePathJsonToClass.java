@@ -29,19 +29,19 @@ import walkingkooka.tree.json.JsonNode;
  * A {@link Converter} that converts a {@link StoragePath} by examining its file extension to a {@link Class} which can
  * then be used to convert a value to text.
  */
-final class StorageConverterStoragePathToJsonNodeClass<C extends StorageConverterContext> extends StorageConverter<C>
+final class StorageConverterStoragePathJsonToClass<C extends StorageConverterContext> extends StorageConverter<C>
     implements ShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStoragePathToJsonNodeClass<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStoragePathJsonToClass<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStoragePathToJsonNodeClass<?> INSTANCE = new StorageConverterStoragePathToJsonNodeClass<>();
+    private final static StorageConverterStoragePathJsonToClass<?> INSTANCE = new StorageConverterStoragePathJsonToClass<>();
 
-    private StorageConverterStoragePathToJsonNodeClass() {
+    private StorageConverterStoragePathJsonToClass() {
         super();
     }
 
