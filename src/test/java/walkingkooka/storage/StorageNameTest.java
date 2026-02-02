@@ -105,6 +105,63 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
         );
     }
 
+    // withoutFileExtension.............................................................................................
+
+    @Test
+    public void testWithoutFileExtensionMissingFileExtension() {
+        this.withoutFileExtensionAndCheck(
+            StorageName.with("xyz")
+        );
+    }
+
+    @Test
+    public void testWithoutFileExtensionEmpty() {
+        this.withoutFileExtensionAndCheck(
+            StorageName.with("xyz."),
+            "xyz"
+        );
+    }
+
+    @Test
+    public void testWithoutFileExtensionPresent() {
+        this.withoutFileExtensionAndCheck(
+            StorageName.with("xyz.txt"),
+            "xyz"
+        );
+    }
+
+    @Test
+    public void testWithoutFileExtensionPresent2() {
+        this.withoutFileExtensionAndCheck(
+            StorageName.with("xyz.EXE"),
+            "xyz"
+        );
+    }
+
+    @Test
+    public void testWithoutFileExtensionPresent3() {
+        this.withoutFileExtensionAndCheck(
+            StorageName.with("xyz.111.222"),
+            "xyz.111"
+        );
+    }
+
+    private void withoutFileExtensionAndCheck(final StorageName name) {
+        this.withoutFileExtensionAndCheck(
+            name,
+            name.value()
+        );
+    }
+
+    private void withoutFileExtensionAndCheck(final StorageName name,
+                                              final String expected) {
+        this.checkEquals(
+            expected,
+            name.withoutFileExtension(),
+            "name without file extension " + CharSequences.quoteAndEscape(name.value())
+        );
+    }
+
     // NameTesting......................................................................................................
 
     @Override
