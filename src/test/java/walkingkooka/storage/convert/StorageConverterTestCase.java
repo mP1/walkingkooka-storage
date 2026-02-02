@@ -22,11 +22,11 @@ import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
-public abstract class StorageConverterSharedTestCase<C extends StorageConverterShared<FakeStorageConverterContext>> implements ConverterTesting2<C, FakeStorageConverterContext>,
+public abstract class StorageConverterTestCase<C extends StorageConverter<FakeStorageConverterContext>> implements ConverterTesting2<C, FakeStorageConverterContext>,
     ToStringTesting<C>,
     ClassTesting<C> {
 
-    StorageConverterSharedTestCase() {
+    StorageConverterTestCase() {
         super();
     }
 
@@ -39,7 +39,7 @@ public abstract class StorageConverterSharedTestCase<C extends StorageConverterS
 
     @Override
     public final String typeNamePrefix() {
-        return StorageConverterShared.class.getSimpleName();
+        return StorageConverter.class.getSimpleName();
     }
 
     @Override

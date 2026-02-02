@@ -19,9 +19,9 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.convert.Converter;
 
-abstract class StorageConverterShared<C extends StorageConverterContext> implements Converter<C> {
+abstract class StorageConverter<C extends StorageConverterContext> implements Converter<C> {
 
-    StorageConverterShared() {
+    StorageConverter() {
         super();
     }
 }

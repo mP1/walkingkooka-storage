@@ -28,19 +28,19 @@ import java.util.Objects;
  * A {@link Converter} that converts {@link String} to {@link StoragePath}.<br>
  * If a relative path is given the {@link StorageConverterContext#currentWorkingDirectory()} is prepended.
  */
-final class StorageConverterSharedTextToStoragePath<C extends StorageConverterContext> extends StorageConverterShared<C>
+final class StorageConverterTextToStoragePath<C extends StorageConverterContext> extends StorageConverter<C>
     implements TextToTryingShortCircuitingConverter<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterSharedTextToStoragePath<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterTextToStoragePath<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterSharedTextToStoragePath<?> INSTANCE = new StorageConverterSharedTextToStoragePath<>();
+    private final static StorageConverterTextToStoragePath<?> INSTANCE = new StorageConverterTextToStoragePath<>();
 
-    private StorageConverterSharedTextToStoragePath() {
+    private StorageConverterTextToStoragePath() {
         super();
     }
 
