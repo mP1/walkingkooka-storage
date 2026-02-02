@@ -23,8 +23,8 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.tree.json.JsonNode;
 
-public final class StorageConverterStoragePathToJsonNodeClassTest extends StorageConverterTestCase<StorageConverterStoragePathToJsonNodeClass<FakeStorageConverterContext>>
-implements ToStringTesting<StorageConverterStoragePathToJsonNodeClass<FakeStorageConverterContext>> {
+public final class StorageConverterStoragePathJsonToClassTest extends StorageConverterTestCase<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>>
+implements ToStringTesting<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertStoragePathWithoutFileExtensionToClass() {
@@ -62,8 +62,8 @@ implements ToStringTesting<StorageConverterStoragePathToJsonNodeClass<FakeStorag
     }
 
     @Override
-    public StorageConverterStoragePathToJsonNodeClass<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStoragePathToJsonNodeClass.instance();
+    public StorageConverterStoragePathJsonToClass<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStoragePathJsonToClass.instance();
     }
 
     @Override
@@ -80,7 +80,7 @@ implements ToStringTesting<StorageConverterStoragePathToJsonNodeClass<FakeStorag
     }
 
     @Override
-    public Class<StorageConverterStoragePathToJsonNodeClass<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStoragePathToJsonNodeClass.class);
+    public Class<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStoragePathJsonToClass.class);
     }
 }

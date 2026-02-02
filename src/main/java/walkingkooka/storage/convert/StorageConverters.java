@@ -26,10 +26,10 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {see StorageConverterStoragePathToJsonNodeClass}
+     * {see StorageConverterStoragePathJsonToClass}
      */
-    public static <C extends StorageConverterContext> Converter<C> storagePathToJsonNodeClass() {
-        return StorageConverterStoragePathToJsonNodeClass.instance();
+    public static <C extends StorageConverterContext> Converter<C> storagePathJsonToClass() {
+        return StorageConverterStoragePathJsonToClass.instance();
     }
 
     /**
