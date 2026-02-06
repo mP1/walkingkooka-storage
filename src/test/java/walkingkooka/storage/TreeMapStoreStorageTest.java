@@ -393,6 +393,12 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
         }
 
         @Override
+        public StoragePath parseStoragePath(final String text) {
+            Objects.requireNonNull(text, "text");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public Optional<EmailAddress> user() {
             return Optional.ofNullable(TreeMapStoreStorageTest.USER);
         }

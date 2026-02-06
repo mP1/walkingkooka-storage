@@ -23,6 +23,13 @@ import walkingkooka.environment.FakeEnvironmentContext;
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
 
     @Override
+    public StoragePath parseStoragePath(final String text) {
+        throw new UnsupportedOperationException();
+    }
+
+    // EnvironmentContext...............................................................................................
+
+    @Override
     public StorageContext cloneEnvironment() {
         throw new UnsupportedOperationException();
     }

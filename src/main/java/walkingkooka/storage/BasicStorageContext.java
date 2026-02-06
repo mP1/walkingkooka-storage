@@ -34,6 +34,15 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         this.environmentContext = environmentContext;
     }
 
+    // StorageContext...................................................................................................
+
+    @Override
+    public StoragePath parseStoragePath(final String text) {
+        return StoragePath.parse(text);
+    }
+
+    // EnvironmentContext...............................................................................................
+
     @Override
     public StorageContext cloneEnvironment() {
         return this.setEnvironmentContext(

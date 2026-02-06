@@ -17,9 +17,36 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContextTesting2;
+import walkingkooka.text.CharSequences;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageContextTesting<C extends StorageContext> extends EnvironmentContextTesting2<C> {
+
+    // parseStorageContext..............................................................................................
+
+    @Test
+    default void testParseStoragePathWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .parseStoragePath(null)
+        );
+    }
+
+    default void parseStoragePathAndCheck(final StorageContext context,
+                                          final String text,
+                                          final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            context.parseStoragePath(text),
+            () -> "parseStoragePath " + CharSequences.quoteAndEscape(text)
+        );
+    }
+
+    // class............................................................................................................
 
     @Override
     default String typeNameSuffix() {
