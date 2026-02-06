@@ -32,6 +32,14 @@ public interface StorageConverterContextDelegator extends ConverterContextDelega
             .currentWorkingDirectory();
     }
 
+    @Override
+    default StoragePath parseStoragePath(final String text) {
+        return this.storageConverterContext()
+            .parseStoragePath(
+                text
+            );
+    }
+
     // ConverterContextDelegator........................................................................................
 
     @Override

@@ -41,6 +41,15 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         this.context = context;
     }
 
+
+    @Override
+    public StoragePath parseStoragePath(final String text) {
+        return StoragePath.parseMaybeRelative(
+            text,
+            this.currentWorkingDirectory
+        );
+    }
+
     // StorageConverterContext..........................................................................................
 
     @Override

@@ -81,6 +81,17 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         );
     }
 
+    // parseStoragePath.................................................................................................
+
+    @Test
+    public void testParseStoragePath() {
+        this.parseStoragePathAndCheck(
+            this.createContext(),
+            "after123",
+            StoragePath.parse(CWD + "/after123")
+        );
+    }
+
     @Override
     public BasicStorageConverterContext createContext() {
         final Locale locale = Locale.ENGLISH;

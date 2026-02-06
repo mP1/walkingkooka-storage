@@ -17,9 +17,25 @@
 
 package walkingkooka.storage.convert;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.convert.ConverterContextTesting;
+import walkingkooka.storage.CanParseStoragePathTesting;
 import walkingkooka.storage.HasCurrentWorkingDirectoryTesting;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public interface StorageConverterContextTesting<C extends StorageConverterContext> extends ConverterContextTesting<C>,
+    CanParseStoragePathTesting,
     HasCurrentWorkingDirectoryTesting {
+
+    // parseStorageContext..............................................................................................
+
+    @Test
+    default void testParseStoragePathWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .parseStoragePath(null)
+        );
+    }
 }
