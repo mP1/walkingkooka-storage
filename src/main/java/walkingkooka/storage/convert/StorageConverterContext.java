@@ -18,12 +18,14 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContext;
+import walkingkooka.storage.CanParseStoragePath;
 import walkingkooka.storage.HasCurrentWorkingDirectory;
 import walkingkooka.storage.StoragePath;
 
 import java.util.Optional;
 
 public interface StorageConverterContext extends ConverterContext,
+    CanParseStoragePath,
     HasCurrentWorkingDirectory {
 
     /**

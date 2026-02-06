@@ -32,4 +32,9 @@ public class FakeStorageConverterContext extends FakeConverterContext implements
     public Optional<StoragePath> currentWorkingDirectory() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public StoragePath parseStoragePath(final String text) {
+        throw new UnsupportedOperationException();
+    }
 }
