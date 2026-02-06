@@ -97,27 +97,26 @@ final public class StoragePath
     }
 
     public static StoragePath parseMaybeRelative(final String text,
-                                                 final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+                                                 final Optional<StoragePath> current) {
         Objects.requireNonNull(text, "text");
-        Objects.requireNonNull(hasCurrentWorkingDirectory, "hasCurrentWorkingDirectory");
+        Objects.requireNonNull(current, "current");
 
         return text.isEmpty() ?
-            currentWorkingDirectoryOrRoot(hasCurrentWorkingDirectory) :
+            currentWorkingDirectoryOrRoot(current) :
             StoragePath.parse(
                 text.startsWith(
                     SEPARATOR.string()
                 ) ?
                     text :
-                    currentWorkingDirectoryOrRoot(hasCurrentWorkingDirectory)
+                    currentWorkingDirectoryOrRoot(current)
                         .value() +
                         SEPARATOR.character() +
                         text
             );
     }
 
-    private static StoragePath currentWorkingDirectoryOrRoot(final HasCurrentWorkingDirectory has) {
-        return has.currentWorkingDirectory()
-            .orElse(StoragePath.ROOT);
+    private static StoragePath currentWorkingDirectoryOrRoot(final Optional<StoragePath> has) {
+        return has.orElse(StoragePath.ROOT);
     }
 
     /**

@@ -308,28 +308,13 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     private void parseMaybeRelativeAndCheck(final String text,
-                                            final Optional<StoragePath> currentWorkingDirectory,
-                                            final String expected) {
-        this.parseMaybeRelativeAndCheck(
-            text,
-            new HasCurrentWorkingDirectory() {
-                @Override
-                public Optional<StoragePath> currentWorkingDirectory() {
-                    return currentWorkingDirectory;
-                }
-            },
-            expected
-        );
-    }
-
-    private void parseMaybeRelativeAndCheck(final String text,
-                                            final HasCurrentWorkingDirectory hasCurrentWorkingDirectory,
+                                            final Optional<StoragePath> current,
                                             final String expected) {
         this.checkEquals(
             StoragePath.parse(expected),
             StoragePath.parseMaybeRelative(
                 text,
-                hasCurrentWorkingDirectory
+                current
             )
         );
     }
