@@ -96,6 +96,30 @@ final public class StoragePath
         }
     }
 
+    public static StoragePath parseMaybeRelative(final String text,
+                                                 final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+        Objects.requireNonNull(text, "text");
+        Objects.requireNonNull(hasCurrentWorkingDirectory, "hasCurrentWorkingDirectory");
+
+        return text.isEmpty() ?
+            currentWorkingDirectoryOrRoot(hasCurrentWorkingDirectory) :
+            StoragePath.parse(
+                text.startsWith(
+                    SEPARATOR.string()
+                ) ?
+                    text :
+                    currentWorkingDirectoryOrRoot(hasCurrentWorkingDirectory)
+                        .value() +
+                        SEPARATOR.character() +
+                        text
+            );
+    }
+
+    private static StoragePath currentWorkingDirectoryOrRoot(final HasCurrentWorkingDirectory has) {
+        return has.currentWorkingDirectory()
+            .orElse(StoragePath.ROOT);
+    }
+
     /**
      * Private constructor
      */
