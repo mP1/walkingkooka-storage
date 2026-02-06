@@ -17,14 +17,11 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.environment.EnvironmentContext;
+public interface CanParseStoragePath {
 
-public interface StorageContext extends EnvironmentContext,
-CanParseStoragePath {
-
-    @Override
-    StorageContext cloneEnvironment();
-
-    @Override
-    StorageContext setEnvironmentContext(final EnvironmentContext environmentContext);
+    /**
+     * Parses the given {@link String path} as text into a {@link StoragePath}.
+     * This could resolve relative paths to a current directory, tildes to a home directory and similar.
+     */
+    StoragePath parseStoragePath(final String text);
 }
