@@ -28,6 +28,7 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -250,6 +251,87 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Override
     public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> expected) {
         return expected;
+    }
+
+    // parseMaybeRelative ..............................................................................................
+
+    @Test
+    public void testParseMaybeRelativeStringWithAbsolutePath() {
+        final String text = "/path123/file456.txt";
+
+        this.parseMaybeRelativeAndCheck(
+            text
+        );
+    }
+
+    @Test
+    public void testParseMaybeRelativeWithRelativePath() {
+        final String text = "after4.txt";
+
+        this.parseMaybeRelativeAndCheck(
+            text,
+            CWD + "/" + text
+        );
+    }
+
+    @Test
+    public void testParseMaybeRelativeWithRelativePathAndCurrentWorkingDirectoryWithEndingSlash() {
+        final String text = "after4.txt";
+
+        this.parseMaybeRelativeAndCheck(
+            text,
+            Optional.of(
+                StoragePath.parse(CWD + "/")
+            ),
+            CWD + "/" + text
+        );
+    }
+
+    private final static String CWD = "/current1/working2/directory3";
+
+    private void parseMaybeRelativeAndCheck(final String text) {
+        this.parseMaybeRelativeAndCheck(
+            text,
+            text
+        );
+    }
+
+    private void parseMaybeRelativeAndCheck(final String text,
+                                            final String expected) {
+        this.parseMaybeRelativeAndCheck(
+            text,
+            Optional.of(
+                StoragePath.parse(CWD)
+            ),
+            expected
+        );
+    }
+
+    private void parseMaybeRelativeAndCheck(final String text,
+                                            final Optional<StoragePath> currentWorkingDirectory,
+                                            final String expected) {
+        this.parseMaybeRelativeAndCheck(
+            text,
+            new HasCurrentWorkingDirectory() {
+                @Override
+                public Optional<StoragePath> currentWorkingDirectory() {
+                    return currentWorkingDirectory;
+                }
+            },
+            expected
+        );
+    }
+
+    private void parseMaybeRelativeAndCheck(final String text,
+                                            final HasCurrentWorkingDirectory hasCurrentWorkingDirectory,
+                                            final String expected) {
+        this.checkEquals(
+            StoragePath.parse(expected),
+            StoragePath.parseMaybeRelative(
+                text,
+                hasCurrentWorkingDirectory
+            )
+        );
     }
 
     // path.............................................................................................................
