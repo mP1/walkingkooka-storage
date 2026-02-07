@@ -19,7 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
 
-public interface StorageContext extends EnvironmentContext,
+public interface StorageContext extends StorageEnvironmentContext,
 CanParseStoragePath {
 
     @Override
