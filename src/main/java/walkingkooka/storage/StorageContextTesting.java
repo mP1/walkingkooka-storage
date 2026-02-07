@@ -18,11 +18,10 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.environment.EnvironmentContextTesting2;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageContextTesting<C extends StorageContext> extends EnvironmentContextTesting2<C>,
+public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting<C>,
     CanParseStoragePathTesting {
 
     // parseStorageContext..............................................................................................
