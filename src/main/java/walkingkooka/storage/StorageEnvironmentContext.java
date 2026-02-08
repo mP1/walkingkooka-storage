@@ -20,7 +20,7 @@ package walkingkooka.storage;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 
-public interface StorageEnvironmentContext extends EnvironmentContext {
+public interface StorageEnvironmentContext extends EnvironmentContext, HasCurrentWorkingDirectory {
 
     /**
      * Constant that should be used to hold the current working directory or PWD.

@@ -19,7 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContextTesting2;
 
-public interface StorageEnvironmentContextTesting<C extends StorageEnvironmentContext> extends EnvironmentContextTesting2<C> {
+public interface StorageEnvironmentContextTesting<C extends StorageEnvironmentContext> extends EnvironmentContextTesting2<C>,
+    HasCurrentWorkingDirectoryTesting{
 
     // class............................................................................................................
 
