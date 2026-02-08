@@ -25,6 +25,11 @@ import java.util.Optional;
 public interface HasCurrentWorkingDirectory {
 
     /**
+     * Nice constant holding no current working directory.
+     */
+    Optional<StoragePath> NO_CURRENT_WORKING_DIRECTORY = Optional.empty();
+
+    /**
      * Returns the current working directory.
      */
     Optional<StoragePath> currentWorkingDirectory();

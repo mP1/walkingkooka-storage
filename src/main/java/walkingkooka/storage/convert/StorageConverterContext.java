@@ -20,16 +20,8 @@ package walkingkooka.storage.convert;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.storage.CanParseStoragePath;
 import walkingkooka.storage.HasCurrentWorkingDirectory;
-import walkingkooka.storage.StoragePath;
-
-import java.util.Optional;
 
 public interface StorageConverterContext extends ConverterContext,
     CanParseStoragePath,
     HasCurrentWorkingDirectory {
-
-    /**
-     * Nice constant holding no current working directory.
-     */
-    Optional<StoragePath> NO_CURRENT_WORKING_DIRECTORY = Optional.empty();
 }
