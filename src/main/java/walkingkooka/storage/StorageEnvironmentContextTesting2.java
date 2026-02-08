@@ -17,12 +17,15 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContextTesting2;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentContext> extends StorageEnvironmentContextTesting,
-    EnvironmentContextTesting2<C>{
+    EnvironmentContextTesting2<C> {
 
     // currentWorkingDirectory..........................................................................................
 
@@ -41,6 +44,17 @@ public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentC
                 expected
             );
         }
+    }
+
+    // setCurrentWorkingDirectory.......................................................................................
+
+    @Test
+    default void testSetCurrentWorkingDirectoryWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .setCurrentWorkingDirectory(null)
+        );
     }
 
     // class............................................................................................................

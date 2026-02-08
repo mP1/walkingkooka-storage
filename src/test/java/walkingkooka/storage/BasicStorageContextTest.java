@@ -47,6 +47,16 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     }
 
     @Test
+    public void testSetCurrentWorkingDirectory() {
+        final StoragePath path = StoragePath.parse("/path1/path2");
+        final BasicStorageContext context = this.createContext();
+        this.setCurrentWorkingDirectoryAndCheck(
+            context,
+            path
+        );
+    }
+
+    @Test
     public void testSetEnvironmentContext() {
         final BasicStorageContext context = this.createContext();
 

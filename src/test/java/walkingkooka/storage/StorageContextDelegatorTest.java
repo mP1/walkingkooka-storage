@@ -88,6 +88,12 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
         }
 
         @Override
+        public void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
+            Objects.requireNonNull(currentWorkingDirectory, "currentWorkingDirectory");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public TestStorageContextDelegator cloneEnvironment() {
             throw new UnsupportedOperationException();
         }

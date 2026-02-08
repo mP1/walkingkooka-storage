@@ -20,6 +20,8 @@ package walkingkooka.storage;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 
+import java.util.Optional;
+
 public interface StorageEnvironmentContext extends EnvironmentContext, HasCurrentWorkingDirectory {
 
     /**
@@ -29,6 +31,14 @@ public interface StorageEnvironmentContext extends EnvironmentContext, HasCurren
         "currentWorkingDirectory",
         StoragePath.class
     );
+
+
+    /**
+     * Sets or replaces the current working directory.
+     */
+    void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory);
+
+    // EnvironmentContext...............................................................................................
 
     @Override
     StorageEnvironmentContext cloneEnvironment();
