@@ -19,6 +19,33 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContextTesting;
 
+import java.util.Optional;
+
 public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
-    HasCurrentWorkingDirectoryTesting{
+    HasCurrentWorkingDirectoryTesting {
+
+    default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context) {
+        this.setCurrentWorkingDirectoryAndCheck(
+            context,
+            Optional.empty()
+        );
+    }
+
+    default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context,
+                                                    final StoragePath currentWorkingDirectory) {
+        this.setCurrentWorkingDirectoryAndCheck(
+            context,
+            Optional.of(currentWorkingDirectory)
+        );
+    }
+
+    default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context,
+                                                    final Optional<StoragePath> currentWorkingDirectory) {
+        context.setCurrentWorkingDirectory(currentWorkingDirectory);
+
+        this.currentWorkingDirectoryAndCheck(
+            context,
+            currentWorkingDirectory
+        );
+    }
 }
