@@ -20,10 +20,19 @@ package walkingkooka.storage;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.FakeEnvironmentContext;
 
+import java.util.Optional;
+
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
 
     @Override
     public StoragePath parseStoragePath(final String text) {
+        throw new UnsupportedOperationException();
+    }
+
+    // StorageEnvironmentContext........................................................................................
+
+    @Override
+    public Optional<StoragePath> currentWorkingDirectory() {
         throw new UnsupportedOperationException();
     }
 

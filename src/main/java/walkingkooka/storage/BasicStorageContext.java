@@ -21,6 +21,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 
 import java.util.Objects;
+import java.util.Optional;
 
 final class BasicStorageContext implements StorageContext, EnvironmentContextDelegator {
 
@@ -39,6 +40,13 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
     @Override
     public StoragePath parseStoragePath(final String text) {
         return StoragePath.parse(text);
+    }
+
+    // StorageEnvironmentContext........................................................................................
+
+    @Override
+    public Optional<StoragePath> currentWorkingDirectory() {
+        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
     }
 
     // EnvironmentContext...............................................................................................
