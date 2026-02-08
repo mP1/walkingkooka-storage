@@ -19,8 +19,10 @@ package walkingkooka.storage;
 
 import java.util.Optional;
 
+/**
+ * A getter that may be called to fetch the users current working directory.
+ */
 public interface HasCurrentWorkingDirectory {
-
 
     /**
      * Returns the current working directory.
