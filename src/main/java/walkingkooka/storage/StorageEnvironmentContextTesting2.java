@@ -17,8 +17,15 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.environment.EnvironmentContextTesting;
+import walkingkooka.environment.EnvironmentContextTesting2;
 
-public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
-    HasCurrentWorkingDirectoryTesting{
+public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentContext> extends StorageEnvironmentContextTesting,
+    EnvironmentContextTesting2<C>{
+
+    // class............................................................................................................
+
+    @Override
+    default String typeNameSuffix() {
+        return StorageEnvironmentContext.class.getSimpleName();
+    }
 }

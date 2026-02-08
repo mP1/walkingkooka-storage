@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting<C>,
+public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting2<C>,
     CanParseStoragePathTesting {
 
     // parseStorageContext..............................................................................................
