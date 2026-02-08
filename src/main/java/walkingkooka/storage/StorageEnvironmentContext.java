@@ -18,8 +18,17 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentValueName;
 
 public interface StorageEnvironmentContext extends EnvironmentContext {
+
+    /**
+     * Constant that should be used to hold the current working directory or PWD.
+     */
+    EnvironmentValueName<StoragePath> CURRENT_WORKING_DIRECTORY = EnvironmentValueName.with(
+        "currentWorkingDirectory",
+        StoragePath.class
+    );
 
     @Override
     StorageEnvironmentContext cloneEnvironment();
