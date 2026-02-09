@@ -29,16 +29,15 @@ public interface StorageEnvironmentContextDelegator extends StorageEnvironmentCo
 
     @Override
     default Optional<StoragePath> currentWorkingDirectory() {
-        return this.storageEnvironmentContext()
-            .currentWorkingDirectory();
+        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
     }
 
     @Override
     default void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
-        this.storageEnvironmentContext()
-            .setCurrentWorkingDirectory(
-                currentWorkingDirectory
-            );
+        this.setOrRemoveEnvironmentValue(
+            CURRENT_WORKING_DIRECTORY,
+            currentWorkingDirectory
+        );
     }
 
     StorageEnvironmentContext storageEnvironmentContext();
