@@ -23,13 +23,13 @@ jobs:
       - name: Maven dependency/resolve
         run: mvn dependency:resolve
 
+      - name: Maven install
+        run: mvn install -Dmaven.javadoc.skip=true -B -V -e > maven-install-output.txt
+
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Maven install
-        run: mvn install -Dmaven.javadoc.skip=true -B -V -e > maven-install-output.txt
 
       - name: Print logs
         if: ${{ always() }}
