@@ -102,26 +102,27 @@ final public class StoragePath
      * Parses the given text as an absolute path or relative using the given current for the later.
      */
     public static StoragePath parseMaybeRelative(final String text,
-                                                 final Optional<StoragePath> current) {
+                                                 final HasUserDirectories hasUserDirectories) {
         Objects.requireNonNull(text, "text");
-        Objects.requireNonNull(current, "current");
+        Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
 
         return text.isEmpty() ?
-            currentWorkingDirectoryOrRoot(current) :
+            currentWorkingDirectoryOrRoot(hasUserDirectories) :
             StoragePath.parse(
                 text.startsWith(
                     SEPARATOR.string()
                 ) ?
                     text :
-                    currentWorkingDirectoryOrRoot(current)
+                    currentWorkingDirectoryOrRoot(hasUserDirectories)
                         .value() +
                         SEPARATOR.character() +
                         text
             );
     }
 
-    private static StoragePath currentWorkingDirectoryOrRoot(final Optional<StoragePath> has) {
-        return has.orElse(StoragePath.ROOT);
+    private static StoragePath currentWorkingDirectoryOrRoot(final HasUserDirectories has) {
+        return has.currentWorkingDirectory()
+            .orElse(StoragePath.ROOT);
     }
 
     /**
