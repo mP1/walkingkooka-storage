@@ -55,7 +55,7 @@ final class StorageConverterTextToStoragePath<C extends StorageConverterContext>
                             final C context) {
         return StoragePath.parseMaybeRelative(
             text,
-            context.currentWorkingDirectory()
+            context
         );
     }
 
