@@ -22,7 +22,7 @@ import walkingkooka.environment.EnvironmentContextTesting;
 import java.util.Optional;
 
 public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
-    HasCurrentWorkingDirectoryTesting {
+    HasUserDirectoriesTesting {
 
     default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context) {
         this.setCurrentWorkingDirectoryAndCheck(

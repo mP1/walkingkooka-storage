@@ -22,7 +22,8 @@ import walkingkooka.environment.EnvironmentValueName;
 
 import java.util.Optional;
 
-public interface StorageEnvironmentContext extends EnvironmentContext, HasCurrentWorkingDirectory {
+public interface StorageEnvironmentContext extends EnvironmentContext,
+    HasUserDirectories {
 
     /**
      * Constant that should be used to hold the current working directory or PWD.
