@@ -96,8 +96,6 @@ final public class StoragePath
         }
     }
 
-    public final static Optional<StoragePath> NO_CURRENT = Optional.empty();
-
     /**
      * Parses the given text as an absolute path or relative using the given current for the later.
      */
