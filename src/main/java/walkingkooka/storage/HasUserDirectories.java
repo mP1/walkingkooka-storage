@@ -20,5 +20,6 @@ package walkingkooka.storage;
 /**
  * A getter that may be called to fetch the users current working directory.
  */
-public interface HasUserDirectories extends HasCurrentWorkingDirectory {
+public interface HasUserDirectories extends HasCurrentWorkingDirectory,
+    HasHomeDirectory {
 }

@@ -146,6 +146,11 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
         private final Optional<StoragePath> currentWorkingDirectory;
 
+        @Override
+        public Optional<StoragePath> homeDirectory() {
+            throw new UnsupportedOperationException();
+        }
+
         // ConverterContextDelegator....................................................................................
 
         @Override

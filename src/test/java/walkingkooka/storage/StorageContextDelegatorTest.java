@@ -94,6 +94,17 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
         }
 
         @Override
+        public Optional<StoragePath> homeDirectory() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+            Objects.requireNonNull(homeDirectory, "homeDirectory");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public TestStorageContextDelegator cloneEnvironment() {
             throw new UnsupportedOperationException();
         }

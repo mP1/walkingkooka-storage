@@ -280,7 +280,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parseMaybeRelativeAndCheck(
             text,
-            new HasUserDirectories() {
+            new FakeHasUserDirectories() {
                 @Override
                 public Optional<StoragePath> currentWorkingDirectory() {
                     return Optional.of(
@@ -305,7 +305,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                                             final String expected) {
         this.parseMaybeRelativeAndCheck(
             text,
-            new HasUserDirectories() {
+            new FakeHasUserDirectories() {
                 @Override
                 public Optional<StoragePath> currentWorkingDirectory() {
                     return Optional.of(

@@ -29,4 +29,9 @@ public class FakeHasUserDirectories implements HasUserDirectories {
     public Optional<StoragePath> currentWorkingDirectory() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Optional<StoragePath> homeDirectory() {
+        throw new UnsupportedOperationException();
+    }
 }
