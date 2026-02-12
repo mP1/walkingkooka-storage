@@ -26,6 +26,7 @@ import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
@@ -65,7 +66,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
-                Optional.empty(),
+                new FakeHasUserDirectories(),
                 null
             )
         );
@@ -97,9 +98,15 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         final Locale locale = Locale.ENGLISH;
 
         return BasicStorageConverterContext.with(
-            Optional.of(
-                StoragePath.parse(CWD)
-            ),
+            new FakeHasUserDirectories() {
+
+                @Override
+                public Optional<StoragePath> currentWorkingDirectory() {
+                    return Optional.of(
+                        StoragePath.parse(CWD)
+                    );
+                }
+            },
             ConverterContexts.basic(
                 false, // canNumbersHaveGroupSeparator
                 Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,

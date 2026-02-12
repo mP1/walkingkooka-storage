@@ -19,9 +19,7 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.reflect.PublicStaticHelper;
-import walkingkooka.storage.StoragePath;
-
-import java.util.Optional;
+import walkingkooka.storage.HasUserDirectories;
 
 /**
  * Factories for Storage {@link StorageConverterContext}.
@@ -31,10 +29,10 @@ public final class StorageConverterContexts implements PublicStaticHelper {
     /**
      * {@see BasicStorageConverterContext}
      */
-    public static StorageConverterContext basic(final Optional<StoragePath> currentWorkingDirectory,
+    public static StorageConverterContext basic(final HasUserDirectories hasUserDirectories,
                                                 final ConverterContext context) {
         return BasicStorageConverterContext.with(
-            currentWorkingDirectory,
+            hasUserDirectories,
             context
         );
     }
