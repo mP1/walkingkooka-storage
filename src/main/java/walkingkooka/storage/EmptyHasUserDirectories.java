@@ -17,28 +17,26 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import java.util.Optional;
 
-public final class HasUserDirectorieses implements PublicStaticHelper {
+final class EmptyHasUserDirectories implements HasUserDirectories {
 
     /**
-     * {@see EmptyHasUserDirectories}
+     * Singleton
      */
-    public static HasUserDirectories empty() {
-        return EmptyHasUserDirectories.INSTANCE;
+    final static EmptyHasUserDirectories INSTANCE = new EmptyHasUserDirectories();
+
+    private EmptyHasUserDirectories() {
+        super();
     }
 
-    /**
-     * {@see FakeHasUserDirectories}
-     */
-    public static FakeHasUserDirectories fake() {
-        return new FakeHasUserDirectories();
+    @Override
+    public Optional<StoragePath> currentWorkingDirectory() {
+        return NO_CURRENT_WORKING_DIRECTORY;
     }
 
-    /**
-     * Stop creation
-     */
-    private HasUserDirectorieses() {
-        throw new UnsupportedOperationException();
+    @Override
+    public Optional<StoragePath> homeDirectory() {
+        return NO_HOME_DIRECTORY;
     }
 }
