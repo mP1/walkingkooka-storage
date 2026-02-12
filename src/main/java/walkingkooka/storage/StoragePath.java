@@ -101,8 +101,8 @@ final public class StoragePath
     /**
      * Parses the given text as an absolute path or relative using the given current for the later.
      */
-    public static StoragePath parseMaybeRelative(final String text,
-                                                 final HasUserDirectories hasUserDirectories) {
+    public static StoragePath parseSpecial(final String text,
+                                           final HasUserDirectories hasUserDirectories) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
 

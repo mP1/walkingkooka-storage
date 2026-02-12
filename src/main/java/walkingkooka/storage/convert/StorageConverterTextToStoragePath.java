@@ -53,7 +53,7 @@ final class StorageConverterTextToStoragePath<C extends StorageConverterContext>
     public Object parseText(final String text,
                             final Class<?> type,
                             final C context) {
-        return StoragePath.parseMaybeRelative(
+        return StoragePath.parseSpecial(
             text,
             context
         );
