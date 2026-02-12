@@ -19,6 +19,7 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContextDelegator;
+import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.StoragePath;
 
 import java.util.Objects;
@@ -27,17 +28,17 @@ import java.util.Optional;
 final class BasicStorageConverterContext implements StorageConverterContext,
     ConverterContextDelegator {
 
-    static BasicStorageConverterContext with(final Optional<StoragePath> currentWorkingDirectory,
+    static BasicStorageConverterContext with(final HasUserDirectories hasUserDirectories,
                                              final ConverterContext context) {
-        Objects.requireNonNull(currentWorkingDirectory, "currentWorkingDirectory");
+        Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
         Objects.requireNonNull(context, "context");
 
-        return new BasicStorageConverterContext(currentWorkingDirectory, context);
+        return new BasicStorageConverterContext(hasUserDirectories, context);
     }
 
-    private BasicStorageConverterContext(final Optional<StoragePath> currentWorkingDirectory,
+    private BasicStorageConverterContext(final HasUserDirectories hasUserDirectories,
                                          final ConverterContext context) {
-        this.currentWorkingDirectory = currentWorkingDirectory;
+        this.hasUserDirectories = hasUserDirectories;
         this.context = context;
     }
 
@@ -54,10 +55,10 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     @Override
     public Optional<StoragePath> currentWorkingDirectory() {
-        return this.currentWorkingDirectory;
+        return this.hasUserDirectories.currentWorkingDirectory();
     }
 
-    private final Optional<StoragePath> currentWorkingDirectory;
+    private final HasUserDirectories hasUserDirectories;
 
     // ConverterContextDelegator........................................................................................
 
@@ -72,6 +73,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     @Override
     public String toString() {
-        return "currentWorkingDirectory: " + this.currentWorkingDirectory + ", context: " + this.context;
+        return "hasUserDirectories: " + this.hasUserDirectories + ", context: " + this.context;
     }
 }
