@@ -256,29 +256,29 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     // parseMaybeRelative ..............................................................................................
 
     @Test
-    public void testParseMaybeRelativeStringWithAbsolutePath() {
+    public void testParseSpecialStringWithAbsolutePath() {
         final String text = "/path123/file456.txt";
 
-        this.parseMaybeRelativeAndCheck(
+        this.parseSpecialAndCheck(
             text
         );
     }
 
     @Test
-    public void testParseMaybeRelativeWithRelativePath() {
+    public void testParseSpecialPath() {
         final String text = "after4.txt";
 
-        this.parseMaybeRelativeAndCheck(
+        this.parseSpecialAndCheck(
             text,
             CWD + "/" + text
         );
     }
 
     @Test
-    public void testParseMaybeRelativeWithRelativePathAndCurrentWorkingDirectoryWithEndingSlash() {
+    public void testParseSpecialPathAndCurrentWorkingDirectoryWithEndingSlash() {
         final String text = "after4.txt";
 
-        this.parseMaybeRelativeAndCheck(
+        this.parseSpecialAndCheck(
             text,
             new FakeHasUserDirectories() {
                 @Override
@@ -294,16 +294,16 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
     private final static String CWD = "/current1/working2/directory3";
 
-    private void parseMaybeRelativeAndCheck(final String text) {
-        this.parseMaybeRelativeAndCheck(
+    private void parseSpecialAndCheck(final String text) {
+        this.parseSpecialAndCheck(
             text,
             text
         );
     }
 
-    private void parseMaybeRelativeAndCheck(final String text,
-                                            final String expected) {
-        this.parseMaybeRelativeAndCheck(
+    private void parseSpecialAndCheck(final String text,
+                                      final String expected) {
+        this.parseSpecialAndCheck(
             text,
             new FakeHasUserDirectories() {
                 @Override
@@ -317,12 +317,12 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
-    private void parseMaybeRelativeAndCheck(final String text,
-                                            final HasUserDirectories has,
-                                            final String expected) {
+    private void parseSpecialAndCheck(final String text,
+                                      final HasUserDirectories has,
+                                      final String expected) {
         this.checkEquals(
             StoragePath.parse(expected),
-            StoragePath.parseMaybeRelative(
+            StoragePath.parseSpecial(
                 text,
                 has
             )
