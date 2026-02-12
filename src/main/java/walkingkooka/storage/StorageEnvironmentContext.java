@@ -39,6 +39,20 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
      */
     void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory);
 
+    /**
+     * Constant that should be used to hold the home directory.
+     */
+    EnvironmentValueName<StoragePath> HOME_DIRECTORY = EnvironmentValueName.with(
+        "homeDirectory",
+        StoragePath.class
+    );
+
+
+    /**
+     * Sets or replaces the home directory.
+     */
+    void setHomeDirectory(final Optional<StoragePath> homeDirectory);
+
     // EnvironmentContext...............................................................................................
 
     @Override

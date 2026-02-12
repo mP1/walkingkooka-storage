@@ -40,6 +40,19 @@ public interface StorageEnvironmentContextDelegator extends StorageEnvironmentCo
         );
     }
 
+    @Override
+    default Optional<StoragePath> homeDirectory() {
+        return this.environmentValue(HOME_DIRECTORY);
+    }
+
+    @Override
+    default void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+        this.setOrRemoveEnvironmentValue(
+            HOME_DIRECTORY,
+            homeDirectory
+        );
+    }
+
     StorageEnvironmentContext storageEnvironmentContext();
 
     // EnvironmentContextDelegator......................................................................................

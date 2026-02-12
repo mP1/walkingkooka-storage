@@ -19,7 +19,8 @@ package walkingkooka.storage;
 
 import java.util.Optional;
 
-public interface HasUserDirectoriesDelegator extends HasCurrentWorkingDirectory {
+public interface HasUserDirectoriesDelegator extends HasCurrentWorkingDirectory,
+    HasHomeDirectory {
 
     HasUserDirectories hasUserDirectories();
 
@@ -27,5 +28,11 @@ public interface HasUserDirectoriesDelegator extends HasCurrentWorkingDirectory 
     default Optional<StoragePath> currentWorkingDirectory() {
         return this.hasUserDirectories()
             .currentWorkingDirectory();
+    }
+
+    @Override
+    default Optional<StoragePath> homeDirectory() {
+        return this.hasUserDirectories()
+            .homeDirectory();
     }
 }

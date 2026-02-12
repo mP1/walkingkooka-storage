@@ -44,6 +44,8 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
     private final static String CWD = "/current/working/directory/";
 
+    private final static String HOME = "/home/user123";
+
     private final static ConverterContext CONVERTER_CONTEXT = ConverterContexts.fake();
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);

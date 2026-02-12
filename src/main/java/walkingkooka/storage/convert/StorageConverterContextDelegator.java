@@ -19,18 +19,13 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContextDelegator;
+import walkingkooka.storage.HasUserDirectories;
+import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
 
-import java.util.Optional;
-
 public interface StorageConverterContextDelegator extends ConverterContextDelegator,
-    StorageConverterContext {
-
-    @Override
-    default Optional<StoragePath> currentWorkingDirectory() {
-        return this.storageConverterContext()
-            .currentWorkingDirectory();
-    }
+    StorageConverterContext,
+    HasUserDirectoriesDelegator {
 
     @Override
     default StoragePath parseStoragePath(final String text) {
@@ -44,6 +39,13 @@ public interface StorageConverterContextDelegator extends ConverterContextDelega
 
     @Override
     default ConverterContext converterContext() {
+        return this.storageConverterContext();
+    }
+
+    // HasUserDirectoriesDelegator......................................................................................
+
+    @Override
+    default HasUserDirectories hasUserDirectories() {
         return this.storageConverterContext();
     }
 

@@ -57,6 +57,19 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         );
     }
 
+    @Override
+    public Optional<StoragePath> homeDirectory() {
+        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
+    }
+
+    @Override
+    public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+        this.setOrRemoveEnvironmentValue(
+            CURRENT_WORKING_DIRECTORY,
+            homeDirectory
+        );
+    }
+
     // EnvironmentContext...............................................................................................
 
     @Override

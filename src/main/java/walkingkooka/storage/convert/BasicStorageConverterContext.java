@@ -20,13 +20,14 @@ package walkingkooka.storage.convert;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContextDelegator;
 import walkingkooka.storage.HasUserDirectories;
+import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
 
 import java.util.Objects;
-import java.util.Optional;
 
 final class BasicStorageConverterContext implements StorageConverterContext,
-    ConverterContextDelegator {
+    ConverterContextDelegator,
+    HasUserDirectoriesDelegator {
 
     static BasicStorageConverterContext with(final HasUserDirectories hasUserDirectories,
                                              final ConverterContext context) {
@@ -54,8 +55,8 @@ final class BasicStorageConverterContext implements StorageConverterContext,
     // StorageConverterContext..........................................................................................
 
     @Override
-    public Optional<StoragePath> currentWorkingDirectory() {
-        return this.hasUserDirectories.currentWorkingDirectory();
+    public HasUserDirectories hasUserDirectories() {
+        return this.hasUserDirectories;
     }
 
     private final HasUserDirectories hasUserDirectories;

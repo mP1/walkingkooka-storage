@@ -41,6 +41,16 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Optional<StoragePath> homeDirectory() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+        throw new UnsupportedOperationException();
+    }
+
     // EnvironmentContext...............................................................................................
 
     @Override

@@ -17,5 +17,6 @@
 
 package walkingkooka.storage;
 
-public interface HasUserDirectoriesTesting extends HasCurrentWorkingDirectoryTesting {
+public interface HasUserDirectoriesTesting extends HasCurrentWorkingDirectoryTesting,
+    HasHomeDirectoryTesting {
 }
