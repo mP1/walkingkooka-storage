@@ -21,6 +21,7 @@ import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -97,6 +98,11 @@ final public class StoragePath
     }
 
     /**
+     * Replaced by the {@link HasUserDirectories#homeDirectory()} by {@link #parseSpecial(String, HasUserDirectories)}.
+     */
+    public final static CharacterConstant USER_HOME = CharacterConstant.with('~');
+
+    /**
      * Parses the given text as an absolute path or relative using the given current for the later.
      */
     public static StoragePath parseSpecial(final String text,
@@ -107,14 +113,23 @@ final public class StoragePath
         return text.isEmpty() ?
             currentWorkingDirectoryOrRoot(hasUserDirectories) :
             StoragePath.parse(
-                text.startsWith(
-                    SEPARATOR.string()
-                ) ?
-                    text :
-                    currentWorkingDirectoryOrRoot(hasUserDirectories)
-                        .value() +
-                        SEPARATOR.character() +
-                        text
+                text.startsWith(USER_HOME.string()) ?
+                    hasUserDirectories.homeDirectory()
+                        .orElseThrow(() -> new IllegalArgumentException("Missing home directory"))
+                        .value()
+                        .concat(
+                            text.substring(
+                                1 // skip ~
+                            )
+                        ) :
+                    text.startsWith(
+                        SEPARATOR.string()
+                    ) ?
+                        text :
+                        currentWorkingDirectoryOrRoot(hasUserDirectories)
+                            .value() +
+                            SEPARATOR.character() +
+                            text
             );
     }
 

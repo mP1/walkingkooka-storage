@@ -275,6 +275,42 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Test
+    public void testParseSpecialWithUserHomeMissingFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StoragePath.parseSpecial(
+                "~/path123",
+                HasUserDirectorieses.empty()
+            )
+        );
+
+        this.checkEquals(
+            "Missing home directory",
+            thrown.getMessage()
+        );
+    }
+
+    @Test
+    public void testParseSpecialWithUserHomePath() {
+        final String text = "after4.txt";
+
+        this.parseSpecialAndCheck(
+            "~/" + text,
+            HOME + "/" + text
+        );
+    }
+
+    @Test
+    public void testParseSpecialWithUserHomePath2() {
+        final String text = "after4.txt";
+
+        this.parseSpecialAndCheck(
+            "~//" + text,
+            HOME + "/" + text
+        );
+    }
+
+    @Test
     public void testParseSpecialPathAndCurrentWorkingDirectoryWithEndingSlash() {
         final String text = "after4.txt";
 
@@ -294,6 +330,8 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
     private final static String CWD = "/current1/working2/directory3";
 
+    private final static String HOME = "/home/user123";
+
     private void parseSpecialAndCheck(final String text) {
         this.parseSpecialAndCheck(
             text,
@@ -310,6 +348,13 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                 public Optional<StoragePath> currentWorkingDirectory() {
                     return Optional.of(
                         StoragePath.parse(CWD)
+                    );
+                }
+
+                @Override
+                public Optional<StoragePath> homeDirectory() {
+                    return Optional.of(
+                        StoragePath.parse(HOME)
                     );
                 }
             },
