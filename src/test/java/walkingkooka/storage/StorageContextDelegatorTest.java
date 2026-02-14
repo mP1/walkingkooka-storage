@@ -24,6 +24,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +43,11 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
 
     @Override
     public void testSetEnvironmentContextWithEqualEnvironmentContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -119,6 +125,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
         public StorageContext storageContext() {
             return StorageContexts.basic(
                 EnvironmentContexts.empty(
+                    Currency.getInstance("AUD"),
                     Indentation.SPACES4,
                     LineEnding.NL,
                     Locale.ENGLISH,

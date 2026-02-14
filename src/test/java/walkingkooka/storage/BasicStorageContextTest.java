@@ -27,6 +27,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -61,6 +62,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         final BasicStorageContext context = this.createContext();
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            Currency.getInstance("AUD"),
             Indentation.SPACES2,
             LineEnding.CRNL,
             Locale.GERMAN,
@@ -87,6 +89,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         return BasicStorageContext.with(
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    Currency.getInstance("AUD"),
                     Indentation.SPACES2,
                     LineEnding.NL,
                     Locale.FRANCE,
@@ -106,6 +109,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         this.checkNotEquals(
             BasicStorageContext.with(
                 EnvironmentContexts.empty(
+                    Currency.getInstance("AUD"),
                     Indentation.SPACES2,
                     LineEnding.CR,
                     Locale.GERMAN,
