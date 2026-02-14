@@ -26,6 +26,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -121,6 +122,7 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
 
         private final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
+                Currency.getInstance("AUD"),
                 Indentation.SPACES4,
                 LineEnding.NL,
                 Locale.ENGLISH,
