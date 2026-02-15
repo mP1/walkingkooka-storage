@@ -59,7 +59,7 @@ final class StorageConverterStoragePathJsonToClass<C extends StorageConverterCon
                 .orElse(null);
 
             canConvert = fileExtensionOrNull == null ||
-                fileExtensionOrNull.equals(FileExtension.with("json"));
+                fileExtensionOrNull.equals(FILE_EXTENSION);
         }
 
         return canConvert;
@@ -68,7 +68,7 @@ final class StorageConverterStoragePathJsonToClass<C extends StorageConverterCon
     /**
      * Matches *.json file extension.
      */
-    private final static FileExtension FILE_EXTENSION = FileExtension.with("json");
+    private final static FileExtension FILE_EXTENSION = FileExtension.JSON;
 
     @Override
     public <T> Either<T, String> doConvert(final Object value,
