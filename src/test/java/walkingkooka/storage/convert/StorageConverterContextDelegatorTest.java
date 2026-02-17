@@ -35,6 +35,7 @@ import java.math.MathContext;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class StorageConverterContextDelegatorTest implements StorageConverterContextTesting<TestStorageConverterContextDelegator>,
@@ -141,6 +142,14 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
                     }
                 },
                 ConverterContexts.basic(
+                    (l) -> {
+                        Objects.requireNonNull(l, "locale");
+                        throw new UnsupportedOperationException();
+                    }, // canDateTimeSymbolsForLocale
+                    (l) -> {
+                        Objects.requireNonNull(l, "locale");
+                        throw new UnsupportedOperationException();
+                    }, // canDecimalNumberSymbolsForLocale
                     false, // canNumbersHaveGroupSeparator
                     Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
                     Indentation.SPACES2,
