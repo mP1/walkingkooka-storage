@@ -162,6 +162,10 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                 (l) -> {
                     Objects.requireNonNull(l, "locale");
                     throw new UnsupportedOperationException();
+                }, // canCurrencyForLocale
+                (l) -> {
+                    Objects.requireNonNull(l, "locale");
+                    throw new UnsupportedOperationException();
                 }, // canDateTimeSymbolsForLocale
                 (l) -> {
                     Objects.requireNonNull(l, "locale");
