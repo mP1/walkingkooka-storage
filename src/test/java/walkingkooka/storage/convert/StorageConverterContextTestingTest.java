@@ -24,6 +24,7 @@ import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
@@ -163,18 +164,6 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                     Objects.requireNonNull(l, "locale");
                     throw new UnsupportedOperationException();
                 }, // canCurrencyForLocale
-                (l) -> {
-                    Objects.requireNonNull(l, "locale");
-                    throw new UnsupportedOperationException();
-                }, // canDateTimeSymbolsForLocale
-                (l) -> {
-                    Objects.requireNonNull(l, "locale");
-                    throw new UnsupportedOperationException();
-                }, // canDecimalNumberSymbolsForLocale
-                (lt) -> {
-                    Objects.requireNonNull(lt, "languageTag");
-                    throw new UnsupportedOperationException();
-                }, // canLocaleForLanguageTag
                 false, // canNumbersHaveGroupSeparator
                 Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
                 Indentation.SPACES2,
@@ -190,7 +179,8 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                     20,
                     LocalDateTime::now
                 ),
-                DECIMAL_NUMBER_CONTEXT
+                DECIMAL_NUMBER_CONTEXT,
+                LocaleContexts.jre(locale)
             );
         }
 
