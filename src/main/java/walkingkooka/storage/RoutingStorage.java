@@ -19,16 +19,14 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.store.Store;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
  * A {@link Storage} that uses the mounts defined by an instance of {@link RoutingStorageBuilder}.
  */
-final class RoutingStorage<C extends StorageContext> implements Storage<C> {
+final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
 
     // assumes a defensive copy was given.
     static <C extends StorageContext> RoutingStorage<C> with(final List<RoutingStorageRoute<C>> routes) {
@@ -42,11 +40,8 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     // Store............................................................................................................
 
     @Override
-    public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         Optional<StorageValue> value = Optional.empty();
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
@@ -64,11 +59,8 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
-        Objects.requireNonNull(value, "value");
-        Objects.requireNonNull(context, "context");
-
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(value.path());
         if (null != route) {
             final StorageValue saved = route.store.save(
@@ -89,11 +81,8 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public void delete(final StoragePath path,
-                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    void delete0(final StoragePath path,
+                 final C context) {
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
             route.store.delete(
@@ -108,17 +97,10 @@ final class RoutingStorage<C extends StorageContext> implements Storage<C> {
     // Storage.....................................................................................................
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
-        Objects.requireNonNull(parent, "parent");
-        Store.checkOffsetAndCount(
-            offset,
-            count
-        );
-        Objects.requireNonNull(context, "context");
-
+    List<StorageValueInfo> list0(final StoragePath parent,
+                                 final int offset,
+                                 final int count,
+                                 final C context) {
         final List<StorageValueInfo> storageValueInfos;
 
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(parent);
