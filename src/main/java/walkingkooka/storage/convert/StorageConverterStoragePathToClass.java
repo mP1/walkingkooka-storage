@@ -17,36 +17,24 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.io.FileExtension;
 import walkingkooka.storage.StoragePath;
-import walkingkooka.tree.json.JsonNode;
 
 /**
- * A {@link Converter} that converts a {@link StoragePath} by examining its file extension to a {@link Class} which can
- * then be used to convert a value to text.
+ * A templated {@link Converter} where the file extension test and target type are abstract and implemented by sub-classes.
  */
-final class StorageConverterStoragePathJsonToClass<C extends StorageConverterContext> extends StorageConverter<C>
+abstract class StorageConverterStoragePathToClass<C extends StorageConverterContext> extends StorageConverter<C>
     implements ShortCircuitingConverter<C> {
 
-    /**
-     * Type safe getter.
-     */
-    static <C extends StorageConverterContext> StorageConverterStoragePathJsonToClass<C> instance() {
-        return Cast.to(INSTANCE);
-    }
-
-    private final static StorageConverterStoragePathJsonToClass<?> INSTANCE = new StorageConverterStoragePathJsonToClass<>();
-
-    private StorageConverterStoragePathJsonToClass() {
+    StorageConverterStoragePathToClass() {
         super();
     }
 
     @Override
-    public boolean canConvert(final Object value,
+    public final boolean canConvert(final Object value,
                               final Class<?> type,
                               final C c) {
         boolean canConvert = false;
@@ -58,32 +46,28 @@ final class StorageConverterStoragePathJsonToClass<C extends StorageConverterCon
                 .fileExtension()
                 .orElse(null);
 
-            canConvert = fileExtensionOrNull == null ||
-                fileExtensionOrNull.equals(FILE_EXTENSION);
+            canConvert = this.testFileExtension(fileExtensionOrNull);
         }
 
         return canConvert;
     }
 
-    /**
-     * Matches *.json file extension.
-     */
-    private final static FileExtension FILE_EXTENSION = FileExtension.JSON;
+    abstract boolean testFileExtension(final FileExtension fileExtension);
 
     @Override
-    public <T> Either<T, String> doConvert(final Object value,
-                                           final Class<T> type,
-                                           final C context) {
+    public final <T> Either<T, String> doConvert(final Object value,
+                                                 final Class<T> type,
+                                                 final C context) {
         return this.successfulConversion(
-            JsonNode.class,
+            this.type(),
             type
         );
     }
 
+    abstract Class<?> type();
+
     // class............................................................................................................
 
     @Override
-    public String toString() {
-        return "*, *.json to " + Class.class.getSimpleName();
-    }
+    public abstract String toString();
 }

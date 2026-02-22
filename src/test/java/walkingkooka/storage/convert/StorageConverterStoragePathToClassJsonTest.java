@@ -19,12 +19,10 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.ToStringTesting;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.tree.json.JsonNode;
 
-public final class StorageConverterStoragePathJsonToClassTest extends StorageConverterTestCase<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>>
-implements ToStringTesting<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>> {
+public final class StorageConverterStoragePathToClassJsonTest extends StorageConverterStoragePathToClassTestCase<StorageConverterStoragePathToClassJson<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertStoragePathWithoutFileExtensionToClass() {
@@ -62,8 +60,8 @@ implements ToStringTesting<StorageConverterStoragePathJsonToClass<FakeStorageCon
     }
 
     @Override
-    public StorageConverterStoragePathJsonToClass<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStoragePathJsonToClass.instance();
+    public StorageConverterStoragePathToClassJson<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStoragePathToClassJson.instance();
     }
 
     @Override
@@ -80,7 +78,7 @@ implements ToStringTesting<StorageConverterStoragePathJsonToClass<FakeStorageCon
     }
 
     @Override
-    public Class<StorageConverterStoragePathJsonToClass<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStoragePathJsonToClass.class);
+    public Class<StorageConverterStoragePathToClassJson<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStoragePathToClassJson.class);
     }
 }
