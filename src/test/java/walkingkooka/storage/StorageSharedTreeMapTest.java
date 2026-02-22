@@ -21,14 +21,13 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.storage.TreeMapStoreStorageTest.TestStorageContext;
+import walkingkooka.storage.StorageSharedTreeMapTest.TestStorageContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStorage<TestStorageContext>, TestStorageContext> {
+public class StorageSharedTreeMapTest extends StorageSharedTestCase<StorageSharedTreeMap<TestStorageContext>, TestStorageContext> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -50,7 +49,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndLoad() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -70,7 +69,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -112,7 +111,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndList() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -138,7 +137,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveAndListMixedParents() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -234,7 +233,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testSaveUpdateAndList() {
-        final TreeMapStoreStorage store = this.createStorage();
+        final StorageSharedTreeMap store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -270,7 +269,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListRootPath() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -320,7 +319,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
     @Test
     public void testListSubdirectory() {
-        final TreeMapStoreStorage<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMap<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -377,8 +376,8 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     }
 
     @Override
-    public TreeMapStoreStorage<TestStorageContext> createStorage() {
-        return TreeMapStoreStorage.empty();
+    public StorageSharedTreeMap<TestStorageContext> createStorage() {
+        return StorageSharedTreeMap.empty();
     }
 
     @Override
@@ -400,7 +399,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.ofNullable(TreeMapStoreStorageTest.USER);
+            return Optional.ofNullable(StorageSharedTreeMapTest.USER);
         }
 
         @Override
@@ -420,12 +419,7 @@ public class TreeMapStoreStorageTest implements StorageTesting<TreeMapStoreStora
     // class............................................................................................................
 
     @Override
-    public Class<TreeMapStoreStorage<TestStorageContext>> type() {
-        return Cast.to(TreeMapStoreStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+    public Class<StorageSharedTreeMap<TestStorageContext>> type() {
+        return Cast.to(StorageSharedTreeMap.class);
     }
 }
