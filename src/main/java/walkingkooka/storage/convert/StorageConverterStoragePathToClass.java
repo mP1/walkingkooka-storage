@@ -42,8 +42,7 @@ abstract class StorageConverterStoragePathToClass<C extends StorageConverterCont
         if (value instanceof StoragePath &&
             Class.class == type) {
             final StoragePath storagePath = (StoragePath) value;
-            final FileExtension fileExtensionOrNull = storagePath.name()
-                .fileExtension()
+            final FileExtension fileExtensionOrNull = storagePath.fileExtension()
                 .orElse(null);
 
             canConvert = this.testFileExtension(fileExtensionOrNull);
