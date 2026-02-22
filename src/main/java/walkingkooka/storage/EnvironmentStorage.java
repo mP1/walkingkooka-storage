@@ -106,7 +106,7 @@ final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
 
         try {
             context.removeEnvironmentValue(
-                this.environmentValueName(path)
+                environmentValueName(path)
             );
         } catch (final IllegalArgumentException cause) {
             // invalid EnvironmentValueName do nothing
