@@ -19,13 +19,10 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.ToStringTesting;
-import walkingkooka.reflect.JavaVisibility;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class EmptyStorageTest implements StorageTesting<EmptyStorage<StorageContext>, StorageContext>,
-    ToStringTesting<EmptyStorage<StorageContext>> {
+public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageSharedEmpty<StorageContext>, StorageContext> {
 
     @Test
     public void testLoadMissing() {
@@ -40,7 +37,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     public void testSaveFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> EmptyStorage.instance()
+            () -> StorageSharedEmpty.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.ROOT,
@@ -55,7 +52,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     public void testDeleteFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> EmptyStorage.instance()
+            () -> StorageSharedEmpty.instance()
                 .delete(
                     StoragePath.ROOT,
                     this.createContext()
@@ -66,7 +63,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     @Test
     public void testList() {
         this.listAndCheck(
-            EmptyStorage.instance(),
+            StorageSharedEmpty.instance(),
             StoragePath.ROOT,
             0,
             999,
@@ -75,8 +72,8 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     }
 
     @Override
-    public EmptyStorage createStorage() {
-        return EmptyStorage.instance();
+    public StorageSharedEmpty createStorage() {
+        return StorageSharedEmpty.instance();
     }
 
     @Override
@@ -89,7 +86,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            EmptyStorage.instance(),
+            StorageSharedEmpty.instance(),
             ""
         );
     }
@@ -97,12 +94,7 @@ public final class EmptyStorageTest implements StorageTesting<EmptyStorage<Stora
     // class............................................................................................................
 
     @Override
-    public Class<EmptyStorage<StorageContext>> type() {
-        return Cast.to(EmptyStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+    public Class<StorageSharedEmpty<StorageContext>> type() {
+        return Cast.to(StorageSharedEmpty.class);
     }
 }
