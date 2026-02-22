@@ -32,6 +32,13 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see EnvironmentStorageContext}
+     */
+    public static <C extends StorageContext> Storage<C> environment() {
+        return EnvironmentStorage.instance();
+    }
+
+    /**
      * {@see FakeStorage}
      */
     public static <C extends StorageContext> Storage<C> fake() {
