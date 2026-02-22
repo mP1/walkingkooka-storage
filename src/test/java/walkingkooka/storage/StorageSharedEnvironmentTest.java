@@ -19,14 +19,12 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.ToStringTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
@@ -39,9 +37,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class EnvironmentStorageTest implements StorageTesting<EnvironmentStorage<StorageContext>, StorageContext>,
-    EnvironmentContextTesting,
-    ToStringTesting<EnvironmentStorage<StorageContext>> {
+public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
+    implements EnvironmentContextTesting {
 
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
@@ -98,7 +95,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     public void testSaveFails() {
         assertThrows(
             IllegalArgumentException.class,
-            () -> EnvironmentStorage.instance()
+            () -> StorageSharedEnvironment.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.ROOT,
@@ -121,7 +118,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
 
         assertThrows(
             IllegalArgumentException.class,
-            () -> EnvironmentStorage.instance()
+            () -> StorageSharedEnvironment.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.parse("/!!-invalid-environment-value-name"),
@@ -179,7 +176,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     public void testDeleteExisting() {
         final StoragePath path = StoragePath.parse("/magic-integer");
 
-        final EnvironmentStorage<StorageContext> storage = this.createStorage();
+        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
         final StorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
@@ -260,7 +257,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     @Test
     public void testListAll() {
         this.listAndCheck(
-            EnvironmentStorage.instance(),
+            StorageSharedEnvironment.instance(),
             StoragePath.ROOT,
             0,
             999,
@@ -279,7 +276,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     @Test
     public void testListWithOffsetAndCount() {
         this.listAndCheck(
-            EnvironmentStorage.instance(),
+            StorageSharedEnvironment.instance(),
             StoragePath.ROOT,
             1,
             2,
@@ -298,7 +295,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     @Test
     public void testListWithPrefix() {
         this.listAndCheck(
-            EnvironmentStorage.instance(),
+            StorageSharedEnvironment.instance(),
             StoragePath.parse("/cur"),
             0,
             999,
@@ -310,7 +307,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     @Test
     public void testListWithPrefix2() {
         this.listAndCheck(
-            EnvironmentStorage.instance(),
+            StorageSharedEnvironment.instance(),
             StoragePath.parse("/l"),
             0,
             999,
@@ -320,7 +317,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
         );
     }
 
-    private void listAndCheck(final EnvironmentStorage<StorageContext> storage,
+    private void listAndCheck(final StorageSharedEnvironment<StorageContext> storage,
                               final StoragePath path,
                               final int offset,
                               final int count,
@@ -333,7 +330,7 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
             count,
             context,
             Arrays.stream(environmentValueNames)
-                .map(EnvironmentStorageTest::storageValueInfo)
+                .map(StorageSharedEnvironmentTest::storageValueInfo)
                 .collect(Collectors.toList())
         );
     }
@@ -353,8 +350,8 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     }
 
     @Override
-    public EnvironmentStorage<StorageContext> createStorage() {
-        return EnvironmentStorage.instance();
+    public StorageSharedEnvironment<StorageContext> createStorage() {
+        return StorageSharedEnvironment.instance();
     }
 
     @Override
@@ -385,20 +382,15 @@ public final class EnvironmentStorageTest implements StorageTesting<EnvironmentS
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            EnvironmentStorage.instance(),
-            EnvironmentStorage.class.getSimpleName()
+            StorageSharedEnvironment.instance(),
+            StorageSharedEnvironment.class.getSimpleName()
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<EnvironmentStorage<StorageContext>> type() {
-        return Cast.to(EnvironmentStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+    public Class<StorageSharedEnvironment<StorageContext>> type() {
+        return Cast.to(StorageSharedEnvironment.class);
     }
 }

@@ -32,10 +32,10 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see EnvironmentStorageContext}
+     * {@see StorageSharedEnvironment}
      */
     public static <C extends StorageContext> Storage<C> environment() {
-        return EnvironmentStorage.instance();
+        return StorageSharedEnvironment.instance();
     }
 
     /**
