@@ -21,6 +21,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.CharSequences;
 
 public abstract class StorageConverterTestCase<C extends StorageConverter<FakeStorageConverterContext>> implements ConverterTesting2<C, FakeStorageConverterContext>,
     ToStringTesting<C>,
@@ -39,7 +40,19 @@ public abstract class StorageConverterTestCase<C extends StorageConverter<FakeSt
 
     @Override
     public final String typeNamePrefix() {
-        return StorageConverter.class.getSimpleName();
+        try {
+            return Class.forName(
+                CharSequences.subSequence(
+                    this.getClass()
+                        .getSuperclass()
+                        .getName(),
+                    0,
+                    -"TestCase".length()
+                ).toString()
+            ).getSimpleName();
+        } catch (final ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
