@@ -20,10 +20,8 @@ package walkingkooka.storage;
 import walkingkooka.Cast;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.store.Store;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,32 +29,29 @@ import java.util.stream.Collectors;
  * A {@link Storage} that translates {@link StoragePath#name()} into {@link EnvironmentValueName} and gets/sets/remove
  * values from the {@link StorageContext}, using the environment methods.
  */
-final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
+final class StorageSharedEnvironment<C extends StorageContext> extends StorageShared<C> {
 
     /**
      * Type safe getter
      */
-    static <C extends StorageContext> EnvironmentStorage<C> instance() {
+    static <C extends StorageContext> StorageSharedEnvironment<C> instance() {
         return INSTANCE;
     }
 
     /**
      * Singleton instance
      */
-    private final static EnvironmentStorage INSTANCE = new EnvironmentStorage();
+    private final static StorageSharedEnvironment INSTANCE = new StorageSharedEnvironment();
 
-    private EnvironmentStorage() {
+    private StorageSharedEnvironment() {
         super();
     }
 
     // Storage..........................................................................................................
 
     @Override
-    public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         Optional<Object> value;
         try {
             final EnvironmentValueName<?> environmentValueName = environmentValueName(path);
@@ -75,11 +70,8 @@ final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
-        Objects.requireNonNull(value, "value");
-        Objects.requireNonNull(context, "context");
-
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         final StoragePath path = value.path();
         final EnvironmentValueName<?> environmentValueName = environmentValueName(path);
 
@@ -99,11 +91,8 @@ final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public void delete(final StoragePath path,
-                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    void delete0(final StoragePath path,
+                 final C context) {
         try {
             context.removeEnvironmentValue(
                 environmentValueName(path)
@@ -122,14 +111,10 @@ final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
-        Objects.requireNonNull(parent, "parent");
-        Store.checkOffsetAndCount(offset, count);
-        Objects.requireNonNull(context, "context");
-
+    List<StorageValueInfo> list0(final StoragePath parent,
+                                 final int offset,
+                                 final int count,
+                                 final C context) {
         String prefix = parent.value();
         if (prefix.startsWith(StoragePath.SEPARATOR_STRING)) {
             prefix = prefix.substring(
@@ -163,6 +148,6 @@ final class EnvironmentStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public String toString() {
-        return EnvironmentStorage.class.getSimpleName();
+        return StorageSharedEnvironment.class.getSimpleName();
     }
 }
