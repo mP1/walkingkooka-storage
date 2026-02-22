@@ -159,6 +159,21 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
+    default void deleteAndCheck(final Storage<C> storage,
+                                final StoragePath path,
+                                final C context) {
+        storage.delete(
+            path,
+            context
+        );
+
+        this.loadAndCheck(
+            storage,
+            path,
+            context
+        );
+    }
+
     // list.............................................................................................................
 
     @Test
