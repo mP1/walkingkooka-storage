@@ -19,9 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.ToStringTesting;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.JavaVisibility;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -29,8 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage<FakeStorageContext>, FakeStorageContext>,
-    ToStringTesting<PrefixedStorage<FakeStorageContext>> {
+public final class StorageSharedPrefixedTest extends StorageSharedTestCase<StorageSharedPrefixed<FakeStorageContext>, FakeStorageContext> {
 
     private final static String PREFIX = "/prefix111";
 
@@ -49,7 +46,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     public void testWithNullPrefixFails() {
         assertThrows(
             NullPointerException.class,
-            () -> PrefixedStorage.with(
+            () -> StorageSharedPrefixed.with(
                 null,
                 Storages.fake()
             )
@@ -60,7 +57,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     public void testWithNullStorageFails() {
         assertThrows(
             NullPointerException.class,
-            () -> PrefixedStorage.with(
+            () -> StorageSharedPrefixed.with(
                 StoragePath.ROOT,
                 null
             )
@@ -73,7 +70,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
         assertSame(
             storage,
-            PrefixedStorage.with(
+            StorageSharedPrefixed.with(
                 StoragePath.ROOT,
                 storage
             )
@@ -82,12 +79,12 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testWithPrefixedStorage() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
 
         final StoragePath prefix2 = StoragePath.parse("/prefix222");
 
-        final PrefixedStorage<FakeStorageContext> prefixedStorage = Cast.to(
-            PrefixedStorage.with(
+        final StorageSharedPrefixed<FakeStorageContext> prefixedStorage = Cast.to(
+            StorageSharedPrefixed.with(
                 prefix2,
                 storage
             )
@@ -119,7 +116,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testLoad() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
@@ -146,7 +143,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testSave() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/value111");
@@ -177,7 +174,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testDeleteWithUnknownPath() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -207,7 +204,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testDelete() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -238,7 +235,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
 
     @Test
     public void testList() {
-        final PrefixedStorage<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(PREFIX + "/value111");
@@ -303,9 +300,9 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     }
 
     @Override
-    public PrefixedStorage<FakeStorageContext> createStorage() {
+    public StorageSharedPrefixed<FakeStorageContext> createStorage() {
         return Cast.to(
-            PrefixedStorage.with(
+            StorageSharedPrefixed.with(
                 StoragePath.parse(PREFIX),
                 Storages.tree()
             )
@@ -317,7 +314,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
         return new FakeStorageContext() {
             @Override
             public LocalDateTime now() {
-                return PrefixedStorageTest.NOW;
+                return StorageSharedPrefixedTest.NOW;
             }
 
             @Override
@@ -342,12 +339,7 @@ public final class PrefixedStorageTest implements StorageTesting<PrefixedStorage
     // class............................................................................................................
 
     @Override
-    public Class<PrefixedStorage<FakeStorageContext>> type() {
-        return Cast.to(PrefixedStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+    public Class<StorageSharedPrefixed<FakeStorageContext>> type() {
+        return Cast.to(StorageSharedPrefixed.class);
     }
 }
