@@ -22,13 +22,12 @@ import walkingkooka.Cast;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.JavaVisibility;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public final class RoutingStorageTest implements StorageTesting<RoutingStorage<StorageContext>, StorageContext> {
+public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStorage<StorageContext>, StorageContext> {
 
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
@@ -508,10 +507,5 @@ public final class RoutingStorageTest implements StorageTesting<RoutingStorage<S
     @Override
     public Class<RoutingStorage<StorageContext>> type() {
         return Cast.to(RoutingStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }
