@@ -23,51 +23,44 @@ import walkingkooka.store.Stores;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> {
+final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared<C> {
 
-    static <C extends StorageContext> TreeMapStoreStorage<C> empty() {
-        return new TreeMapStoreStorage<>();
+    static <C extends StorageContext> StorageSharedTreeMap<C> empty() {
+        return new StorageSharedTreeMap<>();
     }
 
-    private TreeMapStoreStorage() {
+    private StorageSharedTreeMap() {
         this.store = Stores.treeMap(
             Comparator.naturalOrder(),
             this::idSetter
         );
     }
 
-    private TreeMapStoreStorageValue idSetter(final StoragePath path,
-                                              final TreeMapStoreStorageValue treeMapStoreStorageStoreValue) {
+    private StorageSharedTreeMapValue idSetter(final StoragePath path,
+                                               final StorageSharedTreeMapValue treeMapStoreStorageStoreValue) {
         return treeMapStoreStorageStoreValue.setPath(path);
     }
 
     @Override
-    public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         return this.store.load(path)
-            .map(TreeMapStoreStorageValue::value);
+            .map(StorageSharedTreeMapValue::value);
     }
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
-        Objects.requireNonNull(value, "storageValue");
-        Objects.requireNonNull(context, "context");
-
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         this.saveRootIfNecessary(context);
 
         final StoragePath path = value.path();
 
-        final Store<StoragePath, TreeMapStoreStorageValue> store = this.store;
+        final Store<StoragePath, StorageSharedTreeMapValue> store = this.store;
 
-        TreeMapStoreStorageValue newSave = store.load(path)
+        StorageSharedTreeMapValue newSave = store.load(path)
             .orElse(null);
 
         if (null != newSave) {
@@ -81,7 +74,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
             );
         } else {
             // set creator and modified
-            newSave = TreeMapStoreStorageValue.with(
+            newSave = StorageSharedTreeMapValue.with(
                 StorageValueInfo.with(
                     path,
                     context.createdAuditInfo()
@@ -94,7 +87,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
                 .orElse(null);
 
             while (null != parentPath && false == parentPath.isRoot()) {
-                final TreeMapStoreStorageValue parent = store.load(parentPath)
+                final StorageSharedTreeMapValue parent = store.load(parentPath)
                     .orElse(null);
                 if (null != parent) {
                     break;
@@ -102,7 +95,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
 
                 // create parent entry
                 store.save(
-                    TreeMapStoreStorageValue.with(
+                    StorageSharedTreeMapValue.with(
                         StorageValueInfo.with(
                             parentPath,
                             context.createdAuditInfo()
@@ -124,23 +117,16 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
     }
 
     @Override
-    public void delete(final StoragePath path,
-                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    void delete0(final StoragePath path,
+                 final C context) {
         this.store.delete(path);
     }
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
-        Objects.requireNonNull(parent, "parent");
-        Store.checkOffsetAndCount(offset, count);
-        Objects.requireNonNull(context, "context");
-
+    List<StorageValueInfo> list0(final StoragePath parent,
+                                 final int offset,
+                                 final int count,
+                                 final C context) {
         this.saveRootIfNecessary(context);
 
         return this.store.all()
@@ -148,7 +134,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
             .filter(i -> parent.equals(i.path().parent().orElse(null)))
             .skip(offset)
             .limit(count)
-            .map(TreeMapStoreStorageValue::info)
+            .map(StorageSharedTreeMapValue::info)
             .collect(
                 Collectors.collectingAndThen(
                     Collectors.toList(),
@@ -160,7 +146,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
     private void saveRootIfNecessary(final StorageContext context) {
         if (this.store.count() == 0) {
             this.store.save(
-                TreeMapStoreStorageValue.with(
+                StorageSharedTreeMapValue.with(
                     StorageValueInfo.with(
                         StoragePath.ROOT,
                         context.createdAuditInfo()
@@ -174,7 +160,7 @@ final class TreeMapStoreStorage<C extends StorageContext> implements Storage<C> 
         }
     }
 
-    private final Store<StoragePath, TreeMapStoreStorageValue> store;
+    private final Store<StoragePath, StorageSharedTreeMapValue> store;
 
     @Override
     public String toString() {
