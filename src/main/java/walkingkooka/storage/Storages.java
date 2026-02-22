@@ -25,10 +25,10 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class Storages implements PublicStaticHelper {
 
     /**
-     * {@see EmptyStorage}
+     * {@see StorageSharedEmpty}
      */
     public static <C extends StorageContext> Storage<C> empty() {
-        return EmptyStorage.instance();
+        return StorageSharedEmpty.instance();
     }
 
     /**

@@ -18,71 +18,59 @@
 package walkingkooka.storage;
 
 import walkingkooka.collect.list.Lists;
-import walkingkooka.store.Store;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
  * A {@link Storage} that is always empty and does not support saving, and deletes will fail.
  */
-final class EmptyStorage<C extends StorageContext> implements Storage<C> {
+final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C> {
 
-    static <C extends StorageContext> EmptyStorage<C> instance() {
+    static <C extends StorageContext> StorageSharedEmpty<C> instance() {
         return INSTANCE;
     }
 
     /**
      * Singleton instance
      */
-    private final static EmptyStorage INSTANCE = new EmptyStorage();
+    private final static StorageSharedEmpty INSTANCE = new StorageSharedEmpty();
 
-    private EmptyStorage() {
+    private StorageSharedEmpty() {
         super();
     }
 
     // Storage..........................................................................................................
 
     @Override
-    public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         return Optional.empty();
     }
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
-        Objects.requireNonNull(value, "value");
-        Objects.requireNonNull(context, "context");
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void delete(final StoragePath path,
+    StorageValue save0(final StorageValue value,
                        final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
-        Objects.requireNonNull(parent, "parent");
-        Store.checkOffsetAndCount(offset, count);
-        Objects.requireNonNull(context, "context");
+    void delete0(final StoragePath path,
+                 final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    List<StorageValueInfo> list0(final StoragePath parent,
+                                 final int offset,
+                                 final int count,
+                                 final C context) {
 
         // always returns nothing
         return Lists.of();
     }
+
+    // Object...........................................................................................................
 
     @Override
     public String toString() {
