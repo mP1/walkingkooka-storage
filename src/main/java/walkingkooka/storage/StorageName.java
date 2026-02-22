@@ -24,8 +24,6 @@ import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
 
-import java.util.Optional;
-
 /**
  * The name portion of a {@link StoragePath}
  */
@@ -99,8 +97,6 @@ public final class StorageName implements Name,
                 )
             ).orElse(value);
     }
-
-    transient Optional<String> valueWithoutFileExtension;
 
     // Object...........................................................................................................
 
