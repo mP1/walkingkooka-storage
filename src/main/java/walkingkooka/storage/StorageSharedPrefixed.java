@@ -17,8 +17,6 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.store.Store;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,7 +27,7 @@ import java.util.stream.Collectors;
  * {@link StorageValueInfo}.
  * This is particularly useful for a {@link Storage} that unites one or more {@link Storage} at different mount points.
  */
-final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
+final class StorageSharedPrefixed<C extends StorageContext> extends StorageShared<C> {
 
     static <C extends StorageContext> Storage<C> with(final StoragePath prefix,
                                                       final Storage<C> storage) {
@@ -44,13 +42,13 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
             StoragePath wrapPrefix = prefix;
             Storage<C> wrapStoraage = storage;
 
-            if (storage instanceof PrefixedStorage) {
-                final PrefixedStorage<C> prefixedStorage = (PrefixedStorage<C>) storage;
+            if (storage instanceof StorageSharedPrefixed) {
+                final StorageSharedPrefixed<C> prefixedStorage = (StorageSharedPrefixed<C>) storage;
                 wrapPrefix = prefix.append(prefixedStorage.prefix);
                 wrapStoraage = prefixedStorage.storage;
             }
 
-            result = new PrefixedStorage<C>(
+            result = new StorageSharedPrefixed<C>(
                 wrapPrefix,
                 wrapStoraage
             );
@@ -59,18 +57,15 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
         return result;
     }
 
-    private PrefixedStorage(final StoragePath prefix,
-                            final Storage<C> storage) {
+    private StorageSharedPrefixed(final StoragePath prefix,
+                                  final Storage<C> storage) {
         this.prefix = prefix;
         this.storage = storage;
     }
 
     @Override
-    public Optional<StorageValue> load(final StoragePath path,
-                                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         return this.storage.load(
             path.removePrefix(this.prefix),
             context
@@ -80,8 +75,8 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         return this.storage.save(
             value.removePrefixPath(this.prefix),
             context
@@ -89,11 +84,8 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public void delete(final StoragePath path,
-                       final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-
+    void delete0(final StoragePath path,
+                 final C context) {
         this.storage.delete(
             path.removePrefix(this.prefix),
             context
@@ -101,17 +93,10 @@ final class PrefixedStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
-        Objects.requireNonNull(parent, "parent");
-        Store.checkOffsetAndCount(
-            offset,
-            count
-        );
-        Objects.requireNonNull(context, "context");
-
+    List<StorageValueInfo> list0(final StoragePath parent,
+                                 final int offset,
+                                 final int count,
+                                 final C context) {
         return this.storage.list(
                 parent.removePrefix(this.prefix),
                 offset,

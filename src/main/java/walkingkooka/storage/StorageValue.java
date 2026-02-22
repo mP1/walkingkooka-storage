@@ -122,7 +122,7 @@ public final class StorageValue implements Value<Optional<Object>>,
                 );
     }
 
-    // PrefixedStorage...................................................................................................
+    // StorageSharedPrefixed...................................................................................................
 
     StorageValue prependPath(final StoragePath prefix) {
         return this.setPath(
