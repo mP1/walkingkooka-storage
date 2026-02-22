@@ -19,7 +19,6 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.InvalidTextLengthException;
-import walkingkooka.io.FileExtension;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
@@ -83,21 +82,6 @@ public final class StorageName implements Name,
     }
 
     private final String name;
-
-    /**
-     * Returns the file extension without the '.' if one was present.
-     */
-    public Optional<FileExtension> fileExtension() {
-        if (null == this.fileExtension) {
-            this.fileExtension = FileExtension.extract(this.name);
-        }
-        return this.fileExtension;
-    }
-
-    /**
-     * A cached copy of the extracted {@link FileExtension}.
-     */
-    transient Optional<FileExtension> fileExtension;
 
     /**
      * The name without any file extension.
