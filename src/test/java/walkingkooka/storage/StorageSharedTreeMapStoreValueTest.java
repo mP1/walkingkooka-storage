@@ -32,9 +32,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefinedTesting2<StorageSharedTreeMapValue>,
-    ClassTesting2<StorageSharedTreeMapValue>,
-    ToStringTesting<StorageSharedTreeMapValue> {
+public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsDefinedTesting2<StorageSharedTreeMapStoreValue>,
+    ClassTesting2<StorageSharedTreeMapStoreValue>,
+    ToStringTesting<StorageSharedTreeMapStoreValue> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -76,7 +76,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     public void testWithNullInfoFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedTreeMapValue.with(
+            () -> StorageSharedTreeMapStoreValue.with(
                 null,
                 VALUE
             )
@@ -87,7 +87,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     public void testWithNullValueFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedTreeMapValue.with(
+            () -> StorageSharedTreeMapStoreValue.with(
                 STORAGE_VALUE_INFO,
                 null
             )
@@ -96,7 +96,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testWith() {
-        final StorageSharedTreeMapValue value = StorageSharedTreeMapValue.with(
+        final StorageSharedTreeMapStoreValue value = StorageSharedTreeMapStoreValue.with(
             STORAGE_VALUE_INFO,
             VALUE
         );
@@ -117,7 +117,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetInfoWithSame() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
         assertSame(
             value,
             value.setInfo(STORAGE_VALUE_INFO)
@@ -126,12 +126,12 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetInfoWithDifferent() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
 
         final StorageValueInfo differentInfo = STORAGE_VALUE_INFO.setAuditInfo(
             AUDIT_INFO.setModifiedBy(EmailAddress.parse("different@example.com"))
         );
-        final StorageSharedTreeMapValue different = value.setInfo(differentInfo);
+        final StorageSharedTreeMapStoreValue different = value.setInfo(differentInfo);
 
         assertNotSame(
             value,
@@ -158,7 +158,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetValueWithSame() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
         assertSame(
             value,
             value.setValue(VALUE)
@@ -167,12 +167,12 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetValueWithDifferent() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
 
         final StorageValue differentValue = VALUE.setValue(
             Optional.of("different")
         );
-        final StorageSharedTreeMapValue different = value.setValue(differentValue);
+        final StorageSharedTreeMapStoreValue different = value.setValue(differentValue);
 
         assertNotSame(
             value,
@@ -199,7 +199,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetPathWithSame() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
         assertSame(
             value,
             value.setPath(PATH)
@@ -208,10 +208,10 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
 
     @Test
     public void testSetPathWithDifferent() {
-        final StorageSharedTreeMapValue value = this.createObject();
+        final StorageSharedTreeMapStoreValue value = this.createObject();
 
         final StoragePath differentPath = StoragePath.parse("/different.path");
-        final StorageSharedTreeMapValue different = value.setPath(differentPath);
+        final StorageSharedTreeMapStoreValue different = value.setPath(differentPath);
 
         assertNotSame(
             value,
@@ -228,14 +228,14 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
         this.pathAndCheck(value);
     }
 
-    private void pathAndCheck(final StorageSharedTreeMapValue value) {
+    private void pathAndCheck(final StorageSharedTreeMapStoreValue value) {
         this.pathAndCheck(
             value,
             PATH
         );
     }
 
-    private void pathAndCheck(final StorageSharedTreeMapValue value,
+    private void pathAndCheck(final StorageSharedTreeMapStoreValue value,
                               final StoragePath expected) {
         this.checkEquals(
             expected,
@@ -243,14 +243,14 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
         );
     }
 
-    private void infoAndCheck(final StorageSharedTreeMapValue value) {
+    private void infoAndCheck(final StorageSharedTreeMapStoreValue value) {
         this.infoAndCheck(
             value,
             STORAGE_VALUE_INFO
         );
     }
 
-    private void infoAndCheck(final StorageSharedTreeMapValue value,
+    private void infoAndCheck(final StorageSharedTreeMapStoreValue value,
                               final StorageValueInfo expected) {
         this.checkEquals(
             expected,
@@ -258,14 +258,14 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
         );
     }
 
-    private void valueAndCheck(final StorageSharedTreeMapValue value) {
+    private void valueAndCheck(final StorageSharedTreeMapStoreValue value) {
         this.valueAndCheck(
             value,
             VALUE
         );
     }
 
-    private void valueAndCheck(final StorageSharedTreeMapValue value,
+    private void valueAndCheck(final StorageSharedTreeMapStoreValue value,
                                final StorageValue expected) {
         this.checkEquals(
             expected,
@@ -278,7 +278,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     @Test
     public void testEqualsDifferentInfo() {
         this.checkNotEquals(
-            StorageSharedTreeMapValue.with(
+            StorageSharedTreeMapStoreValue.with(
                 STORAGE_VALUE_INFO.setAuditInfo(
                     AUDIT_INFO.setModifiedTimestamp(
                         MODIFIED_TIMESTAMP.plusYears(1)
@@ -292,7 +292,7 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     @Test
     public void testEqualsDifferentValue() {
         this.checkNotEquals(
-            StorageSharedTreeMapValue.with(
+            StorageSharedTreeMapStoreValue.with(
                 STORAGE_VALUE_INFO,
                 VALUE.setValue(
                     Optional.of("Different")
@@ -302,8 +302,8 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     }
 
     @Override
-    public StorageSharedTreeMapValue createObject() {
-        return StorageSharedTreeMapValue.with(
+    public StorageSharedTreeMapStoreValue createObject() {
+        return StorageSharedTreeMapStoreValue.with(
             STORAGE_VALUE_INFO,
             VALUE
         );
@@ -322,8 +322,8 @@ public final class StorageSharedTreeMapValueTest implements HashCodeEqualsDefine
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedTreeMapValue> type() {
-        return StorageSharedTreeMapValue.class;
+    public Class<StorageSharedTreeMapStoreValue> type() {
+        return StorageSharedTreeMapStoreValue.class;
     }
 
     @Override

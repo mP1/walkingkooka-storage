@@ -27,29 +27,29 @@ import java.util.Optional;
  * A value type that combines the audit info and stored value into a single value which will be saved in the wrapped
  * {@link walkingkooka.store.Store}.
  */
-final class StorageSharedTreeMapValue implements HasId<Optional<StoragePath>> {
+final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath>> {
 
-    static StorageSharedTreeMapValue with(final StorageValueInfo info,
-                                          final StorageValue value) {
-        return new StorageSharedTreeMapValue(
+    static StorageSharedTreeMapStoreValue with(final StorageValueInfo info,
+                                               final StorageValue value) {
+        return new StorageSharedTreeMapStoreValue(
             Objects.requireNonNull(info, "info"),
             Objects.requireNonNull(value, "value")
         );
     }
 
-    private StorageSharedTreeMapValue(final StorageValueInfo info,
-                                      final StorageValue value) {
+    private StorageSharedTreeMapStoreValue(final StorageValueInfo info,
+                                           final StorageValue value) {
         this.info = info;
         this.value = value;
     }
 
-    StorageSharedTreeMapValue setPath(final StoragePath path) {
+    StorageSharedTreeMapStoreValue setPath(final StoragePath path) {
         final StorageValueInfo info = this.info.setPath(path);
         final StorageValue value = this.value.setPath(path);
 
         return this.info.equals(info) && this.value.equals(value) ?
             this :
-            StorageSharedTreeMapValue.with(
+            StorageSharedTreeMapStoreValue.with(
                 info,
                 value
             );
@@ -76,10 +76,10 @@ final class StorageSharedTreeMapValue implements HasId<Optional<StoragePath>> {
 
     final StorageValueInfo info;
 
-    StorageSharedTreeMapValue setInfo(final StorageValueInfo info) {
+    StorageSharedTreeMapStoreValue setInfo(final StorageValueInfo info) {
         return this.info.equals(info) ?
             this :
-            StorageSharedTreeMapValue.with(
+            StorageSharedTreeMapStoreValue.with(
                 info,
                 this.value
             );
@@ -93,10 +93,10 @@ final class StorageSharedTreeMapValue implements HasId<Optional<StoragePath>> {
 
     final StorageValue value;
 
-    StorageSharedTreeMapValue setValue(final StorageValue value) {
+    StorageSharedTreeMapStoreValue setValue(final StorageValue value) {
         return this.value.equals(value) ?
             this :
-            StorageSharedTreeMapValue.with(
+            StorageSharedTreeMapStoreValue.with(
                 info,
                 value
             );
@@ -115,11 +115,11 @@ final class StorageSharedTreeMapValue implements HasId<Optional<StoragePath>> {
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof StorageSharedTreeMapValue &&
+            other instanceof StorageSharedTreeMapStoreValue &&
                 this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final StorageSharedTreeMapValue other) {
+    private boolean equals0(final StorageSharedTreeMapStoreValue other) {
         return this.info.equals(other.info) &&
             this.value.equals(other.value);
     }
