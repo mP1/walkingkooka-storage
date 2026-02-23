@@ -59,7 +59,7 @@ public final class Storages implements PublicStaticHelper {
     /**
      * {@see StorageSharedTreeMapStore}
      */
-    public static <C extends StorageContext> Storage<C> tree() {
+    public static <C extends StorageContext> Storage<C> treeMapStore() {
         return StorageSharedTreeMapStore.empty();
     }
 
