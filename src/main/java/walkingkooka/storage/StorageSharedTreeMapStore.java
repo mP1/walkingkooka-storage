@@ -26,21 +26,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared<C> {
+final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageShared<C> {
 
-    static <C extends StorageContext> StorageSharedTreeMap<C> empty() {
-        return new StorageSharedTreeMap<>();
+    static <C extends StorageContext> StorageSharedTreeMapStore<C> empty() {
+        return new StorageSharedTreeMapStore<>();
     }
 
-    private StorageSharedTreeMap() {
+    private StorageSharedTreeMapStore() {
         this.store = Stores.treeMap(
             Comparator.naturalOrder(),
             this::idSetter
         );
     }
 
-    private StorageSharedTreeMapValue idSetter(final StoragePath path,
-                                               final StorageSharedTreeMapValue treeMapStoreStorageStoreValue) {
+    private StorageSharedTreeMapStoreValue idSetter(final StoragePath path,
+                                                    final StorageSharedTreeMapStoreValue treeMapStoreStorageStoreValue) {
         return treeMapStoreStorageStoreValue.setPath(path);
     }
 
@@ -48,7 +48,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         return this.store.load(path)
-            .map(StorageSharedTreeMapValue::value);
+            .map(StorageSharedTreeMapStoreValue::value);
     }
 
     @Override
@@ -58,9 +58,9 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
 
         final StoragePath path = value.path();
 
-        final Store<StoragePath, StorageSharedTreeMapValue> store = this.store;
+        final Store<StoragePath, StorageSharedTreeMapStoreValue> store = this.store;
 
-        StorageSharedTreeMapValue newSave = store.load(path)
+        StorageSharedTreeMapStoreValue newSave = store.load(path)
             .orElse(null);
 
         if (null != newSave) {
@@ -74,7 +74,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
             );
         } else {
             // set creator and modified
-            newSave = StorageSharedTreeMapValue.with(
+            newSave = StorageSharedTreeMapStoreValue.with(
                 StorageValueInfo.with(
                     path,
                     context.createdAuditInfo()
@@ -87,7 +87,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
                 .orElse(null);
 
             while (null != parentPath && false == parentPath.isRoot()) {
-                final StorageSharedTreeMapValue parent = store.load(parentPath)
+                final StorageSharedTreeMapStoreValue parent = store.load(parentPath)
                     .orElse(null);
                 if (null != parent) {
                     break;
@@ -95,7 +95,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
 
                 // create parent entry
                 store.save(
-                    StorageSharedTreeMapValue.with(
+                    StorageSharedTreeMapStoreValue.with(
                         StorageValueInfo.with(
                             parentPath,
                             context.createdAuditInfo()
@@ -134,7 +134,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
             .filter(i -> parent.equals(i.path().parent().orElse(null)))
             .skip(offset)
             .limit(count)
-            .map(StorageSharedTreeMapValue::info)
+            .map(StorageSharedTreeMapStoreValue::info)
             .collect(
                 Collectors.collectingAndThen(
                     Collectors.toList(),
@@ -146,7 +146,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
     private void saveRootIfNecessary(final StorageContext context) {
         if (this.store.count() == 0) {
             this.store.save(
-                StorageSharedTreeMapValue.with(
+                StorageSharedTreeMapStoreValue.with(
                     StorageValueInfo.with(
                         StoragePath.ROOT,
                         context.createdAuditInfo()
@@ -160,7 +160,7 @@ final class StorageSharedTreeMap<C extends StorageContext> extends StorageShared
         }
     }
 
-    private final Store<StoragePath, StorageSharedTreeMapValue> store;
+    private final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
 
     @Override
     public String toString() {
