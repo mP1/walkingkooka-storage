@@ -304,7 +304,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         return Cast.to(
             StorageSharedPrefixed.with(
                 StoragePath.parse(PREFIX),
-                Storages.tree()
+                Storages.treeMapStore()
             )
         );
     }

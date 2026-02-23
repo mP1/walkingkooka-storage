@@ -55,7 +55,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSave() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -83,7 +83,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveExtraLongPath() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -141,7 +141,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSave2ndMount() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             Storages.fake(),
@@ -169,7 +169,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndLoad() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -196,7 +196,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndLoadExtraLongPath() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -223,7 +223,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndDelete() {
-        final Storage<StorageContext> store1 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -262,8 +262,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testAddDeleteSaveAndDelete() {
-        final Storage<StorageContext> store1 = Storages.tree();
-        final Storage<StorageContext> store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> store2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -312,8 +312,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testList() {
-        final Storage<StorageContext> store1 = Storages.tree();
-        final Storage<StorageContext> store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> store2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -383,8 +383,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testListSubDirectoryOfMount() {
-        final Storage<StorageContext> store1 = Storages.tree();
-        final Storage<StorageContext> store2 = Storages.tree();
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> store2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
             store1,
@@ -445,8 +445,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     @Override
     public RoutingStorage<StorageContext> createStorage() {
         return this.createStorage(
-            Storages.tree(),// /mount1
-            Storages.tree() // /mount2
+            Storages.treeMapStore(),// /mount1
+            Storages.treeMapStore() // /mount2
         );
     }
 
