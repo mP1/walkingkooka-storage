@@ -22,6 +22,9 @@ import walkingkooka.environment.EnvironmentValueName;
 
 import java.util.Optional;
 
+/**
+ * An {@link EnvironmentContext} with additional values, {@link #CURRENT_WORKING_DIRECTORY} and {@link #HOME_DIRECTORY}.
+ */
 public interface StorageEnvironmentContext extends EnvironmentContext,
     HasUserDirectories {
 
