@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelegator;
@@ -124,6 +125,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
         @Override
         public StorageContext storageContext() {
             return StorageContexts.basic(
+                ConverterContexts.fake(), // ConverterLike
                 EnvironmentContexts.empty(
                     Currency.getInstance("AUD"),
                     Indentation.SPACES4,

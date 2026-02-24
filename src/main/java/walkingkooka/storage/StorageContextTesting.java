@@ -18,10 +18,12 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.convert.ConverterLikeTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting2<C>,
+    ConverterLikeTesting<C>,
     CanParseStoragePathTesting {
 
     // parseStorageContext..............................................................................................
@@ -33,6 +35,13 @@ public interface StorageContextTesting<C extends StorageContext> extends Storage
             () -> this.createContext()
                 .parseStoragePath(null)
         );
+    }
+
+    // ConverterLike....................................................................................................
+
+    @Override
+    default C createConverterLike() {
+        return this.createContext();
     }
 
     // class............................................................................................................
