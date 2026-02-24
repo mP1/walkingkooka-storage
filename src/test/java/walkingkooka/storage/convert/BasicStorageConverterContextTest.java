@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
+import walkingkooka.currency.FakeCurrencyContext;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.locale.LocaleContexts;
@@ -35,8 +36,8 @@ import walkingkooka.text.LineEnding;
 import java.math.MathContext;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -112,16 +113,22 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                 }
             },
             ConverterContexts.basic(
-                (l) -> {
-                    Objects.requireNonNull(l, "locale");
-                    throw new UnsupportedOperationException();
-                }, // canCurrencyForLocale
                 false, // canNumbersHaveGroupSeparator
                 Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
                 Indentation.SPACES2,
                 LineEnding.NL,
                 ',', // valueSeparator
                 Converters.fake(),
+                new FakeCurrencyContext() {
+                    @Override
+                    public Optional<Currency> currencyForLocale(final Locale locale) {
+                        return Optional.of(
+                            Currency.getInstance(locale)
+                        );
+                    }
+                }.setLocaleContext(
+                    LocaleContexts.jre(locale)
+                ),
                 DateTimeContexts.basic(
                     DateTimeSymbols.fromDateFormatSymbols(
                         new DateFormatSymbols(locale)
@@ -131,8 +138,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                     20,
                     LocalDateTime::now
                 ),
-                DECIMAL_NUMBER_CONTEXT,
-                LocaleContexts.jre(locale)
+                DECIMAL_NUMBER_CONTEXT
             )
         );
     }
