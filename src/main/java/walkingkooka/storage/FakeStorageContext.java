@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.FakeEnvironmentContext;
 
@@ -48,6 +49,20 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
 
     @Override
     public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+        throw new UnsupportedOperationException();
+    }
+
+    // ConverterLike....................................................................................................
+
+    @Override
+    public boolean canConvert(final Object value,
+                              final Class<?> type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> Either<T, String> convert(final Object value,
+                                         final Class<T> target) {
         throw new UnsupportedOperationException();
     }
 

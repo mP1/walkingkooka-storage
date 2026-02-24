@@ -19,13 +19,23 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.convert.ConverterContexts;
+import walkingkooka.convert.ConverterLike;
+import walkingkooka.convert.Converters;
+import walkingkooka.currency.FakeCurrencyContext;
+import walkingkooka.datetime.DateTimeContexts;
+import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
+import walkingkooka.locale.LocaleContexts;
+import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.math.MathContext;
+import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
@@ -37,13 +47,60 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
     HashCodeEqualsDefinedTesting2<BasicStorageContext> {
 
+    private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
+
+    private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
+        false, // canNumbersHaveGroupSeparator
+        Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
+        Indentation.SPACES2,
+        LineEnding.NL,
+        ',', // valueSeparator
+        Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+        new FakeCurrencyContext() {
+            @Override
+            public Optional<Currency> currencyForLocale(final Locale locale) {
+                return Optional.of(
+                    Currency.getInstance(locale)
+                );
+            }
+        }.setLocaleContext(
+            LocaleContexts.jre(LOCALE)
+        ),
+        DateTimeContexts.basic(
+            DateTimeSymbols.fromDateFormatSymbols(
+                new DateFormatSymbols(LOCALE)
+            ),
+            LOCALE,
+            1920,
+            20,
+            LocalDateTime::now
+        ),
+        DecimalNumberContexts.american(MathContext.DECIMAL32)
+    );
+
+    private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
+
     private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
+
+    @Test
+    public void testWithNullConverterLikeFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicStorageContext.with(
+                null,
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
 
     @Test
     public void testWithNullEnvironmentContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageContext.with(null)
+            () -> BasicStorageContext.with(
+                CONVERTER_LIKE,
+                null
+            )
         );
     }
 
@@ -79,14 +136,30 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         );
 
         this.checkEquals(
-            BasicStorageContext.with(environmentContext),
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                environmentContext
+            ),
             after
+        );
+    }
+
+    // ConverterLike....................................................................................................
+
+    @Test
+    public void testConvert() {
+        this.convertAndCheck(
+            this.createContext(),
+            "A",
+            Character.class,
+            'A'
         );
     }
 
     @Override
     public BasicStorageContext createContext() {
         return BasicStorageContext.with(
+            CONVERTER_LIKE,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
                     Currency.getInstance("AUD"),
@@ -105,19 +178,21 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     // hashCode/equals..................................................................................................
 
     @Test
+    public void testEqualsDifferentConverterLike() {
+        this.checkNotEquals(
+            BasicStorageContext.with(
+                ConverterContexts.fake(),
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
+
+    @Test
     public void testEqualsDifferentEnvironmentContext() {
         this.checkNotEquals(
             BasicStorageContext.with(
-                EnvironmentContexts.empty(
-                    Currency.getInstance("AUD"),
-                    Indentation.SPACES2,
-                    LineEnding.CR,
-                    Locale.GERMAN,
-                    LocalDateTime::now,
-                    Optional.of(
-                        EmailAddress.parse("user@example.com")
-                    )
-                )
+                CONVERTER_LIKE,
+                EnvironmentContexts.fake()
             )
         );
     }

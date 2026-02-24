@@ -19,15 +19,24 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.convert.ConverterContexts;
+import walkingkooka.convert.Converters;
+import walkingkooka.currency.FakeCurrencyContext;
+import walkingkooka.datetime.DateTimeContexts;
+import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.locale.LocaleContexts;
+import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.math.MathContext;
+import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Currency;
@@ -374,7 +383,37 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             MAGIC_ENVIRONMENT_VALUE
         );
 
-        return StorageContexts.basic(environmentContext);
+        return StorageContexts.basic(
+            ConverterContexts.basic(
+                false, // canNumbersHaveGroupSeparator
+                Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
+                Indentation.SPACES2,
+                LineEnding.NL,
+                ',', // valueSeparator
+                Converters.fake(),
+                new FakeCurrencyContext() {
+                    @Override
+                    public Optional<Currency> currencyForLocale(final Locale locale) {
+                        return Optional.of(
+                            Currency.getInstance(locale)
+                        );
+                    }
+                }.setLocaleContext(
+                    LocaleContexts.jre(locale)
+                ),
+                DateTimeContexts.basic(
+                    DateTimeSymbols.fromDateFormatSymbols(
+                        new DateFormatSymbols(locale)
+                    ),
+                    locale,
+                    1920,
+                    20,
+                    LocalDateTime::now
+                ),
+                DecimalNumberContexts.american(MathContext.DECIMAL32)
+            ),
+            environmentContext
+        );
     }
 
     // toString.........................................................................................................

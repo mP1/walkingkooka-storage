@@ -17,21 +17,33 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.convert.ConverterLike;
+import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 
 import java.util.Objects;
 import java.util.Optional;
 
-final class BasicStorageContext implements StorageContext, EnvironmentContextDelegator {
+/**
+ * The provider of the {@link ConverterLike} should watch and recreate or modify itself when the {@link EnvironmentContext}
+ * changes as necessary.
+ */
+final class BasicStorageContext implements StorageContext,
+    ConverterLikeDelegator,
+    EnvironmentContextDelegator {
 
-    static BasicStorageContext with(final EnvironmentContext environmentContext) {
+    static BasicStorageContext with(final ConverterLike converterLike,
+                                    final EnvironmentContext environmentContext) {
         return new BasicStorageContext(
+            Objects.requireNonNull(converterLike, "converterLike"),
             Objects.requireNonNull(environmentContext, "environmentContext")
         );
     }
 
-    private BasicStorageContext(final EnvironmentContext environmentContext) {
+    private BasicStorageContext(final ConverterLike converterLike,
+                                final EnvironmentContext environmentContext) {
+        this.converterLike = converterLike;
         this.environmentContext = environmentContext;
     }
 
@@ -70,6 +82,15 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         );
     }
 
+    // StorageContext...................................................................................................
+
+    @Override
+    public ConverterLike converterLike() {
+        return this.converterLike;
+    }
+
+    private final ConverterLike converterLike;
+
     // EnvironmentContext...............................................................................................
 
     @Override
@@ -84,7 +105,10 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
         // only re-create if different instance
         return this.environmentContext == environmentContext ?
             this :
-            with(environmentContext);
+            with(
+                this.converterLike,
+                environmentContext
+            );
     }
 
     @Override
@@ -98,7 +122,10 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
 
     @Override
     public int hashCode() {
-        return this.environmentContext.hashCode();
+        return Objects.hash(
+            this.converterLike,
+            this.environmentContext
+        );
     }
 
     @Override
@@ -109,7 +136,8 @@ final class BasicStorageContext implements StorageContext, EnvironmentContextDel
     }
 
     private boolean equals0(final BasicStorageContext other) {
-        return this.environmentContext.equals(other.environmentContext);
+        return this.converterLike.equals(other.converterLike) &&
+            this.environmentContext.equals(other.environmentContext);
     }
 
     @Override

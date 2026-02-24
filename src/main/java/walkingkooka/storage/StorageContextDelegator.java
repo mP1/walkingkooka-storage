@@ -17,10 +17,14 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.convert.ConverterLike;
+import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 
-public interface StorageContextDelegator extends StorageContext, EnvironmentContextDelegator {
+public interface StorageContextDelegator extends StorageContext,
+    ConverterLikeDelegator,
+    EnvironmentContextDelegator {
 
     @Override
     default StoragePath parseStoragePath(final String text) {
@@ -31,6 +35,13 @@ public interface StorageContextDelegator extends StorageContext, EnvironmentCont
     // StorageContextDelegator..........................................................................................
 
     StorageContext storageContext();
+
+    // ConverterLikeDelegator...........................................................................................
+
+    @Override
+    default ConverterLike converterLike() {
+        return this.storageContext();
+    }
 
     // EnvironmentContextDelegator......................................................................................
 

@@ -17,10 +17,12 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 
 public interface StorageContext extends StorageEnvironmentContext,
-CanParseStoragePath {
+    ConverterLike,
+    CanParseStoragePath {
 
     @Override
     StorageContext cloneEnvironment();

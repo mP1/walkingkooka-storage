@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
@@ -28,8 +29,12 @@ public final class StorageContexts implements PublicStaticHelper {
     /**
      * {@see BasicStorageContext}
      */
-    public static StorageContext basic(final EnvironmentContext environmentContext) {
-        return BasicStorageContext.with(environmentContext);
+    public static StorageContext basic(final ConverterLike converterLike,
+                                       final EnvironmentContext environmentContext) {
+        return BasicStorageContext.with(
+            converterLike,
+            environmentContext
+        );
     }
 
     /**
