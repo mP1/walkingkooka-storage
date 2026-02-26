@@ -12,12 +12,12 @@ A [Storage](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/jav
 An example of its utlity is the usage within [walkingkooka-spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet), to provide various spreadsheet values including a spreadsheet itself as files at various mounts.
 
 - /spreadsheet/1
-- /spreadsheet/2/cell/A1
-- /spreadsheet/3/label/Label222
+- /spreadsheet/2/cell/A1.json
+- /spreadsheet/3/label/Label222.json
 
 Using the above paths, one can interact or perform CRUD operations from a shell to
 - spreadsheet
-- the cell A1 or its contents
+- the cell A1 or its contents, the file extension *.json requests the value as JSON.
 - the [label](https://github.com/mP1/walkingkooka-spreadsheet/blob/master/src/main/java/walkingkooka/spreadsheet/reference/SpreadsheetLabelName.java) (named range)
 
 # Converters
