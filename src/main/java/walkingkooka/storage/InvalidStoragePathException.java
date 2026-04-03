@@ -50,7 +50,8 @@ public final class InvalidStoragePathException extends IllegalArgumentException
 
     @Override
     public String getMessage() {
-        return this.message + " " + this.path;
+        // Invalid path because "/path1/file2.txt"
+        return this.message + " " + CharSequences.quoteIfChars(this.path.value());
     }
 
     private final String message;
