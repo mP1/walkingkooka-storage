@@ -42,7 +42,7 @@ public final class InvalidStoragePathExceptionTest implements ThrowableTesting2<
 
         final InvalidStoragePathException thrown = new InvalidStoragePathException(message, path);
 
-        this.checkMessage(thrown, message + " " + path);
+        this.checkMessage(thrown, message + " " + '"' + path + '"');
         this.checkEquals(
             path,
             thrown.path()
@@ -66,7 +66,7 @@ public final class InvalidStoragePathExceptionTest implements ThrowableTesting2<
         final InvalidStoragePathException thrown = new InvalidStoragePathException(message, StoragePath.ROOT)
             .setPath(path);
 
-        this.checkMessage(thrown, message + " " + path);
+        this.checkMessage(thrown, message + " " + '"' + path + '"');
         this.checkEquals(
             path,
             thrown.path()
