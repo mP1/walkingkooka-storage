@@ -22,6 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -105,6 +106,25 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     // load.............................................................................................................
 
+    private final static StoragePath INVALID = StoragePath.parse(PREFIX + "/Invalid");
+
+    @Test
+    public void testLoadInvalidFails() {
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .load(
+                    INVALID,
+                    this.createContext()
+                )
+        );
+
+        this.checkEquals(
+            "Invalid path \"/prefix111/Invalid\"",
+            thrown.getMessage()
+        );
+    }
+
     @Test
     public void testLoadUnknown() {
         this.loadAndCheck(
@@ -142,6 +162,26 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     // save.............................................................................................................
 
     @Test
+    public void testSaveInvalidFails() {
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .save(
+                    StorageValue.with(
+                        INVALID,
+                        Optional.of(999)
+                    ),
+                    this.createContext()
+                )
+        );
+
+        this.checkEquals(
+            "Invalid path \"/prefix111/Invalid\"",
+            thrown.getMessage()
+        );
+    }
+
+    @Test
     public void testSave() {
         final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
@@ -171,6 +211,23 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     }
 
     // delete...........................................................................................................
+
+    @Test
+    public void testDeleteInvalidFails() {
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .delete(
+                    INVALID,
+                    this.createContext()
+                )
+        );
+
+        this.checkEquals(
+            "Invalid path \"/prefix111/Invalid\"",
+            thrown.getMessage()
+        );
+    }
 
     @Test
     public void testDeleteWithUnknownPath() {
@@ -232,6 +289,25 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     }
 
     // list.............................................................................................................
+
+    @Test
+    public void testListInvalidFails() {
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .list(
+                    INVALID,
+                    0,
+                    1,
+                    this.createContext()
+                )
+        );
+
+        this.checkEquals(
+            "Invalid path \"/prefix111/Invalid\"",
+            thrown.getMessage()
+        );
+    }
 
     @Test
     public void testList() {
@@ -304,7 +380,68 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         return Cast.to(
             StorageSharedPrefixed.with(
                 StoragePath.parse(PREFIX),
-                Storages.treeMapStore()
+                new Storage<StorageContext>() {
+                    @Override
+                    public Optional<StorageValue> load(final StoragePath path,
+                                                       final StorageContext context) {
+                        this.throwIfInvalid(path);
+
+                        return this.storage.load(
+                            path,
+                            context
+                        );
+                    }
+
+                    @Override
+                    public StorageValue save(final StorageValue value,
+                                             final StorageContext context) {
+                        this.throwIfInvalid(value.path());
+
+                        return this.storage.save(
+                            value,
+                            context
+                        );
+                    }
+
+                    @Override
+                    public void delete(final StoragePath path,
+                                       final StorageContext context) {
+                        this.throwIfInvalid(path);
+
+                        this.storage.delete(
+                            path,
+                            context
+                        );
+                    }
+
+                    @Override
+                    public List<StorageValueInfo> list(final StoragePath parent,
+                                                       final int offset,
+                                                       final int count,
+                                                       final StorageContext context) {
+                        this.throwIfInvalid(parent);
+
+                        return this.storage.list(
+                            parent,
+                            offset,
+                            count,
+                            context
+                        );
+                    }
+
+                    private final Storage<StorageContext> storage = Storages.treeMapStore();
+
+                    private void throwIfInvalid(final StoragePath path) {
+                        if(path.value().contains("Invalid")) {
+                            throw path.invalidStoragePathException("Invalid path");
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return this.storage.toString();
+                    }
+                }
             )
         );
     }

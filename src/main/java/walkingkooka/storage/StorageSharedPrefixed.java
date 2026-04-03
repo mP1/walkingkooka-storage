@@ -66,30 +66,42 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
     @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
-        return this.storage.load(
-            path.removePrefix(this.prefix),
-            context
-        ).map(
-            v -> v.prependPath(this.prefix)
-        );
+        try {
+            return this.storage.load(
+                path.removePrefix(this.prefix),
+                context
+            ).map(
+                v -> v.prependPath(this.prefix)
+            );
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
     }
 
     @Override
     StorageValue save0(final StorageValue value,
                        final C context) {
-        return this.storage.save(
-            value.removePrefixPath(this.prefix),
-            context
-        ).prependPath(this.prefix);
+        try {
+            return this.storage.save(
+                value.removePrefixPath(this.prefix),
+                context
+            ).prependPath(this.prefix);
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
     }
 
     @Override
     void delete0(final StoragePath path,
                  final C context) {
-        this.storage.delete(
-            path.removePrefix(this.prefix),
-            context
-        );
+        try {
+            this.storage.delete(
+                path.removePrefix(this.prefix),
+                context
+            );
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
     }
 
     @Override
@@ -97,14 +109,26 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
                                  final int offset,
                                  final int count,
                                  final C context) {
-        return this.storage.list(
-                parent.removePrefix(this.prefix),
-                offset,
-                count,
-                context
-            ).stream()
-            .map(i -> i.prependPath(this.prefix))
-            .collect(Collectors.toList());
+        try {
+            return this.storage.list(
+                    parent.removePrefix(this.prefix),
+                    offset,
+                    count,
+                    context
+                ).stream()
+                .map(i -> i.prependPath(this.prefix))
+                .collect(Collectors.toList());
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
+    }
+
+    private InvalidStoragePathException fixInvalidPath(final InvalidStoragePathException thrown) {
+        return thrown.setPath(
+            this.prefix.append(
+                thrown.path()
+            )
+        );
     }
 
     // @VisibleForTesting
