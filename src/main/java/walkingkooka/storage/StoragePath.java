@@ -384,4 +384,13 @@ final public class StoragePath
             StoragePath.class
         );
     }
+
+    // InvalidStoragePathException......................................................................................
+
+    public InvalidStoragePathException invalidStoragePathException(final String message) {
+        return new InvalidStoragePathException(
+            message,
+            this
+        );
+    }
 }

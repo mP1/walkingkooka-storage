@@ -30,8 +30,8 @@ public final class InvalidStoragePathException extends IllegalArgumentException
 
     private static final long serialVersionUID = 1L;
 
-    public InvalidStoragePathException(final String message,
-                                       final StoragePath path) {
+    InvalidStoragePathException(final String message,
+                                final StoragePath path) {
         super(
             CharSequences.failIfNullOrEmpty(message, "message")
         );
