@@ -23,7 +23,7 @@ import walkingkooka.text.CharSequences;
 import java.util.Objects;
 
 /**
- * An {@link IllegalArgumentException} used to report a problem with a path.
+ * An {@link IllegalArgumentException} used to report a problem a message with a path appended by {@link #getMessage()}.
  */
 public final class InvalidStoragePathException extends IllegalArgumentException
     implements HasPath<StoragePath> {
