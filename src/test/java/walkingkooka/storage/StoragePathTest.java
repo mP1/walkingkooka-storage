@@ -63,7 +63,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final String value = "/";
 
         final StoragePath path = StoragePath.parse(value);
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             value
         );
@@ -80,7 +80,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final String value = "/path to";
 
         final StoragePath path = StoragePath.parse(value);
-        this.valueCheck(path, value);
+        this.valueAndCheck(path, value);
         this.rootNotCheck(path);
         this.nameCheck(
             path,
@@ -97,7 +97,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final String value = "/path1//path2";
 
         final StoragePath path = StoragePath.parse(value);
-        this.valueCheck(path, "/path1/path2"); // normalized
+        this.valueAndCheck(path, "/path1/path2"); // normalized
         this.rootNotCheck(path);
         this.nameCheck(
             path,
@@ -113,7 +113,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     public void testParseHierarchical() {
         final String value = "/path/to";
         final StoragePath path = StoragePath.parse(value);
-        this.valueCheck(path, value);
+        this.valueAndCheck(path, value);
         this.rootNotCheck(path);
         this.nameCheck(
             path,
@@ -130,7 +130,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final String value = "/path/to/xyz";
 
         final StoragePath path = StoragePath.parse(value);
-        this.valueCheck(path, value);
+        this.valueAndCheck(path, value);
         this.rootNotCheck(path);
         this.nameCheck(
             path,
@@ -145,7 +145,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final StoragePath parent = path.parent()
             .get();
 
-        this.valueCheck(
+        this.valueAndCheck(
             parent,
             "/path/to"
         );
@@ -163,7 +163,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testParseIncludesDot() {
         final StoragePath path = StoragePath.parse("/path1/./path2/./path3");
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/path1/path2/path3"
         );
@@ -182,7 +182,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testParseIncludesTrailingDot() {
         final StoragePath path = StoragePath.parse("/path1/path2/path3/.");
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/path1/path2/path3"
         );
@@ -201,7 +201,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testParseIncludesDoubleDot() {
         final StoragePath path = StoragePath.parse("/path1/./path2/../path3");
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/path1/path3"
         );
@@ -220,7 +220,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testParseIncludesTrailingDoubleDot() {
         final StoragePath path = StoragePath.parse("/path1/path2/path3/..");
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/path1/path2"
         );
@@ -380,7 +380,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     public void testRoot() {
         final StoragePath path = StoragePath.ROOT;
         this.rootCheck(path);
-        this.valueCheck(path, "/");
+        this.valueAndCheck(path, "/");
         this.nameSameCheck(
             path,
             StorageName.ROOT
@@ -396,7 +396,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         final StoragePath path = StoragePath.ROOT.append(name);
         this.rootNotCheck(path);
-        this.valueCheck(path, "/name1");
+        this.valueAndCheck(path, "/name1");
         this.nameCheck(
             path,
             name
@@ -410,7 +410,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         final StoragePath path = parent.append(name);
         this.rootNotCheck(path);
-        this.valueCheck(path, "/parent1/name2");
+        this.valueAndCheck(path, "/parent1/name2");
         this.nameCheck(
             path,
             name
@@ -444,7 +444,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         final StoragePath path = parent.append(path2);
         this.rootNotCheck(path);
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/parent1/path2"
         );
@@ -467,7 +467,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final StoragePath path = parent.append(path2)
             .append(path34);
         this.rootNotCheck(path);
-        this.valueCheck(
+        this.valueAndCheck(
             path,
             "/parent1/path2/path3/path4"
         );
