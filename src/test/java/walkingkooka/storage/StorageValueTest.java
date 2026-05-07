@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.HasValueTesting;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.net.header.MediaType;
@@ -35,7 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<StorageValue>,
     ToStringTesting<StorageValue>,
     TreePrintableTesting,
-    JsonNodeMarshallingTesting<StorageValue> {
+    JsonNodeMarshallingTesting<StorageValue>,
+    HasValueTesting {
 
     {
         StorageStartup.init();
@@ -78,14 +80,6 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.valueAndCheck(
             storageValue,
             VALUE
-        );
-    }
-
-    private void valueAndCheck(final StorageValue value,
-                               final Optional<Object> expected) {
-        this.checkEquals(
-            expected,
-            value.value()
         );
     }
 
