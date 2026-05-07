@@ -19,8 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.HasId;
+import walkingkooka.HasValue;
 import walkingkooka.ToStringBuilder;
-import walkingkooka.Value;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -38,7 +38,7 @@ import java.util.Optional;
  * A value type that holds the storage value and some extra meta data.
  * Instances are not meant be marshalled to JSON or serializable.
  */
-public final class StorageValue implements Value<Optional<Object>>,
+public final class StorageValue implements HasValue<Optional<Object>>,
     HasId<Optional<StoragePath>>,
     Comparable<StorageValue>,
     TreePrintable {
