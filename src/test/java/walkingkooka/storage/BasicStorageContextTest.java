@@ -22,7 +22,6 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyExchangeRaters;
 import walkingkooka.currency.FakeCurrencyContext;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
@@ -57,7 +56,6 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         LineEnding.NL,
         ',', // valueSeparator
         Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-        CurrencyExchangeRaters.fake(),
         new FakeCurrencyContext() {
             @Override
             public Optional<Currency> currencyForLocale(final Locale locale) {
