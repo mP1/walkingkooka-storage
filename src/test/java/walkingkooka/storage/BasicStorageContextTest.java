@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
@@ -56,6 +57,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         LineEnding.NL,
         ',', // valueSeparator
         Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+        BinaryNumberConverterFunctions.fake(), // multiplier
         new FakeCurrencyContext() {
             @Override
             public Optional<Currency> currencyForLocale(final Locale locale) {
