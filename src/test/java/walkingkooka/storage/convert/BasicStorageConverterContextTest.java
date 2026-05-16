@@ -18,6 +18,7 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
@@ -120,6 +121,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                 LineEnding.NL,
                 ',', // valueSeparator
                 Converters.fake(),
+                BinaryNumberConverterFunctions.multiply(), // multiplier
                 new FakeCurrencyContext() {
                     @Override
                     public Optional<Currency> currencyForCurrencyCode(final CurrencyCode currencyCode) {
