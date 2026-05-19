@@ -66,6 +66,7 @@ final public class StoragePath
         final StoragePath storagePath;
 
         switch (path) {
+            case "":
             case SEPARATOR_STRING:
                 storagePath = ROOT;
                 break;
@@ -81,12 +82,10 @@ final public class StoragePath
         try {
             StoragePath result = ROOT;
 
-            if (path.length() > 1) {
-                for (String component : path.substring(1).split(SEPARATOR.string())) {
-                    result = result.append(
-                        StorageName.with(component)
-                    );
-                }
+            for (String component : path.substring(1).split(SEPARATOR.string())) {
+                result = result.append(
+                    StorageName.with(component)
+                );
             }
             return result;
         } catch (final IllegalArgumentException cause) {
