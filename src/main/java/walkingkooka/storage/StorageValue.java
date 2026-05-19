@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.HasId;
 import walkingkooka.HasValue;
 import walkingkooka.ToStringBuilder;
+import walkingkooka.naming.HasPath;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -40,6 +41,7 @@ import java.util.Optional;
  */
 public final class StorageValue implements HasValue<Optional<Object>>,
     HasId<Optional<StoragePath>>,
+    HasPath<StoragePath>,
     Comparable<StorageValue>,
     TreePrintable {
 
@@ -107,6 +109,7 @@ public final class StorageValue implements HasValue<Optional<Object>>,
         );
     }
 
+    @Override
     public StoragePath path() {
         return this.path;
     }
