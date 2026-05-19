@@ -47,6 +47,9 @@ public final class StorageValue implements HasValue<Optional<Object>>,
 
     public final static Optional<Object> NO_VALUE = Optional.empty();
 
+    /**
+     * A {@link StorageValue} constant that is returned representing the {@link StoragePath} within a listing etc.
+     */
     public final static StorageValue ROOT = new StorageValue(
         StoragePath.ROOT,
         NO_VALUE,
