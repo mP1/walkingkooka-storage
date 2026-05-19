@@ -66,7 +66,6 @@ final public class StoragePath
         final StoragePath storagePath;
 
         switch (path) {
-            case "":
             case SEPARATOR_STRING:
                 storagePath = ROOT;
                 break;
