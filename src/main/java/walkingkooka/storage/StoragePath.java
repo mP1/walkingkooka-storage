@@ -395,6 +395,13 @@ final public class StoragePath
         return this == StoragePath.ROOT;
     }
 
+    /**
+     * Some paths represent a value others a parent holding values (a directory/folder).
+     */
+    public boolean isValue() {
+        return false == this.path.endsWith(SEPARATOR_STRING);
+    }
+
     // Comparable.......................................................................................................
 
     @Override
