@@ -24,8 +24,13 @@ import walkingkooka.store.Stores;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+/**
+ * A {@link Storage} that uses a {@link Stores#treeMap(Comparator, BiFunction)} to hold {@link StoragePath} to
+ * entries.
+ */
 final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageShared<C> {
 
     static <C extends StorageContext> StorageSharedTreeMapStore<C> empty() {
