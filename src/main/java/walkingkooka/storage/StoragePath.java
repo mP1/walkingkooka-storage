@@ -183,11 +183,6 @@ final public class StoragePath
                     throw new IllegalArgumentException("Path missing prefix " + CharSequences.quoteAndEscape(prefixString));
                 }
 
-
-                if (false == StorageName.CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
-                    throw new IllegalArgumentException("Path missing prefix " + CharSequences.quoteAndEscape(prefixString));
-                }
-
                 removed = parse(
                     path.substring(
                         prefixString.length()
