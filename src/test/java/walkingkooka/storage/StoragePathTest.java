@@ -969,6 +969,58 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         return StoragePath.parse("/path1/path2/file3");
     }
 
+    // isValue..........................................................................................................
+
+    @Test
+    public void testIsValueWithRoot() {
+        this.isValueAndCheck(
+            StoragePath.ROOT,
+            false
+        );
+    }
+
+    @Test
+    public void testIsValueWithFolder() {
+        this.isValueAndCheck(
+            "/folder1/",
+            false
+        );
+    }
+
+    @Test
+    public void testIsValueWithValue() {
+        this.isValueAndCheck(
+            "/value1",
+            true
+        );
+    }
+
+    @Test
+    public void testIsValueWithValue2() {
+        this.isValueAndCheck(
+            "/folder1/value2",
+            true
+        );
+    }
+
+    private void isValueAndCheck(final String path,
+                                 final boolean expected) {
+
+        this.isValueAndCheck(
+            this.parsePath(path),
+            expected
+        );
+    }
+
+    private void isValueAndCheck(final StoragePath path,
+                                 final boolean expected) {
+        this.checkEquals(
+            expected,
+            path.isValue(),
+            path::toString
+        );
+    }
+
     // ClassTesting.....................................................................................................
 
     @Override
