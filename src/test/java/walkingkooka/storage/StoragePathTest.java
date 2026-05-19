@@ -105,12 +105,29 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
         this.parentCheck(
             path,
-            "/path1"
+            "/path1/"
         );
     }
 
     @Test
-    public void testParseHierarchical() {
+    public void testParseEmptyComponentNormalizedSlash() {
+        final String value = "/path1//path2/";
+
+        final StoragePath path = StoragePath.parse(value);
+        this.valueAndCheck(path, "/path1/path2/"); // normalized
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path2")
+        );
+        this.parentCheck(
+            path,
+            "/path1/"
+        );
+    }
+
+    @Test
+    public void testParseTwoComponents() {
         final String value = "/path/to";
         final StoragePath path = StoragePath.parse(value);
         this.valueAndCheck(path, value);
@@ -121,12 +138,28 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
         this.parentCheck(
             path,
-            "/path"
+            "/path/"
         );
     }
 
     @Test
-    public void testParseHierarchical2() {
+    public void testParseTwoComponentsSlash() {
+        final String value = "/path/to/";
+        final StoragePath path = StoragePath.parse(value);
+        this.valueAndCheck(path, value);
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("to")
+        );
+        this.parentCheck(
+            path,
+            "/path/"
+        );
+    }
+
+    @Test
+    public void testParseThreeComponents() {
         final String value = "/path/to/xyz";
 
         final StoragePath path = StoragePath.parse(value);
@@ -139,7 +172,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parentCheck(
             path,
-            "/path/to"
+            "/path/to/"
         );
 
         final StoragePath parent = path.parent()
@@ -147,7 +180,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.valueAndCheck(
             parent,
-            "/path/to"
+            "/path/to/"
         );
         this.rootNotCheck(parent);
         this.nameCheck(
@@ -156,8 +189,48 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
         this.parentCheck(
             parent,
-            "/path"
+            "/path/"
         );
+    }
+
+    @Test
+    public void testParseThreeComponentsSlash() {
+        final String value = "/path/to/xyz/";
+
+        final StoragePath path = StoragePath.parse(value);
+        this.valueAndCheck(path, value);
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("xyz")
+        );
+
+        this.parentCheck(
+            path,
+            "/path/to/"
+        );
+
+        final StoragePath parent = path.parent()
+            .get();
+
+        this.valueAndCheck(
+            parent,
+            "/path/to/"
+        );
+        this.rootNotCheck(parent);
+        this.nameCheck(
+            parent,
+            StorageName.with("to")
+        );
+        this.parentCheck(
+            parent,
+            "/path/"
+        );
+    }
+
+    @Override
+    public void testPathWithFourComponents() {
+        throw new UnsupportedOperationException();
     }
 
     @Test
@@ -175,7 +248,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parentCheck(
             path,
-            "/path1/path2"
+            "/path1/path2/"
         );
     }
 
@@ -184,7 +257,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final StoragePath path = StoragePath.parse("/path1/path2/path3/.");
         this.valueAndCheck(
             path,
-            "/path1/path2/path3"
+            "/path1/path2/path3/"
         );
         this.rootNotCheck(path);
         this.nameCheck(
@@ -194,7 +267,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parentCheck(
             path,
-            "/path1/path2"
+            "/path1/path2/"
         );
     }
 
@@ -213,7 +286,26 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parentCheck(
             path,
-            "/path1"
+            "/path1/"
+        );
+    }
+
+    @Test
+    public void testParseIncludesDoubleDotSlash() {
+        final StoragePath path = StoragePath.parse("/path1/./path2/../path3/");
+        this.valueAndCheck(
+            path,
+            "/path1/path3/"
+        );
+        this.rootNotCheck(path);
+        this.nameCheck(
+            path,
+            StorageName.with("path3")
+        );
+
+        this.parentCheck(
+            path,
+            "/path1/"
         );
     }
 
@@ -222,7 +314,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         final StoragePath path = StoragePath.parse("/path1/path2/path3/..");
         this.valueAndCheck(
             path,
-            "/path1/path2"
+            "/path1/path2/"
         );
         this.rootNotCheck(path);
         this.nameCheck(
@@ -232,7 +324,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 
         this.parentCheck(
             path,
-            "/path1"
+            "/path1/"
         );
     }
 
@@ -470,6 +562,29 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         this.valueAndCheck(
             path,
             "/parent1/path2/path3/path4"
+        );
+        this.nameCheck(
+            path,
+            StorageName.with("path4")
+        );
+        this.parentCheck(
+            path,
+            "/parent1/path2/path3"
+        );
+    }
+
+    @Test
+    public void testAppendPathToNonRootTwiceSlash() {
+        final StoragePath parent = StoragePath.parse("/parent1");
+        final StoragePath path2 = StoragePath.parse("/path2");
+        final StoragePath path34 = StoragePath.parse("/path3/path4/");
+
+        final StoragePath path = parent.append(path2)
+            .append(path34);
+        this.rootNotCheck(path);
+        this.valueAndCheck(
+            path,
+            "/parent1/path2/path3/path4/"
         );
         this.nameCheck(
             path,

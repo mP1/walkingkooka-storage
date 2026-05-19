@@ -80,14 +80,73 @@ final public class StoragePath
 
     private static StoragePath parseNonRoot(final String path) {
         try {
-            StoragePath result = ROOT;
+            StoragePath storagePath = ROOT;
 
-            for (String component : path.substring(1).split(SEPARATOR.string())) {
-                result = result.append(
-                    StorageName.with(component)
+            final int length = path.length();
+            int nameStart = 1; // must start with slash
+
+            final StringBuilder b = new StringBuilder()
+                .append(SEPARATOR);
+
+            while (nameStart < length) {
+                final int next = path.indexOf(
+                    SEPARATOR.character(),
+                    nameStart
                 );
+
+                final int nameEnd = -1 != next ?
+                    next :
+                    length -
+                        (
+                            path.charAt(
+                                length - 1
+                            ) == SEPARATOR.character() ?
+                                1 :
+                                0
+                        );
+
+                // skip empty components
+                if (nameStart != nameEnd) {
+                    final String name = path.substring(
+                        nameStart,
+                        nameEnd
+                    );
+
+                    switch (name) {
+                        case CURRENT:
+                            break;
+                        case PARENT:
+                            storagePath = storagePath.parent()
+                                .orElse(ROOT);
+
+                            b.setLength(
+                                storagePath.path.length()
+                            );
+                            break;
+                        default:
+                            b.append(name);
+
+                            if (-1 != next) {
+                                b.append(SEPARATOR_STRING);
+                            }
+
+                            storagePath = new StoragePath(
+                                b.toString(),
+                                StorageName.with(name),
+                                Optional.ofNullable(storagePath)
+                            );
+                            break;
+                    }
+                }
+
+                if (next == -1) {
+                    break;
+                }
+
+                nameStart = next + 1;
             }
-            return result;
+
+            return storagePath;
         } catch (final IllegalArgumentException cause) {
             // Failed to parse "/path111/path222", message
             throw new IllegalArgumentException(
@@ -150,6 +209,34 @@ final public class StoragePath
         this.path = path;
         this.name = name;
         this.parent = parent;
+    }
+
+    @Override
+    public StoragePath append(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+
+        StoragePath appended = this;
+
+        if (false == path.isRoot()) {
+            if (false == this.isRoot() && false == this.isEmpty()) {
+                for (StorageName component : path) {
+                    appended = appended.append(component);
+                }
+
+                final String pathValue = path.value();
+                if (pathValue.endsWith(SEPARATOR_STRING)) {
+                    appended = new StoragePath(
+                        appended.path.concat(SEPARATOR_STRING), // replace #path with path ending with slash
+                        appended.name,
+                        appended.parent
+                    );
+                }
+            } else {
+                appended = path;
+            }
+        }
+
+        return appended;
     }
 
     // value............................................................................................................
