@@ -83,11 +83,14 @@ final public class StoragePath
 
             if (path.length() > 1) {
                 for (String component : path.substring(1).split(SEPARATOR.string())) {
-                    result = result.append(StorageName.with(component));
+                    result = result.append(
+                        StorageName.with(component)
+                    );
                 }
             }
             return result;
         } catch (final IllegalArgumentException cause) {
+            // Failed to parse "/path111/path222", message
             throw new IllegalArgumentException(
                 "Failed to parse " +
                     CharSequences.quote(path) +
@@ -267,7 +270,9 @@ final public class StoragePath
         if (false == this.isRoot()) {
             path.append(SEPARATOR);
         }
-        path.append(name.value());
+        path.append(
+            name.value()
+        );
 
         return new StoragePath(
             path.toString(), // path
