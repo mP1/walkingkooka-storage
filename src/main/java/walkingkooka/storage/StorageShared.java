@@ -30,8 +30,9 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     }
     // Storage..........................................................................................................
 
-    @Override final public Optional<StorageValue> load(final StoragePath path,
-                                                       final C context) {
+    @Override
+    final public Optional<StorageValue> load(final StoragePath path,
+                                             final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
