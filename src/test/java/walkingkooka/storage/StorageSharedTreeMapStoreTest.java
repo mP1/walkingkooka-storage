@@ -21,13 +21,17 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.storage.StorageSharedTreeMapStoreTest.TestStorageContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<StorageSharedTreeMapStore<TestStorageContext>, TestStorageContext> {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<StorageSharedTreeMapStore<TestStorageContext>, TestStorageContext>
+    implements ThrowableTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -46,6 +50,52 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         .setValue(
             Optional.of(VALUE)
         );
+
+    @Test
+    public void testSaveValueWithRootPathFails() {
+        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> store.save(
+                StorageValue.with(
+                    StoragePath.parse("/")
+                ).setValue(
+                    Optional.of(VALUE)
+                ),
+                context
+            )
+        );
+
+        this.getMessageAndCheck(
+            thrown,
+            "Invalid path for a value \"/\""
+        );
+    }
+
+    @Test
+    public void testSaveValueWithInvalidPathFails() {
+        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> store.save(
+                StorageValue.with(
+                    StoragePath.parse("/path123/")
+                ).setValue(
+                    Optional.of(VALUE)
+                ),
+                context
+            )
+        );
+
+        this.getMessageAndCheck(
+            thrown,
+            "Invalid path for a value \"/path123/\""
+        );
+    }
 
     @Test
     public void testSaveAndLoad() {
