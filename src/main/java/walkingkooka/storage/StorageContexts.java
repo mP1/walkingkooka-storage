@@ -40,7 +40,7 @@ public final class StorageContexts implements PublicStaticHelper {
     /**
      * {@see FakeStorageContext}
      */
-    public static StorageContext fake() {
+    public static FakeStorageContext fake() {
         return new FakeStorageContext();
     }
 
