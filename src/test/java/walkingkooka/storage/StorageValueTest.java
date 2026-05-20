@@ -53,44 +53,16 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testWithWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageValue.with(
-                null,
-                VALUE
-            )
-        );
-    }
-
-    @Test
-    public void testWithWithNullValueFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageValue.with(
-                PATH,
-                null
-            )
+            () -> StorageValue.with(null)
         );
     }
 
     @Test
     public void testWith() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH);
         this.valueAndCheck(
             storageValue,
-            VALUE
-        );
-    }
-
-    @Test
-    public void testWithRootAndNotValue() {
-        assertSame(
-            StorageValue.ROOT,
-            StorageValue.with(
-                StoragePath.ROOT,
-                StorageValue.NO_VALUE
-            )
+            StorageValue.NO_VALUE
         );
     }
 
@@ -106,10 +78,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetPathWithSame() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH);
 
         assertSame(
             storageValue,
@@ -119,10 +88,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetPathWithDifferent() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH);
 
         final StoragePath differentPath = StoragePath.parse("/Different");
 
@@ -158,10 +124,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetValueWithSame() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE);
 
         assertSame(
             storageValue,
@@ -171,10 +135,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetValueWithDifferent() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE);
 
         final Optional<Object> differentValue = Optional.of("Different");
 
@@ -202,10 +164,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetContentTypeWithSame() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE);
 
         assertSame(
             storageValue,
@@ -215,10 +175,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
     @Test
     public void testSetContentTypeWithDifferent() {
-        final StorageValue storageValue = StorageValue.with(
-            PATH,
-            VALUE
-        );
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE);
 
         final MediaType differentContentType = CONTENT_TYPE;
 
@@ -248,42 +206,39 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testEqualsDifferentPath() {
         this.checkNotEquals(
             StorageValue.with(
-                StoragePath.parse("/different123"),
-                VALUE
-            )
+                StoragePath.parse("/different123")
+            ).setValue(VALUE)
         );
     }
 
     @Test
     public void testEqualsDifferentValue() {
         this.checkNotEquals(
-            StorageValue.with(
-                PATH,
-                Optional.of(
-                    "different " + VALUE
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        "different " + VALUE
+                    )
                 )
-            )
         );
     }
 
     @Test
     public void testEqualsDifferentContentType() {
         this.checkNotEquals(
-            StorageValue.with(
-                PATH,
-                Optional.of(
-                    VALUE
-                )
-            ).setContentType(CONTENT_TYPE)
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        VALUE
+                    )
+                ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Override
     public StorageValue createObject() {
-        return StorageValue.with(
-            PATH,
-            VALUE
-        );
+        return StorageValue.with(PATH)
+            .setValue(VALUE);
     }
 
     // toString.........................................................................................................
@@ -302,10 +257,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testTreePrintableWithoutValue() {
         this.treePrintAndCheck(
-            StorageValue.with(
-                PATH,
-                Optional.empty()
-            ),
+            StorageValue.with(PATH),
             "StorageValue\n" +
                 "  /path123\n"
         );
@@ -338,10 +290,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testMarshallWithEmptyValue() {
         this.marshallAndCheck(
-            StorageValue.with(
-                PATH,
-                Optional.empty()
-            ),
+            StorageValue.with(PATH),
             "{\n" +
                 "  \"path\": \"/path123\",\n" +
                 "  \"value\": null\n" +
@@ -352,12 +301,11 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testMarshallWithContentType() {
         this.marshallAndCheck(
-            StorageValue.with(
-                PATH,
-                VALUE
-            ).setContentType(
-                MediaType.APPLICATION_JSON
-            ),
+            StorageValue.with(PATH)
+                .setValue(VALUE)
+                .setContentType(
+                    MediaType.APPLICATION_JSON
+                ),
             "{\n" +
                 "  \"path\": \"/path123\",\n" +
                 "  \"value\": \"Hello\",\n" +
@@ -369,10 +317,8 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     @Test
     public void testMarshallWithDefaultContentType() {
         this.marshallAndCheck(
-            StorageValue.with(
-                PATH,
-                VALUE
-            ),
+            StorageValue.with(PATH)
+                .setValue(VALUE),
             "{\n" +
                 "  \"path\": \"/path123\",\n" +
                 "  \"value\": \"Hello\"\n" +
@@ -387,10 +333,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
                 "  \"path\": \"/path123\",\n" +
                 "  \"value\": null\n" +
                 "}",
-            StorageValue.with(
-                PATH,
-                Optional.empty()
-            )
+            StorageValue.with(PATH)
         );
     }
 

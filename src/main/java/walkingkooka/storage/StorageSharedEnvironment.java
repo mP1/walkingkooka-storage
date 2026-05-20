@@ -62,8 +62,8 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
             value = Optional.empty();
         }
 
-        return value.map(v -> StorageValue.with(
-                path,
+        return value.map(v -> StorageValue.with(path)
+            .setValue(
                 Optional.of(v)
             )
         );
@@ -82,12 +82,12 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
             )
         );
 
-        return StorageValue.with(
-            path,
-            Cast.to(
-                context.environmentValue(environmentValueName)
-            )
-        );
+        return StorageValue.with(path)
+            .setValue(
+                Cast.to(
+                    context.environmentValue(environmentValueName)
+                )
+            );
     }
 
     @Override

@@ -94,10 +94,10 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             this.createStorage(),
             path,
             this.createContext(),
-            StorageValue.with(
-                path,
-                Optional.of(MAGIC_ENVIRONMENT_VALUE)
-            )
+            StorageValue.with(path)
+                    .setValue(
+                        Optional.of(MAGIC_ENVIRONMENT_VALUE)
+                    )
         );
     }
 
@@ -107,10 +107,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             IllegalArgumentException.class,
             () -> StorageSharedEnvironment.instance()
                 .save(
-                    StorageValue.with(
-                        StoragePath.ROOT,
-                        StorageValue.NO_VALUE
-                    ),
+                    StorageValue.with(StoragePath.ROOT),
                     this.createContext()
                 )
         );
@@ -131,8 +128,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             () -> StorageSharedEnvironment.instance()
                 .save(
                     StorageValue.with(
-                        StoragePath.parse("/!!-invalid-environment-value-name"),
-                        StorageValue.NO_VALUE
+                        StoragePath.parse("/!!-invalid-environment-value-name")
                     ),
                     this.createContext()
                 )
@@ -144,7 +140,8 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         final Integer value = 999;
 
         final StorageValue storageValue = StorageValue.with(
-            StoragePath.parse("/magic-integer"),
+            StoragePath.parse("/magic-integer")
+        ).setValue(
             Optional.of(value)
         );
 
@@ -189,10 +186,10 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
         final StorageContext context = this.createContext();
 
-        final StorageValue value = StorageValue.with(
-            path,
-            Optional.of(MAGIC_ENVIRONMENT_VALUE)
-        );
+        final StorageValue value = StorageValue.with(path)
+            .setValue(
+                Optional.of(MAGIC_ENVIRONMENT_VALUE)
+            );
 
         this.saveAndCheck(
             storage,

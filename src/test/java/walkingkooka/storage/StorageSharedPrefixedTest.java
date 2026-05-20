@@ -140,7 +140,8 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         final FakeStorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
-            StoragePath.parse("/value111"),
+            StoragePath.parse("/value111")
+        ).setValue(
             Optional.of(999)
         );
 
@@ -167,10 +168,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
             InvalidStoragePathException.class,
             () -> this.createStorage()
                 .save(
-                    StorageValue.with(
-                        INVALID,
-                        Optional.of(999)
-                    ),
+                    StorageValue.with(INVALID),
                     this.createContext()
                 )
         );
@@ -188,10 +186,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
         final StoragePath path = StoragePath.parse(PREFIX + "/value111");
 
-        final StorageValue value = StorageValue.with(
-            path,
-            Optional.of(999)
-        );
+        final StorageValue value = StorageValue.with(path)
+            .setValue(
+                Optional.of(999)
+            );
 
         this.saveAndCheck(
             storage,
@@ -236,10 +234,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
         final StoragePath path = StoragePath.parse("/value111");
 
-        final StorageValue value = StorageValue.with(
-            path,
-            Optional.of(999)
-        );
+        final StorageValue value = StorageValue.with(path)
+            .setValue(
+                Optional.of(999)
+            );
 
         storage.storage.save(
             value,
@@ -266,10 +264,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
         final StoragePath path = StoragePath.parse("/value111");
 
-        final StorageValue value = StorageValue.with(
-            path,
-            Optional.of(999)
-        );
+        final StorageValue value = StorageValue.with(path)
+                .setValue(
+                    Optional.of(999)
+                );
 
         storage.storage.save(
             value,
@@ -315,10 +313,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(PREFIX + "/value111");
-        final StorageValue value1 = StorageValue.with(
-            path1,
-            Optional.of(111)
-        );
+        final StorageValue value1 = StorageValue.with(path1)
+            .setValue(
+                Optional.of(111)
+            );
 
         storage.save(
             value1,
@@ -326,10 +324,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         );
 
         final StoragePath path2 = StoragePath.parse(PREFIX + "/value222");
-        final StorageValue value2 = StorageValue.with(
-            path2,
-            Optional.of(222)
-        );
+        final StorageValue value2 = StorageValue.with(path2)
+            .setValue(
+                Optional.of(222)
+            );
 
         storage.save(
             value2,
@@ -337,10 +335,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         );
 
         final StoragePath path3 = StoragePath.parse(PREFIX + "/value333");
-        final StorageValue value3 = StorageValue.with(
-            path3,
-            Optional.of(333)
-        );
+        final StorageValue value3 = StorageValue.with(path3)
+            .setValue(
+                Optional.of(333)
+            );
 
         storage.save(
             value3,
@@ -348,10 +346,10 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         );
 
         final StoragePath path4 = StoragePath.parse(PREFIX + "/value444");
-        final StorageValue value4 = StorageValue.with(
-            path4,
-            Optional.of(444)
-        );
+        final StorageValue value4 = StorageValue.with(path4)
+            .setValue(
+                Optional.of(444)
+            );
 
         storage.save(
             value4,

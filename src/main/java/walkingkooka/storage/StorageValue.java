@@ -58,14 +58,12 @@ public final class StorageValue implements HasValue<Optional<Object>>,
         MediaType.BINARY
     );
 
-    public static StorageValue with(final StoragePath path,
-                                    final Optional<Object> value) {
-        return StoragePath.ROOT.equals(path) &&
-            NO_VALUE.equals(value) ?
+    public static StorageValue with(final StoragePath path) {
+        return StoragePath.ROOT.equals(path) ?
             ROOT :
             new StorageValue(
                 Objects.requireNonNull(path, "path"),
-                Objects.requireNonNull(value, "value"),
+                NO_VALUE,
                 MediaType.BINARY
             );
     }
@@ -311,10 +309,9 @@ public final class StorageValue implements HasValue<Optional<Object>>,
             );
         }
 
-        return with(
-            path,
-            value
-        ).setContentType(contentType);
+        return with(path)
+            .setValue(value)
+            .setContentType(contentType);
     }
 
     private JsonNode marshall(final JsonNodeMarshallContext context) {

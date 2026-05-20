@@ -105,10 +105,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                             parentPath,
                             context.createdAuditInfo()
                         ),
-                        StorageValue.with(
-                            parentPath,
-                            StorageValue.NO_VALUE
-                        )
+                        StorageValue.with(parentPath)
                     )
                 );
 
@@ -156,10 +153,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                         StoragePath.ROOT,
                         context.createdAuditInfo()
                     ),
-                    StorageValue.with(
-                        StoragePath.ROOT,
-                        StorageValue.NO_VALUE
-                    )
+                    StorageValue.with(StoragePath.ROOT)
                 )
             );
         }

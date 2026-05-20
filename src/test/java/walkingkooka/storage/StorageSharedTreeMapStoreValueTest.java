@@ -57,7 +57,8 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
         final String value = "Value999";
 
         VALUE = StorageValue.with(
-            PATH,
+            PATH
+        ).setValue(
             Optional.of(value)
         );
 
