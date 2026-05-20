@@ -59,9 +59,12 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     @Override
     StorageValue save0(final StorageValue value,
                        final C context) {
-        this.saveRootIfNecessary(context);
-
         final StoragePath path = value.path();
+        if(false == path.isValue() && value.value().isPresent()) {
+            throw path.invalidStoragePathException("Invalid path for a value");
+        }
+
+        this.saveRootIfNecessary(context);
 
         final Store<StoragePath, StorageSharedTreeMapStoreValue> store = this.store;
 
