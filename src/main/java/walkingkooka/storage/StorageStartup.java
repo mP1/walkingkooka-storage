@@ -37,10 +37,7 @@ public final class StorageStartup implements PublicStaticHelper {
         Storages.empty()
             .hashCode();
 
-        StorageValue.with(
-            StoragePath.ROOT,
-            StorageValue.NO_VALUE
-        );
+        StorageValue.with(StoragePath.ROOT);
 
         StorageValueInfoList.EMPTY.concat(
             StorageValueInfo.with(

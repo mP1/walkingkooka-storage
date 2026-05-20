@@ -42,10 +42,10 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         TIMESTAMP
     );
 
-    private final static StorageValue STORAGE_VALUE = StorageValue.with(
-        PATH,
-        Optional.of(VALUE)
-    );
+    private final static StorageValue STORAGE_VALUE = StorageValue.with(PATH)
+        .setValue(
+            Optional.of(VALUE)
+        );
 
     @Test
     public void testSaveAndLoad() {
@@ -75,7 +75,10 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StoragePath base = StoragePath.parse("/base");
 
         final StorageValue value1 = StorageValue.with(
-            base.append(StorageName.with("file1.txt")),
+            base.append(
+                StorageName.with("file1.txt")
+            )
+        ).setValue(
             Optional.of("value1")
         );
 
@@ -92,7 +95,10 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StorageValue value2 = StorageValue.with(
-            base.append(StorageName.with("file2.txt")),
+            base.append(
+                StorageName.with("file2.txt")
+            )
+        ).setValue(
             Optional.of("value2")
         );
 
@@ -145,7 +151,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageValue value1 = StorageValue.with(
             base.append(
                 StorageName.with("file1.txt")
-            ),
+            )
+        ).setValue(
             Optional.of("value1")
         );
 
@@ -157,7 +164,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageValue value2 = StorageValue.with(
             base.append(
                 StorageName.with("file2.txt")
-            ),
+            )
+        ).setValue(
             Optional.of("value2")
         );
 
@@ -169,7 +177,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageValue value3 = StorageValue.with(
             base.append(
                 StorageName.with("file3.txt")
-            ),
+            )
+        ).setValue(
             Optional.of("value3")
         );
 
@@ -181,7 +190,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageValue value4 = StorageValue.with(
             base.append(
                 StorageName.with("file4.txt")
-            ),
+            )
+        ).setValue(
             Optional.of("value4")
         );
 
@@ -195,7 +205,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
                 StoragePath.parse("/sub")
             ).append(
                 StorageName.with("sub.txt")
-            ),
+            )
+        ).setValue(
             Optional.of("subsub")
         );
 
@@ -205,7 +216,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StorageValue rootfile = StorageValue.with(
-            StoragePath.parse("/root.txt"),
+            StoragePath.parse("/root.txt")
+        ).setValue(
             Optional.of("root")
         );
 
@@ -247,7 +259,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         store.save(
             StorageValue.with(
-                PATH,
+                PATH
+            ).setValue(
                 Optional.of("different-value-6666")
             ),
             context
@@ -274,28 +287,28 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
         store.save(
-            StorageValue.with(
-                file1,
-                Optional.of("file1-value")
-            ),
+            StorageValue.with(file1)
+                .setValue(
+                    Optional.of("file1-value")
+                ),
             context
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
         store.save(
-            StorageValue.with(
-                file2,
-                Optional.of("file2-value")
-            ),
+            StorageValue.with(file2)
+                .setValue(
+                    Optional.of("file2-value")
+                ),
             context
         );
 
         final StoragePath file5 = StoragePath.parse("/dir2/dir3/file3.txt");
         store.save(
-            StorageValue.with(
-                file5,
-                Optional.of("file3-value")
-            ),
+            StorageValue.with(file5)
+                .setValue(
+                    Optional.of("file3-value")
+                ),
             context
         );
 
@@ -324,37 +337,37 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
         store.save(
-            StorageValue.with(
-                file1,
-                Optional.of("file1-value")
-            ),
+            StorageValue.with(file1)
+                .setValue(
+                    Optional.of("file1-value")
+                ),
             context
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
         store.save(
-            StorageValue.with(
-                file2,
-                Optional.of("file2-value")
-            ),
+            StorageValue.with(file2)
+                .setValue(
+                    Optional.of("file2-value")
+                ),
             context
         );
 
         final StoragePath file3 = StoragePath.parse("/dir2/file3.txt");
         store.save(
-            StorageValue.with(
-                file3,
-                Optional.of("file3-value")
-            ),
+            StorageValue.with(file3)
+                .setValue(
+                    Optional.of("file3-value")
+                ),
             context
         );
 
         final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
         store.save(
-            StorageValue.with(
-                file3,
-                Optional.of("file4-value")
-            ),
+            StorageValue.with(file3)
+                .setValue(
+                    Optional.of("file4-value")
+                ),
             context
         );
 

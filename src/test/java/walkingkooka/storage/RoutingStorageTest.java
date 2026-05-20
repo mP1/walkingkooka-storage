@@ -103,8 +103,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             StoragePath.parse("/dir1/"),
             CONTEXT,
             StorageValue.with(
-                StoragePath.parse("/dir1/"),
-                StorageValue.NO_VALUE
+                StoragePath.parse("/dir1/")
             )
         );
 
@@ -113,8 +112,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             StoragePath.parse("/dir1/dir11/"),
             CONTEXT,
             StorageValue.with(
-                StoragePath.parse("/dir1/dir11/"),
-                StorageValue.NO_VALUE
+                StoragePath.parse("/dir1/dir11/")
             )
         );
 
@@ -123,8 +121,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             StoragePath.parse("/dir1/dir11/dir111/"),
             CONTEXT,
             StorageValue.with(
-                StoragePath.parse("/dir1/dir11/dir111/"),
-                StorageValue.NO_VALUE
+                StoragePath.parse("/dir1/dir11/dir111/")
             )
         );
 
@@ -133,7 +130,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             StoragePath.parse("/dir1/dir11/dir111/file1"),
             CONTEXT,
             StorageValue.with(
-                StoragePath.parse("/dir1/dir11/dir111/file1"),
+                StoragePath.parse("/dir1/dir11/dir111/file1")
+            ).setValue(
                 Optional.of(VALUE1)
             )
         );
@@ -480,7 +478,8 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     private static StorageValue storageValue(final String path,
                                              final String value) {
         return StorageValue.with(
-            StoragePath.parse(path),
+            StoragePath.parse(path)
+        ).setValue(
             Optional.of(value)
         );
     }
