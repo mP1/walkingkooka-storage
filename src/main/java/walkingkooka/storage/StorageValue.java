@@ -89,27 +89,13 @@ public final class StorageValue implements HasValue<Optional<Object>>,
      * Would be setter that returns a StorageValue with the given value creating a new instance if necessary.
      */
     public StorageValue setValue(final Optional<Object> value) {
-        final StorageValue storageValue;
-
-        if (this.value.equals(value)) {
-            storageValue = this;
-        } else {
-            Objects.requireNonNull(value, "value");
-
-            final StoragePath path = this.path;
-            pathAndValueCheck(
-                path,
-                value
-            );
-
-            storageValue = new StorageValue(
-                path,
-                value,
+        return this.value.equals(value) ?
+            this :
+            new StorageValue(
+                this.path,
+                Objects.requireNonNull(value, "value"),
                 this.contentType
             );
-        }
-
-        return storageValue;
     }
 
     // HasId............................................................................................................
@@ -129,36 +115,17 @@ public final class StorageValue implements HasValue<Optional<Object>>,
     }
 
     public StorageValue setPath(final StoragePath path) {
-        final StorageValue storageValue;
-
-        if(this.path.equals(path)) {
-            storageValue = this;
-        } else {
-            final Optional<Object> value = this.value;
-
-            pathAndValueCheck(
-                path,
-                value
-            );
-
-            storageValue = StoragePath.ROOT.equals(path) &&
+        return this.path.equals(path) ?
+            this :
+            StoragePath.ROOT.equals(path) &&
+                NO_VALUE.equals(this.value) &&
                 MediaType.BINARY.equals(this.contentType) ?
                 ROOT :
                 new StorageValue(
                     Objects.requireNonNull(path, "path"),
-                    value,
+                    this.value,
                     this.contentType
                 );
-        }
-
-        return storageValue;
-    }
-
-    private static void pathAndValueCheck(final StoragePath path,
-                                          final Optional<Object> value) {
-        if (value.isPresent() && false == path.isValue()) {
-            throw path.invalidStoragePathException("Invalid storage path for value ");
-        }
     }
 
     // StorageSharedPrefixed...................................................................................................
