@@ -107,6 +107,8 @@ public final class StorageValue implements HasValue<Optional<Object>>,
         );
     }
 
+    // path.............................................................................................................
+
     @Override
     public StoragePath path() {
         return this.path;
