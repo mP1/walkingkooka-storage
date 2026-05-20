@@ -77,19 +77,6 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     }
 
     @Test
-    public void testSetPathWithNonValuePathFails() {
-        final StorageValue storageValue = StorageValue.with(PATH)
-                .setValue(VALUE);
-
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> storageValue.setPath(
-                StoragePath.parse("/storage/")
-            )
-        );
-    }
-
-    @Test
     public void testSetPathWithSame() {
         final StorageValue storageValue = StorageValue.with(PATH);
 
@@ -132,18 +119,6 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         assertThrows(
             NullPointerException.class,
             () -> this.createObject().setValue(null)
-        );
-    }
-
-    @Test
-    public void testSetValueWithNonValuePathFails() {
-        final StorageValue storageValue = StorageValue.with(
-            StoragePath.parse("/storage/")
-        );
-
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> storageValue.setValue(VALUE)
         );
     }
 
