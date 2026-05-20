@@ -804,7 +804,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testRemovePrefixDifferentFails() {
         final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
+            InvalidStoragePathException.class,
             () -> StoragePath.parse("/path123")
                 .removePrefix(
                     StoragePath.parse("/diff")
@@ -812,7 +812,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
 
         this.checkEquals(
-            "Path missing prefix \"/diff\"",
+            "Prefix \"/diff\" missing from path \"/path123\"",
             thrown.getMessage()
         );
     }
@@ -820,7 +820,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testRemovePrefixDifferentFails2() {
         final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
+            InvalidStoragePathException.class,
             () -> StoragePath.parse("/path123")
                 .removePrefix(
                     StoragePath.parse("/path")
@@ -828,7 +828,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
 
         this.checkEquals(
-            "Path missing prefix \"/path\"",
+            "Prefix \"/path\" missing from path \"/path123\"",
             thrown.getMessage()
         );
     }

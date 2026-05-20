@@ -265,7 +265,12 @@ final public class StoragePath
                 removed = ROOT;
             } else {
                 if (false == StorageName.CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
-                    throw new IllegalArgumentException("Path missing prefix " + CharSequences.quoteAndEscape(prefixString));
+                    // Prefix "/prefix123" missing from path "/path111/path222"
+                    throw this.invalidStoragePathException(
+                        "Prefix " +
+                            CharSequences.quoteAndEscape(prefixString) +
+                            " missing from path"
+                    );
                 }
 
                 removed = parse(
