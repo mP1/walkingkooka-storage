@@ -403,7 +403,15 @@ final public class StoragePath
      * Some paths represent a value others a parent holding values (a directory/folder).
      */
     public boolean isValue() {
-        return false == this.path.endsWith(SEPARATOR_STRING);
+        return false == this.isParent();
+    }
+
+    /**
+     * Returns true if this path is a parent or directory and not a file.
+     * Parent paths will end with a slash or {@link #SEPARATOR}.
+     */
+    public boolean isParent() {
+        return this.path.endsWith(SEPARATOR_STRING);
     }
 
     // Comparable.......................................................................................................

@@ -1021,6 +1021,57 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    // isParent.........................................................................................................
+
+    @Test
+    public void testIsParentWithRoot() {
+        this.isParentAndCheck(
+            StoragePath.ROOT,
+            true
+        );
+    }
+
+    @Test
+    public void testIsParentWithFile() {
+        this.isParentAndCheck(
+            "/file1.txt",
+            false
+        );
+    }
+
+    @Test
+    public void testIsParentWithParent() {
+        this.isParentAndCheck(
+            "/dir1/",
+            true
+        );
+    }
+
+    @Test
+    public void testIsParentWithFile2() {
+        this.isParentAndCheck(
+            "/dir1/file1.txt",
+            false
+        );
+    }
+
+    private void isParentAndCheck(final String path,
+                                  final boolean expected) {
+        this.isParentAndCheck(
+            StoragePath.parse(path),
+            expected
+        );
+    }
+
+    private void isParentAndCheck(final StoragePath path,
+                                  final boolean expected) {
+        this.checkEquals(
+            expected,
+            path.isParent(),
+            path::toString
+        );
+    }
+
     // ClassTesting.....................................................................................................
 
     @Override
