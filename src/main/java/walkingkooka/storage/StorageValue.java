@@ -22,6 +22,7 @@ import walkingkooka.HasId;
 import walkingkooka.HasValue;
 import walkingkooka.ToStringBuilder;
 import walkingkooka.naming.HasPath;
+import walkingkooka.net.header.HasContentType;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -39,13 +40,12 @@ import java.util.Optional;
  * A value type that holds the storage value and some extra meta data.
  * Instances are not meant be marshalled to JSON or serializable.
  */
-public final class StorageValue implements HasValue<Optional<Object>>,
+public final class StorageValue implements HasContentType,
+    HasValue<Optional<Object>>,
     HasId<Optional<StoragePath>>,
     HasPath<StoragePath>,
     Comparable<StorageValue>,
     TreePrintable {
-
-    public final static MediaType DEFAULT_CONTENT_TYPE = MediaType.BINARY;
 
     public final static Optional<Object> NO_VALUE = Optional.empty();
 
@@ -55,7 +55,7 @@ public final class StorageValue implements HasValue<Optional<Object>>,
     public final static StorageValue ROOT = new StorageValue(
         StoragePath.ROOT,
         NO_VALUE,
-        MediaType.BINARY
+        NO_CONTENT_TYPE
     );
 
     public static StorageValue with(final StoragePath path) {
@@ -64,13 +64,13 @@ public final class StorageValue implements HasValue<Optional<Object>>,
             new StorageValue(
                 Objects.requireNonNull(path, "path"),
                 NO_VALUE,
-                MediaType.BINARY
+                HasContentType.NO_CONTENT_TYPE
             );
     }
 
     private StorageValue(final StoragePath path,
                          final Optional<Object> value,
-                         final MediaType contentType) {
+                         final Optional<MediaType> contentType) {
         this.path = path;
         this.value = value;
         this.contentType = contentType;
@@ -148,16 +148,17 @@ public final class StorageValue implements HasValue<Optional<Object>>,
 
     // ContentType......................................................................................................
 
-    public MediaType contentType() {
+    @Override
+    public Optional<MediaType> contentType() {
         return this.contentType;
     }
 
-    private final MediaType contentType;
+    private final Optional<MediaType> contentType;
 
     /**
      * Would be setter that returns a StorageValue with the given contentType creating a new instance if necessary.
      */
-    public StorageValue setContentType(final MediaType contentType) {
+    public StorageValue setContentType(final Optional<MediaType> contentType) {
         return this.contentType.equals(contentType) ?
             this :
             new StorageValue(
@@ -225,10 +226,12 @@ public final class StorageValue implements HasValue<Optional<Object>>,
             {
                 boolean indentValue = false;
 
-                final MediaType contentType = this.contentType;
-                if (false == contentType.equals(MediaType.BINARY)) {
+                final MediaType contentType = this.contentType.orElse(null);
+                if (null != contentType) {
                     printer.print("contentType: ");
-                    printer.println(contentType.toString());
+                    printer.println(
+                        contentType.toString()
+                    );
 
                     indentValue = true;
                 }
@@ -271,7 +274,7 @@ public final class StorageValue implements HasValue<Optional<Object>>,
     static StorageValue unmarshall(final JsonNode node,
                                    final JsonNodeUnmarshallContext context) {
         StoragePath path = null;
-        MediaType contentType = DEFAULT_CONTENT_TYPE;
+        Optional<MediaType> contentType = HasContentType.NO_CONTENT_TYPE;
         Optional<Object> value = null;
 
         for (JsonNode child : node.objectOrFail().children()) {
@@ -284,7 +287,7 @@ public final class StorageValue implements HasValue<Optional<Object>>,
                     );
                     break;
                 case CONTENT_TYPE_PROPERTY_STRING:
-                    contentType = context.unmarshall(
+                    contentType = context.unmarshallOptional(
                         child,
                         MediaType.class
                     );
@@ -326,12 +329,11 @@ public final class StorageValue implements HasValue<Optional<Object>>,
                 context.marshallOptionalWithType(this.value)
             );
 
-        // dont marshall contentType if its default.
-        final MediaType contentType = this.contentType;
-        if (false == contentType.equals(DEFAULT_CONTENT_TYPE)) {
+        final Optional<MediaType> contentType = this.contentType;
+        if (contentType.isPresent()) {
             json = json.set(
                 CONTENT_TYPE_PROPERTY,
-                context.marshall(contentType)
+                context.marshallOptional(contentType)
             );
         }
         return json;

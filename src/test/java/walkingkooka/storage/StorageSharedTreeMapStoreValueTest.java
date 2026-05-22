@@ -22,6 +22,8 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.CharsetName;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
@@ -316,7 +318,22 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\" application/octet-stream"
+            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\""
+        );
+    }
+
+    @Test
+    public void testToStringWithContentType() {
+        this.toStringAndCheck(
+            StorageSharedTreeMapStoreValue.with(
+                STORAGE_VALUE_INFO,
+                VALUE.setContentType(
+                    Optional.of(
+                        MediaType.TEXT_PLAIN.setCharset(CharsetName.UTF_8)
+                    )
+                )
+            ),
+            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\" text/plain; charset=UTF-8"
         );
     }
 
