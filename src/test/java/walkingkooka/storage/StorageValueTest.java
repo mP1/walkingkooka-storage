@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.HasValueTesting;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.net.header.HasContentTypeTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
@@ -33,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<StorageValue>,
+public final class StorageValueTest implements HasContentTypeTesting,
+    HashCodeEqualsDefinedTesting2<StorageValue>,
     ToStringTesting<StorageValue>,
     TreePrintableTesting,
     JsonNodeMarshallingTesting<StorageValue>,
@@ -169,7 +171,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
 
         assertSame(
             storageValue,
-            storageValue.setContentType(StorageValue.DEFAULT_CONTENT_TYPE)
+            storageValue.setContentType(StorageValue.NO_CONTENT_TYPE)
         );
     }
 
@@ -178,7 +180,7 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         final StorageValue storageValue = StorageValue.with(PATH)
             .setValue(VALUE);
 
-        final MediaType differentContentType = CONTENT_TYPE;
+        final Optional<MediaType> differentContentType = Optional.of(CONTENT_TYPE);
 
         final StorageValue different = storageValue.setContentType(differentContentType);
         assertNotSame(
@@ -189,14 +191,6 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
         this.contentTypeAndCheck(
             different,
             differentContentType
-        );
-    }
-
-    private void contentTypeAndCheck(final StorageValue value,
-                                     final MediaType expected) {
-        this.checkEquals(
-            expected,
-            value.contentType()
         );
     }
 
@@ -231,7 +225,9 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
                     Optional.of(
                         VALUE
                     )
-                ).setContentType(CONTENT_TYPE)
+                ).setContentType(
+                    Optional.of(CONTENT_TYPE)
+                )
         );
     }
 
@@ -247,7 +243,9 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     public void testToString() {
         this.toStringAndCheck(
             this.createObject()
-                .setContentType(CONTENT_TYPE),
+                .setContentType(
+                    Optional.of(CONTENT_TYPE)
+                ),
             "/path123=\"Hello\" text/plain"
         );
     }
@@ -274,10 +272,12 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
     }
 
     @Test
-    public void testTreePrintableContentTypeNotBinary() {
+    public void testTreePrintableContentType() {
         this.treePrintAndCheck(
             this.createObject()
-                .setContentType(MediaType.TEXT_PLAIN),
+                .setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
+                ),
             "StorageValue\n" +
                 "  /path123\n" +
                 "    contentType: text/plain\n" +
@@ -304,7 +304,9 @@ public final class StorageValueTest implements HashCodeEqualsDefinedTesting2<Sto
             StorageValue.with(PATH)
                 .setValue(VALUE)
                 .setContentType(
-                    MediaType.APPLICATION_JSON
+                    Optional.of(
+                        MediaType.APPLICATION_JSON
+                    )
                 ),
             "{\n" +
                 "  \"path\": \"/path123\",\n" +
