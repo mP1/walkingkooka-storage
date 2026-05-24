@@ -22,9 +22,9 @@ import walkingkooka.Binary;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 
-public abstract class StorageConverterStoragePathBinaryToTestCase<C extends StorageConverterStoragePathBinaryTo<FakeStorageConverterContext>> extends StorageConverterTestCase<C> {
+public abstract class StorageConverterStoragePathBinaryTestCase<C extends StorageConverterStoragePathBinary<FakeStorageConverterContext>> extends StorageConverterTestCase<C> {
 
-    StorageConverterStoragePathBinaryToTestCase() {
+    StorageConverterStoragePathBinaryTestCase() {
         super();
     }
 
