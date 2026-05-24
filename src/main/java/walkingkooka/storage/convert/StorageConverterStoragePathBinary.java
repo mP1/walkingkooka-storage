@@ -18,6 +18,7 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.Binary;
+import walkingkooka.Either;
 import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -51,4 +52,19 @@ abstract class StorageConverterStoragePathBinary<C extends StorageConverterConte
     abstract boolean isPathAndType(final StoragePath path,
                                    final Class<?> type,
                                    final C context);
+
+    @Override
+    public <T> Either<T, String> doConvert(final Object value,
+                                           final Class<T> type,
+                                           final C context) {
+        return this.doConvertStoragePath(
+            (StoragePath) value,
+            type,
+            context
+        );
+    }
+
+    abstract <T> Either<T, String> doConvertStoragePath(final StoragePath value,
+                                                        final Class<T> type,
+                                                        final C context);
 }
