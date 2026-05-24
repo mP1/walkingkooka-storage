@@ -40,7 +40,8 @@ abstract class StorageConverterStoragePathBinary<C extends StorageConverterConte
         return value instanceof StorageBinary &&
             this.isPathAndType(
                 ((StorageBinary) value).path(),
-                type
+                type,
+                context
             );
     }
 
@@ -48,5 +49,6 @@ abstract class StorageConverterStoragePathBinary<C extends StorageConverterConte
      * Sub-classes should test the file extension and type are supported.
      */
     abstract boolean isPathAndType(final StoragePath path,
-                                   final Class<?> type);
+                                   final Class<?> type,
+                                   final C context);
 }
