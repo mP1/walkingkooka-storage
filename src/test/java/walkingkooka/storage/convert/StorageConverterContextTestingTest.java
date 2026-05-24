@@ -38,6 +38,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.math.MathContext;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -166,6 +167,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
             return ConverterContexts.basic(
                 false, // canNumbersHaveGroupSeparator
+                StandardCharsets.UTF_8,
                 Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
                 Indentation.SPACES2,
                 LineEnding.NL,
