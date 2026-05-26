@@ -17,12 +17,14 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.convert.FakeConverterContext;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.tree.json.convert.FakeJsonNodeConverterContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
 import java.util.Optional;
 
-public class FakeStorageConverterContext extends FakeConverterContext implements StorageConverterContext {
+public class FakeStorageConverterContext extends FakeJsonNodeConverterContext implements StorageConverterContext {
 
     public FakeStorageConverterContext() {
         super();
@@ -40,6 +42,16 @@ public class FakeStorageConverterContext extends FakeConverterContext implements
 
     @Override
     public StoragePath parseStoragePath(final String text) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor jsonNodeMarshallContextObjectPostProcessor) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public StorageConverterContext setPreProcessor(final JsonNodeUnmarshallContextPreProcessor jsonNodeUnmarshallContextPreProcessor) {
         throw new UnsupportedOperationException();
     }
 }

@@ -17,11 +17,19 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.storage.CanParseStoragePath;
 import walkingkooka.storage.HasUserDirectories;
+import walkingkooka.tree.json.convert.JsonNodeConverterContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
-public interface StorageConverterContext extends ConverterContext,
+public interface StorageConverterContext extends JsonNodeConverterContext,
     CanParseStoragePath,
     HasUserDirectories {
+
+    @Override
+    StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor jsonNodeMarshallContextObjectPostProcessor);
+
+    @Override
+    StorageConverterContext setPreProcessor(final JsonNodeUnmarshallContextPreProcessor jsonNodeUnmarshallContextPreProcessor);
 }

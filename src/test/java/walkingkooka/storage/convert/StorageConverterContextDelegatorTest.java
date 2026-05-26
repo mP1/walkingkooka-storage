@@ -21,20 +21,32 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyCode;
-import walkingkooka.currency.CurrencyExchange;
-import walkingkooka.currency.FakeCurrencyContext;
+import walkingkooka.currency.CurrencyContexts;
+import walkingkooka.currency.CurrencyExchangeRaters;
+import walkingkooka.currency.CurrencyLocaleContext;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.locale.LocaleContext;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextDelegatorTest.TestStorageConverterContextDelegator;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.tree.expression.ExpressionNumberKind;
+import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
+import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
+import walkingkooka.tree.json.convert.JsonNodeConverterContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
@@ -99,6 +111,16 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
     }
 
     @Override
+    public void testSetObjectPostProcessor() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetPreProcessor() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestStorageConverterContextDelegator createContext() {
         return new TestStorageConverterContextDelegator(
             Optional.of(
@@ -139,7 +161,23 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
     final static class TestStorageConverterContextDelegator implements StorageConverterContextDelegator {
 
         TestStorageConverterContextDelegator(final Optional<StoragePath> currentWorkingDirectory) {
-            final Locale locale = Locale.ENGLISH;
+            final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
+            final Locale locale = Locale.forLanguageTag("en-AU");
+            final LocaleContext localeContext = LocaleContexts.jre(locale);
+
+            final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
+                CurrencyContexts.jre(
+                    Currency.getInstance(locale),
+                    CurrencyExchangeRaters.properties(
+                        Properties.EMPTY,
+                        (s, b) -> {
+                            throw new UnsupportedOperationException();
+                        }
+                    ),
+                    localeContext
+                ),
+                localeContext
+            );
 
             this.storageConverterContext = StorageConverterContexts.basic(
                 new FakeHasUserDirectories() {
@@ -148,56 +186,55 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
                         return currentWorkingDirectory;
                     }
                 },
-                ConverterContexts.basic(
-                    false, // canNumbersHaveGroupSeparator
-                    StandardCharsets.UTF_8,
-                    Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
-                    Indentation.SPACES2,
-                    LineEnding.NL,
-                    ',', // valueSeparator
-                    Converters.fake(),
-                    BinaryNumberConverterFunctions.multiply(), // multiplier
-                    new FakeCurrencyContext() {
-
-                        @Override
-                        public Optional<Number> currencyExchangeRate(final CurrencyExchange currencyExchange,
-                                                                     final Optional<LocalDateTime> dateTime) {
-                            Objects.requireNonNull(currencyExchange, "currencyExchange");
-                            Objects.requireNonNull(dateTime, "dateTime");
-
-                            throw new UnsupportedOperationException();
-                        }
-
-                        @Override
-                        public Optional<Currency> currencyForCurrencyCode(final CurrencyCode currencyCode) {
-                            return Optional.of(
-                                Currency.getInstance(
-                                    currencyCode.value()
-                                )
-                            );
-                        }
-
-                        @Override
-                        public Optional<Currency> currencyForLocale(final Locale locale) {
-                            return Optional.of(
-                                Currency.getInstance(locale)
-                            );
-                        }
-                    }.setLocaleContext(
-                        LocaleContexts.jre(locale)
-                    ),
-                    DateTimeContexts.basic(
-                        DateTimeSymbols.fromDateFormatSymbols(
-                            new DateFormatSymbols(locale)
+                JsonNodeConverterContexts.basic(
+                    ExpressionNumberConverterContexts.basic(
+                        Converters.fake(),
+                        ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
+                        ConverterContexts.basic(
+                            false, // canNumbersHaveGroupSeparator
+                            StandardCharsets.UTF_8,
+                            Converters.JAVA_EPOCH_OFFSET, // dateOffset
+                            Indentation.SPACES2,
+                            LineEnding.NL,
+                            ',', // valueSeparator
+                            Converters.fake(),
+                            BinaryNumberConverterFunctions.fake(), // multiplier
+                            currencyLocaleContext,
+                            DateTimeContexts.basic(
+                                DateTimeSymbols.fromDateFormatSymbols(
+                                    new DateFormatSymbols(locale)
+                                ),
+                                locale,
+                                1920, // defaultYear
+                                20, // twoDigitYear
+                                LocalDateTime::now
+                            ),
+                            DECIMAL_NUMBER_CONTEXT
                         ),
-                        locale,
-                        1920,
-                        20,
-                        LocalDateTime::now
+                        expressionNumberKind
                     ),
-                    DECIMAL_NUMBER_CONTEXT
+                    JsonNodeMarshallUnmarshallContexts.basic(
+                        JsonNodeMarshallContexts.basic(),
+                        JsonNodeUnmarshallContexts.basic(
+                            expressionNumberKind,
+                            currencyLocaleContext, // CurrencyCodeLanguageTagContext
+                            DECIMAL_NUMBER_CONTEXT.mathContext()
+                        )
+                    )
                 )
             );
+        }
+
+        @Override
+        public StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor processor) {
+            Objects.requireNonNull(processor, "processor");
+            return this;
+        }
+
+        @Override
+        public StorageConverterContext setPreProcessor(final JsonNodeUnmarshallContextPreProcessor processor) {
+            Objects.requireNonNull(processor, "processor");
+            return this;
         }
 
         // StorageConverterContextDelegator.............................................................................
