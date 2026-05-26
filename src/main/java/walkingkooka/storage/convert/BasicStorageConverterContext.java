@@ -17,20 +17,22 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.convert.ConverterContext;
-import walkingkooka.convert.ConverterContextDelegator;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.tree.json.convert.JsonNodeConverterContext;
+import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
 import java.util.Objects;
 
 final class BasicStorageConverterContext implements StorageConverterContext,
-    ConverterContextDelegator,
+    JsonNodeConverterContextDelegator,
     HasUserDirectoriesDelegator {
 
     static BasicStorageConverterContext with(final HasUserDirectories hasUserDirectories,
-                                             final ConverterContext context) {
+                                             final JsonNodeConverterContext context) {
         Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
         Objects.requireNonNull(context, "context");
 
@@ -38,7 +40,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
     }
 
     private BasicStorageConverterContext(final HasUserDirectories hasUserDirectories,
-                                         final ConverterContext context) {
+                                         final JsonNodeConverterContext context) {
         this.hasUserDirectories = hasUserDirectories;
         this.context = context;
     }
@@ -61,14 +63,41 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     private final HasUserDirectories hasUserDirectories;
 
-    // ConverterContextDelegator........................................................................................
+    // JsonNodeConverterContextDelegator................................................................................
+
 
     @Override
-    public ConverterContext converterContext() {
+    public StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor jsonNodeMarshallContextObjectPostProcessor) {
+        final JsonNodeConverterContext before = this.context;
+        final JsonNodeConverterContext after = before.setObjectPostProcessor(jsonNodeMarshallContextObjectPostProcessor);
+
+        return before != after ?
+            new BasicStorageConverterContext(
+                this.hasUserDirectories,
+                after
+            ) :
+            this;
+    }
+
+    @Override
+    public StorageConverterContext setPreProcessor(final JsonNodeUnmarshallContextPreProcessor jsonNodeUnmarshallContextPreProcessor) {
+        final JsonNodeConverterContext before = this.context;
+        final JsonNodeConverterContext after = before.setPreProcessor(jsonNodeUnmarshallContextPreProcessor);
+
+        return before != after ?
+            new BasicStorageConverterContext(
+                this.hasUserDirectories,
+                after
+            ) :
+            this;
+    }
+
+    @Override
+    public JsonNodeConverterContext jsonNodeConverterContext() {
         return this.context;
     }
 
-    private final ConverterContext context;
+    private final JsonNodeConverterContext context;
 
     // toString.........................................................................................................
 

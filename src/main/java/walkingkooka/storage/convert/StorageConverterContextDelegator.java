@@ -17,13 +17,13 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.convert.ConverterContext;
-import walkingkooka.convert.ConverterContextDelegator;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.tree.json.convert.JsonNodeConverterContext;
+import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
 
-public interface StorageConverterContextDelegator extends ConverterContextDelegator,
+public interface StorageConverterContextDelegator extends JsonNodeConverterContextDelegator,
     StorageConverterContext,
     HasUserDirectoriesDelegator {
 
@@ -35,10 +35,10 @@ public interface StorageConverterContextDelegator extends ConverterContextDelega
             );
     }
 
-    // ConverterContextDelegator........................................................................................
+    // JsonNodeConverterContextDelegator................................................................................
 
     @Override
-    default ConverterContext converterContext() {
+    default JsonNodeConverterContext jsonNodeConverterContext() {
         return this.storageConverterContext();
     }
 

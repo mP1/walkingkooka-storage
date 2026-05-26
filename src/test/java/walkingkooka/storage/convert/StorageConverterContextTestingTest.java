@@ -19,23 +19,35 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
-import walkingkooka.convert.ConverterContext;
-import walkingkooka.convert.ConverterContextDelegator;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyCode;
-import walkingkooka.currency.CurrencyExchange;
-import walkingkooka.currency.FakeCurrencyContext;
+import walkingkooka.currency.CurrencyContexts;
+import walkingkooka.currency.CurrencyExchangeRaters;
+import walkingkooka.currency.CurrencyLocaleContext;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.locale.LocaleContext;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.props.Properties;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.tree.expression.ExpressionNumberKind;
+import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
+import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
+import walkingkooka.tree.json.convert.JsonNodeConverterContext;
+import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
+import walkingkooka.tree.json.convert.JsonNodeConverterContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
@@ -100,6 +112,16 @@ public final class StorageConverterContextTestingTest implements StorageConverte
     }
 
     @Override
+    public void testSetObjectPostProcessor() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetPreProcessor() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestStorageConverterContext createContext() {
         return new TestStorageConverterContext(
             Optional.of(
@@ -133,7 +155,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
     }
 
     final static class TestStorageConverterContext implements StorageConverterContext,
-        ConverterContextDelegator {
+        JsonNodeConverterContextDelegator {
 
         TestStorageConverterContext(final Optional<StoragePath> currentWorkingDirectory) {
             this.currentWorkingDirectory = currentWorkingDirectory;
@@ -159,62 +181,77 @@ public final class StorageConverterContextTestingTest implements StorageConverte
             throw new UnsupportedOperationException();
         }
 
-        // ConverterContextDelegator....................................................................................
+        // JsonNodeConverterContextDelegator............................................................................
 
         @Override
-        public ConverterContext converterContext() {
-            final Locale locale = Locale.ENGLISH;
+        public StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor processor) {
+            Objects.requireNonNull(processor, "processor");
+            return this;
+        }
 
-            return ConverterContexts.basic(
-                false, // canNumbersHaveGroupSeparator
-                StandardCharsets.UTF_8,
-                Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
-                Indentation.SPACES2,
-                LineEnding.NL,
-                ',', // valueSeparator
-                Converters.fake(),
-                BinaryNumberConverterFunctions.multiply(), // multiplier
-                new FakeCurrencyContext() {
+        @Override
+        public StorageConverterContext setPreProcessor(final JsonNodeUnmarshallContextPreProcessor processor) {
+            Objects.requireNonNull(processor, "processor");
+            return this;
+        }
 
-                    @Override
-                    public Optional<Number> currencyExchangeRate(final CurrencyExchange currencyExchange,
-                                                                 final Optional<LocalDateTime> dateTime) {
-                        Objects.requireNonNull(currencyExchange, "currencyExchange");
-                        Objects.requireNonNull(dateTime, "dateTime");
+        @Override
+        public JsonNodeConverterContext jsonNodeConverterContext() {
+            final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
+            final Locale locale = Locale.forLanguageTag("en-AU");
+            final LocaleContext localeContext = LocaleContexts.jre(locale);
 
-                        throw new UnsupportedOperationException();
-                    }
-
-                    @Override
-                    public Optional<Currency> currencyForCurrencyCode(final CurrencyCode currencyCode) {
-                        return Optional.of(
-                            Currency.getInstance(
-                                currencyCode.value()
-                            )
-                        );
-                    }
-
-                    @Override
-                    public Optional<Currency> currencyForLocale(final Locale locale) {
-                        return Optional.of(
-                            Currency.getInstance(locale)
-                        );
-                    }
-                }.setLocaleContext(
-                    LocaleContexts.jre(
-                        Locale.forLanguageTag("en-AU")
-                    )
-                ),
-                DateTimeContexts.basic(
-                    DateTimeSymbols.fromDateFormatSymbols(
-                        new DateFormatSymbols(locale)
+            final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
+                CurrencyContexts.jre(
+                    Currency.getInstance(locale),
+                    CurrencyExchangeRaters.properties(
+                        Properties.EMPTY,
+                        (s, b) -> {
+                            throw new UnsupportedOperationException();
+                        }
                     ),
-                    locale,
-                    1920,
-                    20,
-                    LocalDateTime::now
+                    localeContext
                 ),
-                DECIMAL_NUMBER_CONTEXT
+                localeContext
+            );
+
+            final MathContext mathContext = MathContext.DECIMAL32;
+
+            return JsonNodeConverterContexts.basic(
+                ExpressionNumberConverterContexts.basic(
+                    Converters.fake(),
+                    ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
+                    ConverterContexts.basic(
+                        false, // canNumbersHaveGroupSeparator
+                        StandardCharsets.UTF_8,
+                        Converters.JAVA_EPOCH_OFFSET, // dateOffset
+                        Indentation.SPACES2,
+                        LineEnding.NL,
+                        ',', // valueSeparator
+                        Converters.fake(),
+                        BinaryNumberConverterFunctions.fake(), // multiplier
+                        currencyLocaleContext,
+                        DateTimeContexts.basic(
+                            DateTimeSymbols.fromDateFormatSymbols(
+                                new DateFormatSymbols(locale)
+                            ),
+                            locale,
+                            1920, // defaultYear
+                            20, // twoDigitYear
+                            LocalDateTime::now
+                        ),
+                        DecimalNumberContexts.american(mathContext)
+                    ),
+                    expressionNumberKind
+                ),
+                JsonNodeMarshallUnmarshallContexts.basic(
+                    JsonNodeMarshallContexts.basic(),
+                    JsonNodeUnmarshallContexts.basic(
+                        expressionNumberKind,
+                        currencyLocaleContext, // CurrencyCodeLanguageTagContext
+                        mathContext
+                    )
+                )
             );
         }
 

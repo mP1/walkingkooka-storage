@@ -19,22 +19,32 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyCode;
-import walkingkooka.currency.CurrencyExchange;
-import walkingkooka.currency.FakeCurrencyContext;
+import walkingkooka.currency.CurrencyContexts;
+import walkingkooka.currency.CurrencyExchangeRaters;
+import walkingkooka.currency.CurrencyLocaleContext;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.locale.LocaleContext;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.tree.expression.ExpressionNumberKind;
+import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
+import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
+import walkingkooka.tree.json.convert.JsonNodeConverterContext;
+import walkingkooka.tree.json.convert.JsonNodeConverterContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +52,6 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,7 +63,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
     private final static String HOME = "/home/user123";
 
-    private final static ConverterContext CONVERTER_CONTEXT = ConverterContexts.fake();
+    private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
 
@@ -72,7 +81,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     }
 
     @Test
-    public void testWithNullConverterContextFails() {
+    public void testWithNullJsonNodeConverterContextFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
@@ -105,7 +114,25 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
     @Override
     public BasicStorageConverterContext createContext() {
-        final Locale locale = Locale.ENGLISH;
+        final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
+        final Locale locale = Locale.forLanguageTag("en-AU");
+        final LocaleContext localeContext = LocaleContexts.jre(locale);
+
+        final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
+            CurrencyContexts.jre(
+                Currency.getInstance(locale),
+                CurrencyExchangeRaters.properties(
+                    Properties.EMPTY,
+                    (s, b) -> {
+                        throw new UnsupportedOperationException();
+                    }
+                ),
+                localeContext
+            ),
+            localeContext
+        );
+
+        final MathContext mathContext = MathContext.DECIMAL32;
 
         return BasicStorageConverterContext.with(
             new FakeHasUserDirectories() {
@@ -117,54 +144,41 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                     );
                 }
             },
-            ConverterContexts.basic(
-                false, // canNumbersHaveGroupSeparator
-                StandardCharsets.UTF_8,
-                Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
-                Indentation.SPACES2,
-                LineEnding.NL,
-                ',', // valueSeparator
-                Converters.fake(),
-                BinaryNumberConverterFunctions.multiply(), // multiplier
-                new FakeCurrencyContext() {
-
-                    @Override
-                    public Optional<Number> currencyExchangeRate(final CurrencyExchange currencyExchange,
-                                                                 final Optional<LocalDateTime> dateTime) {
-                        Objects.requireNonNull(currencyExchange, "currencyExchange");
-                        Objects.requireNonNull(dateTime, "dateTime");
-
-                        throw new UnsupportedOperationException();
-                    }
-
-                    @Override
-                    public Optional<Currency> currencyForCurrencyCode(final CurrencyCode currencyCode) {
-                        return Optional.of(
-                            Currency.getInstance(
-                                currencyCode.value()
-                            )
-                        );
-                    }
-
-                    @Override
-                    public Optional<Currency> currencyForLocale(final Locale locale) {
-                        return Optional.of(
-                            Currency.getInstance(locale)
-                        );
-                    }
-                }.setLocaleContext(
-                    LocaleContexts.jre(locale)
-                ),
-                DateTimeContexts.basic(
-                    DateTimeSymbols.fromDateFormatSymbols(
-                        new DateFormatSymbols(locale)
+            JsonNodeConverterContexts.basic(
+                ExpressionNumberConverterContexts.basic(
+                    Converters.fake(),
+                    ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
+                    ConverterContexts.basic(
+                        false, // canNumbersHaveGroupSeparator
+                        StandardCharsets.UTF_8,
+                        Converters.JAVA_EPOCH_OFFSET, // dateOffset
+                        Indentation.SPACES2,
+                        LineEnding.NL,
+                        ',', // valueSeparator
+                        Converters.fake(),
+                        BinaryNumberConverterFunctions.fake(), // multiplier
+                        currencyLocaleContext,
+                        DateTimeContexts.basic(
+                            DateTimeSymbols.fromDateFormatSymbols(
+                                new DateFormatSymbols(locale)
+                            ),
+                            locale,
+                            1920, // defaultYear
+                            20, // twoDigitYear
+                            LocalDateTime::now
+                        ),
+                        DecimalNumberContexts.american(mathContext)
                     ),
-                    locale,
-                    1920,
-                    20,
-                    LocalDateTime::now
+                    expressionNumberKind
                 ),
-                DECIMAL_NUMBER_CONTEXT
+                JsonNodeMarshallUnmarshallContexts.basic(
+                    JsonNodeMarshallContexts.basic(),
+                    JsonNodeUnmarshallContexts.basic(
+                        expressionNumberKind,
+                        currencyLocaleContext, // CurrencyCodeLanguageTagContext
+                        mathContext
+                    )
+                )
             )
         );
     }
