@@ -41,7 +41,7 @@ public final class StorageConverterStorageBinaryPropertiesToTest extends Storage
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryTxtToDateTimeSymbols() {
+    public void testConvertStorageBinaryPropertiesToDateTimeSymbols() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.ENGLISH
@@ -62,7 +62,7 @@ public final class StorageConverterStorageBinaryPropertiesToTest extends Storage
     }
 
     @Test
-    public void testConvertStorageBinaryTxtToProperties() {
+    public void testConvertStorageBinaryPropertiesToProperties() {
         final Properties properties = Properties.EMPTY.set(
             PropertiesPath.parse("hello.world.123"),
             "Hello World"
