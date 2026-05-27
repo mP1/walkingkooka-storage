@@ -24,6 +24,7 @@ import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelega
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
@@ -127,6 +128,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
             return StorageContexts.basic(
                 ConverterContexts.fake(), // ConverterLike
                 EnvironmentContexts.empty(
+                    StandardCharsets.UTF_8,
                     Currency.getInstance("AUD"),
                     Indentation.SPACES4,
                     LineEnding.NL,

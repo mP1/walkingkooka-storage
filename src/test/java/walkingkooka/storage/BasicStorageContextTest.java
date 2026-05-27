@@ -123,6 +123,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         final BasicStorageContext context = this.createContext();
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            StandardCharsets.UTF_8,
             Currency.getInstance("AUD"),
             Indentation.SPACES2,
             LineEnding.CRNL,
@@ -166,6 +167,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
             CONVERTER_LIKE,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    StandardCharsets.UTF_8,
                     Currency.getInstance("AUD"),
                     Indentation.SPACES2,
                     LineEnding.NL,

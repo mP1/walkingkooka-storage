@@ -270,6 +270,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             0,
             999,
             this.createContext(),
+            EnvironmentValueName.CHARSET,
             EnvironmentValueName.CURRENCY,
             EnvironmentValueName.INDENTATION,
             EnvironmentValueName.LINE_ENDING,
@@ -286,9 +287,10 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         this.listAndCheck(
             StorageSharedEnvironment.instance(),
             StoragePath.ROOT,
-            1,
+            2,
             2,
             this.createContext(),
+            //EnvironmentValueName.CHARSET,
             //EnvironmentValueName.CURRENCY,
             EnvironmentValueName.INDENTATION,
             EnvironmentValueName.LINE_ENDING
@@ -368,6 +370,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
         final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
+                StandardCharsets.UTF_8,
                 Currency.getInstance(locale),
                 Indentation.SPACES4,
                 LineEnding.NL,
