@@ -73,5 +73,5 @@ public final class InvalidStoragePathException extends IllegalArgumentException
             );
     }
 
-    private StoragePath path;
+    private final StoragePath path;
 }

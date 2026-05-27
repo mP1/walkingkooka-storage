@@ -56,7 +56,7 @@ final class RoutingStorageRoute<C extends StorageContext> {
             path.toString().startsWith(this.storagePathSlash);
     }
 
-    private String storagePathSlash;
+    private final String storagePathSlash;
 
     // /mount1/path2/path3
     //
