@@ -53,6 +53,9 @@ final class StorageConverterStorageBinaryPropertiesTo<C extends StorageConverter
                 .orElse(null)
         ) && context.canConvert(
             "",
+            Properties.class
+        ) && context.canConvert(
+            Properties.EMPTY,
             type
         );
     }
