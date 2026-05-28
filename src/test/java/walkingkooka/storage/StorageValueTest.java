@@ -79,6 +79,16 @@ public final class StorageValueTest implements HasContentTypeTesting,
     }
 
     @Test
+    public void testSetPathWithRoot() {
+        final StorageValue storageValue = StorageValue.with(PATH);
+
+        assertSame(
+            StorageValue.ROOT,
+            storageValue.setPath(StoragePath.ROOT)
+        );
+    }
+
+    @Test
     public void testSetPathWithSame() {
         final StorageValue storageValue = StorageValue.with(PATH);
 
