@@ -34,8 +34,8 @@ abstract class StorageConverterStorageBinaryTo<C extends StorageConverterContext
 
     @Override
     public final boolean canConvert(final Object value,
-                              final Class<?> type,
-                              final C context) {
+                                    final Class<?> type,
+                                    final C context) {
         return value instanceof StorageBinary &&
             this.isPathAndType(
                 ((StorageBinary) value).path(),
