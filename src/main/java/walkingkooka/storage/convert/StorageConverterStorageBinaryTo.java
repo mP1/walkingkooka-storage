@@ -19,7 +19,6 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.Binary;
 import walkingkooka.Either;
-import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 
@@ -27,8 +26,7 @@ import walkingkooka.storage.StoragePath;
  * Base class for any {@link walkingkooka.convert.Converter} that matches a {@link StoragePath} and converts the
  * {@link Binary} to another type using other {@link walkingkooka.convert.Converter}.
  */
-abstract class StorageConverterStorageBinaryTo<C extends StorageConverterContext> extends StorageConverter<C>
-    implements ShortCircuitingConverter<C> {
+abstract class StorageConverterStorageBinaryTo<C extends StorageConverterContext> extends StorageConverter<C> {
 
     StorageConverterStorageBinaryTo() {
         super();
