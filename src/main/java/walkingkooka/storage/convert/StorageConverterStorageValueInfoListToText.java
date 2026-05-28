@@ -19,7 +19,6 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.storage.StorageValueInfo;
 import walkingkooka.storage.StorageValueInfoList;
 import walkingkooka.text.LineEnding;
@@ -30,8 +29,7 @@ import java.util.stream.Collectors;
  * A {@link walkingkooka.convert.Converter} that converts a {@link StorageValueInfoList} into lines of text, with one
  * per item.
  */
-final class StorageConverterStorageValueInfoListToText<C extends StorageConverterContext> extends StorageConverter<C>
-    implements ShortCircuitingConverter<C> {
+final class StorageConverterStorageValueInfoListToText<C extends StorageConverterContext> extends StorageConverter<C> {
 
     /**
      * Type safe getter.

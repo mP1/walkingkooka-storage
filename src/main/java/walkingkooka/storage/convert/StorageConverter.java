@@ -17,9 +17,9 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.convert.Converter;
+import walkingkooka.convert.ShortCircuitingConverter;
 
-abstract class StorageConverter<C extends StorageConverterContext> implements Converter<C> {
+abstract class StorageConverter<C extends StorageConverterContext> implements ShortCircuitingConverter<C> {
 
     StorageConverter() {
         super();
