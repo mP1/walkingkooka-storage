@@ -118,8 +118,7 @@ public final class StorageValue implements HasContentType,
         return this.path.equals(path) ?
             this :
             StoragePath.ROOT.equals(path) &&
-                NO_VALUE.equals(this.value) &&
-                MediaType.BINARY.equals(this.contentType) ?
+                NO_VALUE.equals(this.value) && this.contentType.isEmpty() ?
                 ROOT :
                 new StorageValue(
                     Objects.requireNonNull(path, "path"),
