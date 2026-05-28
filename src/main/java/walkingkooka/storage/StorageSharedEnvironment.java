@@ -41,7 +41,7 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     /**
      * Singleton instance
      */
-    private final static StorageSharedEnvironment INSTANCE = new StorageSharedEnvironment();
+    private final static StorageSharedEnvironment INSTANCE = new StorageSharedEnvironment<>();
 
     private StorageSharedEnvironment() {
         super();

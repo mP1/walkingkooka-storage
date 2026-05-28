@@ -97,10 +97,10 @@ final class RoutingStorageRoute<C extends StorageContext> {
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof RoutingStorageRoute && this.equals0((RoutingStorageRoute) other);
+            other instanceof RoutingStorageRoute && this.equals0((RoutingStorageRoute<?>) other);
     }
 
-    private boolean equals0(final RoutingStorageRoute other) {
+    private boolean equals0(final RoutingStorageRoute<?> other) {
         return this.path.equals(other.path) &&
             this.store.equals(other.store);
     }

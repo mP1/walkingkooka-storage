@@ -34,7 +34,7 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     /**
      * Singleton instance
      */
-    private final static StorageSharedEmpty INSTANCE = new StorageSharedEmpty();
+    private final static StorageSharedEmpty INSTANCE = new StorageSharedEmpty<>();
 
     private StorageSharedEmpty() {
         super();

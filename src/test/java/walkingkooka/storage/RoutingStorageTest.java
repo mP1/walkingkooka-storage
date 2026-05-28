@@ -458,7 +458,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         final RoutingStorageBuilder<StorageContext> b = RoutingStorageBuilder.empty();
 
         int i = 1;
-        for (Storage store : stores) {
+        for (Storage<StorageContext> store : stores) {
             b.startsWith(
                 StoragePath.parse("/mount" + i),
                 store
