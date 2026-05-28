@@ -22,6 +22,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 
 # Converters
 
+- [json-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryJson.java)
 - [storage-binary-json-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToJson.java)
 - [storage-binary-properties-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToProperties.java)
 - [storage-binary-txt-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToTxt.java)
