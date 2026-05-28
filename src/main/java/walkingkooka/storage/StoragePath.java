@@ -20,8 +20,10 @@ package walkingkooka.storage;
 import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
+import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.CharacterConstant;
+import walkingkooka.text.HasCaseSensitivity;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -38,6 +40,7 @@ import java.util.Optional;
 final public class StoragePath
     implements Path<StoragePath, StorageName>,
     Comparable<StoragePath>,
+    HasCaseSensitivity,
     TreePrintable {
 
     final static String SEPARATOR_STRING = "/";
@@ -261,10 +264,10 @@ final public class StoragePath
             final String path = this.path;
             final String prefixString = prefix.toString();
 
-            if (StorageName.CASE_SENSITIVITY.equals(path, prefixString)) {
+            if (CASE_SENSITIVITY.equals(path, prefixString)) {
                 removed = ROOT;
             } else {
-                if (false == StorageName.CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
+                if (false == CASE_SENSITIVITY.startsWith(path, prefixString.concat(SEPARATOR_STRING))) {
                     // Prefix "/prefix123" missing from path "/path111/path222"
                     throw this.invalidStoragePathException(
                         "Prefix " +
@@ -420,7 +423,7 @@ final public class StoragePath
     public int compareTo(final StoragePath other) {
         Objects.requireNonNull(other, "other");
 
-        return StorageName.CASE_SENSITIVITY.comparator()
+        return CASE_SENSITIVITY.comparator()
             .compare(
                 this.path,
                 other.path
@@ -431,7 +434,7 @@ final public class StoragePath
 
     @Override
     public int hashCode() {
-        return StorageName.CASE_SENSITIVITY.hash(this.path);
+        return CASE_SENSITIVITY.hash(this.path);
     }
 
     @Override
@@ -497,5 +500,14 @@ final public class StoragePath
             message,
             this
         );
+    }
+
+    // HasCaseSensitivity...............................................................................................
+
+    public final static CaseSensitivity CASE_SENSITIVITY = StorageName.CASE_SENSITIVITY;
+
+    @Override
+    public CaseSensitivity caseSensitivity() {
+        return CASE_SENSITIVITY;
     }
 }
