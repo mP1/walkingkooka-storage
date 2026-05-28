@@ -109,6 +109,14 @@ public final class StorageConverterToStorageBinaryTxtTest extends StorageConvert
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.txt to StorageBinary"
+        );
+    }
+
     @Override
     public Class<StorageConverterToStorageBinaryTxt<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterToStorageBinaryTxt.class);
