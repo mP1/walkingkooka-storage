@@ -1080,7 +1080,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Override
-    public final JavaVisibility typeVisibility() {
+    public JavaVisibility typeVisibility() {
         return JavaVisibility.PUBLIC;
     }
 
