@@ -48,7 +48,7 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
                 wrapStoraage = prefixedStorage.storage;
             }
 
-            result = new StorageSharedPrefixed<C>(
+            result = new StorageSharedPrefixed<>(
                 wrapPrefix,
                 wrapStoraage
             );

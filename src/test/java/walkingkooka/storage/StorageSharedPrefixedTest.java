@@ -378,7 +378,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         return Cast.to(
             StorageSharedPrefixed.with(
                 StoragePath.parse(PREFIX),
-                new Storage<StorageContext>() {
+                new Storage<>() {
                     @Override
                     public Optional<StorageValue> load(final StoragePath path,
                                                        final StorageContext context) {
