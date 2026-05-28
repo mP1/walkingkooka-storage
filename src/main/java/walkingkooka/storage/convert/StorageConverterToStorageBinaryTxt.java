@@ -99,6 +99,6 @@ final class StorageConverterToStorageBinaryTxt<C extends StorageConverterContext
 
     @Override
     public String toString() {
-        return "to " + StorageBinary.class.getSimpleName();
+        return "*." + FileExtension.TXT + " to " + StorageBinary.class.getSimpleName();
     }
 }
