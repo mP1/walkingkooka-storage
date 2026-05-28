@@ -26,24 +26,24 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {@see StorageConverterStorageBinaryPropertiesTo}
+     * {@see StorageConverterStorageBinaryToJson}
      */
-    public static <C extends StorageConverterContext> Converter<C> storageBinaryJsonTo() {
-        return StorageConverterStorageBinaryPropertiesTo.instance();
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToJson() {
+        return StorageConverterStorageBinaryToJson.instance();
     }
 
     /**
-     * {@see StorageConverterStorageBinaryPropertiesTo}
+     * {@see StorageConverterStorageBinaryToProperties}
      */
-    public static <C extends StorageConverterContext> Converter<C> storageBinaryPropertiesTo() {
-        return StorageConverterStorageBinaryPropertiesTo.instance();
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToProperties() {
+        return StorageConverterStorageBinaryToProperties.instance();
     }
 
     /**
-     * {@see StorageConverterStorageBinaryTxtTo}
+     * {@see StorageConverterStorageBinaryToTxt}
      */
-    public static <C extends StorageConverterContext> Converter<C> storageBinaryTxtTo() {
-        return StorageConverterStorageBinaryTxtTo.instance();
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToTxt() {
+        return StorageConverterStorageBinaryToTxt.instance();
     }
 
     /**

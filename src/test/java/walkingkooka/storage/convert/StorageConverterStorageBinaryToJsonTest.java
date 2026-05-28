@@ -23,37 +23,47 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
-import walkingkooka.props.Properties;
-import walkingkooka.props.PropertiesPath;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.tree.expression.ExpressionNumberKind;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonPropertyName;
+import walkingkooka.tree.json.JsonString;
+import walkingkooka.tree.json.convert.JsonNodeConverters;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
+import java.math.MathContext;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
+import java.util.Optional;
 
-public final class StorageConverterStorageBinaryPropertiesToTest extends StorageConverterStorageBinaryTestCase<StorageConverterStorageBinaryPropertiesTo<FakeStorageConverterContext>> {
+public final class StorageConverterStorageBinaryToJsonTest extends StorageConverterStorageBinaryToTestCase<StorageConverterStorageBinaryToJson<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryPropertiesToDateTimeSymbols() {
+    public void testConvertStorageBinaryJsonToDateTimeSymbols() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.ENGLISH
             )
         );
 
+        final FakeStorageConverterContext context = this.createContext();
+
         this.convertAndCheck(
             StorageBinary.with(
-                StoragePath.parse("/dateTimeSymbols.properties"),
+                StoragePath.parse("/dateTimeSymbols.json"),
                 Binary.with(
-                    dateTimeSymbols.properties()
-                        .text()
+                    context.marshall(dateTimeSymbols)
+                        .toString()
                         .getBytes(CHARSET)
                 )
             ),
@@ -62,30 +72,31 @@ public final class StorageConverterStorageBinaryPropertiesToTest extends Storage
     }
 
     @Test
-    public void testConvertStorageBinaryPropertiesToProperties() {
-        final Properties properties = Properties.EMPTY.set(
-            PropertiesPath.parse("hello.world.123"),
-            "Hello World"
-        ).set(
-            PropertiesPath.parse("country"),
-            "Australia"
-        );
+    public void testConvertStorageBinaryJsonToJson() {
+        final JsonNode json = JsonNode.object()
+            .set(
+                JsonPropertyName.with("key111"),
+                "string111"
+            ).set(
+                JsonPropertyName.with("country"),
+                "Australia"
+            );
 
         this.convertAndCheck(
             StorageBinary.with(
-                StoragePath.parse("/file.properties"),
+                StoragePath.parse("/file.json"),
                 Binary.with(
-                    properties.text()
+                    json.toString()
                         .getBytes(CHARSET)
                 )
             ),
-            properties
+            json
         );
     }
 
     @Override
-    public StorageConverterStorageBinaryPropertiesTo<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStorageBinaryPropertiesTo.instance();
+    public StorageConverterStorageBinaryToJson<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageBinaryToJson.instance();
     }
 
     @Override
@@ -122,19 +133,47 @@ public final class StorageConverterStorageBinaryPropertiesToTest extends Storage
                 );
             }
 
-            private final Converter<ConverterContext> converter = Converters.collection(
+            private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.hasBinaryToString(),
-                    Converters.textToProperties(),
-                    Converters.propertiesToDateTimeSymbols()
+                    JsonNodeConverters.textToJsonNode(),
+                    JsonNodeConverters.jsonNodeTo()
+                )
+            ).cast(StorageConverterContext.class);
+
+            @Override
+            public Optional<JsonString> typeName(final Class<?> type) {
+                return this.context.typeName(type);
+            }
+
+            @Override
+            public JsonNode marshall(final Object value) {
+                return this.context.marshall(value);
+            }
+
+            @Override
+            public <T> T unmarshall(final JsonNode json,
+                                    final Class<T> type) {
+                return this.context.unmarshall(
+                    json,
+                    type
+                );
+            }
+
+            private final JsonNodeMarshallUnmarshallContext context = JsonNodeMarshallUnmarshallContexts.basic(
+                JsonNodeMarshallContexts.basic(),
+                JsonNodeUnmarshallContexts.basic(
+                    ExpressionNumberKind.DEFAULT,
+                    this, // CurrencyCodeLanguageTagContext
+                    MathContext.DECIMAL32
                 )
             );
         };
     }
 
     @Override
-    public Class<StorageConverterStorageBinaryPropertiesTo<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStorageBinaryPropertiesTo.class);
+    public Class<StorageConverterStorageBinaryToJson<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageBinaryToJson.class);
     }
 }

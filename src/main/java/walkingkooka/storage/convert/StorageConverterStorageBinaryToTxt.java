@@ -27,18 +27,18 @@ import walkingkooka.storage.StoragePath;
  * Converts *.txt files after converting the {@link StorageBinary#binary()} to {@link String} and then converting that
  * to the requested target type.
  */
-final class StorageConverterStorageBinaryTxtTo<C extends StorageConverterContext> extends StorageConverterStorageBinary<C> {
+final class StorageConverterStorageBinaryToTxt<C extends StorageConverterContext> extends StorageConverterStorageBinaryTo<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryTxtTo<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToTxt<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageBinaryTxtTo INSTANCE = new StorageConverterStorageBinaryTxtTo<>();
+    private final static StorageConverterStorageBinaryToTxt INSTANCE = new StorageConverterStorageBinaryToTxt<>();
 
-    private StorageConverterStorageBinaryTxtTo() {
+    private StorageConverterStorageBinaryToTxt() {
         super();
     }
 
