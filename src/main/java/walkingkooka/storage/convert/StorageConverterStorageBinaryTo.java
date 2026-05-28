@@ -65,4 +65,9 @@ abstract class StorageConverterStorageBinaryTo<C extends StorageConverterContext
     abstract <T> Either<T, String> storageBinaryTo(final StorageBinary value,
                                                    final Class<T> type,
                                                    final C context);
+
+    // Object...........................................................................................................
+
+    @Override
+    public abstract String toString();
 }
