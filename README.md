@@ -25,6 +25,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [storage-binary-json-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToJson.java)
 - [storage-binary-properties-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToProperties.java)
 - [storage-binary-txt-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToTxt.java)
+- [properties-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryProperties.java)
 - [-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryTxt.java)
 - [storage-path-json-to-class](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStoragePathJsonToClass.java)
 - [storage-path-properties-to-class](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStoragePathPropertiesToClass.java)
