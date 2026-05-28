@@ -56,9 +56,9 @@ final class StorageConverterStorageBinaryToTxt<C extends StorageConverterContext
     }
 
     @Override
-    <T> Either<T, String> doConvertStorageBinary(final StorageBinary storageBinary,
-                                                 final Class<T> type,
-                                                 final C context) {
+    <T> Either<T, String> storageBinaryTo(final StorageBinary storageBinary,
+                                          final Class<T> type,
+                                          final C context) {
         final Either<T, String> result;
 
         // convert Binary to String
