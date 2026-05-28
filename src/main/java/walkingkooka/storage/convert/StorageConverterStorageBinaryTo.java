@@ -55,14 +55,14 @@ abstract class StorageConverterStorageBinaryTo<C extends StorageConverterContext
     public <T> Either<T, String> doConvert(final Object value,
                                            final Class<T> type,
                                            final C context) {
-        return this.doConvertStorageBinary(
+        return this.storageBinaryTo(
             (StorageBinary) value,
             type,
             context
         );
     }
 
-    abstract <T> Either<T, String> doConvertStorageBinary(final StorageBinary value,
-                                                          final Class<T> type,
-                                                          final C context);
+    abstract <T> Either<T, String> storageBinaryTo(final StorageBinary value,
+                                                   final Class<T> type,
+                                                   final C context);
 }
