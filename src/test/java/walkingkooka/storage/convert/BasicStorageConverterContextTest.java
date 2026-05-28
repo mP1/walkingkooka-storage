@@ -18,7 +18,9 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
+import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyContexts;
@@ -59,6 +61,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicStorageConverterContextTest implements StorageConverterContextTesting<BasicStorageConverterContext>,
     DecimalNumberContextDelegator {
 
+    private final static Converter<StorageConverterContext> CONVERTER = Converters.collection(
+        Lists.of(
+            Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+            StorageConverters.textToStoragePath()
+        )
+    );
+
     private final static String CWD = "/current/working/directory/";
 
     private final static String HOME = "/home/user123";
@@ -70,10 +79,23 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     // with.............................................................................................................
 
     @Test
+    public void testWithNullConverterFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicStorageConverterContext.with(
+                null,
+                new FakeHasUserDirectories(),
+                CONVERTER_CONTEXT
+            )
+        );
+    }
+
+    @Test
     public void testWithNullCurrentWorkingDirectoryFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
+                CONVERTER,
                 null,
                 CONVERTER_CONTEXT
             )
@@ -85,9 +107,34 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
+                CONVERTER,
                 new FakeHasUserDirectories(),
                 null
             )
+        );
+    }
+
+    // converter........................................................................................................
+
+    @Test
+    public void testCanConvert() {
+        this.canConvertAndCheck(
+            this.createContext(),
+            "/storage-path123",
+            StoragePath.class,
+            true
+        );
+    }
+
+    @Test
+    public void testConvert() {
+        final String text = "/storage-path123";
+
+        this.convertAndCheck(
+            this.createContext(),
+            text,
+            StoragePath.class,
+            StoragePath.parse(text)
         );
     }
 
@@ -135,6 +182,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         final MathContext mathContext = MathContext.DECIMAL32;
 
         return BasicStorageConverterContext.with(
+            CONVERTER,
             new FakeHasUserDirectories() {
 
                 @Override
