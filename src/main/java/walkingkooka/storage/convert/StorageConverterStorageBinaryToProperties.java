@@ -20,31 +20,27 @@ package walkingkooka.storage.convert;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
+import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
-import walkingkooka.tree.json.JsonNode;
 
 
 /**
- * Converts *.json files in several steps,
- * <ul>
- * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold JSON</li>
- * <li>Convert {@link String} to a {@link JsonNode}</li>
- * <li>Convert {@link JsonNode} to given type {@link Class}</li>
- * </ul>
+ * Converts *.properties files after converting the {@link StorageBinary#binary()} to {@link String} and then converting to a
+ * {@link Properties} and then to the requested target type.
  */
-final class StorageConverterStorageBinaryJsonTo<C extends StorageConverterContext> extends StorageConverterStorageBinary<C> {
+final class StorageConverterStorageBinaryToProperties<C extends StorageConverterContext> extends StorageConverterStorageBinaryTo<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryJsonTo<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToProperties<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageBinaryJsonTo INSTANCE = new StorageConverterStorageBinaryJsonTo<>();
+    private final static StorageConverterStorageBinaryToProperties INSTANCE = new StorageConverterStorageBinaryToProperties<>();
 
-    private StorageConverterStorageBinaryJsonTo() {
+    private StorageConverterStorageBinaryToProperties() {
         super();
     }
 
@@ -52,14 +48,14 @@ final class StorageConverterStorageBinaryJsonTo<C extends StorageConverterContex
     boolean isPathAndType(final StoragePath path,
                           final Class<?> type,
                           final C context) {
-        return FileExtension.JSON.equals(
+        return FileExtension.PROPERTIES.equals(
             path.fileExtension()
                 .orElse(null)
         ) && context.canConvert(
             "",
-            JsonNode.class
+            Properties.class
         ) && context.canConvert(
-            JsonNode.object(),
+            Properties.EMPTY,
             type
         );
     }
@@ -78,16 +74,16 @@ final class StorageConverterStorageBinaryJsonTo<C extends StorageConverterContex
         if (text.isRight()) {
             result = Cast.to(text);
         } else {
-            final Either<JsonNode, String> json = context.convert(
+            final Either<Properties, String> properties = context.convert(
                 text.leftValue(),
-                JsonNode.class
+                Properties.class
             );
-            if (json.isRight()) {
-                result = Cast.to(json);
+            if (properties.isRight()) {
+                result = Cast.to(properties);
             } else {
-                // convert JsonNode to $type
+                // convert String to $type
                 result = context.convert(
-                    json.leftValue(),
+                    text.leftValue(),
                     type
                 );
             }
@@ -100,6 +96,6 @@ final class StorageConverterStorageBinaryJsonTo<C extends StorageConverterContex
 
     @Override
     public String toString() {
-        return "*." + FileExtension.JSON + " AND " + StorageBinary.class.getSimpleName() + " to";
+        return "*." + FileExtension.PROPERTIES + " AND " + StorageBinary.class.getSimpleName() + " to";
     }
 }

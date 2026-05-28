@@ -21,39 +21,71 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.props.Properties;
+import walkingkooka.props.PropertiesPath;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormatSymbols;
+import java.util.Locale;
 
-public final class StorageConverterStorageBinaryTxtToTest extends StorageConverterStorageBinaryTestCase<StorageConverterStorageBinaryTxtTo<FakeStorageConverterContext>> {
+public final class StorageConverterStorageBinaryToPropertiesTest extends StorageConverterStorageBinaryToTestCase<StorageConverterStorageBinaryToProperties<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryTxtToString() {
-        final String text = "AA,BB,CC";
+    public void testConvertStorageBinaryPropertiesToDateTimeSymbols() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.ENGLISH
+            )
+        );
 
         this.convertAndCheck(
             StorageBinary.with(
-                StoragePath.parse("/file.txt"),
+                StoragePath.parse("/dateTimeSymbols.properties"),
                 Binary.with(
-                    text.getBytes(CHARSET)
+                    dateTimeSymbols.properties()
+                        .text()
+                        .getBytes(CHARSET)
                 )
             ),
-            CsvStringList.parse(text)
+            dateTimeSymbols
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryPropertiesToProperties() {
+        final Properties properties = Properties.EMPTY.set(
+            PropertiesPath.parse("hello.world.123"),
+            "Hello World"
+        ).set(
+            PropertiesPath.parse("country"),
+            "Australia"
+        );
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                StoragePath.parse("/file.properties"),
+                Binary.with(
+                    properties.text()
+                        .getBytes(CHARSET)
+                )
+            ),
+            properties
         );
     }
 
     @Override
-    public StorageConverterStorageBinaryTxtTo<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStorageBinaryTxtTo.instance();
+    public StorageConverterStorageBinaryToProperties<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageBinaryToProperties.instance();
     }
 
     @Override
@@ -94,14 +126,15 @@ public final class StorageConverterStorageBinaryTxtToTest extends StorageConvert
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.hasBinaryToString(),
-                    Converters.textToCsvStringList()
+                    Converters.textToProperties(),
+                    Converters.propertiesToDateTimeSymbols()
                 )
             );
         };
     }
 
     @Override
-    public Class<StorageConverterStorageBinaryTxtTo<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStorageBinaryTxtTo.class);
+    public Class<StorageConverterStorageBinaryToProperties<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageBinaryToProperties.class);
     }
 }
