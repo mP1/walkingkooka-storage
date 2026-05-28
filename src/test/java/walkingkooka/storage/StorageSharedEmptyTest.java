@@ -69,7 +69,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     }
 
     @Override
-    public StorageSharedEmpty createStorage() {
+    public StorageSharedEmpty<StorageContext> createStorage() {
         return StorageSharedEmpty.instance();
     }
 

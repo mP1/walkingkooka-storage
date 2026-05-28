@@ -295,7 +295,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveUpdateAndList() {
-        final StorageSharedTreeMapStore store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;

@@ -29,7 +29,7 @@ import java.util.List;
 public final class RoutingStorageBuilder<C extends StorageContext> implements Builder<Storage<C>> {
 
     public static <C extends StorageContext> RoutingStorageBuilder<C> empty() {
-        return new RoutingStorageBuilder();
+        return new RoutingStorageBuilder<>();
     }
 
     private RoutingStorageBuilder() {
@@ -41,7 +41,7 @@ public final class RoutingStorageBuilder<C extends StorageContext> implements Bu
      * will be thrown.
      */
     public RoutingStorageBuilder<C> startsWith(final StoragePath path,
-                                               final Storage store) {
+                                               final Storage<C> store) {
         final RoutingStorageRoute<C> newRoute = RoutingStorageRoute.with(
             path,
             store
