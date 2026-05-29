@@ -29,7 +29,7 @@ import walkingkooka.tree.json.JsonNode;
  * Converts *.json files in several steps,
  * <ul>
  * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold JSON</li>
- * <li>Convert {@link String} to a {@link JsonNode}</li>
+ * <li>Parse but not convert {@link String} to a {@link JsonNode}</li>
  * <li>Convert {@link JsonNode} to given type {@link Class}</li>
  * </ul>
  */
@@ -56,9 +56,6 @@ final class StorageConverterStorageBinaryToJson<C extends StorageConverterContex
             path.fileExtension()
                 .orElse(null)
         ) && context.canConvert(
-            "",
-            JsonNode.class
-        ) && context.canConvert(
             JsonNode.object(),
             type
         );
@@ -78,19 +75,15 @@ final class StorageConverterStorageBinaryToJson<C extends StorageConverterContex
         if (text.isRight()) {
             result = Cast.to(text);
         } else {
-            final Either<JsonNode, String> json = context.convert(
-                text.leftValue(),
-                JsonNode.class
+            // parse the String into a JsonNode.
+            // trying to convert the string to JsonNode will not parse and only create a JsonString.
+            // convert JsonNode to $type
+            result = context.convert(
+                JsonNode.parse(
+                    text.leftValue()
+                ),
+                type
             );
-            if (json.isRight()) {
-                result = Cast.to(json);
-            } else {
-                // convert JsonNode to $type
-                result = context.convert(
-                    json.leftValue(),
-                    type
-                );
-            }
         }
 
         return result;
