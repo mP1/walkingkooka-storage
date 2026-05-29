@@ -70,6 +70,16 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
     private final static String CWD = "/current/working/directory/";
 
+    private static final FakeHasUserDirectories HAS_USER_DIRECTORIES = new FakeHasUserDirectories() {
+
+        @Override
+        public Optional<StoragePath> currentWorkingDirectory() {
+            return Optional.of(
+                StoragePath.parse(CWD)
+            );
+        }
+    };
+
     private final static String HOME = "/home/user123";
 
     private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
@@ -84,7 +94,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
                 null,
-                new FakeHasUserDirectories(),
+                HAS_USER_DIRECTORIES,
                 CONVERTER_CONTEXT
             )
         );
@@ -183,15 +193,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
         return BasicStorageConverterContext.with(
             CONVERTER,
-            new FakeHasUserDirectories() {
-
-                @Override
-                public Optional<StoragePath> currentWorkingDirectory() {
-                    return Optional.of(
-                        StoragePath.parse(CWD)
-                    );
-                }
-            },
+            HAS_USER_DIRECTORIES,
             JsonNodeConverterContexts.basic(
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
