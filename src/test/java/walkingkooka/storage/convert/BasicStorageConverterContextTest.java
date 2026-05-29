@@ -80,8 +80,6 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         }
     };
 
-    private final static String HOME = "/home/user123";
-
     private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
