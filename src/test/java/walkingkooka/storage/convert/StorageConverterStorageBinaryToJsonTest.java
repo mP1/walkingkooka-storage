@@ -24,6 +24,7 @@ import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -47,6 +48,15 @@ import java.util.Optional;
 public final class StorageConverterStorageBinaryToJsonTest extends StorageConverterStorageBinaryToTestCase<StorageConverterStorageBinaryToJson<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
+
+    private final JsonNodeMarshallUnmarshallContext MARSHALL_UNMARSHALL_CONTEXT =  JsonNodeMarshallUnmarshallContexts.basic(
+        JsonNodeMarshallContexts.basic(),
+        JsonNodeUnmarshallContexts.basic(
+            ExpressionNumberKind.DEFAULT,
+            CurrencyLocaleContexts.fake(), // CurrencyCodeLanguageTagContext
+            MathContext.DECIMAL32
+        )
+    );
 
     @Test
     public void testConvertStorageBinaryJsonToDateTimeSymbols() {
@@ -137,38 +147,29 @@ public final class StorageConverterStorageBinaryToJsonTest extends StorageConver
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.hasBinaryToString(),
-                    JsonNodeConverters.textToJsonNode(),
+                    //JsonNodeConverters.textToJsonNode(),
                     JsonNodeConverters.jsonNodeTo()
                 )
             ).cast(StorageConverterContext.class);
 
             @Override
             public Optional<JsonString> typeName(final Class<?> type) {
-                return this.context.typeName(type);
+                return MARSHALL_UNMARSHALL_CONTEXT.typeName(type);
             }
 
             @Override
             public JsonNode marshall(final Object value) {
-                return this.context.marshall(value);
+                return MARSHALL_UNMARSHALL_CONTEXT.marshall(value);
             }
 
             @Override
             public <T> T unmarshall(final JsonNode json,
                                     final Class<T> type) {
-                return this.context.unmarshall(
+                return MARSHALL_UNMARSHALL_CONTEXT.unmarshall(
                     json,
                     type
                 );
             }
-
-            private final JsonNodeMarshallUnmarshallContext context = JsonNodeMarshallUnmarshallContexts.basic(
-                JsonNodeMarshallContexts.basic(),
-                JsonNodeUnmarshallContexts.basic(
-                    ExpressionNumberKind.DEFAULT,
-                    this, // CurrencyCodeLanguageTagContext
-                    MathContext.DECIMAL32
-                )
-            );
         };
     }
 
