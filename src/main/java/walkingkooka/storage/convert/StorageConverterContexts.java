@@ -17,6 +17,7 @@
 
 package walkingkooka.storage.convert;
 
+import walkingkooka.convert.Converter;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
@@ -29,9 +30,11 @@ public final class StorageConverterContexts implements PublicStaticHelper {
     /**
      * {@see BasicStorageConverterContext}
      */
-    public static StorageConverterContext basic(final HasUserDirectories hasUserDirectories,
+    public static StorageConverterContext basic(final Converter<StorageConverterContext> converter,
+                                                final HasUserDirectories hasUserDirectories,
                                                 final JsonNodeConverterContext context) {
         return BasicStorageConverterContext.with(
+            converter,
             hasUserDirectories,
             context
         );

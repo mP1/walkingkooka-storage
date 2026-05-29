@@ -17,6 +17,8 @@
 
 package walkingkooka.storage.convert;
 
+import walkingkooka.Either;
+import walkingkooka.convert.Converter;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
@@ -31,16 +33,26 @@ final class BasicStorageConverterContext implements StorageConverterContext,
     JsonNodeConverterContextDelegator,
     HasUserDirectoriesDelegator {
 
-    static BasicStorageConverterContext with(final HasUserDirectories hasUserDirectories,
+    static BasicStorageConverterContext with(final Converter<StorageConverterContext> converter,
+                                             final HasUserDirectories hasUserDirectories,
                                              final JsonNodeConverterContext context) {
+        Objects.requireNonNull(converter, "converter");
         Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
         Objects.requireNonNull(context, "context");
 
-        return new BasicStorageConverterContext(hasUserDirectories, context);
+        return new BasicStorageConverterContext(
+            converter,
+            hasUserDirectories,
+            context
+        );
     }
 
-    private BasicStorageConverterContext(final HasUserDirectories hasUserDirectories,
+    private BasicStorageConverterContext(final Converter<StorageConverterContext> converter,
+                                         final HasUserDirectories hasUserDirectories,
                                          final JsonNodeConverterContext context) {
+        super();
+
+        this.converter = converter;
         this.hasUserDirectories = hasUserDirectories;
         this.context = context;
     }
@@ -65,6 +77,27 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     // JsonNodeConverterContextDelegator................................................................................
 
+    @Override
+    public boolean canConvert(final Object value,
+                              final Class<?> type) {
+        return this.converter.canConvert(
+            value,
+            type,
+            this // StorageConverterContext
+        );
+    }
+
+    @Override
+    public <T> Either<T, String> convert(final Object value,
+                                         final Class<T> target) {
+        return this.converter.convert(
+            value,
+            target,
+            this // StorageConverterContext
+        );
+    }
+
+    private final Converter<StorageConverterContext> converter;
 
     @Override
     public StorageConverterContext setObjectPostProcessor(final JsonNodeMarshallContextObjectPostProcessor jsonNodeMarshallContextObjectPostProcessor) {
@@ -73,6 +106,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
         return before != after ?
             new BasicStorageConverterContext(
+                this.converter,
                 this.hasUserDirectories,
                 after
             ) :
@@ -86,6 +120,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
         return before != after ?
             new BasicStorageConverterContext(
+                this.converter,
                 this.hasUserDirectories,
                 after
             ) :
@@ -103,6 +138,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     @Override
     public String toString() {
-        return "hasUserDirectories: " + this.hasUserDirectories + ", context: " + this.context;
+        return "converter: " + this.converter + ", hasUserDirectories: " + this.hasUserDirectories + ", context: " + this.context;
     }
 }

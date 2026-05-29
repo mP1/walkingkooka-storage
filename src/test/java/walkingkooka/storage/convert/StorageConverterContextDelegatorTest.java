@@ -180,6 +180,7 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
             );
 
             this.storageConverterContext = StorageConverterContexts.basic(
+                Converters.fake(),
                 new FakeHasUserDirectories() {
                     @Override
                     public Optional<StoragePath> currentWorkingDirectory() {
