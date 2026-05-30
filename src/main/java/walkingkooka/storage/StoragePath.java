@@ -502,6 +502,15 @@ final public class StoragePath
         );
     }
 
+    public InvalidStoragePathException invalidStoragePathException(final String message,
+                                                                   final Throwable cause) {
+        return new InvalidStoragePathException(
+            message,
+            this,
+            cause
+        );
+    }
+
     // HasCaseSensitivity...............................................................................................
 
     public final static CaseSensitivity CASE_SENSITIVITY = StorageName.CASE_SENSITIVITY;

@@ -39,9 +39,9 @@ public final class InvalidStoragePathException extends IllegalArgumentException
         this.path = path;
     }
 
-    private InvalidStoragePathException(final String message,
-                                        final StoragePath path,
-                                        final Throwable cause) {
+    InvalidStoragePathException(final String message,
+                                final StoragePath path,
+                                final Throwable cause) {
         super(message, cause);
 
         this.message = message;
