@@ -20,6 +20,8 @@ package walkingkooka.storage;
 import walkingkooka.Binary;
 import walkingkooka.HasBinary;
 import walkingkooka.naming.HasPath;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
 
@@ -27,7 +29,8 @@ import java.util.Objects;
  * A value that contains a {@link StoragePath} and {@link Binary}. This exists mostly as an intermediate object
  * between objects and something like a native file system file.
  */
-public final class StorageBinary implements HasPath<StoragePath>, HasBinary {
+public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
+    TreePrintable {
 
     public static StorageBinary with(final StoragePath path,
                                      final Binary binary) {
@@ -80,5 +83,21 @@ public final class StorageBinary implements HasPath<StoragePath>, HasBinary {
     @Override
     public String toString() {
         return this.path + " " + this.binary;
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.path.toString());
+        printer.indent();
+        {
+            TreePrintable.printTreeOrToString(
+                this.binary,
+                printer
+            );
+            printer.lineStart();
+        }
+        printer.outdent();
     }
 }
