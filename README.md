@@ -22,8 +22,6 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 
 # [Converters](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverters.java)
 
-- [json-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryJson.java)
-- [properties-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryProperties.java)
 - [storage-binary-json-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToJson.java)
 - [storage-binary-properties-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToProperties.java)
 - [storage-binary-txt-to](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToTxt.java)
@@ -32,7 +30,9 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [storage-path-txt-to-class](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStoragePathTxtToClass.java)
 - [storage-value-info-list-to-text](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueInfoListToText.java)
 - [text-to-storage-path](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterTextToStoragePath.java)
-- [txt-to-storage-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryTxt.java)
+- [to-storage-binary-json](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryJson.java)
+- [to-storage-binary-properties](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryProperties.java)
+- [to-storage-binary-txt](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterToStorageBinaryTxt.java)
 
 # [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
 
