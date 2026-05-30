@@ -115,7 +115,7 @@ public final class StorageBinaryTest implements HasPathTesting,
     public void testToString() {
         this.toStringAndCheck(
             StorageBinary.with(PATH, BINARY),
-            "/file.txt []"
+            "/file.txt "
         );
     }
 
