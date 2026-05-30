@@ -62,49 +62,20 @@ final class StorageConverterToStorageBinaryJson<C extends StorageConverterContex
     }
 
     @Override
-    <T> Either<T, String> toStorageBinary(final StorageValue storageValue,
-                                          final Class<T> type,
-                                          final C context) {
-        // convert to Json
-        Either<JsonNode, String> json = context.convert(
+    Either<Binary, String> toBinary(final StorageValue storageValue,
+                                    final C context) {
+        Either<JsonNode, String> jsonNode = context.convert(
             storageValue.value()
                 .orElse(null),
             JsonNode.class
         );
 
-        Either<T, String> storageBinary;
-        if (json.isRight()) {
-            storageBinary = Cast.to(json);
-        } else {
-            // convert Json to String
-            Either<String, String> text = context.convert(
-                json.leftValue(),
-                String.class
-            );
-
-            if (text.isRight()) {
-                storageBinary = Cast.to(text);
-            } else {
-                Either<Binary, String> binary = context.convert(
-                    text.leftValue(),
-                    Binary.class
-                );
-                if (binary.isRight()) {
-                    storageBinary = Cast.to(binary);
-                } else {
-                    storageBinary = this.successfulConversion(
-                        StorageBinary.with(
-                            storageValue.path(),
-                            binary.leftValue()
-                        ),
-                        type
-                    );
-
-                }
-            }
-        }
-
-        return storageBinary;
+        return jsonNode.isLeft() ?
+            context.convert(
+                jsonNode.leftValue(),
+                Binary.class
+            ) :
+            Cast.to(jsonNode);
     }
 
     // Object...........................................................................................................

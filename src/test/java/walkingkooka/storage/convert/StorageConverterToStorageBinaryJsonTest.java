@@ -18,7 +18,6 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
@@ -73,11 +72,8 @@ public final class StorageConverterToStorageBinaryJsonTest extends StorageConver
                 ),
             StorageBinary.with(
                 storagePath,
-                Binary.with(
-                    MARSHALL_CONTEXT.marshall(dateTimeSymbols)
-                        .text()
-                        .getBytes(CHARSET)
-                )
+                MARSHALL_CONTEXT.marshall(dateTimeSymbols)
+                    .binary(CHARSET)
             )
         );
     }

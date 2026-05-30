@@ -17,6 +17,8 @@
 
 package walkingkooka.storage.convert;
 
+import walkingkooka.Binary;
+import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
@@ -52,16 +54,31 @@ abstract class StorageConverterToStorageBinary<C extends StorageConverterContext
     public <T> Either<T, String> doConvert(final Object value,
                                            final Class<T> type,
                                            final C context) {
-        return this.toStorageBinary(
-            (StorageValue) value,
-            type,
+        final StorageValue storageValue = (StorageValue) value;
+
+        final Either<Binary, String> binary = this.toBinary(
+            storageValue,
             context
         );
+
+        final Either<T, String> storageBinary;
+        if (binary.isRight()) {
+            storageBinary = Cast.to(binary);
+        } else {
+            storageBinary = this.successfulConversion(
+                StorageBinary.with(
+                    storageValue.path(),
+                    binary.leftValue()
+                ),
+                type
+            );
+        }
+
+        return storageBinary;
     }
 
-    abstract <T> Either<T, String> toStorageBinary(final StorageValue storageValue,
-                                                   final Class<T> type,
-                                                   final C context);
+    abstract Either<Binary, String> toBinary(final StorageValue storageValue,
+                                             final C context);
 
     @Override
     public abstract String toString();
