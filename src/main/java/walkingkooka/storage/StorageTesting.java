@@ -121,6 +121,17 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
 
     default void saveAndCheck(final Storage<C> storage,
                               final StorageValue value,
+                              final C context) {
+        this.saveAndCheck(
+            storage,
+            value,
+            context,
+            value
+        );
+    }
+
+    default void saveAndCheck(final Storage<C> storage,
+                              final StorageValue value,
                               final C context,
                               final StorageValue expected) {
         this.checkEquals(

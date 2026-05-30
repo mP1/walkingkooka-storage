@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.reflect.PublicStaticHelper;
 
+import java.nio.file.Path;
+
 /**
  * A collection of {@link Storage}.
  */
@@ -43,6 +45,13 @@ public final class Storages implements PublicStaticHelper {
      */
     public static <C extends StorageContext> Storage<C> fake() {
         return new FakeStorage<>();
+    }
+
+    /**
+     * {@see StorageSharedNativeFile}
+     */
+    public static <C extends StorageContext> Storage<C> nativeStorage(final Path root) {
+        return StorageSharedNativeFile.with(root);
     }
 
     /**
