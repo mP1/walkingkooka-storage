@@ -59,40 +59,13 @@ final class StorageConverterToStorageBinaryTxt<C extends StorageConverterContext
     }
 
     @Override
-    <T> Either<T, String> toStorageBinary(final StorageValue storageValue,
-                                          final Class<T> type,
-                                          final C context) {
-        // convert to String
-        Either<String, String> text = context.convert(
+    Either<Binary, String> toBinary(final StorageValue storageValue,
+                                    final C context) {
+        return context.convert(
             storageValue.value()
                 .orElse(null),
-            String.class
+            Binary.class
         );
-
-        Either<T, String> storageBinary;
-
-        if (text.isRight()) {
-            storageBinary = Cast.to(text);
-        } else {
-            Either<Binary, String> binary = context.convert(
-                text.leftValue(),
-                Binary.class
-            );
-            if (binary.isRight()) {
-                storageBinary = Cast.to(binary);
-            } else {
-                storageBinary = this.successfulConversion(
-                    StorageBinary.with(
-                        storageValue.path(),
-                        binary.leftValue()
-                    ),
-                    type
-                );
-
-            }
-        }
-
-        return storageBinary;
     }
 
     // Object...........................................................................................................

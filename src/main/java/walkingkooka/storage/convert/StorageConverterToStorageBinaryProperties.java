@@ -57,54 +57,25 @@ final class StorageConverterToStorageBinaryProperties<C extends StorageConverter
                 .map((Object value) -> context.canConvert(value, Properties.class))
                 .orElse(false) &&
             storageValue.value()
-                .map((Object value) -> context.canConvert(Properties.EMPTY, String.class))
+                .map((Object value) -> context.canConvert(Properties.EMPTY, Binary.class))
                 .orElse(false);
     }
 
     @Override
-    <T> Either<T, String> toStorageBinary(final StorageValue storageValue,
-                                          final Class<T> type,
-                                          final C context) {
-        // convert to Properties
+    Either<Binary, String> toBinary(final StorageValue storageValue,
+                                    final C context) {
         Either<Properties, String> properties = context.convert(
             storageValue.value()
                 .orElse(null),
             Properties.class
         );
 
-        Either<T, String> storageBinary;
-        if (properties.isRight()) {
-            storageBinary = Cast.to(properties);
-        } else {
-            // convert Properties to String
-            Either<String, String> text = context.convert(
+        return properties.isLeft() ?
+            context.convert(
                 properties.leftValue(),
-                String.class
-            );
-
-            if (text.isRight()) {
-                storageBinary = Cast.to(text);
-            } else {
-                Either<Binary, String> binary = context.convert(
-                    text.leftValue(),
-                    Binary.class
-                );
-                if (binary.isRight()) {
-                    storageBinary = Cast.to(binary);
-                } else {
-                    storageBinary = this.successfulConversion(
-                        StorageBinary.with(
-                            storageValue.path(),
-                            binary.leftValue()
-                        ),
-                        type
-                    );
-
-                }
-            }
-        }
-
-        return storageBinary;
+                Binary.class
+            ) :
+            Cast.to(properties);
     }
 
     // Object...........................................................................................................
