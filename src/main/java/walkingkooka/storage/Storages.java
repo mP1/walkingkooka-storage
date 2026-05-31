@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.reflect.PublicStaticHelper;
 
 import java.nio.file.Path;
@@ -50,6 +51,7 @@ public final class Storages implements PublicStaticHelper {
     /**
      * {@see StorageSharedNativeFile}
      */
+    @GwtIncompatible
     public static <C extends StorageContext> Storage<C> nativeStorage(final Path root) {
         return StorageSharedNativeFile.with(root);
     }
