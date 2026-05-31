@@ -87,6 +87,8 @@ public final class StorageValue implements HasContentType,
 
     /**
      * Would be setter that returns a StorageValue with the given value creating a new instance if necessary.
+     * If {@link #contentType()} is empty and the new value is present and implements {@link HasContentType},
+     * the content type will be replaced.
      */
     public StorageValue setValue(final Optional<Object> value) {
         return this.value.equals(value) ?
@@ -94,7 +96,13 @@ public final class StorageValue implements HasContentType,
             new StorageValue(
                 this.path,
                 Objects.requireNonNull(value, "value"),
-                this.contentType
+                this.contentType.isEmpty() ?
+                    value.filter(v -> v instanceof HasContentType)
+                        .flatMap(
+                            (Object hasContentType) -> ((HasContentType) hasContentType)
+                                .contentType()
+                        ) :
+                    this.contentType
             );
     }
 
