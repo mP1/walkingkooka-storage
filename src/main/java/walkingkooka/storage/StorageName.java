@@ -19,7 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.InvalidTextLengthException;
-import walkingkooka.naming.Name;
+import walkingkooka.naming.PathName;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
@@ -27,7 +27,7 @@ import walkingkooka.text.CaseSensitivity;
 /**
  * The name portion of a {@link StoragePath}
  */
-public final class StorageName implements Name,
+public final class StorageName implements PathName,
     Comparable<StorageName> {
 
     /**
