@@ -162,6 +162,65 @@ public final class StorageValueTest implements HasContentTypeTesting,
             different,
             differentValue
         );
+
+        this.contentTypeAndCheck(
+            different
+        );
+    }
+
+    @Test
+    public void testSetValueWithDifferentDoesntReplaceContentType() {
+        final MediaType contentType = MediaType.TEXT_PLAIN;
+
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE)
+            .setContentType(
+                Optional.of(contentType)
+            );
+
+        final Optional<Object> differentValue = Optional.of("Different");
+
+        final StorageValue different = storageValue.setValue(differentValue);
+        assertNotSame(
+            storageValue,
+            different
+        );
+
+        this.valueAndCheck(
+            different,
+            differentValue
+        );
+
+        this.contentTypeAndCheck(
+            different,
+            contentType
+        );
+    }
+
+    @Test
+    public void testSetValueWithHasContentType() {
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE);
+
+        final JsonNode jsonNode = JsonNode.object();
+
+        final Optional<Object> differentValue = Optional.of(jsonNode);
+
+        final StorageValue different = storageValue.setValue(differentValue);
+        assertNotSame(
+            storageValue,
+            different
+        );
+
+        this.valueAndCheck(
+            different,
+            differentValue
+        );
+
+        this.contentTypeAndCheck(
+            different,
+            jsonNode.contentType()
+        );
     }
 
     // setContentType...................................................................................................
