@@ -92,11 +92,10 @@ public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
         printer.println(this.path.toString());
         printer.indent();
         {
-            TreePrintable.printTreeOrToString(
-                this.binary,
-                printer
+            // Binary includes EOL
+            printer.print(
+                this.binary.toString()
             );
-            printer.lineStart();
         }
         printer.outdent();
     }

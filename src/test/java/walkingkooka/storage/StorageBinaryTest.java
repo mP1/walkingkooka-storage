@@ -135,8 +135,7 @@ public final class StorageBinaryTest implements HasPathTesting,
             "/file.txt\n" +
                 "  54 68 65 20 71 75 69 63 6b 20 62 72 6f 77 6e 20 66 6f 78 20 The quick brown fox \n" +
                 "  6a 75 6d 70 73 20 6f 76 65 72 20 74 68 65 20 6c 61 7a 79 20 jumps over the lazy \n" +
-                "  64 6f 67                                                    dog                 \n" +
-                "   (walkingkooka.Binary)\n"
+                "  64 6f 67                                                    dog                 \n"
         );
     }
 
