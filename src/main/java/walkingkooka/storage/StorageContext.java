@@ -19,10 +19,12 @@ package walkingkooka.storage;
 
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.net.header.MediaTypeDetector;
 
 public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
-    CanParseStoragePath {
+    CanParseStoragePath,
+    MediaTypeDetector {
 
     @Override
     StorageContext cloneEnvironment();

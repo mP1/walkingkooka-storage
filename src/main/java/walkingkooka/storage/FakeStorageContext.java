@@ -17,13 +17,21 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.FakeEnvironmentContext;
+import walkingkooka.net.header.MediaType;
 
 import java.util.Optional;
 
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
+
+    @Override
+    public MediaType detect(final String filename,
+                            final Binary content) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public StoragePath parseStoragePath(final String text) {

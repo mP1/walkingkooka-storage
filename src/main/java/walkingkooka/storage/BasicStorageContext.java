@@ -17,10 +17,13 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Binary;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
+import walkingkooka.net.header.MediaType;
+import walkingkooka.net.header.MediaTypeDetector;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -34,18 +37,33 @@ final class BasicStorageContext implements StorageContext,
     EnvironmentContextDelegator {
 
     static BasicStorageContext with(final ConverterLike converterLike,
+                                    final MediaTypeDetector mediaTypeDetector,
                                     final EnvironmentContext environmentContext) {
         return new BasicStorageContext(
             Objects.requireNonNull(converterLike, "converterLike"),
+            Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector"),
             Objects.requireNonNull(environmentContext, "environmentContext")
         );
     }
 
     private BasicStorageContext(final ConverterLike converterLike,
+                                final MediaTypeDetector mediaTypeDetector,
                                 final EnvironmentContext environmentContext) {
         this.converterLike = converterLike;
+        this.mediaTypeDetector = mediaTypeDetector;
         this.environmentContext = environmentContext;
     }
+
+    @Override
+    public MediaType detect(final String filename,
+                            final Binary content) {
+        return this.mediaTypeDetector.detect(
+            filename,
+            content
+        );
+    }
+
+    private final MediaTypeDetector mediaTypeDetector;
 
     // StorageContext...................................................................................................
 
@@ -107,6 +125,7 @@ final class BasicStorageContext implements StorageContext,
             this :
             with(
                 this.converterLike,
+                this.mediaTypeDetector,
                 environmentContext
             );
     }
@@ -124,6 +143,7 @@ final class BasicStorageContext implements StorageContext,
     public int hashCode() {
         return Objects.hash(
             this.converterLike,
+            this.mediaTypeDetector,
             this.environmentContext
         );
     }
@@ -137,11 +157,13 @@ final class BasicStorageContext implements StorageContext,
 
     private boolean equals0(final BasicStorageContext other) {
         return this.converterLike.equals(other.converterLike) &&
+            this.mediaTypeDetector.equals(other.mediaTypeDetector) &&
             this.environmentContext.equals(other.environmentContext);
     }
 
     @Override
     public String toString() {
-        return this.environmentContext.toString();
+        return this.mediaTypeDetector + " " +
+            this.environmentContext;
     }
 }
