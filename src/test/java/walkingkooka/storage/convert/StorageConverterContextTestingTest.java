@@ -18,6 +18,7 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Binary;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
@@ -32,9 +33,11 @@ import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 import walkingkooka.tree.expression.ExpressionNumberKind;
@@ -159,6 +162,14 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
         TestStorageConverterContext(final Optional<StoragePath> currentWorkingDirectory) {
             this.currentWorkingDirectory = currentWorkingDirectory;
+        }
+
+        @Override
+        public MediaType detect(final String filename,
+                                final Binary content) {
+            CharSequences.failIfNullOrEmpty(filename, "filename");
+            Objects.requireNonNull(content, "content");
+            throw new UnsupportedOperationException();
         }
 
         @Override
