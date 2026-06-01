@@ -17,11 +17,8 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.convert.Converter;
-import walkingkooka.net.header.MediaType;
-import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
@@ -38,30 +35,25 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     static BasicStorageConverterContext with(final Converter<StorageConverterContext> converter,
                                              final HasUserDirectories hasUserDirectories,
-                                             final MediaTypeDetector mediaTypeDetector,
                                              final JsonNodeConverterContext context) {
         Objects.requireNonNull(converter, "converter");
         Objects.requireNonNull(hasUserDirectories, "hasUserDirectories");
-        Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector");
         Objects.requireNonNull(context, "context");
 
         return new BasicStorageConverterContext(
             converter,
             hasUserDirectories,
-            mediaTypeDetector,
             context
         );
     }
 
     private BasicStorageConverterContext(final Converter<StorageConverterContext> converter,
                                          final HasUserDirectories hasUserDirectories,
-                                         final MediaTypeDetector mediaTypeDetector,
                                          final JsonNodeConverterContext context) {
         super();
 
         this.converter = converter;
         this.hasUserDirectories = hasUserDirectories;
-        this.mediaTypeDetector = mediaTypeDetector;
         this.context = context;
     }
 
@@ -73,19 +65,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
             this
         );
     }
-
-    // MediaTypeDetector................................................................................................
-
-    @Override
-    public MediaType detect(final String filename,
-                            final Binary content) {
-        return this.mediaTypeDetector.detect(
-            filename,
-            content
-        );
-    }
-
-    private final MediaTypeDetector mediaTypeDetector;
 
     // StorageConverterContext..........................................................................................
 
@@ -129,7 +108,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
             new BasicStorageConverterContext(
                 this.converter,
                 this.hasUserDirectories,
-                this.mediaTypeDetector,
                 after
             ) :
             this;
@@ -144,7 +122,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
             new BasicStorageConverterContext(
                 this.converter,
                 this.hasUserDirectories,
-                this.mediaTypeDetector,
                 after
             ) :
             this;
@@ -161,9 +138,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
 
     @Override
     public String toString() {
-        return "converter: " + this.converter +
-            ", hasUserDirectories: " + this.hasUserDirectories +
-            ", mediaTypeDetector: " + this.mediaTypeDetector +
-            ", context: " + this.context;
+        return "converter: " + this.converter + ", hasUserDirectories: " + this.hasUserDirectories + ", context: " + this.context;
     }
 }

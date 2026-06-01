@@ -17,8 +17,6 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.Binary;
-import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.tree.json.convert.FakeJsonNodeConverterContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
@@ -34,12 +32,6 @@ public class FakeStorageConverterContext extends FakeJsonNodeConverterContext im
 
     @Override
     public Optional<StoragePath> currentWorkingDirectory() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public MediaType detect(final String filename,
-                            final Binary binary) {
         throw new UnsupportedOperationException();
     }
 

@@ -18,7 +18,6 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.net.header.MediaTypeDetectorTesting2;
 import walkingkooka.storage.CanParseStoragePathTesting;
 import walkingkooka.storage.HasUserDirectoriesTesting;
 import walkingkooka.tree.json.convert.JsonNodeConverterContextTesting;
@@ -27,8 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageConverterContextTesting<C extends StorageConverterContext> extends JsonNodeConverterContextTesting<C>,
     CanParseStoragePathTesting,
-    HasUserDirectoriesTesting,
-    MediaTypeDetectorTesting2<C> {
+    HasUserDirectoriesTesting {
 
     // parseStorageContext..............................................................................................
 
@@ -39,11 +37,6 @@ public interface StorageConverterContextTesting<C extends StorageConverterContex
             () -> this.createContext()
                 .parseStoragePath(null)
         );
-    }
-
-    @Override
-    default C createMediaTypeDetector() {
-        return this.createContext();
     }
 
     // class............................................................................................................
