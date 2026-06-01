@@ -20,30 +20,38 @@ package walkingkooka.storage;
 import walkingkooka.Binary;
 import walkingkooka.HasBinary;
 import walkingkooka.naming.HasPath;
+import walkingkooka.net.header.HasContentType;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A value that contains a {@link StoragePath} and {@link Binary}. This exists mostly as an intermediate object
  * between objects and something like a native file system file.
  */
-public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
+public final class StorageBinary implements HasPath<StoragePath>,
+    HasBinary,
+    HasContentType,
     TreePrintable {
 
     public static StorageBinary with(final StoragePath path,
                                      final Binary binary) {
         return new StorageBinary(
             Objects.requireNonNull(path, "path"),
-            Objects.requireNonNull(binary, "binary")
+            Objects.requireNonNull(binary, "binary"),
+            NO_CONTENT_TYPE
         );
     }
 
     private StorageBinary(final StoragePath path,
-                          final Binary binary) {
+                          final Binary binary,
+                          final Optional<MediaType> contentType) {
         this.path = path;
         this.binary = binary;
+        this.contentType = contentType;
     }
 
     @Override
@@ -60,13 +68,39 @@ public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
 
     private final Binary binary;
 
-// Object...........................................................................................................
+    // HasContentType...................................................................................................
+
+    @Override
+    public Optional<MediaType> contentType() {
+        return this.contentType;
+    }
+
+    private final Optional<MediaType> contentType;
+
+    /**
+     * Would be setter that returns a StorageValue with the given contentType creating a new instance if necessary.
+     */
+    public StorageBinary setContentType(final Optional<MediaType> contentType) {
+        return this.contentType.equals(contentType) ?
+            this :
+            new StorageBinary(
+                this.path,
+                this.binary,
+                Objects.requireNonNull(
+                    contentType,
+                    "contentType"
+                )
+            );
+    }
+
+    // Object...........................................................................................................
 
     @Override
     public int hashCode() {
         return Objects.hash(
             this.path,
-            this.binary
+            this.binary,
+            this.contentType
         );
     }
 
@@ -77,12 +111,15 @@ public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
 
     private boolean equals0(final StorageBinary other) {
         return this.path.equals(other.path) &&
-            this.binary.equals(other.binary);
+            this.binary.equals(other.binary) &&
+            this.contentType.equals(other.contentType);
     }
 
     @Override
     public String toString() {
-        return this.path + " " + this.binary;
+        return this.path + " " +
+            this.contentType.map(Object::toString).orElse("") +
+            this.binary;
     }
 
     // TreePrintable....................................................................................................
@@ -92,10 +129,20 @@ public final class StorageBinary implements HasPath<StoragePath>, HasBinary,
         printer.println(this.path.toString());
         printer.indent();
         {
+            final MediaType contentType = this.contentType.orElse(null);
+            if(null != contentType) {
+                printer.println(contentType.toString());
+                printer.indent();
+            }
+
             // Binary includes EOL
             printer.print(
                 this.binary.toString()
             );
+
+            if(null != contentType) {
+                printer.outdent();
+            }
         }
         printer.outdent();
     }
