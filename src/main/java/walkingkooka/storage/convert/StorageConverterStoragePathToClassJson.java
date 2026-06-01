@@ -44,8 +44,7 @@ final class StorageConverterStoragePathToClassJson<C extends StorageConverterCon
 
     @Override
     boolean testFileExtension(final FileExtension fileExtensionOrNull) {
-        return fileExtensionOrNull == null ||
-            fileExtensionOrNull.equals(FILE_EXTENSION);
+        return FILE_EXTENSION.test(fileExtensionOrNull);
     }
 
     @Override

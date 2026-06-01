@@ -26,10 +26,9 @@ public final class StorageConverterStoragePathToClassJsonTest extends StorageCon
 
     @Test
     public void testConvertStoragePathWithoutFileExtensionToClass() {
-        this.convertAndCheck(
+        this.convertFails(
             StoragePath.parse("/path1/file"),
-            Class.class,
-            JsonNode.class
+            Class.class
         );
     }
 
@@ -46,6 +45,15 @@ public final class StorageConverterStoragePathToClassJsonTest extends StorageCon
     public void testConvertStoragePathWithCapitalsJsonFileExtensionToClass() {
         this.convertAndCheck(
             StoragePath.parse("/path1/file.JSON"),
+            Class.class,
+            JsonNode.class
+        );
+    }
+
+    @Test
+    public void testConvertStoragePathWithCapitalsJsonFileExtensionToClass2() {
+        this.convertAndCheck(
+            StoragePath.parse("/path1/file.hello.JSON"),
             Class.class,
             JsonNode.class
         );

@@ -142,7 +142,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     public void testWithoutFileExtensionPresent3() {
         this.withoutFileExtensionAndCheck(
             StorageName.with("xyz.111.222"),
-            "xyz.111"
+            "xyz"
         );
     }
 
