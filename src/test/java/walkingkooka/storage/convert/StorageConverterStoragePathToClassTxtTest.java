@@ -58,9 +58,9 @@ public final class StorageConverterStoragePathToClassTxtTest extends StorageConv
     }
 
     @Test
-    public void testConvertStoragePathWithTxtFileExtensionToClassFails() {
+    public void testConvertStoragePathWithTxtFileExtensionToClass2() {
         this.convertAndCheck(
-            StoragePath.parse("/path1/file.txt"),
+            StoragePath.parse("/path1/file.hello.txt"),
             Class.class,
             String.class
         );

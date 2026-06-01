@@ -44,7 +44,7 @@ final class StorageConverterStoragePathToClassProperties<C extends StorageConver
 
     @Override
     boolean testFileExtension(final FileExtension fileExtensionOrNull) {
-        return FILE_EXTENSION.equals(fileExtensionOrNull);
+        return FILE_EXTENSION.test(fileExtensionOrNull);
     }
 
     @Override

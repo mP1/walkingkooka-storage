@@ -58,6 +58,15 @@ public final class StorageConverterStoragePathToClassPropertiesTest extends Stor
         );
     }
 
+    @Test
+    public void testConvertStoragePathWithCapitalsPropertiesFileExtensionToClass2() {
+        this.convertAndCheck(
+            StoragePath.parse("/path1/file.hello.PROPERTIES"),
+            Class.class,
+            Properties.class
+        );
+    }
+
     @Override
     public StorageConverterStoragePathToClassProperties<FakeStorageConverterContext> createConverter() {
         return StorageConverterStoragePathToClassProperties.instance();
