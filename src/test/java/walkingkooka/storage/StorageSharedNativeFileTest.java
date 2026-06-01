@@ -38,7 +38,6 @@ import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.props.PropertiesPath;
 import walkingkooka.reflect.ThrowableTesting;
@@ -533,7 +532,6 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             private final StorageConverterContext storageConverterContext = StorageConverterContexts.basic(
                 this.converter,
                 new FakeHasUserDirectories(),
-                MediaTypeDetectors.fake(),
                 JsonNodeConverterContexts.basic(
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),

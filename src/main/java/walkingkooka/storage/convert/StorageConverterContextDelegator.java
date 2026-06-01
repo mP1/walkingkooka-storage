@@ -17,8 +17,6 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.Binary;
-import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
 import walkingkooka.storage.StoragePath;
@@ -28,18 +26,6 @@ import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
 public interface StorageConverterContextDelegator extends JsonNodeConverterContextDelegator,
     StorageConverterContext,
     HasUserDirectoriesDelegator {
-
-    @Override
-    default MediaType detect(final String filename,
-                             final Binary content) {
-        return this.storageConverterContext()
-            .detect(
-                filename,
-                content
-            );
-    }
-
-
 
     @Override
     default StoragePath parseStoragePath(final String text) {
