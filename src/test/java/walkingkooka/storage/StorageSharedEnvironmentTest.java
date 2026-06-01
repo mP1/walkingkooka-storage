@@ -33,6 +33,7 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
@@ -416,6 +417,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 ),
                 DecimalNumberContexts.american(MathContext.DECIMAL32)
             ),
+            MediaTypeDetectors.fake(),
             environmentContext
         );
     }

@@ -17,14 +17,26 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Binary;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
+import walkingkooka.net.header.MediaType;
 
 public interface StorageContextDelegator extends StorageContext,
     ConverterLikeDelegator,
     EnvironmentContextDelegator {
+
+    @Override
+    default MediaType detect(final String filename,
+                             final Binary content) {
+        return this.storageContext()
+            .detect(
+                filename,
+                content
+            );
+    }
 
     @Override
     default StoragePath parseStoragePath(final String text) {

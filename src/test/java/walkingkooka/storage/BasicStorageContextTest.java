@@ -32,6 +32,8 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.MediaTypeDetector;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
@@ -82,6 +84,8 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         DecimalNumberContexts.american(MathContext.DECIMAL32)
     );
 
+    private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
+
     private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
 
     private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
@@ -91,6 +95,19 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageContext.with(
+                null,
+                MEDIA_TYPE_DETECTOR,
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullMediaTypeDetectorFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicStorageContext.with(
+                CONVERTER_LIKE,
                 null,
                 ENVIRONMENT_CONTEXT
             )
@@ -103,6 +120,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
             NullPointerException.class,
             () -> BasicStorageContext.with(
                 CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
                 null
             )
         );
@@ -143,6 +161,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         this.checkEquals(
             BasicStorageContext.with(
                 CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
                 environmentContext
             ),
             after
@@ -165,6 +184,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     public BasicStorageContext createContext() {
         return BasicStorageContext.with(
             CONVERTER_LIKE,
+            MEDIA_TYPE_DETECTOR,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
                     StandardCharsets.UTF_8,
@@ -188,6 +208,18 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         this.checkNotEquals(
             BasicStorageContext.with(
                 ConverterContexts.fake(),
+                MEDIA_TYPE_DETECTOR,
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testEqualsDifferentMediaTypeDetector() {
+        this.checkNotEquals(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MediaTypeDetectors.fake(),
                 ENVIRONMENT_CONTEXT
             )
         );
@@ -198,6 +230,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         this.checkNotEquals(
             BasicStorageContext.with(
                 CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
                 EnvironmentContexts.fake()
             )
         );

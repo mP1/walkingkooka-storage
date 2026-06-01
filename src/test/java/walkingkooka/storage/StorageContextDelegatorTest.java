@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelegator;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
@@ -127,6 +128,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
         public StorageContext storageContext() {
             return StorageContexts.basic(
                 ConverterContexts.fake(), // ConverterLike
+                MediaTypeDetectors.binary(),
                 EnvironmentContexts.empty(
                     StandardCharsets.UTF_8,
                     Currency.getInstance("AUD"),
