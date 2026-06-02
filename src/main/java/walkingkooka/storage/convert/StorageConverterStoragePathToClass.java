@@ -35,8 +35,8 @@ abstract class StorageConverterStoragePathToClass<C extends StorageConverterCont
 
     @Override
     public final boolean canConvert(final Object value,
-                              final Class<?> type,
-                              final C c) {
+                                    final Class<?> type,
+                                    final C c) {
         boolean canConvert = false;
 
         if (value instanceof StoragePath &&
