@@ -40,6 +40,13 @@ public final class StorageConverters implements PublicStaticHelper {
     }
 
     /**
+     * {see StorageConverterStorageBinaryToStorageValueJson}
+     */
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueJson() {
+        return StorageConverterStorageBinaryToStorageValueJson.instance();
+    }
+
+    /**
      * {see StorageConverterStorageBinaryToStorageValueProperties}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueProperties() {
