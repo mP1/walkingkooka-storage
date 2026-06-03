@@ -40,6 +40,13 @@ public final class StorageConverters implements PublicStaticHelper {
     }
 
     /**
+     * {see StorageConverterStorageBinaryToStorageValueTxt}
+     */
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueTxt() {
+        return StorageConverterStorageBinaryToStorageValueTxt.instance();
+    }
+
+    /**
      * {@see StorageConverterStorageBinaryToTxt}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToTxt() {
