@@ -19,7 +19,6 @@ package walkingkooka.storage;
 
 import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
-import walkingkooka.Cast;
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
@@ -70,32 +69,18 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
                 Files.readAllBytes(fileSystemPath)
             );
 
-            // convert StoragePath into class
-            final Class<?> typeOrNull = context.convert(
+            final StorageBinary storageBinary = StorageBinary.with(
                 storagePath,
-                CLASS_WILDCARD
-            ).orElseLeft(null);
+                binary
+            );
 
-            // try convert binary to type
-            Object value = null;
-            if (null != typeOrNull) {
-                value = context.convert(
-                    StorageBinary.with(
-                        storagePath,
-                        binary
-                    ),
-                    typeOrNull
-                ).orElseLeft(null);
-            }
-
-            storageValue = StorageValue.with(storagePath)
-                .setValue(
-                    Optional.ofNullable(
-                        null != value ?
-                            value :
-                            null
-                    )
-                );
+            // convert StorageBinary into StorageValue
+            storageValue = context.convert(
+                storageBinary,
+                StorageValue.class
+            ).orElseLeft(
+                StorageValue.with(storagePath)
+            );
         } catch (final FileNotFoundException | NoSuchFileException cause) {
             storageValue = null;
         } catch (final IOException cause) {
@@ -107,8 +92,6 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
 
         return Optional.ofNullable(storageValue);
     }
-
-    private final static Class<Class<?>> CLASS_WILDCARD = Cast.to(Class.class);
 
     @Override
     StorageValue save0(final StorageValue storageValue,
