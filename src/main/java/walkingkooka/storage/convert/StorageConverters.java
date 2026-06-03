@@ -68,13 +68,6 @@ public final class StorageConverters implements PublicStaticHelper {
     }
 
     /**
-     * {see StorageConverterStoragePathToClassJson}
-     */
-    public static <C extends StorageConverterContext> Converter<C> storagePathJsonToClass() {
-        return StorageConverterStoragePathToClassJson.instance();
-    }
-
-    /**
      * {see StorageConverterStoragePathToClassProperties}
      */
     public static <C extends StorageConverterContext> Converter<C> storagePathPropertiesToClass() {
