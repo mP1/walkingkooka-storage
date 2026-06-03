@@ -51,11 +51,8 @@ final class StorageConverterStorageBinaryToStorageValueProperties<C extends Stor
 
     @Override
     MediaType contentType() {
-        return CONTENT_TYPE;
+        return MediaType.TEXT_PROPERTIES;
     }
-
-    // https://stackoverflow.com/questions/6248130/what-is-the-mime-type-for-properties-files
-    private final static MediaType CONTENT_TYPE = MediaType.parse("text/x-java-properties");
 
     @Override
     <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary storageBinary,
