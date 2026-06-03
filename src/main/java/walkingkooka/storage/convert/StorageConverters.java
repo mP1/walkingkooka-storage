@@ -68,13 +68,6 @@ public final class StorageConverters implements PublicStaticHelper {
     }
 
     /**
-     * {see StorageConverterStoragePathToClassProperties}
-     */
-    public static <C extends StorageConverterContext> Converter<C> storagePathPropertiesToClass() {
-        return StorageConverterStoragePathToClassProperties.instance();
-    }
-
-    /**
      * {see StorageConverterStoragePathToClassTxt}
      */
     public static <C extends StorageConverterContext> Converter<C> storagePathTxtToClass() {
