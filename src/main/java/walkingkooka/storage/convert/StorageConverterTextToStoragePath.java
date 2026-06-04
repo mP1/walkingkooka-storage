@@ -61,6 +61,6 @@ final class StorageConverterTextToStoragePath<C extends StorageConverterContext>
 
     @Override
     public String toString() {
-        return "String -> StoragePath";
+        return TEXT + " to " + StoragePath.class.getSimpleName();
     }
 }

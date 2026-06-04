@@ -158,7 +158,7 @@ public final class StorageConverterTextToStoragePathTest extends StorageConverte
     public void testToString() {
         this.toStringAndCheck(
             StorageConverterTextToStoragePath.instance(),
-            "String -> StoragePath"
+            "TEXT to StoragePath"
         );
     }
 
