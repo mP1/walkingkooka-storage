@@ -301,6 +301,16 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
     }
 
+    @Override
+    public void testDeleteRootFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testDeleteParentFails() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     public void testAddDeleteSaveAndDelete() {
         final Storage<StorageContext> storage1 = Storages.treeMapStore();

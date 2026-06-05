@@ -243,7 +243,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     public void testDeleteMissing() {
         this.deleteAndCheck(
             this.createStorage(),
-            StoragePath.ROOT,
+            StoragePath.parse("/missing123"),
             this.createContext()
         );
     }
