@@ -19,7 +19,6 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.EmptyTextException;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
@@ -105,7 +104,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testCanWriteRootFails() {
         assertThrows(
-            EmptyTextException.class,
+            InvalidStoragePathException.class,
             () -> this.createStorage()
                 .canWrite(
                     StoragePath.ROOT,
@@ -156,6 +155,15 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     }
 
     @Test
+    public void testLoadDoublePath() {
+        this.loadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/path1/path2"),
+            this.createContext()
+        );
+    }
+
+    @Test
     public void testLoadUnknownEnvironmentValue() {
         this.loadAndCheck(
             this.createStorage(),
@@ -186,6 +194,22 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             () -> StorageSharedEnvironment.instance()
                 .save(
                     StorageValue.with(StoragePath.ROOT),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    public void testSaveInvalidPathFails() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> StorageSharedEnvironment.instance()
+                .save(
+                    StorageValue.with(
+                        StoragePath.parse("/path1/" + MAGIC_ENVIRONMENT_VALUE_NAME)
+                    ).setValue(
+                        Optional.of(MAGIC_ENVIRONMENT_VALUE)
+                    ),
                     this.createContext()
                 )
         );
@@ -245,6 +269,18 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             this.createStorage(),
             StoragePath.parse("/missing123"),
             this.createContext()
+        );
+    }
+
+    @Test
+    public void testDeleteInvalidPathFails() {
+        assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .delete(
+                    StoragePath.parse("/path1/" + MAGIC_ENVIRONMENT_VALUE_NAME),
+                    this.createContext()
+                )
         );
     }
 
