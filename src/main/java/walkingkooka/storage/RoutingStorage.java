@@ -70,8 +70,8 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
     }
 
     @Override
-    Optional<StorageValue> loadNonParent(final StoragePath path,
-                                         final C context) {
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         Optional<StorageValue> value = Optional.empty();
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {

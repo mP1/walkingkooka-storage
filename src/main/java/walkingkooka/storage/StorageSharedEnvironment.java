@@ -67,8 +67,8 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     }
 
     @Override
-    Optional<StorageValue> loadNonParent(final StoragePath path,
-                                         final C context) {
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         Optional<Object> value;
         try {
             final EnvironmentValueName<?> environmentValueName = environmentValueName(path);

@@ -68,14 +68,14 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
 
         return path.isParent() ?
             NO_STORAGE_VALUE :
-            this.loadNonParent(
+            this.load0(
                 path,
                 context
             );
     }
 
-    abstract Optional<StorageValue> loadNonParent(final StoragePath path,
-                                                  final C context);
+    abstract Optional<StorageValue> load0(final StoragePath path,
+                                          final C context);
 
     @Override
     public StorageValue save(final StorageValue value,
