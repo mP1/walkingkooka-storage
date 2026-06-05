@@ -50,6 +50,13 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     }
 
     @Override
+    boolean canRead0(final StoragePath path,
+                     final C context) {
+        return this.store.load(path)
+            .isPresent();
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         return this.store.load(path)

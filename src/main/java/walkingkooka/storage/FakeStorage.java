@@ -27,6 +27,12 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
+    public boolean canRead(final StoragePath path,
+                           final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Optional<StorageValue> load(final StoragePath path,
                                        final C context) {
         throw new UnsupportedOperationException();

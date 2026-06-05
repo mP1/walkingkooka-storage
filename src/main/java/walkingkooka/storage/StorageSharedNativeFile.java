@@ -56,6 +56,14 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
     }
 
     @Override
+    boolean canRead0(final StoragePath storagePath,
+                     final C context) {
+        return Files.isReadable(
+            this.toPath(storagePath)
+        );
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath storagePath,
                                  final C context) {
         // map StoragePath to file system path

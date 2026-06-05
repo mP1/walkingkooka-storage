@@ -40,6 +40,21 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
     // Store............................................................................................................
 
     @Override
+    boolean canRead0(final StoragePath path,
+                     final C context) {
+        boolean readable = false;
+        RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
+        if (null != route) {
+            readable = route.store.canRead(
+                route.remove(path),
+                context
+            );
+        }
+
+        return readable;
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         Optional<StorageValue> value = Optional.empty();
