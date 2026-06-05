@@ -45,7 +45,7 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     @Override
     boolean canRead0(final StoragePath storagePath,
                      final C context) {
-        return false;
+        return StoragePath.ROOT.equals(storagePath);
     }
 
     @Override

@@ -25,6 +25,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageSharedEmpty<StorageContext>, StorageContext> {
 
     @Test
+    public void testCanReadRoot() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.ROOT,
+            this.createContext(),
+            true
+        );
+    }
+
+    @Test
+    public void testCanReadNonRoot() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/unknown.txt"),
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
     public void testLoadMissing() {
         this.loadAndCheck(
             this.createStorage(),
