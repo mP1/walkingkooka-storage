@@ -57,6 +57,12 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     }
 
     @Override
+    boolean canWrite0(final StoragePath path,
+                      final C context) {
+        return true;
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         return this.store.load(path)
@@ -169,7 +175,8 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         }
     }
 
-    private final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
+    // @VisibleForTesting
+    final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
 
     @Override
     public String toString() {

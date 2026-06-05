@@ -52,6 +52,25 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
     @Test
+    public void testCanWriteWithNonRoot() {
+        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        this.canWriteAndCheck(
+            store,
+            StoragePath.parse("/hello"),
+            context,
+            true
+        );
+
+        this.checkEquals(
+            0,
+            store.store.count(),
+            store.store::toString
+        );
+    }
+
+    @Test
     public void testSaveValueWithRootPathFails() {
         final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
         final TestStorageContext context = new TestStorageContext();

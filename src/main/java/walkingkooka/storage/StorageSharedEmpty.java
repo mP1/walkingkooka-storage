@@ -49,6 +49,12 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     }
 
     @Override
+    boolean canWrite0(final StoragePath storagePath,
+                      final C context) {
+        return false;
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         return Optional.empty();

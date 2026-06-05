@@ -28,6 +28,9 @@ public interface Storage<C extends StorageContext> {
     boolean canRead(final StoragePath path,
                     final C context);
 
+    boolean canWrite(final StoragePath path,
+                     final C context);
+
     Optional<StorageValue> load(final StoragePath path,
                                 final C context);
 

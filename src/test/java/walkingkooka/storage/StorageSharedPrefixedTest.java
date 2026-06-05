@@ -392,6 +392,17 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
                     }
 
                     @Override
+                    public boolean canWrite(final StoragePath path,
+                                            final StorageContext context) {
+                        this.throwIfInvalid(path);
+
+                        return this.storage.canWrite(
+                            path,
+                            context
+                        );
+                    }
+
+                    @Override
                     public Optional<StorageValue> load(final StoragePath path,
                                                        final StorageContext context) {
                         this.throwIfInvalid(path);

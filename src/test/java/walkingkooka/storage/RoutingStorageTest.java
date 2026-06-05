@@ -54,6 +54,48 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     };
 
     @Test
+    public void testCanWriteNew() {
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
+
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
+            store1,
+            Storages.fake()
+        );
+
+        this.canWriteAndCheck(
+            store1,
+            StoragePath.parse("/file1"),
+            CONTEXT,
+            true
+        );
+    }
+
+    @Test
+    public void testCanWrite() {
+        final Storage<StorageContext> store1 = Storages.treeMapStore();
+
+        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
+            store1,
+            Storages.fake()
+        );
+
+        routingStorageStore.save(
+            storageValue(
+                "/mount1/file1",
+                VALUE1
+            ),
+            CONTEXT
+        );
+
+        this.canWriteAndCheck(
+            store1,
+            StoragePath.parse("/file1"),
+            CONTEXT,
+            true
+        );
+    }
+
+    @Test
     public void testSave() {
         final Storage<StorageContext> store1 = Storages.treeMapStore();
 
