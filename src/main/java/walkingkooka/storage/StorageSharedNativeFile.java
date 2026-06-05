@@ -72,8 +72,8 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
     }
 
     @Override
-    Optional<StorageValue> loadNonParent(final StoragePath storagePath,
-                                         final C context) {
+    Optional<StorageValue> load0(final StoragePath storagePath,
+                                 final C context) {
         // map StoragePath to file system path
         final Path fileSystemPath = this.toPath(storagePath);
 

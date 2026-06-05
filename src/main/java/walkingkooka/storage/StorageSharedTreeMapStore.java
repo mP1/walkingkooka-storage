@@ -63,8 +63,8 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     }
 
     @Override
-    Optional<StorageValue> loadNonParent(final StoragePath path,
-                                         final C context) {
+    Optional<StorageValue> load0(final StoragePath path,
+                                 final C context) {
         return path.isParent() ?
             Optional.empty() :
             this.store.load(path)
