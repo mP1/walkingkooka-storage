@@ -105,8 +105,8 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
     }
 
     @Override
-    StorageValue save0(final StorageValue value,
-                       final C context) {
+    StorageValue saveNonParent(final StorageValue value,
+                               final C context) {
         try {
             return this.storage.save(
                 value.removePrefixPath(this.prefix),

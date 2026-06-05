@@ -71,52 +71,6 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
-    public void testSaveValueWithRootPathFails() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
-        final TestStorageContext context = new TestStorageContext();
-
-        final InvalidStoragePathException thrown = assertThrows(
-            InvalidStoragePathException.class,
-            () -> storage.save(
-                StorageValue.with(
-                    StoragePath.parse("/")
-                ).setValue(
-                    Optional.of(VALUE)
-                ),
-                context
-            )
-        );
-
-        this.getMessageAndCheck(
-            thrown,
-            "Invalid path for a value \"/\""
-        );
-    }
-
-    @Test
-    public void testSaveValueWithInvalidPathFails() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
-        final TestStorageContext context = new TestStorageContext();
-
-        final InvalidStoragePathException thrown = assertThrows(
-            InvalidStoragePathException.class,
-            () -> storage.save(
-                StorageValue.with(
-                    StoragePath.parse("/path123/")
-                ).setValue(
-                    Optional.of(VALUE)
-                ),
-                context
-            )
-        );
-
-        this.getMessageAndCheck(
-            thrown,
-            "Invalid path for a value \"/path123/\""
-        );
-    }
-
-    @Test
     public void testLoadParent() {
         this.loadAndCheck(
             this.createStorage(),

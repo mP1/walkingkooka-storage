@@ -83,14 +83,19 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
         Objects.requireNonNull(value, "value");
         Objects.requireNonNull(context, "context");
 
-        return this.save0(
+        final StoragePath path = value.path();
+        if(path.isParent()) {
+            throw path.invalidStoragePathException("Invalid parent path");
+        }
+
+        return this.saveNonParent(
             value,
             context
         );
     }
 
-    abstract StorageValue save0(final StorageValue value,
-                                final C context);
+    abstract StorageValue saveNonParent(final StorageValue value,
+                                        final C context);
 
     @Override
     public void delete(final StoragePath path,

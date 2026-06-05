@@ -110,8 +110,8 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
     }
 
     @Override
-    StorageValue save0(final StorageValue storageValue,
-                       final C context) {
+    StorageValue saveNonParent(final StorageValue storageValue,
+                               final C context) {
         final StoragePath storagePath = storageValue.path();
 
         // map StoragePath to file system path
