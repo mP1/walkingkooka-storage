@@ -208,6 +208,32 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
+    @Test
+    default void testSaveRootFails() {
+        assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .save(
+                    StorageValue.with(StoragePath.ROOT),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testSaveParentFails() {
+        assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .save(
+                    StorageValue.with(
+                        StoragePath.parse("/parent1/")
+                    ),
+                    this.createContext()
+                )
+        );
+    }
+
     default void saveAndCheck(final Storage<C> storage,
                               final StorageValue value,
                               final C context) {

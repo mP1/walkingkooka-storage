@@ -61,8 +61,8 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     }
 
     @Override
-    StorageValue save0(final StorageValue value,
-                       final C context) {
+    StorageValue saveNonParent(final StorageValue value,
+                               final C context) {
         throw new UnsupportedOperationException();
     }
 

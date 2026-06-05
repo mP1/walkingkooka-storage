@@ -79,7 +79,9 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
             UnsupportedOperationException.class,
             () -> StorageSharedEmpty.instance()
                 .save(
-                    StorageValue.with(StoragePath.ROOT),
+                    StorageValue.with(
+                        StoragePath.parse("/hello")
+                    ),
                     this.createContext()
                 )
         );
