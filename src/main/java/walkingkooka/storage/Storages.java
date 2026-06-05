@@ -68,6 +68,13 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see ReadOnlyStorage}
+     */
+    public static <C extends StorageContext> Storage<C> readOnly(final Storage<C> storage) {
+        return ReadOnlyStorage.with(storage);
+    }
+
+    /**
      * {@see StorageSharedTreeMapStore}
      */
     public static <C extends StorageContext> Storage<C> treeMapStore() {
