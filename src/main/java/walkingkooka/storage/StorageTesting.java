@@ -136,6 +136,15 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
+    @Test
+    default void testLoadRoot() {
+        this.loadAndCheck(
+            this.createStorage(),
+            StoragePath.ROOT,
+            this.createContext()
+        );
+    }
+
     default void loadAndCheck(final Storage<C> storage,
                               final StoragePath path,
                               final C context) {
