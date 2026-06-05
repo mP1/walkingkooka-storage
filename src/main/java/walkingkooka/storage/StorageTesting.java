@@ -285,6 +285,30 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
+    @Test
+    default void testDeleteRootFails() {
+        assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .delete(
+                    StoragePath.ROOT,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testDeleteParentFails() {
+        assertThrows(
+            InvalidStoragePathException.class,
+            () -> this.createStorage()
+                .delete(
+                    StoragePath.parse("/parent1/"),
+                    this.createContext()
+                )
+        );
+    }
+
     default void deleteAndCheck(final Storage<C> storage,
                                 final StoragePath path,
                                 final C context) {

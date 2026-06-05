@@ -93,7 +93,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
             UnsupportedOperationException.class,
             () -> StorageSharedEmpty.instance()
                 .delete(
-                    StoragePath.ROOT,
+                    StoragePath.parse("/missing.txt"),
                     this.createContext()
                 )
         );
