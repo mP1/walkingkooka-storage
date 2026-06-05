@@ -7,7 +7,7 @@
 [![J2CL compatible](https://img.shields.io/badge/J2CL-compatible-brightgreen.svg)](https://github.com/mP1/j2cl-central)
 
 # walkingkooka-storage
-A [Storage](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storage.java) is an object-oriented heirarchical view with concepts similar to a file system.
+A [Storage](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storage.java) is an object-oriented hierarchical view with concepts similar to a file system.
 
 An example of its utlity is the usage within [walkingkooka-spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet), to provide various spreadsheet values including a spreadsheet itself as files at various mounts.
 
