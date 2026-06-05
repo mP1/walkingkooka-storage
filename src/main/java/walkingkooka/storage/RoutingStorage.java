@@ -153,6 +153,20 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         return storageValueInfos;
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Selects the first {@link RoutingStorageRoute} that matches the given path, returning null if none matched.
      */

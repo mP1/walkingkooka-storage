@@ -86,5 +86,25 @@ public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
             );
     }
 
+    @Override
+    default Runnable addWatcher(final StorageWatcher watcher,
+                                       final C context) {
+        return this.storage()
+            .addWatcher(
+                watcher,
+                context
+            );
+    }
+
+    @Override
+    default Runnable addWatcherOnce(final StorageWatcher watcher,
+                                           final C context) {
+        return this.storage()
+            .addWatcherOnce(
+                watcher,
+                context
+            );
+    }
+
     Storage<C> storage();
 }

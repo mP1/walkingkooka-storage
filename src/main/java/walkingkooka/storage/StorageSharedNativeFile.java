@@ -207,6 +207,19 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         }
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Helper that converts a {@link StoragePath} to the equivalent file system {@link Path}.

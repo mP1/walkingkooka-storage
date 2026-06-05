@@ -82,6 +82,20 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
         return Lists.of();
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     // Object...........................................................................................................
 
     @Override

@@ -180,6 +180,20 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         }
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     // @VisibleForTesting
     final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
 
