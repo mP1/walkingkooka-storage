@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.Cast;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentValueName;
 
@@ -26,8 +27,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * A {@link Storage} that translates {@link StoragePath#name()} into {@link EnvironmentValueName} and gets/sets/remove
- * values from the {@link StorageContext}, using the environment methods.
+ * A {@link Storage} that translates {@link StoragePath#name()} for paths with the root as their parent into
+ * {@link EnvironmentValueName} and gets/sets/remove values from the {@link StorageContext}, using the environment methods.
+ * Paths with one or more path components will fail with a {@link InvalidStoragePathException}.
+ * <pre>
+ * /path/LineEnding
+ * </pre>
  */
 final class StorageSharedEnvironment<C extends StorageContext> extends StorageShared<C> {
 
@@ -69,14 +74,17 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
-        Optional<Object> value;
-        try {
-            final EnvironmentValueName<?> environmentValueName = environmentValueName(path);
-            value = Cast.to(
-                context.environmentValue(environmentValueName)
-            );
-        } catch (final IllegalArgumentException cause) {
-            value = Optional.empty();
+        Optional<Object> value = Optional.empty();
+
+        if (isParentRoot(path)) {
+            try {
+                final EnvironmentValueName<?> environmentValueName = environmentValueName(path);
+                value = Cast.to(
+                    context.environmentValue(environmentValueName)
+                );
+            } catch (final IllegalArgumentException cause) {
+                // ignore
+            }
         }
 
         return value.map(v -> StorageValue.with(path)
@@ -110,16 +118,15 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     @Override
     void delete0(final StoragePath path,
                  final C context) {
-        try {
-            context.removeEnvironmentValue(
-                environmentValueName(path)
-            );
-        } catch (final IllegalArgumentException cause) {
-            // invalid EnvironmentValueName do nothing
-        }
+        context.removeEnvironmentValue(
+            environmentValueName(path)
+        );
     }
 
     private static EnvironmentValueName<?> environmentValueName(final StoragePath path) {
+        if (false == isParentRoot(path)) {
+            throw path.invalidStoragePathException("Invalid path");
+        }
         return EnvironmentValueName.with(
             path.name()
                 .value(),
@@ -132,33 +139,48 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
                                  final int offset,
                                  final int count,
                                  final C context) {
-        String prefix = parent.value();
-        if (prefix.startsWith(StoragePath.SEPARATOR_STRING)) {
-            prefix = prefix.substring(
-                StoragePath.SEPARATOR_STRING.length()
-            );
+        final List<StorageValueInfo> listing;
+
+        if (parent.isRoot() || isParentRoot(parent)) {
+            String prefix = parent.value();
+            if (prefix.startsWith(StoragePath.SEPARATOR_STRING)) {
+                prefix = prefix.substring(
+                    StoragePath.SEPARATOR_STRING.length()
+                );
+            }
+
+            final String finalPrefix = prefix;
+
+            final AuditInfo auditInfo = context.createdAuditInfo();
+
+            // always returns nothing
+            listing = context.environmentValueNames()
+                .stream()
+                .filter(n -> EnvironmentValueName.CASE_SENSITIVITY.startsWith(n.value(), finalPrefix))
+                .skip(offset)
+                .limit(count)
+                .map(n ->
+                    StorageValueInfo.with(
+                        StoragePath.ROOT.append(
+                            StorageName.with(
+                                n.value()
+                            )
+                        ),
+                        auditInfo
+                    )
+                ).collect(Collectors.toList());
+        } else {
+            listing = Lists.empty();
         }
 
-        final String finalPrefix = prefix;
+        return listing;
+    }
 
-        final AuditInfo auditInfo = context.createdAuditInfo();
-
-        // always returns nothing
-        return context.environmentValueNames()
-            .stream()
-            .filter(n -> EnvironmentValueName.CASE_SENSITIVITY.startsWith(n.value(), finalPrefix))
-            .skip(offset)
-            .limit(count)
-            .map(n ->
-                StorageValueInfo.with(
-                    StoragePath.ROOT.append(
-                        StorageName.with(
-                            n.value()
-                        )
-                    ),
-                    auditInfo
-                )
-            ).collect(Collectors.toList());
+    private static boolean isParentRoot(final StoragePath path) {
+        return StoragePath.ROOT.equals(
+            path.parent()
+                .orElse(null)
+        );
     }
 
     // Object...........................................................................................................
