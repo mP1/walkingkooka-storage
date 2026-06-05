@@ -143,28 +143,19 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         this.loadAndCheck(
             storage1,
             StoragePath.parse("/dir1/"),
-            CONTEXT,
-            StorageValue.with(
-                StoragePath.parse("/dir1/")
-            )
+            CONTEXT
         );
 
         this.loadAndCheck(
             storage1,
             StoragePath.parse("/dir1/dir11/"),
-            CONTEXT,
-            StorageValue.with(
-                StoragePath.parse("/dir1/dir11/")
-            )
+            CONTEXT
         );
 
         this.loadAndCheck(
             storage1,
             StoragePath.parse("/dir1/dir11/dir111/"),
-            CONTEXT,
-            StorageValue.with(
-                StoragePath.parse("/dir1/dir11/dir111/")
-            )
+            CONTEXT
         );
 
         this.loadAndCheck(

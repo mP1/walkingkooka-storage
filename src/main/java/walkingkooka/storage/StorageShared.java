@@ -60,20 +60,22 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     abstract boolean canWrite0(final StoragePath path,
                                final C context);
 
-    @Override
+    @Override //
     final public Optional<StorageValue> load(final StoragePath path,
                                              final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
-        return this.load0(
-            path,
-            context
-        );
+        return path.isParent() ?
+            Optional.empty() :
+            this.loadNonParent(
+                path,
+                context
+            );
     }
 
-    abstract Optional<StorageValue> load0(final StoragePath path,
-                                          final C context);
+    abstract Optional<StorageValue> loadNonParent(final StoragePath path,
+                                                  final C context);
 
     @Override
     public StorageValue save(final StorageValue value,

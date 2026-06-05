@@ -55,8 +55,8 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     }
 
     @Override
-    Optional<StorageValue> load0(final StoragePath path,
-                                 final C context) {
+    Optional<StorageValue> loadNonParent(final StoragePath path,
+                                         final C context) {
         return Optional.empty();
     }
 
