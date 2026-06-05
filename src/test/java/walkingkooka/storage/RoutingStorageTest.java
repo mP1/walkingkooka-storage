@@ -55,15 +55,15 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testCanWriteNew() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
         this.canWriteAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             true
@@ -72,14 +72,14 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testCanWrite() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount1/file1",
                 VALUE1
@@ -88,7 +88,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.canWriteAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             true
@@ -97,14 +97,14 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSave() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount1/file1",
                 VALUE1
@@ -113,7 +113,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             storageValue(
@@ -125,14 +125,14 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveExtraLongPath() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount1/dir1/dir11/dir111/file1",
                 VALUE1
@@ -141,7 +141,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/dir1/"),
             CONTEXT,
             StorageValue.with(
@@ -150,7 +150,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/dir1/dir11/"),
             CONTEXT,
             StorageValue.with(
@@ -159,7 +159,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/dir1/dir11/dir111/"),
             CONTEXT,
             StorageValue.with(
@@ -168,7 +168,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/dir1/dir11/dir111/file1"),
             CONTEXT,
             StorageValue.with(
@@ -181,14 +181,14 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSave2ndMount() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
             Storages.fake(),
-            store1
+            storage1
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount2/file1",
                 VALUE1
@@ -197,7 +197,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             storageValue(
@@ -209,10 +209,10 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndLoad() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
@@ -221,13 +221,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             VALUE1
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value,
             CONTEXT
         );
 
         this.loadAndCheck(
-            routingStorageStore,
+            routingStorage,
             value.path(),
             CONTEXT,
             value
@@ -236,10 +236,10 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndLoadExtraLongPath() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
@@ -248,13 +248,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             VALUE1
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value,
             CONTEXT
         );
 
         this.loadAndCheck(
-            routingStorageStore,
+            routingStorage,
             value.path(),
             CONTEXT,
             value
@@ -263,14 +263,14 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testSaveAndDelete() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             Storages.fake()
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount1/file1",
                 VALUE1
@@ -279,7 +279,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             storageValue(
@@ -288,13 +288,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             )
         );
 
-        routingStorageStore.delete(
+        routingStorage.delete(
             StoragePath.parse("/mount1/file1"),
             CONTEXT
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT
         );
@@ -302,15 +302,15 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testAddDeleteSaveAndDelete() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
         final Storage<StorageContext> store2 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             store2
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             storageValue(
                 "/mount1/file1",
                 VALUE1
@@ -319,7 +319,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.loadAndCheck(
-            store1,
+            storage1,
             StoragePath.parse("/file1"),
             CONTEXT,
             storageValue(
@@ -328,13 +328,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             )
         );
 
-        routingStorageStore.delete(
+        routingStorage.delete(
             StoragePath.parse("/mount1/file1"),
             CONTEXT
         );
 
         this.listAndCheck(
-            store1,
+            storage1,
             StoragePath.ROOT,
             0,
             100,
@@ -352,11 +352,11 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testList() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
         final Storage<StorageContext> store2 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             store2
         );
 
@@ -365,7 +365,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value1"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value1,
             CONTEXT
         );
@@ -375,7 +375,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value2"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value2,
             CONTEXT
         );
@@ -385,7 +385,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value3"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value3,
             CONTEXT
         );
@@ -395,13 +395,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value4"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value4,
             CONTEXT
         );
 
         this.listAndCheck(
-            routingStorageStore,
+            routingStorage,
             StoragePath.parse("/mount1"),
             0,
             3,
@@ -411,7 +411,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.listAndCheck(
-            routingStorageStore,
+            routingStorage,
             StoragePath.parse("/mount2"),
             0,
             3,
@@ -423,11 +423,11 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testListSubDirectoryOfMount() {
-        final Storage<StorageContext> store1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
         final Storage<StorageContext> store2 = Storages.treeMapStore();
 
-        final RoutingStorage<StorageContext> routingStorageStore = this.createStorage(
-            store1,
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
             store2
         );
 
@@ -436,7 +436,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value1"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value1,
             CONTEXT
         );
@@ -446,7 +446,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value2"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value2,
             CONTEXT
         );
@@ -456,7 +456,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value3"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value3,
             CONTEXT
         );
@@ -466,13 +466,13 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
             "value4"
         );
 
-        routingStorageStore.save(
+        routingStorage.save(
             value4,
             CONTEXT
         );
 
         this.listAndCheck(
-            routingStorageStore,
+            routingStorage,
             StoragePath.parse("/mount1/dir1/"),
             0,
             3,
