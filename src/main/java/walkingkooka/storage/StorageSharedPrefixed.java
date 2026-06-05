@@ -90,8 +90,8 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
     }
     
     @Override
-    Optional<StorageValue> load0(final StoragePath path,
-                                 final C context) {
+    Optional<StorageValue> loadNonParent(final StoragePath path,
+                                         final C context) {
         try {
             return this.storage.load(
                 path.removePrefix(this.prefix),
