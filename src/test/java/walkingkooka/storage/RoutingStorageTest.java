@@ -95,6 +95,16 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
     }
 
+    @Override
+    public void testSaveRootFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSaveParentFails() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     public void testSave() {
         final Storage<StorageContext> storage1 = Storages.treeMapStore();

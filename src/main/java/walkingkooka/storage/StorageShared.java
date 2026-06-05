@@ -83,9 +83,11 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
         Objects.requireNonNull(value, "value");
         Objects.requireNonNull(context, "context");
 
-        final StoragePath path = value.path();
-        if(path.isParent()) {
-            throw path.invalidStoragePathException("Invalid parent path");
+        if(false == this instanceof RoutingStorage && false == this instanceof StorageSharedPrefixed) {
+            final StoragePath path = value.path();
+            if(path.isParent()) {
+                throw path.invalidStoragePathException("Invalid parent path");
+            }
         }
 
         return this.saveNonParent(
