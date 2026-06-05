@@ -379,6 +379,18 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
             StorageSharedPrefixed.with(
                 StoragePath.parse(PREFIX),
                 new Storage<>() {
+
+                    @Override
+                    public boolean canRead(final StoragePath path,
+                                           final StorageContext context) {
+                        this.throwIfInvalid(path);
+
+                        return this.storage.canRead(
+                            path,
+                            context
+                        );
+                    }
+
                     @Override
                     public Optional<StorageValue> load(final StoragePath path,
                                                        final StorageContext context) {
