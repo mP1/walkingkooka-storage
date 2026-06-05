@@ -90,14 +90,14 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
             }
         }
 
-        return this.saveNonParent(
+        return this.save0(
             value,
             context
         );
     }
 
-    abstract StorageValue saveNonParent(final StorageValue value,
-                                        final C context);
+    abstract StorageValue save0(final StorageValue value,
+                                final C context);
 
     @Override
     public void delete(final StoragePath path,
