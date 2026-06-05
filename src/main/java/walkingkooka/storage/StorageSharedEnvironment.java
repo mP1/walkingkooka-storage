@@ -52,7 +52,10 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     @Override
     boolean canRead0(final StoragePath storagePath,
                      final C context) {
-        return true;
+        return this.load(
+            storagePath,
+            context
+        ).isPresent();
     }
 
     @Override

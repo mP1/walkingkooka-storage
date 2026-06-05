@@ -71,6 +71,36 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     private final static Integer MAGIC_ENVIRONMENT_VALUE = 123;
 
     @Test
+    public void testCanReadRoot() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.ROOT,
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
+    public void testCanReadMissingEnvironmentValueName() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/!Invalid"),
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
+    public void testCanReadEnvironmentValueName() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/" + MAGIC_ENVIRONMENT_VALUE_NAME),
+            this.createContext(),
+            true
+        );
+    }
+
+    @Test
     public void testLoadMissing() {
         this.loadAndCheck(
             this.createStorage(),
