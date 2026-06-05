@@ -89,8 +89,8 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
     }
 
     @Override
-    StorageValue saveNonParent(final StorageValue value,
-                               final C context) {
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(value.path());
         if (null != route) {
             final StorageValue saved = route.store.save(

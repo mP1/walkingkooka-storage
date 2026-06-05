@@ -87,8 +87,8 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     }
 
     @Override
-    StorageValue saveNonParent(final StorageValue value,
-                               final C context) {
+    StorageValue save0(final StorageValue value,
+                       final C context) {
         final StoragePath path = value.path();
         final EnvironmentValueName<?> environmentValueName = environmentValueName(path);
 
