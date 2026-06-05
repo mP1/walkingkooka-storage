@@ -139,6 +139,9 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     @Override
     void delete0(final StoragePath path,
                  final C context) {
+        if(path.isParent()) {
+            throw path.invalidStoragePathException("Invalid parent path");
+        }
         this.store.delete(path);
     }
 

@@ -359,6 +359,35 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
+    public void testDeleteParentFails() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        final StoragePath file1 = StoragePath.parse("/parent1/file1.txt");
+        storage.save(
+            StorageValue.with(file1)
+                .setValue(
+                    Optional.of("file1-value")
+                ),
+            context
+        );
+
+        final InvalidStoragePathException thrown = assertThrows(
+            InvalidStoragePathException.class,
+            () -> storage.delete(
+                file1.parent()
+                    .get(),
+                context
+            )
+        );
+
+        this.getMessageAndCheck(
+            thrown,
+            "Invalid parent path \"/parent1/\""
+        );
+    }
+
+    @Test
     public void testListRootPath() {
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
