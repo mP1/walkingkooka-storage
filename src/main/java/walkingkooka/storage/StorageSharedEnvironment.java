@@ -61,16 +61,9 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     @Override
     boolean canWrite0(final StoragePath path,
                       final C context) {
-        boolean writable;
+        environmentValueName(path);
 
-        try {
-            environmentValueName(path);
-            writable = true;
-        } catch (final IllegalArgumentException cause) {
-            writable = false;
-        }
-
-        return writable;
+        return true;
     }
 
     @Override

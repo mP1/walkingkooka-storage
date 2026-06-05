@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.EmptyTextException;
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
@@ -101,22 +103,26 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     }
 
     @Test
-    public void testCanWriteRoot() {
-        this.canWriteAndCheck(
-            this.createStorage(),
-            StoragePath.ROOT,
-            this.createContext(),
-            false
+    public void testCanWriteRootFails() {
+        assertThrows(
+            EmptyTextException.class,
+            () -> this.createStorage()
+                .canWrite(
+                    StoragePath.ROOT,
+                    this.createContext()
+                )
         );
     }
 
     @Test
     public void testCanWriteInvalidEnvironmentValueName() {
-        this.canWriteAndCheck(
-            this.createStorage(),
-            StoragePath.parse("/!Invalid"),
-            this.createContext(),
-            false
+        assertThrows(
+            InvalidCharacterException.class,
+            () -> this.createStorage()
+                .canWrite(
+                    StoragePath.parse("/!Invalid"),
+                    this.createContext()
+                )
         );
     }
 
