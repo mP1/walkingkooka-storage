@@ -69,6 +69,46 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             () -> " storage canRead " + path
         );
     }
+
+    // canWrite.........................................................................................................
+
+    @Test
+    default void testCanWriteWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .canWrite(
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testCanWriteWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .canWrite(
+                    StoragePath.ROOT,
+                    null
+                )
+        );
+    }
+
+    default void canWriteAndCheck(final Storage<C> storage,
+                                  final StoragePath path,
+                                  final C context,
+                                  final boolean expected) {
+        this.checkEquals(
+            expected,
+            storage.canWrite(
+                path,
+                context
+            ),
+            () -> " storage canWrite " + path
+        );
+    }
     
     // load.............................................................................................................
 

@@ -101,6 +101,46 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     }
 
     @Test
+    public void testCanWriteRoot() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.ROOT,
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
+    public void testCanWriteInvalidEnvironmentValueName() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/!Invalid"),
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
+    public void testCanWriteEnvironmentValueName() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/" + MAGIC_ENVIRONMENT_VALUE_NAME),
+            this.createContext(),
+            true
+        );
+    }
+
+    @Test
+    public void testCanWriteNewEnvironmentValueName() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/hello"),
+            this.createContext(),
+            true
+        );
+    }
+
+    @Test
     public void testLoadMissing() {
         this.loadAndCheck(
             this.createStorage(),

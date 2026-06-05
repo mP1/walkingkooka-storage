@@ -45,6 +45,26 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     }
 
     @Test
+    public void testCanWriteRoot() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.ROOT,
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
+    public void testCanWriteNonRoot() {
+        this.canWriteAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/file.txt"),
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
     public void testLoadMissing() {
         this.loadAndCheck(
             this.createStorage(),
