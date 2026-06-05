@@ -53,11 +53,11 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testCanWriteWithNonRoot() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         this.canWriteAndCheck(
-            store,
+            storage,
             StoragePath.parse("/hello"),
             context,
             true
@@ -65,19 +65,19 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         this.checkEquals(
             0,
-            store.store.count(),
-            store.store::toString
+            storage.store.count(),
+            storage.store::toString
         );
     }
 
     @Test
     public void testSaveValueWithRootPathFails() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final InvalidStoragePathException thrown = assertThrows(
             InvalidStoragePathException.class,
-            () -> store.save(
+            () -> storage.save(
                 StorageValue.with(
                     StoragePath.parse("/")
                 ).setValue(
@@ -95,12 +95,12 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveValueWithInvalidPathFails() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final InvalidStoragePathException thrown = assertThrows(
             InvalidStoragePathException.class,
-            () -> store.save(
+            () -> storage.save(
                 StorageValue.with(
                     StoragePath.parse("/path123/")
                 ).setValue(
@@ -118,18 +118,18 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndLoad() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
 
-        store.save(
+        storage.save(
             value,
             context
         );
 
         this.loadAndCheck(
-            store,
+            storage,
             value.path(),
             context,
             value
@@ -138,7 +138,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -151,13 +151,13 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value1")
         );
 
-        store.save(
+        storage.save(
             value1,
             context
         );
 
         this.loadAndCheck(
-            store,
+            storage,
             StoragePath.parse("/base/file1.txt"),
             context,
             value1
@@ -171,13 +171,13 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value2")
         );
 
-        store.save(
+        storage.save(
             value2,
             context
         );
 
         this.loadAndCheck(
-            store,
+            storage,
             StoragePath.parse("/base/file2.txt"),
             context,
             value2
@@ -186,18 +186,18 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndList() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
 
-        store.save(
+        storage.save(
             value,
             context
         );
 
         this.listAndCheck(
-            store,
+            storage,
             PATH.parent()
                 .get(),
             0,
@@ -212,7 +212,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndListMixedParents() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -225,7 +225,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value1")
         );
 
-        store.save(
+        storage.save(
             value1,
             context
         );
@@ -238,7 +238,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value2")
         );
 
-        store.save(
+        storage.save(
             value2,
             context
         );
@@ -251,7 +251,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value3")
         );
 
-        store.save(
+        storage.save(
             value3,
             context
         );
@@ -264,7 +264,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("value4")
         );
 
-        store.save(
+        storage.save(
             value4,
             context
         );
@@ -279,7 +279,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("subsub")
         );
 
-        store.save(
+        storage.save(
             subsub,
             context
         );
@@ -290,13 +290,13 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             Optional.of("root")
         );
 
-        store.save(
+        storage.save(
             rootfile,
             context
         );
 
         this.listAndCheck(
-            store,
+            storage,
             base,
             1,
             2,
@@ -314,11 +314,11 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveUpdateAndList() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
-        store.save(
+        storage.save(
             value,
             context
         );
@@ -326,7 +326,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final LocalDateTime modifiedTimestamp = TIMESTAMP.plusYears(10);
         context.now = modifiedTimestamp;
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 PATH
             ).setValue(
@@ -336,7 +336,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         this.listAndCheck(
-            store,
+            storage,
             PATH.parent()
                 .get(),
             0,
@@ -351,11 +351,11 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListRootPath() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file1)
                 .setValue(
                     Optional.of("file1-value")
@@ -364,7 +364,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file2)
                 .setValue(
                     Optional.of("file2-value")
@@ -373,7 +373,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StoragePath file5 = StoragePath.parse("/dir2/dir3/file3.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file5)
                 .setValue(
                     Optional.of("file3-value")
@@ -383,7 +383,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         // listing alpha sorted
         this.listAndCheck(
-            store,
+            storage,
             StoragePath.ROOT,
             0,
             4,
@@ -401,11 +401,11 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListSubdirectory() {
-        final StorageSharedTreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file1)
                 .setValue(
                     Optional.of("file1-value")
@@ -414,7 +414,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file2)
                 .setValue(
                     Optional.of("file2-value")
@@ -423,7 +423,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StoragePath file3 = StoragePath.parse("/dir2/file3.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file3)
                 .setValue(
                     Optional.of("file3-value")
@@ -432,7 +432,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
-        store.save(
+        storage.save(
             StorageValue.with(file3)
                 .setValue(
                     Optional.of("file4-value")
@@ -441,7 +441,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         );
 
         this.listAndCheck(
-            store,
+            storage,
             StoragePath.parse("/dir2/"),
             0,
             10,
