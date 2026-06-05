@@ -117,6 +117,15 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
+    public void testLoadParent() {
+        this.loadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/parent1/parent2"),
+            new TestStorageContext()
+        );
+    }
+
+    @Test
     public void testSaveAndLoad() {
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
