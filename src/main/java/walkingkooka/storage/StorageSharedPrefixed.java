@@ -64,6 +64,19 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
     }
 
     @Override
+    boolean canRead0(final StoragePath path,
+                     final C context) {
+        try {
+            return this.storage.canRead(
+                path.removePrefix(this.prefix),
+                context
+            );
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         try {

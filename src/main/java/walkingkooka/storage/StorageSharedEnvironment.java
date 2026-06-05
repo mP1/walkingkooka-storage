@@ -50,6 +50,12 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
     // Storage..........................................................................................................
 
     @Override
+    boolean canRead0(final StoragePath storagePath,
+                     final C context) {
+        return true;
+    }
+
+    @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         Optional<Object> value;

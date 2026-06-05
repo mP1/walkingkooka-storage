@@ -25,6 +25,9 @@ import java.util.Optional;
  */
 public interface Storage<C extends StorageContext> {
 
+    boolean canRead(final StoragePath path,
+                    final C context);
+
     Optional<StorageValue> load(final StoragePath path,
                                 final C context);
 

@@ -30,6 +30,46 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface StorageTesting<S extends Storage<C>, C extends StorageContext> extends ClassTesting<S>,
     TreePrintableTesting {
 
+    // canRead..........................................................................................................
+
+    @Test
+    default void testCanReadWithNullIdFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .canRead(
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testCanReadWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .canRead(
+                    StoragePath.ROOT,
+                    null
+                )
+        );
+    }
+
+    default void canReadAndCheck(final Storage<C> storage,
+                                 final StoragePath path,
+                                 final C context,
+                                 final boolean expected) {
+        this.checkEquals(
+            expected,
+            storage.canRead(
+                path,
+                context
+            ),
+            () -> " storage canRead " + path
+        );
+    }
+    
     // load.............................................................................................................
 
     @Test

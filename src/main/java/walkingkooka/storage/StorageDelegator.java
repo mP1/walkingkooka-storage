@@ -23,6 +23,16 @@ import java.util.Optional;
 public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
 
     @Override
+    default boolean canRead(final StoragePath path,
+                            final C context) {
+        return this.storage()
+            .canRead(
+                path,
+                context
+            );
+    }
+
+    @Override
     default Optional<StorageValue> load(final StoragePath path,
                                         final C context) {
         return this.storage()
