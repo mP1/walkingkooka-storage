@@ -37,7 +37,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         this.routes = routes;
     }
 
-    // Store............................................................................................................
+    // Storage..........................................................................................................
 
     @Override
     boolean canRead0(final StoragePath path,
