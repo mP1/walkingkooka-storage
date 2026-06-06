@@ -57,12 +57,10 @@ public final class StorageWatchers implements StorageWatcher {
      * Note the event is only fired if the old and new values are different.
      */
     @Override
-    public void onStorageValueChange(final StoragePath path,
-                                     final Optional<?> oldValue,
-                                     final Optional<?> newValue) {
-        if (false == Objects.equals(oldValue, newValue)) {
+    public void onStorageValueChange(final Optional<StorageValue> oldValue,
+                                     final Optional<StorageValue> newValue) {
+        if (false == oldValue.equals(newValue)) {
             final StorageWatchersEvent event = StorageWatchersEvent.with(
-                path,
                 oldValue,
                 newValue
             );

@@ -26,10 +26,8 @@ import java.util.Optional;
 public interface StorageWatcher2 extends StorageWatcher {
 
     @Override
-    default void onStorageValueChange(final StoragePath path,
-                                      final Optional<?> oldValue,
-                                      final Optional<?> newValue) {
-        Objects.requireNonNull(path, "path");
+    default void onStorageValueChange(final Optional<StorageValue> oldValue,
+                                      final Optional<StorageValue> newValue) {
         Objects.requireNonNull(oldValue, "oldValue");
         Objects.requireNonNull(newValue, "newValue");
 
@@ -38,18 +36,15 @@ public interface StorageWatcher2 extends StorageWatcher {
 
         if (oldEmpty) {
             this.onStorageValueAdd(
-                path,
                 newValue.get()
             );
         } else {
             if (newEmpty) {
                 this.onStorageValueRemove(
-                    path,
                     oldValue.get()
                 );
             } else {
                 this.onStorageValueUpdate(
-                    path,
                     oldValue.get(),
                     newValue.get()
                 );
@@ -57,13 +52,10 @@ public interface StorageWatcher2 extends StorageWatcher {
         }
     }
 
-    void onStorageValueAdd(final StoragePath path,
-                           final Object newValue);
+    void onStorageValueAdd(final StorageValue newValue);
 
-    void onStorageValueRemove(final StoragePath path,
-                              final Object oldValue);
+    void onStorageValueRemove(final StorageValue oldValue);
 
-    void onStorageValueUpdate(final StoragePath path,
-                              final Object oldValue,
-                              final Object newValue);
+    void onStorageValueUpdate(final StorageValue oldValue,
+                              final StorageValue newValue);
 }

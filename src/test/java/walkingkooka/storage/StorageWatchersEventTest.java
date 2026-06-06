@@ -31,23 +31,10 @@ public final class StorageWatchersEventTest implements ClassTesting<StorageWatch
     // with.............................................................................................................
 
     @Test
-    public void testWithNullNameFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageWatchersEvent.with(
-                null,
-                Optional.empty(),
-                Optional.empty()
-            )
-        );
-    }
-
-    @Test
     public void testWithNullOldValueFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageWatchersEvent.with(
-                StoragePath.parse("/file1.txt"),
                 null,
                 Optional.empty()
             )
@@ -59,7 +46,6 @@ public final class StorageWatchersEventTest implements ClassTesting<StorageWatch
         assertThrows(
             NullPointerException.class,
             () -> StorageWatchersEvent.with(
-                StoragePath.parse("/file2.txt"),
                 Optional.empty(),
                 null
             )
