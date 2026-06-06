@@ -52,21 +52,29 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
     public void testAddThenFire() {
         this.fired = false;
 
-        final Optional<Locale> oldValue = Optional.of(
-            Locale.FRANCE
+        final Optional<StorageValue> oldValue = Optional.of(
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        Locale.FRANCE
+                    )
+                )
         );
-        final Optional<Locale> newValue = Optional.of(
-            Locale.GERMANY
+        final Optional<StorageValue> newValue = Optional.of(
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        Locale.GERMANY
+                    )
+                )
         );
 
         final StorageWatchers watchers = StorageWatchers.empty();
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final StoragePath p,
-                                                 final Optional<?> ov,
-                                                 final Optional<?> nv) {
-                    checkEquals(PATH, p);
+                public void onStorageValueChange(final Optional<StorageValue> ov,
+                                                 final Optional<StorageValue> nv) {
                     checkEquals(oldValue, ov);
                     checkEquals(newValue, nv);
 
@@ -74,7 +82,6 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
                 }
             });
         watchers.onStorageValueChange(
-            PATH,
             oldValue,
             newValue
         );
@@ -93,14 +100,12 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final StoragePath n,
-                                                 final Optional<?> ov,
-                                                 final Optional<?> nv) {
+                public void onStorageValueChange(final Optional<StorageValue> ov,
+                                                 final Optional<StorageValue> nv) {
                     throw new UnsupportedOperationException();
                 }
             });
         watchers.onStorageValueChange(
-            StoragePath.ROOT,
             Optional.empty(),
             Optional.empty()
         );
@@ -119,19 +124,20 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final StoragePath n,
-                                                 final Optional<?> ov,
-                                                 final Optional<?> nv) {
+                public void onStorageValueChange(final Optional<StorageValue> ov,
+                                                 final Optional<StorageValue> nv) {
                     throw new UnsupportedOperationException();
                 }
             });
 
-        final Locale locale = Locale.FRANCE;
+        final StorageValue value = StorageValue.with(PATH)
+            .setValue(
+                Optional.of(Locale.FRANCE)
+            );
 
         watchers.onStorageValueChange(
-            PATH,
-            Optional.of(locale),
-            Optional.of(locale)
+            Optional.of(value),
+            Optional.of(value)
         );
 
         this.checkEquals(
@@ -144,27 +150,35 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
     public void testAddOnceThenFire() {
         this.fired = false;
 
-        final Optional<Locale> oldValue = Optional.of(
-            Locale.FRANCE
+        final Optional<StorageValue> oldValue = Optional.of(
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        Locale.FRANCE
+                    )
+                )
         );
-        final Optional<Locale> newValue = Optional.of(
-            Locale.GERMANY
+        final Optional<StorageValue> newValue = Optional.of(
+            StorageValue.with(PATH)
+                .setValue(
+                    Optional.of(
+                        Locale.GERMANY
+                    )
+                )
         );
 
         final StorageWatchers watchers = StorageWatchers.empty();
         watchers.addOnce(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final StoragePath p,
-                                                 final Optional<?> ov,
-                                                 final Optional<?> nv) {
+                public void onStorageValueChange(final Optional<StorageValue> ov,
+                                                 final Optional<StorageValue> nv) {
                     checkEquals(
                         false,
                         fired,
                         "event should only have been fired once!"
                     );
 
-                    checkEquals(PATH, p);
                     checkEquals(oldValue, ov);
                     checkEquals(newValue, nv);
 
@@ -172,7 +186,6 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
                 }
             });
         watchers.onStorageValueChange(
-            PATH,
             oldValue,
             newValue
         );

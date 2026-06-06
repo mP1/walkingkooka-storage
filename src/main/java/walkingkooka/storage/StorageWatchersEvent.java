@@ -30,20 +30,17 @@ import java.util.function.Consumer;
 final class StorageWatchersEvent implements Consumer<StorageWatcher>,
     UsesToStringBuilder {
 
-    static StorageWatchersEvent with(final StoragePath path,
-                                     final Optional<?> oldValue,
-                                     final Optional<?> newValue) {
+    static StorageWatchersEvent with(final Optional<StorageValue> oldValue,
+                                     final Optional<StorageValue> newValue) {
         return new StorageWatchersEvent(
-            Objects.requireNonNull(path, "path"),
             Objects.requireNonNull(oldValue, "oldValue"),
             Objects.requireNonNull(newValue, "newValue")
         );
     }
 
-    private StorageWatchersEvent(final StoragePath path,
-                                 final Optional<?> oldValue,
-                                 final Optional<?> newValue) {
-        this.path = path;
+    private StorageWatchersEvent(final Optional<StorageValue> oldValue,
+                                 final Optional<StorageValue> newValue) {
+        super();
         this.oldValue = oldValue;
         this.newValue = newValue;
     }
@@ -53,15 +50,13 @@ final class StorageWatchersEvent implements Consumer<StorageWatcher>,
     @Override
     public void accept(final StorageWatcher watcher) {
         watcher.onStorageValueChange(
-            this.path,
             this.oldValue,
             this.newValue
         );
     }
 
-    private final StoragePath path;
-    private final Optional<?> oldValue;
-    private final Optional<?> newValue;
+    private final Optional<StorageValue> oldValue;
+    private final Optional<StorageValue> newValue;
 
     // Object...........................................................................................................
 
@@ -74,7 +69,6 @@ final class StorageWatchersEvent implements Consumer<StorageWatcher>,
 
     @Override
     public void buildToString(final ToStringBuilder b) {
-        b.value(this.path);
         b.value(this.oldValue);
         b.value(this.newValue);
     }

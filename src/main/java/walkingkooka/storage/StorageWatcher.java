@@ -25,7 +25,6 @@ import java.util.Optional;
  */
 public interface StorageWatcher {
 
-    void onStorageValueChange(final StoragePath path,
-                              final Optional<?> oldValue,
-                              final Optional<?> newValue);
+    void onStorageValueChange(final Optional<StorageValue> oldValue,
+                              final Optional<StorageValue> newValue);
 }
