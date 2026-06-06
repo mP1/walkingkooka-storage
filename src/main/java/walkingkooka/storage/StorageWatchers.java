@@ -77,9 +77,9 @@ public final class StorageWatchers implements StorageWatcher {
         }
     }
 
-    private final Watchers<StorageWatchersEvent> watchers = Watchers.create();
+    private final Watchers<StorageWatchersEvent> watchers = Watchers.empty();
 
-    private final Watchers<StorageWatchersEvent> onceWatchers = Watchers.create();
+    private final Watchers<StorageWatchersEvent> onceWatchers = Watchers.empty();
 
     /**
      * Cant use StorageWatchers#addOnce because that will remove the watcher during #onBegin
