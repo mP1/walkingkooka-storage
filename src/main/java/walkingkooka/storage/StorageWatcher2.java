@@ -17,45 +17,11 @@
 
 package walkingkooka.storage;
 
-import java.util.Objects;
-import java.util.Optional;
+import walkingkooka.watch.ValueChangeWatcher2;
 
 /**
  * A {@link StorageWatcher} that routes each event to add/remove/update.
  */
-public interface StorageWatcher2 extends StorageWatcher {
-
-    @Override
-    default void onStorageValueChange(final Optional<StorageValue> oldValue,
-                                      final Optional<StorageValue> newValue) {
-        Objects.requireNonNull(oldValue, "oldValue");
-        Objects.requireNonNull(newValue, "newValue");
-
-        final boolean oldEmpty = oldValue.isEmpty();
-        final boolean newEmpty = newValue.isEmpty();
-
-        if (oldEmpty) {
-            this.onStorageValueAdd(
-                newValue.get()
-            );
-        } else {
-            if (newEmpty) {
-                this.onStorageValueRemove(
-                    oldValue.get()
-                );
-            } else {
-                this.onStorageValueUpdate(
-                    oldValue.get(),
-                    newValue.get()
-                );
-            }
-        }
-    }
-
-    void onStorageValueAdd(final StorageValue newValue);
-
-    void onStorageValueRemove(final StorageValue oldValue);
-
-    void onStorageValueUpdate(final StorageValue oldValue,
-                              final StorageValue newValue);
+public interface StorageWatcher2 extends StorageWatcher,
+    ValueChangeWatcher2<StorageValue> {
 }
