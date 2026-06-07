@@ -18,13 +18,10 @@
 package walkingkooka.storage;
 
 
-import java.util.Optional;
+import walkingkooka.watch.ValueChangeWatcher;
 
 /**
- * A watcher that receives all {@link Storage} value change events.
+ * A {@link ValueChangeWatcher} that receives all {@link Storage} value change events.
  */
-public interface StorageWatcher {
-
-    void onStorageValueChange(final Optional<StorageValue> oldValue,
-                              final Optional<StorageValue> newValue);
+public interface StorageWatcher extends ValueChangeWatcher<StorageValue> {
 }

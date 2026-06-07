@@ -30,14 +30,14 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
 
     private final static StoragePath PATH = StoragePath.parse("/file123.txt");
 
-    // onStorageValue...................................................................................................
+    // onValueChange....................................................................................................
 
     @Test
-    public void testOnStorageValueWithNullOldValueFails() {
+    public void testOnValueChangeWithNullOldValueFails() {
         assertThrows(
             NullPointerException.class,
             () -> new FakeStorageWatcher2()
-                .onStorageValueChange(
+                .onValueChange(
                     null,
                     Optional.empty()
                 )
@@ -45,21 +45,21 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
     }
 
     @Test
-    public void testOnStorageValueWithNullNewValueFails() {
+    public void testOnValueChangeWithNullNewValueFails() {
         assertThrows(
             NullPointerException.class,
             () -> new FakeStorageWatcher2()
-                .onStorageValueChange(
+                .onValueChange(
                     Optional.empty(),
                     null
                 )
         );
     }
 
-    // onStorageValueAdd................................................................................................
+    // onValueChangeAdd.................................................................................................
 
     @Test
-    public void testOnStorageValueAdd() {
+    public void testOnValueChangeAdd() {
         this.fired = false;
 
         final StorageValue value = StorageValue.with(PATH)
@@ -69,12 +69,12 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
 
         new FakeStorageWatcher2() {
             @Override
-            public void onStorageValueAdd(final StorageValue nv) {
+            public void onValueChangeAdd(final StorageValue nv) {
                 checkEquals(value, nv, "newValue");
 
                 StorageWatcher2Test.this.fired = true;
             }
-        }.onStorageValueChange(
+        }.onValueChange(
             Optional.empty(),
             Optional.of(value)
         );
@@ -85,10 +85,10 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
         );
     }
 
-    // onStorageValueRemove.............................................................................................
+    // onValueChangeRemove..............................................................................................
 
     @Test
-    public void testOnStorageValueRemove() {
+    public void testOnValueChangeRemove() {
         this.fired = false;
 
         final StorageValue value = StorageValue.with(PATH)
@@ -99,13 +99,13 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
         new FakeStorageWatcher2() {
 
             @Override
-            public void onStorageValueRemove(final StorageValue ov) {
+            public void onValueChangeRemove(final StorageValue ov) {
                 checkEquals(value, ov, "oldValue");
 
                 StorageWatcher2Test.this.fired = true;
             }
 
-        }.onStorageValueChange(
+        }.onValueChange(
             Optional.of(value),
             Optional.empty()
         );
@@ -116,10 +116,10 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
         );
     }
 
-    // onStorageUpdate..................................................................................................
+    // onStorageReplace.................................................................................................
 
     @Test
-    public void testOnStorageValueUpdate() {
+    public void testOnValueChangeReplace() {
         this.fired = false;
 
         final StorageValue oldValue = StorageValue.with(PATH)
@@ -134,14 +134,14 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
         new FakeStorageWatcher2() {
 
             @Override
-            public void onStorageValueUpdate(final StorageValue ov,
+            public void onValueChangeReplace(final StorageValue ov,
                                              final StorageValue nv) {
                 checkEquals(oldValue, ov, "oldValue");
                 checkEquals(newValue, nv, "newValue");
 
                 StorageWatcher2Test.this.fired = true;
             }
-        }.onStorageValueChange(
+        }.onValueChange(
             Optional.of(oldValue),
             Optional.of(newValue)
         );
@@ -157,17 +157,17 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
     static class FakeStorageWatcher2 implements StorageWatcher2 {
 
         @Override
-        public void onStorageValueAdd(final StorageValue nv) {
+        public void onValueChangeAdd(final StorageValue nv) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void onStorageValueRemove(final StorageValue ov) {
+        public void onValueChangeRemove(final StorageValue ov) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void onStorageValueUpdate(final StorageValue ov,
+        public void onValueChangeReplace(final StorageValue ov,
                                          final StorageValue nv) {
             throw new UnsupportedOperationException();
         }

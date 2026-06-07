@@ -73,15 +73,15 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final Optional<StorageValue> ov,
-                                                 final Optional<StorageValue> nv) {
+                public void onValueChange(final Optional<StorageValue> ov,
+                                          final Optional<StorageValue> nv) {
                     checkEquals(oldValue, ov);
                     checkEquals(newValue, nv);
 
                     fired = true;
                 }
             });
-        watchers.onStorageValueChange(
+        watchers.onValueChange(
             oldValue,
             newValue
         );
@@ -100,12 +100,12 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final Optional<StorageValue> ov,
-                                                 final Optional<StorageValue> nv) {
+                public void onValueChange(final Optional<StorageValue> ov,
+                                          final Optional<StorageValue> nv) {
                     throw new UnsupportedOperationException();
                 }
             });
-        watchers.onStorageValueChange(
+        watchers.onValueChange(
             Optional.empty(),
             Optional.empty()
         );
@@ -124,8 +124,8 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.add(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final Optional<StorageValue> ov,
-                                                 final Optional<StorageValue> nv) {
+                public void onValueChange(final Optional<StorageValue> ov,
+                                          final Optional<StorageValue> nv) {
                     throw new UnsupportedOperationException();
                 }
             });
@@ -135,7 +135,7 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
                 Optional.of(Locale.FRANCE)
             );
 
-        watchers.onStorageValueChange(
+        watchers.onValueChange(
             Optional.of(value),
             Optional.of(value)
         );
@@ -171,8 +171,8 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
         watchers.addOnce(
             new StorageWatcher() {
                 @Override
-                public void onStorageValueChange(final Optional<StorageValue> ov,
-                                                 final Optional<StorageValue> nv) {
+                public void onValueChange(final Optional<StorageValue> ov,
+                                          final Optional<StorageValue> nv) {
                     checkEquals(
                         false,
                         fired,
@@ -185,7 +185,7 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
                     fired = true;
                 }
             });
-        watchers.onStorageValueChange(
+        watchers.onValueChange(
             oldValue,
             newValue
         );
