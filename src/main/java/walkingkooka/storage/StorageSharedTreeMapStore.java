@@ -90,11 +90,12 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
             // update modify
             final AuditInfo auditInfo = newSave.info.auditInfo();
 
-            newSave = newSave.setInfo(
-                newSave.info.setAuditInfo(
-                    context.refreshModifiedAuditInfo(auditInfo)
-                )
-            );
+            newSave = newSave.setValue(value)
+                .setInfo(
+                    newSave.info.setAuditInfo(
+                        context.refreshModifiedAuditInfo(auditInfo)
+                    )
+                );
         } else {
             // set creator and modified
             newSave = StorageSharedTreeMapStoreValue.with(
