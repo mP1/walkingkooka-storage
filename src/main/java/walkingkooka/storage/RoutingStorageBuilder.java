@@ -41,10 +41,10 @@ public final class RoutingStorageBuilder<C extends StorageContext> implements Bu
      * will be thrown.
      */
     public RoutingStorageBuilder<C> startsWith(final StoragePath path,
-                                               final Storage<C> store) {
+                                               final Storage<C> storage) {
         final RoutingStorageRoute<C> newRoute = RoutingStorageRoute.with(
             path,
-            store
+            storage
         );
 
         for (final RoutingStorageRoute<C> route : this.routes) {
