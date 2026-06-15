@@ -41,7 +41,7 @@ public final class StorageValueTest implements HasContentTypeTesting,
     JsonNodeMarshallingTesting<StorageValue>,
     HasValueTesting {
 
-    {
+    static {
         StorageStartup.init();
     }
 
