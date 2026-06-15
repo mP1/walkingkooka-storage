@@ -25,21 +25,21 @@ import java.util.Objects;
 final class RoutingStorageRoute<C extends StorageContext> {
 
     static <C extends StorageContext> RoutingStorageRoute<C> with(final StoragePath path,
-                                                                  final Storage<C> store) {
+                                                                  final Storage<C> storage) {
         Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(store, "store");
+        Objects.requireNonNull(storage, "storage");
 
         return new RoutingStorageRoute<>(
             path,
-            store
+            storage
         );
     }
 
     private RoutingStorageRoute(final StoragePath path,
-                                final Storage<C> store) {
+                                final Storage<C> storage) {
         super();
         this.path = path;
-        this.store = store;
+        this.storage = storage;
 
         this.storagePathSlash = path.isRoot() ?
             path.value() :
@@ -82,7 +82,7 @@ final class RoutingStorageRoute<C extends StorageContext> {
 
     final StoragePath path;
 
-    final Storage<C> store;
+    final Storage<C> storage;
 
     // Object...........................................................................................................
 
@@ -90,7 +90,7 @@ final class RoutingStorageRoute<C extends StorageContext> {
     public int hashCode() {
         return Objects.hash(
             this.path,
-            this.store
+            this.storage
         );
     }
 
@@ -102,11 +102,11 @@ final class RoutingStorageRoute<C extends StorageContext> {
 
     private boolean equals0(final RoutingStorageRoute<?> other) {
         return this.path.equals(other.path) &&
-            this.store.equals(other.store);
+            this.storage.equals(other.storage);
     }
 
     @Override
     public String toString() {
-        return this.path.quotedAppendedWithStar() + " " + this.store;
+        return this.path.quotedAppendedWithStar() + " " + this.storage;
     }
 }
