@@ -20,6 +20,8 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageSharedEmpty<StorageContext>, StorageContext> {
@@ -108,6 +110,34 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
             999,
             this.createContext()
         );
+    }
+
+    @Test
+    public void testAddWatcher() {
+        this.createStorage()
+            .addWatcher(
+                new StorageWatcher() {
+                    @Override
+                    public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
+
+                    }
+                },
+                this.createContext()
+            );
+    }
+
+    @Test
+    public void testAddWatcherOnce() {
+        this.createStorage()
+            .addWatcherOnce(
+                new StorageWatcher() {
+                    @Override
+                    public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
+
+                    }
+                },
+                this.createContext()
+            );
     }
 
     @Override

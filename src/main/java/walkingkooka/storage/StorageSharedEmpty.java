@@ -87,13 +87,13 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
                          final C context) {
-        throw new UnsupportedOperationException();
+        return () -> {};
     }
 
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
                              final C context) {
-        throw new UnsupportedOperationException();
+        return () -> {};
     }
 
     // Object...........................................................................................................
