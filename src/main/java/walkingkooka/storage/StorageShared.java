@@ -145,7 +145,7 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
 
     @Override
     public final Runnable addWatcher(final StorageWatcher watcher,
-                                            final C context) {
+                                     final C context) {
         Objects.requireNonNull(watcher, "watcher");
         Objects.requireNonNull(context, "context");
 
@@ -156,11 +156,11 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     }
 
     abstract Runnable addWatcher0(final StorageWatcher watcher,
-                                         final C context);
+                                  final C context);
 
     @Override
     public final Runnable addWatcherOnce(final StorageWatcher watcher,
-                                                final C context) {
+                                         final C context) {
         Objects.requireNonNull(watcher, "watcher");
         Objects.requireNonNull(context, "context");
 
@@ -171,5 +171,5 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     }
 
     abstract Runnable addWatcherOnce0(final StorageWatcher watcher,
-                                             final C context);
+                                      final C context);
 }
