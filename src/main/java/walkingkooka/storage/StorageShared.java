@@ -61,7 +61,7 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                                final C context);
 
     @Override //
-    final public Optional<StorageValue> load(final StoragePath path,
+    public final Optional<StorageValue> load(final StoragePath path,
                                              final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
@@ -78,8 +78,8 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                                           final C context);
 
     @Override
-    public StorageValue save(final StorageValue value,
-                             final C context) {
+    public final StorageValue save(final StorageValue value,
+                                   final C context) {
         Objects.requireNonNull(value, "value");
         Objects.requireNonNull(context, "context");
 
@@ -97,8 +97,8 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                                 final C context);
 
     @Override
-    public void delete(final StoragePath path,
-                       final C context) {
+    public final void delete(final StoragePath path,
+                             final C context) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
@@ -122,10 +122,10 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                           final C context);
 
     @Override
-    public List<StorageValueInfo> list(final StoragePath parent,
-                                       final int offset,
-                                       final int count,
-                                       final C context) {
+    public final List<StorageValueInfo> list(final StoragePath parent,
+                                             final int offset,
+                                             final int count,
+                                             final C context) {
         Objects.requireNonNull(parent, "parent");
         Store.checkOffsetAndCount(offset, count);
         Objects.requireNonNull(context, "context");
