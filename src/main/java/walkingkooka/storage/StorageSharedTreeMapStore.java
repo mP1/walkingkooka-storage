@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
+import walkingkooka.store.StoreWatcher;
 import walkingkooka.store.Stores;
 
 import java.util.Comparator;
@@ -181,18 +182,42 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         }
     }
 
-    // addWatcher.......................................................................................................
+    // addWatcherXXX....................................................................................................
 
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
                          final C context) {
-        throw new UnsupportedOperationException();
+        return this.store.addStoreWatcher(
+            toStoreWatcher(watcher)
+        );
     }
 
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
                              final C context) {
-        throw new UnsupportedOperationException();
+        return this.store.addStoreWatcherOnce(
+            toStoreWatcher(watcher)
+        );
+    }
+
+    private static StoreWatcher<StorageSharedTreeMapStoreValue> toStoreWatcher(final StorageWatcher watcher) {
+        return new StoreWatcher<>() {
+
+            @Override
+            public void onValueChange(final Optional<StorageSharedTreeMapStoreValue> oldValue,
+                                      final Optional<StorageSharedTreeMapStoreValue> newValue) {
+                watcher.onValueChange(
+                    toStorageValue(oldValue),
+                    toStorageValue(newValue)
+                );
+            }
+        };
+    }
+
+    private static Optional<StorageValue> toStorageValue(final Optional<StorageSharedTreeMapStoreValue> storeValue) {
+        return storeValue.map(
+            StorageSharedTreeMapStoreValue::value
+        );
     }
 
     // @VisibleForTesting
