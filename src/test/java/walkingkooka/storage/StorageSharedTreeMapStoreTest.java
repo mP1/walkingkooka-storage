@@ -152,10 +152,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
-        final StorageValue value = STORAGE_VALUE;
-
         storage.save(
-            value,
+            STORAGE_VALUE,
             context
         );
 
@@ -280,9 +278,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
-        final StorageValue value = STORAGE_VALUE;
         storage.save(
-            value,
+            STORAGE_VALUE,
             context
         );
 
