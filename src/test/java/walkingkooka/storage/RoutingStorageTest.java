@@ -314,11 +314,11 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     @Test
     public void testAddDeleteSaveAndDelete() {
         final Storage<StorageContext> storage1 = Storages.treeMapStore();
-        final Storage<StorageContext> store2 = Storages.treeMapStore();
+        final Storage<StorageContext> storage2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorage = this.createStorage(
             storage1,
-            store2
+            storage2
         );
 
         routingStorage.save(
@@ -353,7 +353,7 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
 
         this.listAndCheck(
-            store2,
+            storage2,
             StoragePath.ROOT,
             0,
             100,
@@ -364,11 +364,11 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     @Test
     public void testList() {
         final Storage<StorageContext> storage1 = Storages.treeMapStore();
-        final Storage<StorageContext> store2 = Storages.treeMapStore();
+        final Storage<StorageContext> storage2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorage = this.createStorage(
             storage1,
-            store2
+            storage2
         );
 
         final StorageValue value1 = storageValue(
@@ -435,11 +435,11 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
     @Test
     public void testListSubDirectoryOfMount() {
         final Storage<StorageContext> storage1 = Storages.treeMapStore();
-        final Storage<StorageContext> store2 = Storages.treeMapStore();
+        final Storage<StorageContext> storage2 = Storages.treeMapStore();
 
         final RoutingStorage<StorageContext> routingStorage = this.createStorage(
             storage1,
-            store2
+            storage2
         );
 
         final StorageValue value1 = storageValue(
@@ -501,20 +501,20 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
     }
 
-    private RoutingStorage<StorageContext> createStorage(final Storage<StorageContext>... stores) {
+    private RoutingStorage<StorageContext> createStorage(final Storage<StorageContext>... storages) {
         return this.createStorage(
-            Lists.of(stores)
+            Lists.of(storages)
         );
     }
 
-    private RoutingStorage<StorageContext> createStorage(final List<Storage<StorageContext>> stores) {
+    private RoutingStorage<StorageContext> createStorage(final List<Storage<StorageContext>> storages) {
         final RoutingStorageBuilder<StorageContext> b = RoutingStorageBuilder.empty();
 
         int i = 1;
-        for (Storage<StorageContext> store : stores) {
+        for (Storage<StorageContext> storage : storages) {
             b.startsWith(
                 StoragePath.parse("/mount" + i),
-                store
+                storage
             );
 
             i++;
