@@ -21,6 +21,8 @@ import walkingkooka.Cast;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.EnvironmentValueNameAndValue;
+import walkingkooka.environment.EnvironmentWatcher;
 
 import java.util.List;
 import java.util.Optional;
@@ -183,18 +185,52 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
         );
     }
 
-    // addWatcher.......................................................................................................
+    // addWatcher................................................................................................
 
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
-                                final C context) {
-        throw new UnsupportedOperationException();
+                         final C context) {
+        return context.addEnvironmentWatcher(
+            toEnvironmentWatcher(watcher)
+        );
     }
 
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
-                                    final C context) {
-        throw new UnsupportedOperationException();
+                             final C context) {
+        return context.addEnvironmentWatcherOnce(
+            toEnvironmentWatcher(watcher)
+        );
+    }
+
+    private static EnvironmentWatcher toEnvironmentWatcher(final StorageWatcher watcher) {
+        return new EnvironmentWatcher() {
+            @Override
+            public void onValueChange(final Optional<EnvironmentValueNameAndValue<?>> oldValue,
+                                      final Optional<EnvironmentValueNameAndValue<?>> newValue) {
+                watcher.onValueChange(
+                    toStorageValue(oldValue),
+                    toStorageValue(newValue)
+                );
+            }
+        };
+    }
+
+    private static Optional<StorageValue> toStorageValue(final Optional<EnvironmentValueNameAndValue<?>> environmentValueNameAndValue) {
+        return environmentValueNameAndValue.map(
+            (EnvironmentValueNameAndValue<?> e) -> StorageValue.with(
+                StoragePath.ROOT.append(
+                    StorageName.with(
+                        e.name()
+                            .value()
+                    )
+                )
+            ).setValue(
+                Optional.of(
+                    e.value()
+                )
+            )
+        );
     }
 
     // Object...........................................................................................................

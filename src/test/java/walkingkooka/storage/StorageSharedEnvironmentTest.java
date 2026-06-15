@@ -53,6 +53,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
     implements EnvironmentContextTesting {
 
+    private final static LineEnding LINE_ENDING = LineEnding.NL;
+
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
         12,
@@ -458,6 +460,121 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         );
     }
 
+    // addWatcher.......................................................................................................
+
+    private final static StoragePath LINE_ENDING_STORAGE_PATH = StoragePath.parse("/lineEnding");
+
+    @Test
+    public void testAddWatcher() {
+        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
+        final StorageContext context = this.createContext();
+
+        this.fired = false;
+
+        final LineEnding lineEnding = LineEnding.CRNL;
+
+        this.checkNotEquals(
+            LINE_ENDING,
+            lineEnding
+        );
+
+        storage.addWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(
+                            StorageValue.with(LINE_ENDING_STORAGE_PATH)
+                                .setValue(
+                                    Optional.of(LINE_ENDING)
+                                )
+                        ),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(
+                            StorageValue.with(LINE_ENDING_STORAGE_PATH)
+                                .setValue(
+                                    Optional.of(lineEnding)
+                                )
+                        ),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            },
+            context
+        );
+
+        context.setLineEnding(lineEnding);
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+    }
+
+    @Test
+    public void testAddWatcherOnce() {
+        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
+        final StorageContext context = this.createContext();
+
+        this.fired = false;
+
+        final LineEnding lineEnding = LineEnding.CRNL;
+
+        this.checkNotEquals(
+            LINE_ENDING,
+            lineEnding
+        );
+
+        storage.addWatcherOnce(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(
+                            StorageValue.with(LINE_ENDING_STORAGE_PATH)
+                                .setValue(
+                                    Optional.of(LINE_ENDING)
+                                )
+                        ),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(
+                            StorageValue.with(LINE_ENDING_STORAGE_PATH)
+                                .setValue(
+                                    Optional.of(lineEnding)
+                                )
+                        ),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            },
+            context
+        );
+
+        context.setLineEnding(lineEnding);
+        context.setLineEnding(LINE_ENDING);
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+    }
+
+    private boolean fired;
+
     private static StorageValueInfo storageValueInfo(final EnvironmentValueName<?> name) {
         return StorageValueInfo.with(
             StoragePath.ROOT.append(
@@ -486,7 +603,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 StandardCharsets.UTF_8,
                 Currency.getInstance(locale),
                 Indentation.SPACES4,
-                LineEnding.NL,
+                LINE_ENDING,
                 locale,
                 () -> NOW,
                 Optional.ofNullable(USER)
@@ -504,7 +621,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 StandardCharsets.UTF_8,
                 Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
                 Indentation.SPACES2,
-                LineEnding.NL,
+                LINE_ENDING,
                 ',', // valueSeparator
                 Converters.fake(),
                 BinaryNumberConverterFunctions.fake(), // multiplier
