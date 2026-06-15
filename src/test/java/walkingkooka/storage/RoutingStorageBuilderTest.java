@@ -27,7 +27,7 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
 
     private final static StoragePath PATH = StoragePath.ROOT;
 
-    private final static Storage<StorageContext> STORE = new FakeStorage<>() {
+    private final static Storage<StorageContext> STORAGE = new FakeStorage<>() {
 
         @Override
         public String toString() {
@@ -44,13 +44,13 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
             () -> RoutingStorageBuilder.empty()
                 .startsWith(
                     null,
-                    STORE
+                    STORAGE
                 )
         );
     }
 
     @Test
-    public void testStartWithWithNullStoreFails() {
+    public void testStartWithWithNullStorageFails() {
         assertThrows(
             NullPointerException.class,
             () -> RoutingStorageBuilder.empty()
@@ -66,14 +66,14 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 PATH,
-                STORE
+                STORAGE
             );
 
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> builder.startsWith(
                 PATH.append(StorageName.with("222")),
-                STORE
+                STORAGE
             )
         );
 
@@ -90,14 +90,14 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 path,
-                STORE
+                STORAGE
             );
 
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> builder.startsWith(
                 path.append(StorageName.with("222")),
-                STORE
+                STORAGE
             )
         );
 
@@ -114,17 +114,17 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
-                STORE
+                STORAGE
             ).startsWith(
                 path,
-                STORE
+                STORAGE
             );
 
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
             () -> builder.startsWith(
                 path.append(StorageName.with("999")),
-                STORE
+                STORAGE
             )
         );
 
@@ -139,10 +139,10 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111"),
-                STORE
+                STORAGE
             ).startsWith(
                 StoragePath.parse("/mount222"),
-                STORE
+                STORAGE
             );
     }
 
@@ -151,10 +151,10 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
-                STORE
+                STORAGE
             ).startsWith(
                 StoragePath.parse("/mount111"),
-                STORE
+                STORAGE
             );
     }
 
@@ -165,10 +165,10 @@ public final class RoutingStorageBuilderTest implements BuilderTesting<RoutingSt
         final RoutingStorageBuilder<StorageContext> builder = RoutingStorageBuilder.empty()
             .startsWith(
                 StoragePath.parse("/mount111/xyz"),
-                STORE
+                STORAGE
             ).startsWith(
                 StoragePath.parse("/mount111"),
-                STORE
+                STORAGE
             );
         builder.build();
     }
