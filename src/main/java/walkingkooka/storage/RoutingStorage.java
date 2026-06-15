@@ -19,9 +19,11 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.watch.Watchers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * A {@link Storage} that uses the mounts defined by an instance of {@link RoutingStorageBuilder}.
@@ -153,20 +155,6 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         return storageValueInfos;
     }
 
-    // addWatcher.......................................................................................................
-
-    @Override
-    Runnable addWatcher0(final StorageWatcher watcher,
-                         final C context) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    Runnable addWatcherOnce0(final StorageWatcher watcher,
-                             final C context) {
-        throw new UnsupportedOperationException();
-    }
-
     /**
      * Selects the first {@link RoutingStorageRoute} that matches the given path, returning null if none matched.
      */
@@ -181,6 +169,36 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         }
 
         return dest;
+    }
+
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        return this.addWatcherToRoutes(
+            (RoutingStorageRoute<C> route) -> route.addWatcher(watcher, context)
+        );
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        return this.addWatcherToRoutes(
+            (RoutingStorageRoute<C> route) -> route.addWatcherOnce(watcher, context)
+        );
+    }
+
+    private Runnable addWatcherToRoutes(final Function<RoutingStorageRoute<C>, Runnable> adder) {
+        final List<Runnable> removers = Lists.array();
+
+        for (final RoutingStorageRoute<C> route : this.routes) {
+            removers.add(
+                adder.apply(route)
+            );
+        }
+
+        return Watchers.runnableCollection(removers);
     }
 
     private final List<RoutingStorageRoute<C>> routes;

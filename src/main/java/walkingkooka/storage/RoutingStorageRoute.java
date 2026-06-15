@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A single mount within a {@link RoutingStorage}.
@@ -78,6 +79,41 @@ final class RoutingStorageRoute<C extends StorageContext> {
 
     StoragePath add(final StoragePath path) {
         return this.path.append(path);
+    }
+
+    Runnable addWatcher(final StorageWatcher watcher,
+                        final C context) {
+        return this.storage.addWatcher(
+            this.storageWatcher(watcher),
+            context
+        );
+    }
+
+    Runnable addWatcherOnce(final StorageWatcher watcher,
+                            final C context) {
+        return this.storage.addWatcherOnce(
+            this.storageWatcher(watcher),
+            context
+        );
+    }
+
+    private StorageWatcher storageWatcher(final StorageWatcher watcher) {
+        return new StorageWatcher() {
+            @Override
+            public void onValueChange(final Optional<StorageValue> oldValue,
+                                      final Optional<StorageValue> newValue) {
+                watcher.onValueChange(
+                    RoutingStorageRoute.this.setPrefix(oldValue),
+                    RoutingStorageRoute.this.setPrefix(newValue)
+                );
+            }
+        };
+    }
+
+    private Optional<StorageValue> setPrefix(final Optional<StorageValue> storageValue) {
+        return storageValue.map(
+            sv -> sv.prependPath(this.path)
+        );
     }
 
     final StoragePath path;

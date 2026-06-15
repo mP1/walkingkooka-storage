@@ -493,6 +493,138 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
         );
     }
 
+    @Test
+    public void testAddWatcherAndSave() {
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage2 = Storages.treeMapStore();
+
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
+            storage2
+        );
+
+        final StorageValue value1 = storageValue(
+            "/mount1/dir1/file1",
+            "value1"
+        );
+
+        routingStorage.save(
+            value1,
+            CONTEXT
+        );
+
+        this.fired = false;
+
+        final StorageValue value2 = storageValue(
+            "/mount1/dir1/file2",
+            "value2"
+        );
+
+        routingStorage.addWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.empty(),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(value2),
+                        newValue,
+                        "newValue"
+                    );
+
+                    RoutingStorageTest.this.fired = true;
+                }
+            },
+            CONTEXT
+        );
+
+        routingStorage.save(
+            value2,
+            CONTEXT
+        );
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+    }
+
+    @Test
+    public void testAddWatcherOnceAndSave() {
+        final Storage<StorageContext> storage1 = Storages.treeMapStore();
+        final Storage<StorageContext> storage2 = Storages.treeMapStore();
+
+        final RoutingStorage<StorageContext> routingStorage = this.createStorage(
+            storage1,
+            storage2
+        );
+
+        final StorageValue value1 = storageValue(
+            "/mount1/dir1/file1",
+            "value1"
+        );
+
+        routingStorage.save(
+            value1,
+            CONTEXT
+        );
+
+        this.fired = false;
+
+        final StorageValue value2 = storageValue(
+            "/mount1/dir1/file2",
+            "value2"
+        );
+
+        routingStorage.addWatcherOnce(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.empty(),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(value2),
+                        newValue,
+                        "newValue"
+                    );
+
+                    RoutingStorageTest.this.fired = true;
+                }
+            },
+            CONTEXT
+        );
+
+        routingStorage.save(
+            value2,
+            CONTEXT
+        );
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+
+        routingStorage.save(
+            storageValue(
+                "/mount1/dir1/file2",
+                "different-not-fired"
+            ),
+            CONTEXT
+        );
+    }
+
+    private boolean fired;
+
     @Override
     public RoutingStorage<StorageContext> createStorage() {
         return this.createStorage(
