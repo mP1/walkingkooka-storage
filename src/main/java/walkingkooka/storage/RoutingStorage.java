@@ -45,7 +45,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         boolean readable = false;
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
-            readable = route.store.canRead(
+            readable = route.storage.canRead(
                 route.remove(path),
                 context
             );
@@ -60,7 +60,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         boolean writeable = false;
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
-            writeable = route.store.canWrite(
+            writeable = route.storage.canWrite(
                 route.remove(path),
                 context
             );
@@ -75,7 +75,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         Optional<StorageValue> value = Optional.empty();
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
-            value = route.store.load(
+            value = route.storage.load(
                 route.remove(path),
                 context
             ).map(v -> v.setPath(
@@ -93,7 +93,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
                        final C context) {
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(value.path());
         if (null != route) {
-            final StorageValue saved = route.store.save(
+            final StorageValue saved = route.storage.save(
                 value.setPath(
                     route.remove(
                         value.path()
@@ -115,7 +115,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
                  final C context) {
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
         if (null != route) {
-            route.store.delete(
+            route.storage.delete(
                 route.remove(path),
                 context
             );
@@ -135,7 +135,7 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
 
         RoutingStorageRoute<C> route = this.firstRouteStartingWith(parent);
         if (null != route) {
-            storageValueInfos = route.store.list(
+            storageValueInfos = route.storage.list(
                     route.remove(parent),
                     offset,
                     count,
