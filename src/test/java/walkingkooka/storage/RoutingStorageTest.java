@@ -551,7 +551,10 @@ public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStora
 
     @Test
     public void testToString() {
-
+        this.toStringAndCheck(
+            this.createStorage(),
+            "[\"/mount1/*\" [], \"/mount2/*\" []]"
+        );
     }
 
     // class............................................................................................................
