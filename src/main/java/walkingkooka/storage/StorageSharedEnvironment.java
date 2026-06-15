@@ -183,6 +183,20 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
         );
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                                final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                                    final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     // Object...........................................................................................................
 
     @Override

@@ -149,6 +149,20 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
         }
     }
 
+    // addWatcher.......................................................................................................
+
+    @Override
+    Runnable addWatcher0(final StorageWatcher watcher,
+                         final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    Runnable addWatcherOnce0(final StorageWatcher watcher,
+                             final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     private InvalidStoragePathException fixInvalidPath(final InvalidStoragePathException thrown) {
         return thrown.setPath(
             this.prefix.append(

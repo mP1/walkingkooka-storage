@@ -63,4 +63,16 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
                                        final C context) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Runnable addWatcher(final StorageWatcher watcher,
+                                      final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addWatcherOnce(final StorageWatcher watcher,
+                                          final C context) {
+        throw new UnsupportedOperationException();
+    }
 }

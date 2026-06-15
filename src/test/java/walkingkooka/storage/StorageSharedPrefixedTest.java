@@ -450,6 +450,24 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
                         );
                     }
 
+                    @Override
+                    public Runnable addWatcher(final StorageWatcher watcher,
+                                               final StorageContext context) {
+                        return this.storage.addWatcher(
+                            watcher,
+                            context
+                        );
+                    }
+
+                    @Override
+                    public Runnable addWatcherOnce(final StorageWatcher watcher,
+                                                   final StorageContext context) {
+                        return this.storage.addWatcherOnce(
+                            watcher,
+                            context
+                        );
+                    }
+
                     private final Storage<StorageContext> storage = Storages.treeMapStore();
 
                     private void throwIfInvalid(final StoragePath path) {

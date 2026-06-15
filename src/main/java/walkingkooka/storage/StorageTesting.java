@@ -426,6 +426,65 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
+    // addWatcher.......................................................................................................
+
+    @Test
+    default void testAddWatcherWithNullWatcherFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .addWatcher(
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testAddWatcherWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .addWatcher(
+                    new StorageWatcher() {
+                        @Override
+                        public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
+
+                        }
+                    },
+                    null
+                )
+        );
+    }
+    @Test
+    default void testAddWatcherOnceWithNullWatcherFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .addWatcherOnce(
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testAddWatcherOnceWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .addWatcherOnce(
+                    new StorageWatcher() {
+                        @Override
+                        public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
+
+                        }
+                    },
+                    null
+                )
+        );
+    }
+
     S createStorage();
 
     C createContext();
