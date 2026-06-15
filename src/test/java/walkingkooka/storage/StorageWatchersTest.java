@@ -98,13 +98,8 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
 
         final StorageWatchers watchers = StorageWatchers.empty();
         watchers.add(
-            new StorageWatcher() {
-                @Override
-                public void onValueChange(final Optional<StorageValue> ov,
-                                          final Optional<StorageValue> nv) {
-                    throw new UnsupportedOperationException();
-                }
-            });
+            new FakeStorageWatcher()
+        );
         watchers.onValueChange(
             Optional.empty(),
             Optional.empty()
@@ -122,13 +117,8 @@ public final class StorageWatchersTest implements ClassTesting<StorageWatchers> 
 
         final StorageWatchers watchers = StorageWatchers.empty();
         watchers.add(
-            new StorageWatcher() {
-                @Override
-                public void onValueChange(final Optional<StorageValue> ov,
-                                          final Optional<StorageValue> nv) {
-                    throw new UnsupportedOperationException();
-                }
-            });
+            new FakeStorageWatcher()
+        );
 
         final StorageValue value = StorageValue.with(PATH)
             .setValue(
