@@ -446,12 +446,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             NullPointerException.class,
             () -> this.createStorage()
                 .addWatcher(
-                    new StorageWatcher() {
-                        @Override
-                        public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
-
-                        }
-                    },
+                    new FakeStorageWatcher(),
                     null
                 )
         );
@@ -474,12 +469,7 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             NullPointerException.class,
             () -> this.createStorage()
                 .addWatcherOnce(
-                    new StorageWatcher() {
-                        @Override
-                        public void onValueChange(Optional<StorageValue> optional, Optional<StorageValue> optional1) {
-
-                        }
-                    },
+                    new FakeStorageWatcher(),
                     null
                 )
         );
