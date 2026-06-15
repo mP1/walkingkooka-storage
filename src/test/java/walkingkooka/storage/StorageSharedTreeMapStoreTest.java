@@ -100,6 +100,33 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
+    public void testReplaceAndLoad() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        storage.save(
+            STORAGE_VALUE.setValue(
+                Optional.of("*LOST*")
+            ),
+            context
+        );
+
+        final StorageValue value = STORAGE_VALUE;
+
+        storage.save(
+            value,
+            context
+        );
+
+        this.loadAndCheck(
+            storage,
+            value.path(),
+            context,
+            value
+        );
+    }
+
+    @Test
     public void testBuildPathSaveAndLoad() {
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
