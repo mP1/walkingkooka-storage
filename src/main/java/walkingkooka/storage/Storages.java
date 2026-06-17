@@ -52,8 +52,12 @@ public final class Storages implements PublicStaticHelper {
      * {@see StorageSharedNativeFile}
      */
     @GwtIncompatible
-    public static <C extends StorageContext> Storage<C> nativeStorage(final Path root) {
-        return StorageSharedNativeFile.with(root);
+    public static <C extends StorageContext> Storage<C> nativeStorage(final Path root,
+                                                                      final WatchServicePoller<C> poller) {
+        return StorageSharedNativeFile.with(
+            root,
+            poller
+        );
     }
 
     /**
