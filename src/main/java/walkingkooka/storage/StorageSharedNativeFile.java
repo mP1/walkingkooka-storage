@@ -19,21 +19,32 @@ package walkingkooka.storage;
 
 import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
+import walkingkooka.Cast;
 import walkingkooka.collect.list.ImmutableList;
+import walkingkooka.collect.map.Maps;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -45,14 +56,29 @@ import java.util.stream.Stream;
 @GwtIncompatible
 final class StorageSharedNativeFile<C extends StorageContext> extends StorageShared<C> {
 
-    static <C extends StorageContext> StorageSharedNativeFile<C> with(final Path root) {
+    static <C extends StorageContext> StorageSharedNativeFile<C> with(final Path root,
+                                                                      final WatchServicePoller<C> poller) {
         return new StorageSharedNativeFile<>(
-            Objects.requireNonNull(root, "root")
+            Objects.requireNonNull(root, "root"),
+            Objects.requireNonNull(poller, "poller")
         );
     }
 
-    private StorageSharedNativeFile(final Path root) {
+    private StorageSharedNativeFile(final Path root,
+                                    final WatchServicePoller<C> poller) {
         this.root = root;
+
+        try {
+            this.watcher = root.getFileSystem()
+                .newWatchService();;
+        } catch (final IOException rethrow) {
+            throw new IllegalArgumentException("Unable to open watch service", rethrow);
+        }
+
+        this.watchKeyToPath = Maps.concurrent();
+        this.registerTree(root);
+
+        poller.beginPolling(this::pollEvents);
     }
 
     @Override
@@ -209,17 +235,124 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
 
     // addWatcher.......................................................................................................
 
+    private void registerTree(final Path start) {
+        try {
+            Files.walkFileTree(
+                start,
+                new SimpleFileVisitor<>() {
+                    @Override
+                    public FileVisitResult preVisitDirectory(final Path dir,
+                                                             final BasicFileAttributes attributes) throws IOException {
+                        StorageSharedNativeFile.this.register(dir);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+        } catch (final IOException cause) {
+            throw new IllegalArgumentException("Unable to register watchers for tree", cause);
+        }
+    }
+
+    private void register(final Path dir) throws IOException {
+        this.watchKeyToPath.put(
+            dir.register(
+                this.watcher,
+                StandardWatchEventKinds.ENTRY_CREATE,
+                StandardWatchEventKinds.ENTRY_DELETE,
+                StandardWatchEventKinds.ENTRY_MODIFY
+            ),
+            dir
+        );
+    }
+
+    private void pollEvents(final WatchServicePoller<C> poller) {
+        for (; ; ) {
+            final WatchKey watchKey = poller.pollOrTakeWatchKey(this.watcher)
+                .orElse(null);
+            if (null == watchKey) {
+                break;
+            }
+            final Path dir = this.watchKeyToPath.get(watchKey);
+
+            if (dir != null) {
+                for (final WatchEvent<?> event : watchKey.pollEvents()) {
+                    final WatchEvent.Kind<?> kind = event.kind();
+
+                    if (StandardWatchEventKinds.OVERFLOW != kind) {
+                        // Context for directory entry event is the file name of entry
+                        final Path path = dir.resolve(
+                            Cast.<WatchEvent<Path>>to(event)
+                                .context()
+                        );
+
+                        Path oldPath = null;
+                        Path newPath = null;
+
+                        // if directory create register parent and sub-directories
+                        if (StandardWatchEventKinds.ENTRY_CREATE == kind) {
+                            if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
+                                this.registerTree(path);
+                            }
+
+                            newPath = path;
+                        } else {
+                            if (StandardWatchEventKinds.ENTRY_DELETE == kind) {
+                                oldPath = path;
+                            } else {
+                                if (StandardWatchEventKinds.ENTRY_MODIFY == kind) {
+                                    oldPath = path;
+                                    newPath = path;
+                                }
+                            }
+                        }
+
+                        if (null != oldPath || null != newPath) {
+                            if (Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) {
+                                this.watchers.onValueChange(
+                                    Optional.ofNullable(oldPath)
+                                        .map(
+                                            (final Path p) -> StorageValue.with(
+                                                this.toStoragePath(p)
+                                            )
+                                        ),
+                                    Optional.ofNullable(newPath)
+                                        .flatMap(
+                                            (final Path p) -> this.load(
+                                                this.toStoragePath(p),
+                                                poller.context()
+                                            )
+                                        )
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (false == watchKey.reset()) {
+                this.watchKeyToPath.remove(watchKey);
+            }
+        }
+    }
+
+    private final WatchService watcher;
+
+    private final Map<WatchKey, Path> watchKeyToPath;
+
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
                          final C context) {
-        throw new UnsupportedOperationException();
+        return this.watchers.add(watcher);
     }
 
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
                              final C context) {
-        throw new UnsupportedOperationException();
+        return this.watchers.addOnce(watcher);
     }
+
+    private final StorageWatchers watchers = StorageWatchers.empty();
+
+    // helpers..........................................................................................................
 
     /**
      * Helper that converts a {@link StoragePath} to the equivalent file system {@link Path}.
@@ -280,6 +413,9 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
                         this.root.toAbsolutePath()
                             .toString()
                             .length()
+                    ).replace(
+                        File.separatorChar,
+                        StoragePath.SEPARATOR.character()
                     )
             )
         );

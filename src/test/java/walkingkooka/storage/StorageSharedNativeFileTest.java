@@ -63,11 +63,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -117,11 +120,28 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     private final static FileTime FILE_TIME_NOW = FileTime.from(
         NOW.toInstant(
-            StorageSharedNativeFile.UTC
+            walkingkooka.storage.StorageSharedNativeFile.UTC
         )
     );
 
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
+
+    private final static WatchServicePoller<FakeStorageContext> POLLER = new WatchServicePoller<>() {
+        @Override
+        public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
+            // NOP
+        }
+
+        @Override
+        public Optional<WatchKey> pollOrTakeWatchKey(final WatchService watchService) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public FakeStorageContext context() {
+            throw new UnsupportedOperationException();
+        }
+    };
 
     // with.............................................................................................................
 
@@ -129,7 +149,21 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     public void testWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedNativeFile.with(null)
+            () -> StorageSharedNativeFile.with(
+                null,
+                POLLER
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullConsumerFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageSharedNativeFile.with(
+                null,
+                null
+            )
         );
     }
 
@@ -419,10 +453,105 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
         );
     }
 
+    // addWatcherXXX....................................................................................................
+
+    private final static int TIMEOUT = 15 * 1000;
+
+    @Test
+    public void testAddWatcherAndSave() {
+        final FakeStorageContext context = this.createContext();
+
+        this.polling = true;
+
+        final WatchServicePoller<FakeStorageContext> poller = new WatchServicePoller<>() {
+            @Override
+            public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
+                new Thread(() -> {
+                    final long end = TIMEOUT + System.currentTimeMillis();
+
+                    while (false == StorageSharedNativeFileTest.this.fired && System.currentTimeMillis() < end) {
+                        poller.accept(this);
+                    }
+
+                    StorageSharedNativeFileTest.this.polling = false;
+                }).start();
+            }
+
+            @Override
+            public Optional<WatchKey> pollOrTakeWatchKey(final WatchService watchService) {
+                return Optional.ofNullable(
+                    watchService.poll()
+                );
+            }
+
+            @Override
+            public FakeStorageContext context() {
+                return context;
+            }
+        };
+
+        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage(poller);
+
+        final StorageValue storageValue = StorageValue.with(
+            StoragePath.parse("/different.txt")
+        ).setValue(
+            Optional.of("different " + TEXT_CONTENT)
+        );
+
+        storage.addWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        StorageValue.NO_VALUE,
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(storageValue),
+                        newValue,
+                        "newValue"
+                    );
+                    StorageSharedNativeFileTest.this.fired = true;
+                }
+            },
+            context
+        );
+
+        this.fired = false;
+
+        storage.save(
+            storageValue,
+            context
+        );
+
+        while (this.polling) {
+            try {
+                Thread.sleep(100);
+            } catch (final InterruptedException e) {
+                // ignore
+            }
+        }
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+    }
+
+    private boolean polling;
+    private boolean fired;
+
     // Storage..........................................................................................................
 
     @Override
     public StorageSharedNativeFile<FakeStorageContext> createStorage() {
+        return this.createStorage(POLLER);
+    }
+
+    private StorageSharedNativeFile<FakeStorageContext> createStorage(final WatchServicePoller<FakeStorageContext> poller) {
         try {
             final FileSystem fileSystem = Jimfs.newFileSystem(
                 Configuration.unix()
@@ -474,7 +603,10 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                 )
             );
 
-            return StorageSharedNativeFile.with(root);
+            return StorageSharedNativeFile.with(
+                root,
+                poller
+            );
         } catch (final IOException cause) {
             throw new Error(cause.getMessage(), cause);
         }
