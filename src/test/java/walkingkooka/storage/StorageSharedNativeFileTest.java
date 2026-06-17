@@ -379,7 +379,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
-    public void testListSize() {
+    public void testListCount() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
@@ -396,7 +396,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
-    public void testListOffsetAndSize() {
+    public void testListOffsetAndCount() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
