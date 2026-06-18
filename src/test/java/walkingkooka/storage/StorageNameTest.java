@@ -77,7 +77,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     public void testFileExtensionPresent2() {
         this.fileExtensionAndCheck(
             StorageName.with("xyz.EXE"),
-            FileExtension.with("EXE")
+            FileExtension.parse("EXE")
         );
     }
 
