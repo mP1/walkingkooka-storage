@@ -61,7 +61,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     public void testFileExtensionEmpty() {
         this.fileExtensionAndCheck(
             StorageName.with("xyz."),
-            FileExtension.with("")
+            FileExtension.EMPTY
         );
     }
 
@@ -69,7 +69,7 @@ public final class StorageNameTest implements ClassTesting2<StorageName>,
     public void testFileExtensionPresent() {
         this.fileExtensionAndCheck(
             StorageName.with("xyz.txt"),
-            FileExtension.with("txt")
+            FileExtension.TXT
         );
     }
 
