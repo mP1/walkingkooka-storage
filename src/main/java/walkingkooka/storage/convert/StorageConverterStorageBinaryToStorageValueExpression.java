@@ -72,11 +72,19 @@ final class StorageConverterStorageBinaryToStorageValueExpression<C extends Stor
             storageValue = Cast.to(text);
         } else {
             // parse String holding expression into an Expression etc
-            storageValue = this.successfulConversion(
-                storageBinary.path(),
-                type,
-                text.leftValue()
+            final Either<Expression, String> expression = context.convert(
+                text.leftValue(),
+                Expression.class
             );
+            if (expression.isRight()) {
+                storageValue = Cast.to(text);
+            } else {
+                storageValue = this.successfulConversion(
+                    storageBinary.path(),
+                    type,
+                    expression.leftValue()
+                );
+            }
         }
 
         return storageValue;
