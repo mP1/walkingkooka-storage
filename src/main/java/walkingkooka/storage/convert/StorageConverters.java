@@ -26,13 +26,6 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {@see StorageConverterStorageBinaryToExpression}
-     */
-    public static <C extends StorageConverterContext> Converter<C> storageBinaryToExpression() {
-        return StorageConverterStorageBinaryToExpression.instance();
-    }
-
-    /**
      * {@see StorageConverterStorageBinaryToJson}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToJson() {
