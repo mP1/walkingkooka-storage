@@ -26,7 +26,7 @@ import walkingkooka.tree.json.JsonNode;
 
 
 /**
- * Converts *.json files in several steps,
+ * Converts {@link FileExtension#JSON} files in several steps,
  * <ul>
  * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold JSON</li>
  * <li>Parse but not convert {@link String} to a {@link JsonNode, converting will always create a {@link walkingkooka.tree.json.JsonString}</li>
