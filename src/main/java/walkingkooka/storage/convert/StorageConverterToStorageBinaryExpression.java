@@ -54,13 +54,7 @@ final class StorageConverterToStorageBinaryExpression<C extends StorageConverter
                 .orElse(null)
         ) &&
             storageValue.value()
-                .map((Object value) -> context.canConvert(value, Expression.class))
-                .orElse(false) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(EXPRESSION, String.class))
-                .orElse(false) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert("", Binary.class))
+                .map((Object value) -> context.canConvert(value, Expression.class) && context.canConvert(EXPRESSION, String.class) && context.canConvert("", Binary.class))
                 .orElse(false);
     }
 
