@@ -39,6 +39,9 @@ final class StorageConverterStorageBinaryToStorageValueProperties<C extends Stor
         return Cast.to(INSTANCE);
     }
 
+    /**
+     * Singleton
+     */
     private final static StorageConverterStorageBinaryToStorageValueProperties INSTANCE = new StorageConverterStorageBinaryToStorageValueProperties<>();
 
     private StorageConverterStorageBinaryToStorageValueProperties() {
@@ -59,24 +62,24 @@ final class StorageConverterStorageBinaryToStorageValueProperties<C extends Stor
     <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary storageBinary,
                                                       final Class<T> type,
                                                       final C context) {
-        final Either<T, String> result;
+        final Either<T, String> storageValue;
 
-        // convert Binary to String
+        // convert StorageBinary to String
         final Either<String, String> text = context.convert(
             storageBinary,
             String.class
         );
         if (text.isRight()) {
-            result = Cast.to(text);
+            storageValue = Cast.to(text);
         } else {
             final Either<Properties, String> properties = context.convert(
                 text.leftValue(),
                 Properties.class
             );
             if (properties.isRight()) {
-                result = Cast.to(properties);
+                storageValue = Cast.to(properties);
             } else {
-                result = this.successfulConversion(
+                storageValue = this.successfulConversion(
                     storageBinary.path(),
                     type,
                     properties.leftValue()
@@ -84,6 +87,6 @@ final class StorageConverterStorageBinaryToStorageValueProperties<C extends Stor
             }
         }
 
-        return result;
+        return storageValue;
     }
 }
