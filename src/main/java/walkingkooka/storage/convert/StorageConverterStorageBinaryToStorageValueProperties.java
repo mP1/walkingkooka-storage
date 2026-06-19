@@ -23,11 +23,12 @@ import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
+import walkingkooka.storage.StorageValue;
 
 
 /**
- * Converts *.properties files after converting the {@link StorageBinary#binary()} to {@link String} and then converting
- * that {@link String} to a {@link Properties}.
+ * If the file extension is {@link FileExtension#PROPERTIES}, convert the {@link StorageValue#value()} to {@link String},
+ * and that {@link Properties}.
  */
 final class StorageConverterStorageBinaryToStorageValueProperties<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
 
