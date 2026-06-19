@@ -26,8 +26,9 @@ import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is *.properties and the value can be
- * converted into a {@link Properties} and then text.
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#PROPERTIES}
+ * and the {@link StorageValue#value()} can be converted into a {@link Properties} and then {@link String} and then
+ * {@link StorageBinary}.
  */
 final class StorageConverterToStorageBinaryProperties<C extends StorageConverterContext> extends StorageConverterToStorageBinary<C> {
 
