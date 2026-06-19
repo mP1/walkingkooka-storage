@@ -28,6 +28,7 @@ import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
+import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.currency.CurrencyContexts;
 import walkingkooka.currency.CurrencyLocaleContext;
 import walkingkooka.currency.CurrencyLocaleContexts;
@@ -46,6 +47,7 @@ import walkingkooka.storage.convert.StorageConverterContexts;
 import walkingkooka.storage.convert.StorageConverters;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.tree.expression.Expression;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
 import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
@@ -83,6 +85,11 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
         MathContext.DECIMAL32
     );
 
+    private final static Expression EXPRESSION = Expression.add(
+        Expression.value(111),
+        Expression.value(222)
+    );
+
     private final static ExpressionNumberKind EXPRESSION_NUMBER_KIND = ExpressionNumberKind.DEFAULT;
 
     private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
@@ -91,6 +98,10 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
         CurrencyContexts.fake(),
         LocaleContexts.jre(LOCALE)
     );
+
+    private final static String EXPRESSION_FILE_PATH = "ExpressionFile111.expression.txt";
+
+    private final static String EXPRESSION_CONTENT = "111+222";
 
     private final static String JSON_FILE_PATH = "JsonFile111.json";
 
@@ -179,6 +190,21 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
+    public void testLoadExpressionFile() {
+        final StoragePath storagePath = StoragePath.parse("/" + EXPRESSION_FILE_PATH);
+
+        this.loadAndCheck(
+            this.createStorage(),
+            storagePath,
+            this.createContext(),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(EXPRESSION)
+                )
+        );
+    }
+
+    @Test
     public void testLoadJsonFile() {
         final StoragePath storagePath = StoragePath.parse("/" + JSON_FILE_PATH);
 
@@ -224,6 +250,32 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     // save.............................................................................................................
+
+    @Test
+    public void testSaveExpressionFile() {
+        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        final StoragePath storagePath = StoragePath.parse("/different.expression.txt");
+
+        final StorageValue storageValue = StorageValue.with(storagePath)
+            .setValue(
+                Optional.of(EXPRESSION)
+            );
+
+        this.saveAndCheck(
+            storage,
+            storageValue,
+            context
+        );
+
+        this.loadAndCheck(
+            storage,
+            storagePath,
+            context,
+            storageValue
+        );
+    }
 
     @Test
     public void testSaveJsonFile() {
@@ -378,6 +430,9 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             10, // count
             this.createContext(),
             this.storageValueInfo(
+                StoragePath.parse("/" + EXPRESSION_FILE_PATH)
+            ),
+            this.storageValueInfo(
                 StoragePath.parse("/" + JSON_FILE_PATH)
             ),
             this.storageValueInfo(
@@ -401,6 +456,9 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             10, // count
             this.createContext(),
             this.storageValueInfo(
+                StoragePath.parse("/" + JSON_FILE_PATH)
+            ),
+            this.storageValueInfo(
                 StoragePath.parse("/" + PROPERTIES_FILE_PATH)
             ),
             this.storageValueInfo(
@@ -421,10 +479,10 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             2, // count
             this.createContext(),
             this.storageValueInfo(
-                StoragePath.parse("/" + JSON_FILE_PATH)
+                StoragePath.parse("/" + EXPRESSION_FILE_PATH)
             ),
             this.storageValueInfo(
-                StoragePath.parse("/" + PROPERTIES_FILE_PATH)
+                StoragePath.parse("/" + JSON_FILE_PATH)
             )
         );
     }
@@ -438,7 +496,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             1, // count
             this.createContext(),
             this.storageValueInfo(
-                StoragePath.parse("/" + PROPERTIES_FILE_PATH)
+                StoragePath.parse("/" + JSON_FILE_PATH)
             )
         );
     }
@@ -574,6 +632,14 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             Files.write(
                 fileSystem.getPath(
                     rootPathString,
+                    EXPRESSION_FILE_PATH
+                ),
+                EXPRESSION_CONTENT.getBytes(CHARSET)
+            );
+
+            Files.write(
+                fileSystem.getPath(
+                    rootPathString,
                     JSON_FILE_PATH
                 ),
                 JSON_CONTENT.toString()
@@ -647,11 +713,36 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                     Converters.hasText(),
                     Converters.hasBinaryToString(),
                     Converters.textToBinary(),
+                    new ShortCircuitingConverter<>() {
+
+                        @Override
+                        public boolean canConvert(final Object value,
+                                                  final Class<?> type,
+                                                  final StorageConverterContext context) {
+                            return (
+                                "".equals(value) ||
+                                    EXPRESSION.text().equals(value)
+                            ) &&
+                                Expression.class == type;
+                        }
+
+                        @Override
+                        public <T> Either<T, String> doConvert(final Object value,
+                                                               final Class<T> type,
+                                                               final StorageConverterContext context) {
+                            return this.successfulConversion(
+                                EXPRESSION,
+                                type
+                            );
+                        }
+                    },
                     Converters.textToProperties(),
                     JsonNodeConverters.toJsonNode(),
+                    StorageConverters.storageBinaryToStorageValueExpression(),
                     StorageConverters.storageBinaryToStorageValueTxt(),
                     StorageConverters.storageBinaryToStorageValueProperties(),
                     StorageConverters.storageBinaryToStorageValueJson(),
+                    StorageConverters.toStorageBinaryExpression(),
                     StorageConverters.toStorageBinaryJson(),
                     StorageConverters.toStorageBinaryProperties(),
                     StorageConverters.toStorageBinaryTxt()
