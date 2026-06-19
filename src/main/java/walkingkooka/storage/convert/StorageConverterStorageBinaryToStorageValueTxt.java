@@ -24,7 +24,7 @@ import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 
 /**
- * Converts *.txt files after converting the {@link StorageBinary#binary()} to {@link String} and then converting that
+ * Converts {@link FileExtension#TXT} files after converting the {@link StorageBinary#binary()} to {@link String} and then converting that
  * to the requested target type.
  */
 final class StorageConverterStorageBinaryToStorageValueTxt<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
