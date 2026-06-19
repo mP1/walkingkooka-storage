@@ -54,7 +54,7 @@ final class StorageConverterToStorageBinaryTxt<C extends StorageConverterContext
                 .orElse(null)
         ) &&
             storageValue.value()
-                .map((Object value) -> context.canConvert(value, String.class))
+                .map((Object value) -> context.canConvert(value, String.class) && context.canConvert("", Binary.class))
                 .orElse(false);
     }
 
