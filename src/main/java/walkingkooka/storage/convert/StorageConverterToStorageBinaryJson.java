@@ -54,12 +54,11 @@ final class StorageConverterToStorageBinaryJson<C extends StorageConverterContex
                 .orElse(null)
         ) &&
             storageValue.value()
-                .map((Object value) -> context.canConvert(value, JsonNode.class))
-                .orElse(false) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(JsonNode.object(), String.class))
+                .map((Object value) -> context.canConvert(value, JsonNode.class) && context.canConvert(JSON_OBJECT, String.class) && context.canConvert("", Binary.class))
                 .orElse(false);
     }
+
+    private final static JsonNode JSON_OBJECT = JsonNode.object();
 
     @Override
     Either<Binary, String> toBinary(final StorageValue storageValue,
