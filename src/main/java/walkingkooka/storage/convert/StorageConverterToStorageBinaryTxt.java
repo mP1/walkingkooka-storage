@@ -25,9 +25,8 @@ import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is *.txt and the value can be converted into text.
- *
- * @param <C>
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#TXT}
+ * and the value can be converted into text and that text into {@link Binary}.
  */
 final class StorageConverterToStorageBinaryTxt<C extends StorageConverterContext> extends StorageConverterToStorageBinary<C> {
 
