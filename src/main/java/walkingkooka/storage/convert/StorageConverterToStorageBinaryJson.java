@@ -26,8 +26,8 @@ import walkingkooka.storage.StorageValue;
 import walkingkooka.tree.json.JsonNode;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is *.json and the value can be
- * converted into a {@link JsonNode} and then text.
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#JSON} and
+ * the {@link StorageValue#value()} can be converted into a {@link JsonNode} and then {@link String} and then {@link StorageBinary}.
  */
 final class StorageConverterToStorageBinaryJson<C extends StorageConverterContext> extends StorageConverterToStorageBinary<C> {
 
