@@ -373,6 +373,136 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         );
     }
 
+    // addWatcher.......................................................................................................
+
+    @Test
+    public void testAddWatcherAndSaveReplace() {
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
+
+        final StorageValue value1 = StorageValue.with(path)
+            .setValue(
+                Optional.of(1)
+            );
+
+        this.saveAndCheck(
+            storage,
+            value1,
+            context,
+            value1
+        );
+
+        final StorageValue value2 = StorageValue.with(path)
+            .setValue(
+                Optional.of(222)
+            );
+
+        this.fired = false;
+
+        storage.addWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(value1),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(value2),
+                        newValue,
+                        "newValue"
+                    );
+
+                    StorageSharedPrefixedTest.this.fired = true;
+                }
+            },
+            context
+        );
+
+        this.saveAndCheck(
+            storage,
+            value2,
+            context,
+            value2
+        );
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+    }
+
+    // addWatcherOnce...................................................................................................
+
+    @Test
+    public void testAddWatcherOnceAndSaveReplace() {
+        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
+
+        final StorageValue value1 = StorageValue.with(path)
+            .setValue(
+                Optional.of(1)
+            );
+
+        this.saveAndCheck(
+            storage,
+            value1,
+            context,
+            value1
+        );
+
+        final StorageValue value2 = StorageValue.with(path)
+            .setValue(
+                Optional.of(222)
+            );
+
+        this.fired = false;
+
+        storage.addWatcherOnce(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(value1),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(value2),
+                        newValue,
+                        "newValue"
+                    );
+
+                    StorageSharedPrefixedTest.this.fired = true;
+                }
+            },
+            context
+        );
+
+        this.saveAndCheck(
+            storage,
+            value2,
+            context,
+            value2
+        );
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+    }
+
+    private boolean fired;
+
     @Override
     public StorageSharedPrefixed<FakeStorageContext> createStorage() {
         return Cast.to(
