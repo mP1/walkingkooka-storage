@@ -17,14 +17,17 @@
 
 package walkingkooka.storage;
 
+import javaemul.internal.annotations.GwtIncompatible;
+
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Triggers a single polling of the {@link WatchService} for {@link WatchKey} and events.
+ * Triggers a single polling of the {@link java.nio.file.WatchService} for {@link WatchKey} and events.
  */
+@GwtIncompatible
 public interface WatchServicePoller<C extends StorageContext> {
 
     /**
