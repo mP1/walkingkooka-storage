@@ -20,8 +20,54 @@ package walkingkooka.storage;
 
 import walkingkooka.watch.ValueChangeWatcher;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * A {@link ValueChangeWatcher} that receives all {@link Storage} value change events.
  */
 public interface StorageWatcher extends ValueChangeWatcher<StorageValue> {
+
+    /**
+     * Returns a {@link StorageWatcher} with the given prefix {@link StoragePath}.
+     */
+    default StorageWatcher setPathPrefix(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+
+        return path.isRoot() ?
+            this :
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    StorageWatcher.this.onValueChange(
+                        storageValueSetPathPrefix(
+                            oldValue,
+                            path
+                        ),
+                        storageValueSetPathPrefix(
+                            newValue,
+                            path
+                        )
+                    );
+                }
+
+                private Optional<StorageValue> storageValueSetPathPrefix(final Optional<StorageValue> storageValue,
+                                                                         final StoragePath path) {
+                    return storageValue.map(
+                        (StorageValue sv) -> sv.setPath(
+                            sv.path()
+                                .prepend(path)
+                        )
+                    );
+                }
+
+                // Object...............................................................................................
+
+                @Override
+                public String toString() {
+                    return path + " " + StorageWatcher.this;
+                }
+            };
+    }
 }
