@@ -154,13 +154,25 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
                          final C context) {
-        throw new UnsupportedOperationException();
+        Objects.requireNonNull(watcher, "watcher");
+        Objects.requireNonNull(context, "context");
+
+        return this.storage.addWatcher(
+            watcher.setPathPrefix(this.prefix),
+            context
+        );
     }
 
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
                              final C context) {
-        throw new UnsupportedOperationException();
+        Objects.requireNonNull(watcher, "watcher");
+        Objects.requireNonNull(context, "context");
+
+        return this.storage.addWatcherOnce(
+            watcher.setPathPrefix(this.prefix),
+            context
+        );
     }
 
     private InvalidStoragePathException fixInvalidPath(final InvalidStoragePathException thrown) {
