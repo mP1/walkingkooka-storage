@@ -22,6 +22,7 @@ import walkingkooka.watch.ValueChangeWatcher;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * A {@link ValueChangeWatcher} that receives all {@link Storage} value change events.
@@ -69,5 +70,36 @@ public interface StorageWatcher extends ValueChangeWatcher<StorageValue> {
                     return path + " " + StorageWatcher.this;
                 }
             };
+    }
+
+    /**
+     * Wraps this {@link StorageWatcher} with a {@link Predicate} filtering all events that are not matched.
+     */
+    default StorageWatcher setFilter(final Predicate<StoragePath> filter) {
+        Objects.requireNonNull(filter, "filter");
+
+        return new StorageWatcher() {
+            @Override
+            public void onValueChange(final Optional<StorageValue> oldValue,
+                                      final Optional<StorageValue> newValue) {
+                if (this.test(oldValue) || this.test(newValue)) {
+                    StorageWatcher.this.onValueChange(
+                        oldValue,
+                        newValue
+                    );
+                }
+            }
+
+            private boolean test(final Optional<StorageValue> value) {
+                return value.map((StorageValue sv) -> filter.test(sv.path())).orElse(false);
+            }
+
+            // Object...................................................................................................
+
+            @Override
+            public String toString() {
+                return "if " + filter + " " + StorageWatcher.this;
+            }
+        };
     }
 }

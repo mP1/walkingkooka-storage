@@ -18,15 +18,25 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.ToStringTesting;
+import walkingkooka.predicate.Predicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageWatcherTest implements ClassTesting<StorageWatcher> {
+public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>,
+    ClassTesting<StorageWatcher> {
+
+    final StoragePath STORAGE_PATH = StoragePath.parse("/path222/path333");
+
+    final Optional<Object> OLD_VALUE = Optional.of("oldValue111");
+    final Optional<Object> NEW_VALUE = Optional.of("newValue111");
+
     // setPathPrefix....................................................................................................
 
     @Test
@@ -52,25 +62,20 @@ public final class StorageWatcherTest implements ClassTesting<StorageWatcher> {
     public void testSetPathPrefixAndOnValueChange() {
         this.fired = false;
 
-        final StoragePath storagePath = StoragePath.parse("/path222/path333");
-
         final StoragePath pathPrefix = StoragePath.parse("/prefix111");
-
-        final Optional<Object> oldValue = Optional.of("oldValue111");
-        final Optional<Object> newValue = Optional.of("newValue111");
 
         new StorageWatcher() {
             @Override
             public void onValueChange(final Optional<StorageValue> ov,
                                       final Optional<StorageValue> nv) {
                 final StoragePath prefix = StoragePath.parse(
-                    pathPrefix.value() + storagePath.value()
+                    pathPrefix.value() + STORAGE_PATH.value()
                 );
 
                 checkEquals(
                     Optional.of(
                         StorageValue.with(prefix)
-                            .setValue(oldValue)
+                            .setValue(OLD_VALUE)
                     ),
                     ov,
                     "oldValue"
@@ -78,7 +83,7 @@ public final class StorageWatcherTest implements ClassTesting<StorageWatcher> {
                 checkEquals(
                     Optional.of(
                         StorageValue.with(prefix)
-                            .setValue(newValue)
+                            .setValue(NEW_VALUE)
                     ),
                     nv,
                     "newValue"
@@ -89,12 +94,12 @@ public final class StorageWatcherTest implements ClassTesting<StorageWatcher> {
         }.setPathPrefix(pathPrefix)
             .onValueChange(
                 Optional.of(
-                    StorageValue.with(storagePath)
-                        .setValue(oldValue)
+                    StorageValue.with(STORAGE_PATH)
+                        .setValue(OLD_VALUE)
                 ),
                 Optional.of(
-                    StorageValue.with(storagePath)
-                        .setValue(newValue)
+                    StorageValue.with(STORAGE_PATH)
+                        .setValue(NEW_VALUE)
                 )
             );
 
@@ -105,7 +110,91 @@ public final class StorageWatcherTest implements ClassTesting<StorageWatcher> {
         );
     }
 
+    // setFilter........................................................................................................
+
+    @Test
+    public void testSetFilterWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> new FakeStorageWatcher()
+                .setFilter(null)
+        );
+    }
+
+    @Test
+    public void testSetFilterUnmatchedPath() {
+        new FakeStorageWatcher()
+            .setFilter(Predicates.never())
+            .onValueChange(
+                Optional.of(
+                    StorageValue.with(StoragePath.parse("/ignored"))
+                ),
+                Optional.empty()
+            );
+    }
+
+    @Test
+    public void testSetFilterMatchedPath() {
+        final Optional<StorageValue> oldValue = Optional.of(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(OLD_VALUE)
+        );
+
+        final Optional<StorageValue> newValue = Optional.of(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(NEW_VALUE)
+        );
+
+        new StorageWatcher() {
+            @Override
+            public void onValueChange(final Optional<StorageValue> ov,
+                                      final Optional<StorageValue> nv) {
+                checkEquals(
+                    oldValue,
+                    ov,
+                    "oldValue"
+                );
+                checkEquals(
+                    newValue,
+                    nv,
+                    "newValue"
+                );
+
+                StorageWatcherTest.this.fired = true;
+            }
+        }.setFilter(Predicates.is(STORAGE_PATH))
+            .onValueChange(
+                oldValue,
+                newValue
+            );
+
+        this.checkEquals(
+            true,
+            this.fired,
+            "fired"
+        );
+    }
+
     private boolean fired;
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testSetFilterAndToString() {
+        final StorageWatcher watcher = new FakeStorageWatcher();
+
+        final Predicate<StoragePath> filter = Predicates.fake();
+
+        this.toStringAndCheck(
+            watcher.setFilter(filter),
+            "if " + filter + " " + watcher
+        );
+    }
+
+    @Override
+    public void testCheckToStringOverridden() {
+        throw new UnsupportedOperationException();
+    }
 
     // class............................................................................................................
 
