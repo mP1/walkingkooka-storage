@@ -521,12 +521,12 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
         this.polling = true;
 
+        final long end = TIMEOUT + System.currentTimeMillis();
+
         final WatchServicePoller<FakeStorageContext> poller = new WatchServicePoller<>() {
             @Override
             public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
                 new Thread(() -> {
-                    final long end = TIMEOUT + System.currentTimeMillis();
-
                     while (false == StorageSharedNativeFileTest.this.fired && System.currentTimeMillis() < end) {
                         poller.accept(this);
                     }
@@ -584,7 +584,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             context
         );
 
-        while (this.polling) {
+        while (this.polling && System.currentTimeMillis() < end) {
             try {
                 Thread.sleep(100);
             } catch (final InterruptedException e) {
