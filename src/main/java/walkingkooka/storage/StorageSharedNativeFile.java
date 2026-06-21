@@ -264,6 +264,10 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         );
     }
 
+    /**
+     * Note the poll events below handles registering new watchers for created sub-directories. Events from directories
+     * such as create/modify/delete are filtered from the given {@link StorageWatcher}.
+     */
     private void pollEvents(final WatchServicePoller<C> poller) {
         for (; ; ) {
             final WatchKey watchKey = poller.pollOrTakeWatchKey(this.watcher)
