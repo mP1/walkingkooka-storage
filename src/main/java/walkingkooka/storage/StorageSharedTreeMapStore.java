@@ -206,12 +206,21 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
             @Override
             public void onValueChange(final Optional<StorageSharedTreeMapStoreValue> oldValue,
                                       final Optional<StorageSharedTreeMapStoreValue> newValue) {
-                watcher.onValueChange(
-                    toStorageValue(oldValue),
-                    toStorageValue(newValue)
-                );
+                // filter #saveRootIfNecessary
+                if(false == isRoot(oldValue) && false == isRoot(newValue)) {
+                    watcher.onValueChange(
+                        toStorageValue(oldValue),
+                        toStorageValue(newValue)
+                    );
+                }
             }
         };
+    }
+
+    private static boolean isRoot(final Optional<StorageSharedTreeMapStoreValue> value) {
+        return value.map(
+            (StorageSharedTreeMapStoreValue v) -> v.path().isRoot()
+        ).orElse(false);
     }
 
     private static Optional<StorageValue> toStorageValue(final Optional<StorageSharedTreeMapStoreValue> storeValue) {
