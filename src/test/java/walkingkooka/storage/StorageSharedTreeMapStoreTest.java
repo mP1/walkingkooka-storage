@@ -479,6 +479,46 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
+        storage.addWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.empty(),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(STORAGE_VALUE),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            },
+            context
+        );
+
+        this.fired = false;
+
+        storage.save(
+            STORAGE_VALUE,
+            context
+        );
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+    }
+
+    @Test
+    public void testAddWatcher2() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
         final StorageValue lost = STORAGE_VALUE.setValue(
             Optional.of("lost")
         );
