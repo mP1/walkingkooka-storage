@@ -214,6 +214,13 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                     );
                 }
             }
+
+            // Object...................................................................................................
+
+            @Override
+            public String toString() {
+                return watcher.toString();
+            }
         };
     }
 
