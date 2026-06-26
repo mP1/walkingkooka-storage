@@ -17,6 +17,10 @@
 
 package walkingkooka.storage;
 
+/**
+ * Supports a custom parsing of a {@link StoragePath} in text form, allowing special symbols or substitution such
+ * as replacing TILDE with the users home directory.
+ */
 public interface CanParseStoragePath {
 
     /**
