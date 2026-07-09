@@ -239,6 +239,21 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     // @VisibleForTesting
     final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
 
+    // Object...........................................................................................................
+
+    @Override
+    public int hashCode() {
+        return this.store.hashCode();
+    }
+
+    public boolean equals(Object other) {
+        return this == other || other instanceof StorageSharedTreeMapStore && this.equals0((StorageSharedTreeMapStore<?>) other);
+    }
+
+    private boolean equals0(StorageSharedTreeMapStore<?> other) {
+        return this.store.equals(other.store);
+    }
+
     @Override
     public String toString() {
         return this.store.toString();

@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ThrowableTesting;
@@ -31,7 +32,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<StorageSharedTreeMapStore<TestStorageContext>, TestStorageContext>
-    implements ThrowableTesting {
+    implements HashCodeEqualsDefinedTesting2<StorageSharedTreeMapStore<TestStorageContext>>,
+    ThrowableTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -659,6 +661,29 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
         }
 
         LocalDateTime now;
+    }
+
+    // hashCode/equals..................................................................................................
+
+    @Test
+    public void testEqualsDifferentStore() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+
+        storage.save(
+            StorageValue.with(
+                StoragePath.parse("/value111")
+            ).setValue(
+                Optional.of("Hello")
+            ),
+            this.createContext()
+        );
+
+        this.checkNotEquals(storage);
+    }
+
+    @Override
+    public StorageSharedTreeMapStore<TestStorageContext> createObject() {
+        return this.createStorage();
     }
 
     // class............................................................................................................
