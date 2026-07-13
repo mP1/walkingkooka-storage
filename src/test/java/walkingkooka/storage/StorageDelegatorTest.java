@@ -20,7 +20,7 @@ package walkingkooka.storage;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.storage.StorageDelegatorTest.TestStorageDelegator;
 
-public final class StorageDelegatorTest implements StorageTesting<TestStorageDelegator, FakeStorageContext> {
+public final class StorageDelegatorTest implements StorageTesting2<TestStorageDelegator, FakeStorageContext> {
 
     @Override
     public TestStorageDelegator createStorage() {

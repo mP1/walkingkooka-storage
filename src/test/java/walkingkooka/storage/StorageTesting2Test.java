@@ -20,9 +20,9 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.storage.StorageTestingTest.TestStorageContext;
+import walkingkooka.storage.StorageTesting2Test.TestStorageContext;
 
-public final class StorageTestingTest implements StorageTesting<Storage<TestStorageContext>, TestStorageContext> {
+public final class StorageTesting2Test implements StorageTesting2<Storage<TestStorageContext>, TestStorageContext> {
 
     @Override
     public Storage<TestStorageContext> createStorage() {
