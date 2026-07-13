@@ -18,6 +18,7 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Binary;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.Converter;
@@ -34,6 +35,9 @@ import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.net.header.MediaType;
+import walkingkooka.net.header.MediaTypeDetector;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
@@ -84,6 +88,8 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
 
+    private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
+
     // with.............................................................................................................
 
     @Test
@@ -93,6 +99,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             () -> BasicStorageConverterContext.with(
                 null,
                 HAS_USER_DIRECTORIES,
+                MEDIA_TYPE_DETECTOR,
                 CONVERTER_CONTEXT
             )
         );
@@ -104,6 +111,20 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             NullPointerException.class,
             () -> BasicStorageConverterContext.with(
                 CONVERTER,
+                null,
+                MEDIA_TYPE_DETECTOR,
+                CONVERTER_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullMediaTypeDetectorFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicStorageConverterContext.with(
+                CONVERTER,
+                HAS_USER_DIRECTORIES,
                 null,
                 CONVERTER_CONTEXT
             )
@@ -117,6 +138,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             () -> BasicStorageConverterContext.with(
                 CONVERTER,
                 new FakeHasUserDirectories(),
+                MEDIA_TYPE_DETECTOR,
                 null
             )
         );
@@ -156,6 +178,18 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         );
     }
 
+    // detect...........................................................................................................
+
+    @Test
+    public void testDetect() {
+        this.detectAndCheck(
+            this.createContext(),
+            "file.txt",
+            Binary.EMPTY,
+            MediaType.BINARY
+        );
+    }
+
     // parseStoragePath.................................................................................................
 
     @Test
@@ -192,6 +226,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         return BasicStorageConverterContext.with(
             CONVERTER,
             HAS_USER_DIRECTORIES,
+            MEDIA_TYPE_DETECTOR,
             JsonNodeConverterContexts.basic(
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
