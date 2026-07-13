@@ -17,49 +17,20 @@
 
 package walkingkooka.storage;
 
-import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.reflect.ClassTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public interface StorageTesting<S extends Storage<C>, C extends StorageContext> extends ClassTesting<S>,
-    TreePrintableTesting {
+public interface StorageTesting extends TreePrintableTesting {
 
     // canRead..........................................................................................................
 
-    @Test
-    default void testCanReadWithNullIdFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .canRead(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testCanReadWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .canRead(
-                    StoragePath.ROOT,
-                    null
-                )
-        );
-    }
-
-    default void canReadAndCheck(final Storage<C> storage,
-                                 final StoragePath path,
-                                 final C context,
-                                 final boolean expected) {
+    default <C extends StorageContext> void canReadAndCheck(final Storage<C> storage,
+                                                            final StoragePath path,
+                                                            final C context,
+                                                            final boolean expected) {
         this.checkEquals(
             expected,
             storage.canRead(
@@ -72,34 +43,10 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
 
     // canWrite.........................................................................................................
 
-    @Test
-    default void testCanWriteWithNullPathFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .canWrite(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testCanWriteWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .canWrite(
-                    StoragePath.ROOT,
-                    null
-                )
-        );
-    }
-
-    default void canWriteAndCheck(final Storage<C> storage,
-                                  final StoragePath path,
-                                  final C context,
-                                  final boolean expected) {
+    default <C extends StorageContext> void canWriteAndCheck(final Storage<C> storage,
+                                                             final StoragePath path,
+                                                             final C context,
+                                                             final boolean expected) {
         this.checkEquals(
             expected,
             storage.canWrite(
@@ -109,45 +56,12 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             () -> " storage canWrite " + path
         );
     }
-    
+
     // load.............................................................................................................
 
-    @Test
-    default void testLoadWithNullIdFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .load(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testLoadWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .load(
-                    StoragePath.ROOT,
-                    null
-                )
-        );
-    }
-
-    @Test
-    default void testLoadRoot() {
-        this.loadAndCheck(
-            this.createStorage(),
-            StoragePath.ROOT,
-            this.createContext()
-        );
-    }
-
-    default void loadAndCheck(final Storage<C> storage,
-                              final StoragePath path,
-                              final C context) {
+    default <C extends StorageContext> void loadAndCheck(final Storage<C> storage,
+                                                         final StoragePath path,
+                                                         final C context) {
         this.loadAndCheck(
             storage,
             path,
@@ -156,10 +70,10 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> storage,
-                              final StoragePath path,
-                              final C context,
-                              final StorageValue expected) {
+    default <C extends StorageContext> void loadAndCheck(final Storage<C> storage,
+                                                         final StoragePath path,
+                                                         final C context,
+                                                         final StorageValue expected) {
         this.loadAndCheck(
             storage,
             path,
@@ -168,10 +82,10 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void loadAndCheck(final Storage<C> storage,
-                              final StoragePath path,
-                              final C context,
-                              final Optional<StorageValue> expected) {
+    default <C extends StorageContext> void loadAndCheck(final Storage<C> storage,
+                                                         final StoragePath path,
+                                                         final C context,
+                                                         final Optional<StorageValue> expected) {
         this.checkEquals(
             expected,
             storage.load(
@@ -184,59 +98,9 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
 
     // save.............................................................................................................
 
-    @Test
-    default void testSaveWithNullValueFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .save(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testSaveWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .save(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testSaveRootFails() {
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> this.createStorage()
-                .save(
-                    StorageValue.with(StoragePath.ROOT),
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testSaveParentFails() {
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> this.createStorage()
-                .save(
-                    StorageValue.with(
-                        StoragePath.parse("/parent1/")
-                    ),
-                    this.createContext()
-                )
-        );
-    }
-
-    default void saveAndCheck(final Storage<C> storage,
-                              final StorageValue value,
-                              final C context) {
+    default <C extends StorageContext> void saveAndCheck(final Storage<C> storage,
+                                                         final StorageValue value,
+                                                         final C context) {
         this.saveAndCheck(
             storage,
             value,
@@ -245,10 +109,10 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void saveAndCheck(final Storage<C> storage,
-                              final StorageValue value,
-                              final C context,
-                              final StorageValue expected) {
+    default <C extends StorageContext> void saveAndCheck(final Storage<C> storage,
+                                                         final StorageValue value,
+                                                         final C context,
+                                                         final StorageValue expected) {
         this.checkEquals(
             expected,
             storage.save(
@@ -258,60 +122,12 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             () -> " storage save " + value
         );
     }
-    
+
     // delete...........................................................................................................
 
-    @Test
-    default void testDeleteWithNullValueFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .delete(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testDeleteWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .delete(
-                    StoragePath.ROOT,
-                    null // context
-                )
-        );
-    }
-
-    @Test
-    default void testDeleteRootFails() {
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> this.createStorage()
-                .delete(
-                    StoragePath.ROOT,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testDeleteParentFails() {
-        assertThrows(
-            InvalidStoragePathException.class,
-            () -> this.createStorage()
-                .delete(
-                    StoragePath.parse("/parent1/"),
-                    this.createContext()
-                )
-        );
-    }
-
-    default void deleteAndCheck(final Storage<C> storage,
-                                final StoragePath path,
-                                final C context) {
+    default <C extends StorageContext> void deleteAndCheck(final Storage<C> storage,
+                                                           final StoragePath path,
+                                                           final C context) {
         storage.delete(
             path,
             context
@@ -326,78 +142,12 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
 
     // list.............................................................................................................
 
-    @Test
-    default void testListWithNullParentFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .list(
-                    null,
-                    0,
-                    0,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testListWithNegativeOffsetFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> this.createStorage()
-                .list(
-                    StoragePath.ROOT,
-                    -1,
-                    1,
-                    this.createContext()
-                )
-        );
-
-        this.checkEquals(
-            "Invalid offset -1 < 0",
-            thrown.getMessage()
-        );
-    }
-
-    @Test
-    default void testListWithNegativeCountFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> this.createStorage()
-                .list(
-                    StoragePath.ROOT,
-                    0,
-                    -1,
-                    this.createContext()
-                )
-        );
-
-        this.checkEquals(
-            "Invalid count -1 < 0",
-            thrown.getMessage()
-        );
-    }
-
-    @Test
-    default void testListWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .list(
-                    StoragePath.ROOT,
-                    0,
-                    1,
-                    null // context
-                )
-        );
-    }
-
-    default void listAndCheck(final Storage<C> storage,
-                              final StoragePath parent,
-                              final int offset,
-                              final int count,
-                              final C context,
-                              final StorageValueInfo... expected) {
+    default <C extends StorageContext> void listAndCheck(final Storage<C> storage,
+                                                         final StoragePath parent,
+                                                         final int offset,
+                                                         final int count,
+                                                         final C context,
+                                                         final StorageValueInfo... expected) {
         this.listAndCheck(
             storage,
             parent,
@@ -408,12 +158,12 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
         );
     }
 
-    default void listAndCheck(final Storage<C> storage,
-                              final StoragePath parent,
-                              final int offset,
-                              final int count,
-                              final C context,
-                              final List<StorageValueInfo> expected) {
+    default <C extends StorageContext> void listAndCheck(final Storage<C> storage,
+                                                         final StoragePath parent,
+                                                         final int offset,
+                                                         final int count,
+                                                         final C context,
+                                                         final List<StorageValueInfo> expected) {
         this.checkEquals(
             expected,
             storage.list(
@@ -425,57 +175,4 @@ public interface StorageTesting<S extends Storage<C>, C extends StorageContext> 
             () -> "list parent=" + parent + " offset=" + offset + " count=" + count
         );
     }
-
-    // addWatcher.......................................................................................................
-
-    @Test
-    default void testAddWatcherWithNullWatcherFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .addWatcher(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testAddWatcherWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .addWatcher(
-                    new FakeStorageWatcher(),
-                    null
-                )
-        );
-    }
-    @Test
-    default void testAddWatcherOnceWithNullWatcherFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .addWatcherOnce(
-                    null,
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testAddWatcherOnceWithNullContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .addWatcherOnce(
-                    new FakeStorageWatcher(),
-                    null
-                )
-        );
-    }
-
-    S createStorage();
-
-    C createContext();
 }
