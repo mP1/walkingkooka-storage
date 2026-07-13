@@ -25,9 +25,9 @@ import walkingkooka.reflect.JavaVisibility;
 public final class StorageConverterContextTest implements ClassTesting2<StorageConverterContext> {
 
     @Test
-    public void testDoesntImplementMediaTypeDetector() {
+    public void testImplementsMediaTypeDetector() {
         this.checkEquals(
-            false,
+            true,
             new FakeStorageConverterContext() instanceof MediaTypeDetector
         );
     }

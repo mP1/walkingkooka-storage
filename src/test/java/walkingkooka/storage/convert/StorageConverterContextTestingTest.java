@@ -18,6 +18,7 @@
 package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Binary;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
@@ -32,6 +33,8 @@ import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.net.header.MediaType;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
@@ -167,6 +170,16 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                 text,
                 this
             );
+        }
+
+        @Override
+        public MediaType detect(final String filename,
+                                final Binary content) {
+            return MediaTypeDetectors.binary()
+                .detect(
+                    filename,
+                    content
+                );
         }
 
         @Override
