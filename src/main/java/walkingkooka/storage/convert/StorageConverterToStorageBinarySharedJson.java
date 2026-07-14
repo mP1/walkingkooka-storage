@@ -20,70 +20,71 @@ package walkingkooka.storage.convert;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.tree.json.JsonNode;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#CSV}
- * and the {@link StorageValue#value()} can be converted into a {@link CsvStringList} and then {@link String} and then
- * {@link StorageBinary}.
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#JSON} and
+ * the {@link StorageValue#value()} can be converted into a {@link JsonNode} and then {@link String} and then {@link StorageBinary}.
  */
-final class StorageConverterToStorageBinaryCsv<C extends StorageConverterContext> extends StorageConverterToStorageBinary<C> {
+final class StorageConverterToStorageBinarySharedJson<C extends StorageConverterContext> extends StorageConverterToStorageBinaryShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterToStorageBinaryCsv<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterToStorageBinarySharedJson<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterToStorageBinaryCsv INSTANCE = new StorageConverterToStorageBinaryCsv<>();
+    private final static StorageConverterToStorageBinarySharedJson INSTANCE = new StorageConverterToStorageBinarySharedJson<>();
 
-    private StorageConverterToStorageBinaryCsv() {
+    private StorageConverterToStorageBinarySharedJson() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.CSV;
+        return FileExtension.JSON;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.TEXT_CSV;
+        return MediaType.APPLICATION_JSON;
     }
 
     @Override
     boolean testValue(final Object value,
                       final C context) {
-        return context.canConvert(value, CsvStringList.class) &&
-            context.canConvert(CsvStringList.EMPTY, Binary.class);
+        return context.canConvert(value, JsonNode.class) &&
+            context.canConvert(JSON_OBJECT, String.class);
     }
+
+    private final static JsonNode JSON_OBJECT = JsonNode.object();
 
     @Override
     Either<Binary, String> toBinary(final StorageValue storageValue,
                                     final C context) {
-        Either<CsvStringList, String> csvStringList = context.convert(
+        Either<JsonNode, String> jsonNode = context.convert(
             storageValue.value()
                 .orElse(null),
-            CsvStringList.class
+            JsonNode.class
         );
 
-        return csvStringList.isLeft() ?
+        return jsonNode.isLeft() ?
             context.convert(
-                csvStringList.leftValue(),
+                jsonNode.leftValue(),
                 Binary.class
             ) :
-            Cast.to(csvStringList);
+            Cast.to(jsonNode);
     }
 
     // Object...........................................................................................................
 
     @Override
     public String toString() {
-        return "*." + FileExtension.CSV + " to " + StorageBinary.class.getSimpleName();
+        return "*." + FileExtension.JSON + " to " + StorageBinary.class.getSimpleName();
     }
 }

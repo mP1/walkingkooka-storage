@@ -22,68 +22,59 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#PROPERTIES}
- * and the {@link StorageValue#value()} can be converted into a {@link Properties} and then {@link String} and then
- * {@link StorageBinary}.
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#TXT}
+ * and the value can be converted into text and that text into {@link Binary}.
  */
-final class StorageConverterToStorageBinaryProperties<C extends StorageConverterContext> extends StorageConverterToStorageBinary<C> {
+final class StorageConverterToStorageBinarySharedTxt<C extends StorageConverterContext> extends StorageConverterToStorageBinaryShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterToStorageBinaryProperties<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterToStorageBinarySharedTxt<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterToStorageBinaryProperties INSTANCE = new StorageConverterToStorageBinaryProperties<>();
+    private final static StorageConverterToStorageBinarySharedTxt INSTANCE = new StorageConverterToStorageBinarySharedTxt<>();
 
-    private StorageConverterToStorageBinaryProperties() {
+    private StorageConverterToStorageBinarySharedTxt() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.PROPERTIES;
+        return FileExtension.TXT;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.TEXT_PROPERTIES;
+        return MediaType.TEXT_PLAIN;
     }
 
     @Override
     boolean testValue(final Object value,
                       final C context) {
-        return context.canConvert(value, Properties.class) &&
-            context.canConvert(Properties.EMPTY, Binary.class);
+        return context.canConvert(value, String.class) &&
+            context.canConvert("", Binary.class);
     }
 
     @Override
     Either<Binary, String> toBinary(final StorageValue storageValue,
                                     final C context) {
-        Either<Properties, String> properties = context.convert(
+        return context.convert(
             storageValue.value()
                 .orElse(null),
-            Properties.class
+            Binary.class
         );
-
-        return properties.isLeft() ?
-            context.convert(
-                properties.leftValue(),
-                Binary.class
-            ) :
-            Cast.to(properties);
     }
 
     // Object...........................................................................................................
 
     @Override
     public String toString() {
-        return "*." + FileExtension.PROPERTIES + " to " + StorageBinary.class.getSimpleName();
+        return "*." + FileExtension.TXT + " to " + StorageBinary.class.getSimpleName();
     }
 }

@@ -22,68 +22,74 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
+import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
-import walkingkooka.convert.ShortCircuitingConverter;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
-import walkingkooka.tree.expression.Expression;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinaryExpressionTest extends StorageConverterToStorageBinaryTestCase<StorageConverterToStorageBinaryExpression<FakeStorageConverterContext>> {
+public final class StorageConverterToStorageBinarySharedTsvTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
-    private final static Expression EXPRESSION = Expression.add(
-        Expression.value(111),
-        Expression.value(222)
-    );
-
-    private final static String EXPRESSION_STRING = "111+222";
-
     @Test
-    public void testConvertStorageValueWithFileExtensionToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
+    public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(EXPRESSION)
+                    Optional.of(list)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    EXPRESSION_STRING.getBytes(CHARSET)
+                    list.text()
+                        .getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Test
-    public void testConvertStorageValueWithoutFileExtensionAndMediaTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/add");
+    public void testConvertStorageValueWithOnlyContentTypeToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(EXPRESSION)
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    EXPRESSION_STRING.getBytes(CHARSET)
+                    list.text()
+                        .getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Override
-    public StorageConverterToStorageBinaryExpression<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinaryExpression.instance();
+    public StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext> createConverter() {
+        return StorageConverterToStorageBinarySharedTsv.instance();
     }
 
     @Override
@@ -115,31 +121,11 @@ public final class StorageConverterToStorageBinaryExpressionTest extends Storage
                 );
             }
 
-            private final Converter<StorageConverterContext> converter = Converters.collection(
+            private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
-                    Converters.simple(),
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    new ShortCircuitingConverter<>() {
-
-                        @Override
-                        public boolean canConvert(final Object value,
-                                                  final Class<?> type,
-                                                  final StorageConverterContext context) {
-                            return value instanceof Expression &&
-                                String.class == type;
-                        }
-
-                        @Override
-                        public <T> Either<T, String> doConvert(final Object value,
-                                                               final Class<T> type,
-                                                               final StorageConverterContext storageConverterContext) {
-                            return this.successfulConversion(
-                                value.toString(),
-                                type
-                            );
-                        }
-
-                    },
+                    Converters.hasText(),
+                    Converters.simple(),
                     Converters.textToBinary()
                 )
             );
@@ -150,12 +136,12 @@ public final class StorageConverterToStorageBinaryExpressionTest extends Storage
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.expression.txt to StorageBinary"
+            "*.tsv to StorageBinary"
         );
     }
 
     @Override
-    public Class<StorageConverterToStorageBinaryExpression<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinaryExpression.class);
+    public Class<StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterToStorageBinarySharedTsv.class);
     }
 }

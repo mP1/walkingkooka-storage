@@ -37,7 +37,7 @@ import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinaryPropertiesTest extends StorageConverterToStorageBinaryTestCase<StorageConverterToStorageBinaryProperties<FakeStorageConverterContext>> {
+public final class StorageConverterToStorageBinarySharedPropertiesTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedProperties<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -106,8 +106,8 @@ public final class StorageConverterToStorageBinaryPropertiesTest extends Storage
     }
 
     @Override
-    public StorageConverterToStorageBinaryProperties<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinaryProperties.instance();
+    public StorageConverterToStorageBinarySharedProperties<FakeStorageConverterContext> createConverter() {
+        return StorageConverterToStorageBinarySharedProperties.instance();
     }
 
     @Override
@@ -159,7 +159,7 @@ public final class StorageConverterToStorageBinaryPropertiesTest extends Storage
     }
 
     @Override
-    public Class<StorageConverterToStorageBinaryProperties<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinaryProperties.class);
+    public Class<StorageConverterToStorageBinarySharedProperties<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterToStorageBinarySharedProperties.class);
     }
 }

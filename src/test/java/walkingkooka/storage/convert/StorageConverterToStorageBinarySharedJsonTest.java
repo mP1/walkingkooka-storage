@@ -40,7 +40,7 @@ import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinaryJsonTest extends StorageConverterToStorageBinaryTestCase<StorageConverterToStorageBinaryJson<FakeStorageConverterContext>> {
+public final class StorageConverterToStorageBinarySharedJsonTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedJson<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -121,8 +121,8 @@ public final class StorageConverterToStorageBinaryJsonTest extends StorageConver
     }
 
     @Override
-    public StorageConverterToStorageBinaryJson<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinaryJson.instance();
+    public StorageConverterToStorageBinarySharedJson<FakeStorageConverterContext> createConverter() {
+        return StorageConverterToStorageBinarySharedJson.instance();
     }
 
     @Override
@@ -184,7 +184,7 @@ public final class StorageConverterToStorageBinaryJsonTest extends StorageConver
     }
 
     @Override
-    public Class<StorageConverterToStorageBinaryJson<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinaryJson.class);
+    public Class<StorageConverterToStorageBinarySharedJson<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterToStorageBinarySharedJson.class);
     }
 }
