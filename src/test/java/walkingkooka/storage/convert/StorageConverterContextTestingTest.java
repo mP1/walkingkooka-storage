@@ -40,6 +40,7 @@ import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextPrinting;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
 import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
@@ -236,13 +237,14 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                     ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
                     ConverterContexts.basic(
                         false, // canNumbersHaveGroupSeparator
-                        StandardCharsets.UTF_8,
                         Converters.JAVA_EPOCH_OFFSET, // dateOffset
-                        Indentation.SPACES2,
-                        LineEnding.NL,
                         ',', // valueSeparator
                         Converters.fake(),
                         BinaryNumberConverterFunctions.fake(), // multiplier
+                        TextPrinting.with(
+                            Indentation.SPACES2,
+                            LineEnding.NL
+                        ).setCharset(StandardCharsets.UTF_8),
                         currencyLocaleContext,
                         DateTimeContexts.basic(
                             DateTimeSymbols.fromDateFormatSymbols(
