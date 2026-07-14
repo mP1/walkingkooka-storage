@@ -30,9 +30,9 @@ import walkingkooka.storage.StorageValue;
  * Base class for any {@link walkingkooka.convert.Converter} that converts a {@link walkingkooka.storage.StorageValue}
  * to a {@link StorageBinary} if the file extension and value object match.
  */
-abstract class StorageConverterToStorageBinary<C extends StorageConverterContext> extends StorageConverter<C> {
+abstract class StorageConverterToStorageBinaryShared<C extends StorageConverterContext> extends StorageConverter<C> {
 
-    StorageConverterToStorageBinary() {
+    StorageConverterToStorageBinaryShared() {
         super();
     }
 

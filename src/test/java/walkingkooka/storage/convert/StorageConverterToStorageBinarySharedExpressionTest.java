@@ -21,77 +21,69 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
-import walkingkooka.net.header.MediaType;
+import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.tree.expression.Expression;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinaryCsvTest extends StorageConverterToStorageBinaryTestCase<StorageConverterToStorageBinaryCsv<FakeStorageConverterContext>> {
+public final class StorageConverterToStorageBinarySharedExpressionTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
-    @Test
-    public void testConvertStorageValueCsvToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
+    private final static Expression EXPRESSION = Expression.add(
+        Expression.value(111),
+        Expression.value(222)
+    );
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
+    private final static String EXPRESSION_STRING = "111+222";
+
+    @Test
+    public void testConvertStorageValueWithFileExtensionToStorageBinary() {
+        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(EXPRESSION)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
-                        .getBytes(CHARSET)
+                    EXPRESSION_STRING.getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Test
-    public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-        final StoragePath storagePath = StoragePath.parse("/dir/letters");
+    public void testConvertStorageValueWithoutFileExtensionAndMediaTypeToStorageBinary() {
+        final StoragePath storagePath = StoragePath.parse("/dir/add");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(
-                        MediaType.TEXT_CSV
-                    )
+                    Optional.of(EXPRESSION)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
-                        .getBytes(CHARSET)
+                    EXPRESSION_STRING.getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Override
-    public StorageConverterToStorageBinaryCsv<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinaryCsv.instance();
+    public StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext> createConverter() {
+        return StorageConverterToStorageBinarySharedExpression.instance();
     }
 
     @Override
@@ -123,11 +115,31 @@ public final class StorageConverterToStorageBinaryCsvTest extends StorageConvert
                 );
             }
 
-            private final Converter<ConverterContext> converter = Converters.collection(
+            private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.hasText(),
                     Converters.simple(),
+                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    new ShortCircuitingConverter<>() {
+
+                        @Override
+                        public boolean canConvert(final Object value,
+                                                  final Class<?> type,
+                                                  final StorageConverterContext context) {
+                            return value instanceof Expression &&
+                                String.class == type;
+                        }
+
+                        @Override
+                        public <T> Either<T, String> doConvert(final Object value,
+                                                               final Class<T> type,
+                                                               final StorageConverterContext storageConverterContext) {
+                            return this.successfulConversion(
+                                value.toString(),
+                                type
+                            );
+                        }
+
+                    },
                     Converters.textToBinary()
                 )
             );
@@ -138,12 +150,12 @@ public final class StorageConverterToStorageBinaryCsvTest extends StorageConvert
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.csv to StorageBinary"
+            "*.expression.txt to StorageBinary"
         );
     }
 
     @Override
-    public Class<StorageConverterToStorageBinaryCsv<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinaryCsv.class);
+    public Class<StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterToStorageBinarySharedExpression.class);
     }
 }
