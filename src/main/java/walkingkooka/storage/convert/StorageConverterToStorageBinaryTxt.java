@@ -44,17 +44,15 @@ final class StorageConverterToStorageBinaryTxt<C extends StorageConverterContext
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        // file extension is *.txt and value can be converted to text
-        return FileExtension.TXT.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, String.class) && context.canConvert("", Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.TXT;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, String.class) &&
+            context.canConvert("", Binary.class);
     }
 
     @Override

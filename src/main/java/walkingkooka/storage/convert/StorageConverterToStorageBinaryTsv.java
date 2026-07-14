@@ -46,16 +46,15 @@ final class StorageConverterToStorageBinaryTsv<C extends StorageConverterContext
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        return FileExtension.TSV.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, TsvStringList.class) && context.canConvert(TsvStringList.EMPTY, Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.TSV;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, TsvStringList.class) &&
+            context.canConvert(TsvStringList.EMPTY, Binary.class);
     }
 
     @Override

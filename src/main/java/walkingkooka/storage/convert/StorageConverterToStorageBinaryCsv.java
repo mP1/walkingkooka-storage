@@ -46,16 +46,15 @@ final class StorageConverterToStorageBinaryCsv<C extends StorageConverterContext
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        return FileExtension.CSV.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, CsvStringList.class) && context.canConvert(CsvStringList.EMPTY, Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.CSV;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, CsvStringList.class) &&
+            context.canConvert(CsvStringList.EMPTY, Binary.class);
     }
 
     @Override
