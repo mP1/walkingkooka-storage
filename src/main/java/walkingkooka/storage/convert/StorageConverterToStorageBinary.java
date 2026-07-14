@@ -21,6 +21,7 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -52,11 +53,18 @@ abstract class StorageConverterToStorageBinary<C extends StorageConverterContext
             .fileExtension()
             .orElse(null);
 
+        final MediaType mediaType = storageValue.contentType()
+            .orElse(null);
+
         final Object value = storageValue.value()
             .orElse(null);
 
-        return this.fileExtension()
-            .test(fileExtension) &&
+        return (
+            this.fileExtension()
+                .test(fileExtension) ||
+                this.contentType()
+                    .test(mediaType)
+        ) &&
             null != value &&
             this.testValue(
                 value,
@@ -68,6 +76,8 @@ abstract class StorageConverterToStorageBinary<C extends StorageConverterContext
      * The {@link StoragePath} file extension that must be matched.
      */
     abstract FileExtension fileExtension();
+
+    abstract MediaType contentType();
 
     /**
      * Sub-classes should test non null value is supported.

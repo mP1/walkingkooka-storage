@@ -26,6 +26,7 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -51,7 +52,7 @@ public final class StorageConverterToStorageBinaryPropertiesTest extends Storage
     }
 
     @Test
-    public void testConvertStorageValuePropertiesToStorageBinary() {
+    public void testConvertStorageValuePropertiesWithFileExtensionToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
@@ -64,6 +65,34 @@ public final class StorageConverterToStorageBinaryPropertiesTest extends Storage
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(dateTimeSymbols)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    dateTimeSymbols.properties()
+                        .text()
+                        .getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValuePropertiesWithOnlyContentTypeToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
+            )
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(dateTimeSymbols)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
                 ),
             StorageBinary.with(
                 storagePath,

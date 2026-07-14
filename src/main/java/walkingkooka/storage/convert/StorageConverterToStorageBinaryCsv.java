@@ -22,6 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.io.FileExtension;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 
@@ -48,6 +49,11 @@ final class StorageConverterToStorageBinaryCsv<C extends StorageConverterContext
     @Override
     FileExtension fileExtension() {
         return FileExtension.CSV;
+    }
+
+    @Override
+    MediaType contentType() {
+        return MediaType.TEXT_CSV;
     }
 
     @Override

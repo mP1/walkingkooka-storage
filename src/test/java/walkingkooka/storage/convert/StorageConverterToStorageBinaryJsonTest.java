@@ -28,6 +28,7 @@ import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.JsonString;
 import walkingkooka.tree.json.convert.JsonNodeConverters;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -49,14 +50,14 @@ public final class StorageConverterToStorageBinaryJsonTest extends StorageConver
     public void testConvertEmptyStorageValueJsonToStorageBinaryFails() {
         this.convertFails(
             StorageValue.with(
-                    StoragePath.parse("/dir/DateTimeSymbols.json")
-                ),
+                StoragePath.parse("/dir/DateTimeSymbols.json")
+            ),
             StorageBinary.class
         );
     }
 
     @Test
-    public void testConvertStorageValueJsonToStorageBinary() {
+    public void testConvertStorageValueFileExtensionJsonToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
@@ -75,6 +76,47 @@ public final class StorageConverterToStorageBinaryJsonTest extends StorageConver
                 MARSHALL_CONTEXT.marshall(dateTimeSymbols)
                     .binary(CHARSET)
             )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueJsonWithoutFileExtensionToStorageBinary() {
+        final JsonNode json = JsonNode.object()
+            .set(
+                JsonPropertyName.with("hello"),
+                "World123"
+            );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/json");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(json)
+                ),
+            StorageBinary.with(
+                storagePath,
+                json.binary(CHARSET)
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
+            )
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(dateTimeSymbols)
+                ),
+            StorageBinary.class
         );
     }
 
