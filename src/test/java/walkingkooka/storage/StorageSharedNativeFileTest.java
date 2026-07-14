@@ -743,10 +743,10 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                     StorageConverters.storageBinaryToStorageValueTxt(),
                     StorageConverters.storageBinaryToStorageValueProperties(),
                     StorageConverters.storageBinaryToStorageValueJson(),
-                    StorageConverters.toStorageBinaryExpression(),
-                    StorageConverters.toStorageBinaryJson(),
-                    StorageConverters.toStorageBinaryProperties(),
-                    StorageConverters.toStorageBinaryTxt()
+                    StorageConverters.storageValueToStorageBinaryExpression(),
+                    StorageConverters.storageValueToStorageBinaryJson(),
+                    StorageConverters.storageValueToStorageBinaryProperties(),
+                    StorageConverters.storageValueToStorageBinaryTxt()
                 )
             );
 
