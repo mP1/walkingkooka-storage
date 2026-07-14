@@ -79,11 +79,4 @@ final class StorageConverterStorageValueToStorageBinarySharedTsv<C extends Stora
             ) :
             Cast.to(tsvStringList);
     }
-
-    // Object...........................................................................................................
-
-    @Override
-    public String toString() {
-        return "*." + FileExtension.TSV + " to " + StorageBinary.class.getSimpleName();
-    }
 }

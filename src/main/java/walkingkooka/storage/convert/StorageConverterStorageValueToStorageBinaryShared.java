@@ -115,6 +115,10 @@ abstract class StorageConverterStorageValueToStorageBinaryShared<C extends Stora
     abstract Either<Binary, String> toBinary(final StorageValue storageValue,
                                              final C context);
 
+    // Object...........................................................................................................
+
     @Override
-    public abstract String toString();
+    public final String toString() {
+        return "*." + this.fileExtension() + " to " + StorageBinary.class.getSimpleName();
+    }
 }

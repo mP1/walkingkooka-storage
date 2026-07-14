@@ -80,11 +80,4 @@ final class StorageConverterStorageValueToStorageBinarySharedJson<C extends Stor
             ) :
             Cast.to(jsonNode);
     }
-
-    // Object...........................................................................................................
-
-    @Override
-    public String toString() {
-        return "*." + FileExtension.JSON + " to " + StorageBinary.class.getSimpleName();
-    }
 }
