@@ -45,17 +45,15 @@ final class StorageConverterToStorageBinaryJson<C extends StorageConverterContex
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        // file extension is *.json and value can be converted to text
-        return FileExtension.JSON.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, JsonNode.class) && context.canConvert(JSON_OBJECT, String.class) && context.canConvert("", Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.JSON;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, JsonNode.class) &&
+            context.canConvert(JSON_OBJECT, String.class);
     }
 
     private final static JsonNode JSON_OBJECT = JsonNode.object();

@@ -46,16 +46,15 @@ final class StorageConverterToStorageBinaryProperties<C extends StorageConverter
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        return FileExtension.PROPERTIES.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, Properties.class) && context.canConvert(Properties.EMPTY, Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.PROPERTIES;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, Properties.class) &&
+            context.canConvert(Properties.EMPTY, Binary.class);
     }
 
     @Override

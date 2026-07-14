@@ -20,7 +20,9 @@ package walkingkooka.storage.convert;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.io.FileExtension;
 import walkingkooka.storage.StorageBinary;
+import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 /**
@@ -44,11 +46,34 @@ abstract class StorageConverterToStorageBinary<C extends StorageConverterContext
             );
     }
 
+    private boolean testStorageValue(final StorageValue storageValue,
+                                     final C context) {
+        final FileExtension fileExtension = storageValue.path()
+            .fileExtension()
+            .orElse(null);
+
+        final Object value = storageValue.value()
+            .orElse(null);
+
+        return this.fileExtension()
+            .test(fileExtension) &&
+            null != value &&
+            this.testValue(
+                value,
+                context
+            );
+    }
+
     /**
-     * Sub-classes should test the file extension and value are supported.
+     * The {@link StoragePath} file extension that must be matched.
      */
-    abstract boolean testStorageValue(final StorageValue storageValue,
-                                      final C context);
+    abstract FileExtension fileExtension();
+
+    /**
+     * Sub-classes should test non null value is supported.
+     */
+    abstract boolean testValue(final Object value,
+                               final C context);
 
     @Override
     public <T> Either<T, String> doConvert(final Object value,

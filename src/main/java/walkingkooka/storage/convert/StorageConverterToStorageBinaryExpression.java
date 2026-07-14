@@ -45,17 +45,15 @@ final class StorageConverterToStorageBinaryExpression<C extends StorageConverter
     }
 
     @Override
-    boolean testStorageValue(final StorageValue storageValue,
-                             final C context) {
-        // file extension is *.txt and value can be converted to text
-        return FileExtension.EXPRESSION.equals(
-            storageValue.path()
-                .fileExtension()
-                .orElse(null)
-        ) &&
-            storageValue.value()
-                .map((Object value) -> context.canConvert(value, Expression.class) && context.canConvert(EXPRESSION, String.class) && context.canConvert("", Binary.class))
-                .orElse(false);
+    FileExtension fileExtension() {
+        return FileExtension.EXPRESSION;
+    }
+
+    @Override
+    boolean testValue(final Object value,
+                      final C context) {
+        return context.canConvert(value, Expression.class) &&
+            context.canConvert(EXPRESSION, String.class);
     }
 
     private final static Expression EXPRESSION = Expression.value("Hello");
