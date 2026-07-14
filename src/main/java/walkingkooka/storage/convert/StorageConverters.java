@@ -75,52 +75,52 @@ public final class StorageConverters implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageConverterTextToStoragePath}
+     * {@see StorageConverterStorageValueToStorageBinarySharedCsv}
      */
-    public static <C extends StorageConverterContext> Converter<C> textToStoragePath() {
-        return StorageConverterTextToStoragePath.instance();
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryCsv() {
+        return StorageConverterStorageValueToStorageBinarySharedCsv.instance();
     }
 
     /**
-     * {@see StorageConverterStorageValueToStorageBinarySharedCsv}
-     */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryCsv() {
-        return StorageConverterStorageValueToStorageBinarySharedCsv.instance();
-    }
-    
-    /**
      * {@see StorageConverterStorageValueToStorageBinarySharedExpression}
      */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryExpression() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryExpression() {
         return StorageConverterStorageValueToStorageBinarySharedExpression.instance();
     }
 
     /**
      * {@see StorageConverterStorageValueToStorageBinarySharedJson}
      */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryJson() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryJson() {
         return StorageConverterStorageValueToStorageBinarySharedJson.instance();
     }
 
     /**
      * {@see StorageConverterStorageValueToStorageBinarySharedProperties}
      */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryProperties() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryProperties() {
         return StorageConverterStorageValueToStorageBinarySharedProperties.instance();
     }
 
     /**
      * {@see StorageConverterStorageValueToStorageBinarySharedTsv}
      */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryTsv() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryTsv() {
         return StorageConverterStorageValueToStorageBinarySharedTsv.instance();
     }
-    
+
     /**
      * {@see StorageConverterStorageValueToStorageBinarySharedTxt}
      */
-    public static <C extends StorageConverterContext> Converter<C> toStorageBinaryTxt() {
+    public static <C extends StorageConverterContext> Converter<C> storageValueToStorageBinaryTxt() {
         return StorageConverterStorageValueToStorageBinarySharedTxt.instance();
+    }
+
+    /**
+     * {@see StorageConverterTextToStoragePath}
+     */
+    public static <C extends StorageConverterContext> Converter<C> textToStoragePath() {
+        return StorageConverterTextToStoragePath.instance();
     }
 
     /**
