@@ -30,18 +30,18 @@ import walkingkooka.tree.expression.Expression;
  * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#EXPRESSION} and the value can be
  * converted into a {@link Expression} and then text and then into {@link Binary} and then {@link StorageBinary}.
  */
-final class StorageConverterToStorageBinarySharedExpression<C extends StorageConverterContext> extends StorageConverterToStorageBinaryShared<C> {
+final class StorageConverterStorageValueToStorageBinarySharedExpression<C extends StorageConverterContext> extends StorageConverterStorageValueToStorageBinaryShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterToStorageBinarySharedExpression<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageValueToStorageBinarySharedExpression<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterToStorageBinarySharedExpression INSTANCE = new StorageConverterToStorageBinarySharedExpression<>();
+    private final static StorageConverterStorageValueToStorageBinarySharedExpression INSTANCE = new StorageConverterStorageValueToStorageBinarySharedExpression<>();
 
-    private StorageConverterToStorageBinarySharedExpression() {
+    private StorageConverterStorageValueToStorageBinarySharedExpression() {
         super();
     }
 

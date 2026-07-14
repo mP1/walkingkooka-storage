@@ -34,7 +34,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinarySharedExpressionTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedExpressionTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedExpression<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -82,8 +82,8 @@ public final class StorageConverterToStorageBinarySharedExpressionTest extends S
     }
 
     @Override
-    public StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinarySharedExpression.instance();
+    public StorageConverterStorageValueToStorageBinarySharedExpression<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageValueToStorageBinarySharedExpression.instance();
     }
 
     @Override
@@ -155,7 +155,7 @@ public final class StorageConverterToStorageBinarySharedExpressionTest extends S
     }
 
     @Override
-    public Class<StorageConverterToStorageBinarySharedExpression<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinarySharedExpression.class);
+    public Class<StorageConverterStorageValueToStorageBinarySharedExpression<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageValueToStorageBinarySharedExpression.class);
     }
 }

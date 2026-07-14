@@ -24,67 +24,57 @@ import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
-import walkingkooka.tree.json.JsonNode;
 
 /**
- * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#JSON} and
- * the {@link StorageValue#value()} can be converted into a {@link JsonNode} and then {@link String} and then {@link StorageBinary}.
+ * Converts a {@link StorageValue} into {@link StorageBinary} if the file extension is {@link FileExtension#TXT}
+ * and the value can be converted into text and that text into {@link Binary}.
  */
-final class StorageConverterToStorageBinarySharedJson<C extends StorageConverterContext> extends StorageConverterToStorageBinaryShared<C> {
+final class StorageConverterStorageValueToStorageBinarySharedTxt<C extends StorageConverterContext> extends StorageConverterStorageValueToStorageBinaryShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterToStorageBinarySharedJson<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageValueToStorageBinarySharedTxt<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterToStorageBinarySharedJson INSTANCE = new StorageConverterToStorageBinarySharedJson<>();
+    private final static StorageConverterStorageValueToStorageBinarySharedTxt INSTANCE = new StorageConverterStorageValueToStorageBinarySharedTxt<>();
 
-    private StorageConverterToStorageBinarySharedJson() {
+    private StorageConverterStorageValueToStorageBinarySharedTxt() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.JSON;
+        return FileExtension.TXT;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.APPLICATION_JSON;
+        return MediaType.TEXT_PLAIN;
     }
 
     @Override
     boolean testValue(final Object value,
                       final C context) {
-        return context.canConvert(value, JsonNode.class) &&
-            context.canConvert(JSON_OBJECT, String.class);
+        return context.canConvert(value, String.class) &&
+            context.canConvert("", Binary.class);
     }
-
-    private final static JsonNode JSON_OBJECT = JsonNode.object();
 
     @Override
     Either<Binary, String> toBinary(final StorageValue storageValue,
                                     final C context) {
-        Either<JsonNode, String> jsonNode = context.convert(
+        return context.convert(
             storageValue.value()
                 .orElse(null),
-            JsonNode.class
+            Binary.class
         );
-
-        return jsonNode.isLeft() ?
-            context.convert(
-                jsonNode.leftValue(),
-                Binary.class
-            ) :
-            Cast.to(jsonNode);
     }
 
     // Object...........................................................................................................
 
     @Override
     public String toString() {
-        return "*." + FileExtension.JSON + " to " + StorageBinary.class.getSimpleName();
+        return "*." + FileExtension.TXT + " to " + StorageBinary.class.getSimpleName();
     }
 }
