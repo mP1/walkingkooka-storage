@@ -70,11 +70,4 @@ final class StorageConverterStorageValueToStorageBinarySharedTxt<C extends Stora
             Binary.class
         );
     }
-
-    // Object...........................................................................................................
-
-    @Override
-    public String toString() {
-        return "*." + FileExtension.TXT + " to " + StorageBinary.class.getSimpleName();
-    }
 }

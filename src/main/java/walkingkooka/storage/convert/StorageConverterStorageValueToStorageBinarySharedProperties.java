@@ -79,11 +79,4 @@ final class StorageConverterStorageValueToStorageBinarySharedProperties<C extend
             ) :
             Cast.to(properties);
     }
-
-    // Object...........................................................................................................
-
-    @Override
-    public String toString() {
-        return "*." + FileExtension.PROPERTIES + " to " + StorageBinary.class.getSimpleName();
-    }
 }

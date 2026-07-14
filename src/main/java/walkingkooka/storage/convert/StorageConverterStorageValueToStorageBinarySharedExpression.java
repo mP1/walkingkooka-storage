@@ -95,11 +95,4 @@ final class StorageConverterStorageValueToStorageBinarySharedExpression<C extend
 
         return binary;
     }
-
-    // Object...........................................................................................................
-
-    @Override
-    public String toString() {
-        return "*." + FileExtension.EXPRESSION + " to " + StorageBinary.class.getSimpleName();
-    }
 }
