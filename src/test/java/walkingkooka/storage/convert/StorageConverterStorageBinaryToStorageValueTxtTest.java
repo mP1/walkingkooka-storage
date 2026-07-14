@@ -109,6 +109,14 @@ public final class StorageConverterStorageBinaryToStorageValueTxtTest extends St
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.txt to StorageValue"
+        );
+    }
+
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueTxt<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueTxt.class);

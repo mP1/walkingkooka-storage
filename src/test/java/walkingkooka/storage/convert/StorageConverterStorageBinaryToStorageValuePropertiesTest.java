@@ -145,6 +145,14 @@ public final class StorageConverterStorageBinaryToStorageValuePropertiesTest ext
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.properties to StorageValue"
+        );
+    }
+
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueProperties<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueProperties.class);

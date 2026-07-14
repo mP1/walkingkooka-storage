@@ -183,6 +183,14 @@ public final class StorageConverterStorageBinaryToStorageValueJsonTest extends S
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.json to StorageValue"
+        );
+    }
+
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueJson<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueJson.class);
