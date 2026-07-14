@@ -36,6 +36,7 @@ import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextPrinting;
 
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
@@ -55,13 +56,14 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
 
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
-        StandardCharsets.UTF_8,
         Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
-        Indentation.SPACES2,
-        LineEnding.NL,
         ',', // valueSeparator
         Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
         BinaryNumberConverterFunctions.fake(), // multiplier
+        TextPrinting.with(
+            Indentation.SPACES2,
+            LineEnding.NL
+        ).setCharset(StandardCharsets.UTF_8),
         new FakeCurrencyContext() {
             @Override
             public Optional<Currency> currencyForLocale(final Locale locale) {
