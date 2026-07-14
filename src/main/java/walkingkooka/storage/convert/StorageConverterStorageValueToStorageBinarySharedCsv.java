@@ -31,18 +31,18 @@ import walkingkooka.storage.StorageValue;
  * and the {@link StorageValue#value()} can be converted into a {@link CsvStringList} and then {@link String} and then
  * {@link StorageBinary}.
  */
-final class StorageConverterToStorageBinarySharedCsv<C extends StorageConverterContext> extends StorageConverterToStorageBinaryShared<C> {
+final class StorageConverterStorageValueToStorageBinarySharedCsv<C extends StorageConverterContext> extends StorageConverterStorageValueToStorageBinaryShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterToStorageBinarySharedCsv<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageValueToStorageBinarySharedCsv<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterToStorageBinarySharedCsv INSTANCE = new StorageConverterToStorageBinarySharedCsv<>();
+    private final static StorageConverterStorageValueToStorageBinarySharedCsv INSTANCE = new StorageConverterStorageValueToStorageBinarySharedCsv<>();
 
-    private StorageConverterToStorageBinarySharedCsv() {
+    private StorageConverterStorageValueToStorageBinarySharedCsv() {
         super();
     }
 

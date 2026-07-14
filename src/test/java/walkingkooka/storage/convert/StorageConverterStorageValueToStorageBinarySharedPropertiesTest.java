@@ -37,31 +37,29 @@ import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinarySharedTxtTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedTxt<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertEmptyStorageValueTxtToStorageBinaryFails() {
+    public void testConvertEmptyStorageValuePropertiesToStorageBinaryFails() {
         this.convertFails(
             StorageValue.with(
-                StoragePath.parse("/dir/DateTimeSymbols.txt")
-            ).setValue(
-                Optional.empty()
-            ),
+                    StoragePath.parse("/dir/DateTimeSymbols.properties")
+                ),
             StorageBinary.class
         );
     }
 
     @Test
-    public void testConvertStorageValueWithFileExtensionTxtToStorageBinary() {
+    public void testConvertStorageValuePropertiesWithFileExtensionToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
             )
         );
 
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
@@ -71,7 +69,8 @@ public final class StorageConverterToStorageBinarySharedTxtTest extends StorageC
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.text()
+                    dateTimeSymbols.properties()
+                        .text()
                         .getBytes(CHARSET)
                 )
             )
@@ -79,48 +78,36 @@ public final class StorageConverterToStorageBinarySharedTxtTest extends StorageC
     }
 
     @Test
-    public void testConvertStorageValueTxtAndStringToStorageBinary() {
-        final String value = "Hello world";
-        final StoragePath storagePath = StoragePath.parse("/dir/text-file.txt");
-
-        this.convertAndCheck(
-            StorageValue.with(storagePath)
-                .setValue(
-                    Optional.of(value)
-                ),
-            StorageBinary.with(
-                storagePath,
-                Binary.with(
-                    value.getBytes(CHARSET)
-                )
+    public void testConvertStorageValuePropertiesWithOnlyContentTypeToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
             )
         );
-    }
 
-    @Test
-    public void testConvertStorageValueStringAndContentTypeToStorageBinary() {
-        final String value = "Hello world";
-        final StoragePath storagePath = StoragePath.parse("/dir/text-file");
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(value)
+                    Optional.of(dateTimeSymbols)
                 ).setContentType(
-                    Optional.of(MediaType.TEXT_PLAIN)
+                    Optional.of(MediaType.TEXT_PROPERTIES)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    value.getBytes(CHARSET)
+                    dateTimeSymbols.properties()
+                        .text()
+                        .getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Override
-    public StorageConverterToStorageBinarySharedTxt<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinarySharedTxt.instance();
+    public StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageValueToStorageBinarySharedProperties.instance();
     }
 
     @Override
@@ -155,6 +142,7 @@ public final class StorageConverterToStorageBinarySharedTxtTest extends StorageC
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.hasProperties(),
                     Converters.hasText(),
                     Converters.textToBinary()
                 )
@@ -166,12 +154,12 @@ public final class StorageConverterToStorageBinarySharedTxtTest extends StorageC
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.txt to StorageBinary"
+            "*.properties to StorageBinary"
         );
     }
 
     @Override
-    public Class<StorageConverterToStorageBinarySharedTxt<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinarySharedTxt.class);
+    public Class<StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageValueToStorageBinarySharedProperties.class);
     }
 }

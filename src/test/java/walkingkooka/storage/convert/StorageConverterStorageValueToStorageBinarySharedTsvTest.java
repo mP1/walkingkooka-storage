@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
@@ -35,17 +35,17 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinarySharedCsvTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedCsv<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedTsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageValueCsvToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
+    public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
@@ -63,8 +63,8 @@ public final class StorageConverterToStorageBinarySharedCsvTest extends StorageC
     }
 
     @Test
-    public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
+    public void testConvertStorageValueWithOnlyContentTypeToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
 
@@ -75,9 +75,7 @@ public final class StorageConverterToStorageBinarySharedCsvTest extends StorageC
                 .setValue(
                     Optional.of(list)
                 ).setContentType(
-                    Optional.of(
-                        MediaType.TEXT_CSV
-                    )
+                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -90,8 +88,8 @@ public final class StorageConverterToStorageBinarySharedCsvTest extends StorageC
     }
 
     @Override
-    public StorageConverterToStorageBinarySharedCsv<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinarySharedCsv.instance();
+    public StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageValueToStorageBinarySharedTsv.instance();
     }
 
     @Override
@@ -138,12 +136,12 @@ public final class StorageConverterToStorageBinarySharedCsvTest extends StorageC
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.csv to StorageBinary"
+            "*.tsv to StorageBinary"
         );
     }
 
     @Override
-    public Class<StorageConverterToStorageBinarySharedCsv<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinarySharedCsv.class);
+    public Class<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageValueToStorageBinarySharedTsv.class);
     }
 }

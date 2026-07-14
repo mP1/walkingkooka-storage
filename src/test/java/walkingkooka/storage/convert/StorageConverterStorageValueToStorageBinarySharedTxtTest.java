@@ -22,10 +22,10 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -33,29 +33,45 @@ import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormatSymbols;
+import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterToStorageBinarySharedTsvTest extends StorageConverterToStorageBinarySharedTestCase<StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedTxtTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
+    public void testConvertEmptyStorageValueTxtToStorageBinaryFails() {
+        this.convertFails(
+            StorageValue.with(
+                StoragePath.parse("/dir/DateTimeSymbols.txt")
+            ).setValue(
+                Optional.empty()
+            ),
+            StorageBinary.class
+        );
+    }
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
+    @Test
+    public void testConvertStorageValueWithFileExtensionTxtToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
+            )
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(dateTimeSymbols)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
+                    dateTimeSymbols.text()
                         .getBytes(CHARSET)
                 )
             )
@@ -63,33 +79,48 @@ public final class StorageConverterToStorageBinarySharedTsvTest extends StorageC
     }
 
     @Test
-    public void testConvertStorageValueWithOnlyContentTypeToStorageBinary() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-        final StoragePath storagePath = StoragePath.parse("/dir/letters");
+    public void testConvertStorageValueTxtAndStringToStorageBinary() {
+        final String value = "Hello world";
+        final StoragePath storagePath = StoragePath.parse("/dir/text-file.txt");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
+                    Optional.of(value)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
-                        .getBytes(CHARSET)
+                    value.getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueStringAndContentTypeToStorageBinary() {
+        final String value = "Hello world";
+        final StoragePath storagePath = StoragePath.parse("/dir/text-file");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(value)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    value.getBytes(CHARSET)
                 )
             )
         );
     }
 
     @Override
-    public StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext> createConverter() {
-        return StorageConverterToStorageBinarySharedTsv.instance();
+    public StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageValueToStorageBinarySharedTxt.instance();
     }
 
     @Override
@@ -125,7 +156,6 @@ public final class StorageConverterToStorageBinarySharedTsvTest extends StorageC
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.hasText(),
-                    Converters.simple(),
                     Converters.textToBinary()
                 )
             );
@@ -136,12 +166,12 @@ public final class StorageConverterToStorageBinarySharedTsvTest extends StorageC
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.tsv to StorageBinary"
+            "*.txt to StorageBinary"
         );
     }
 
     @Override
-    public Class<StorageConverterToStorageBinarySharedTsv<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterToStorageBinarySharedTsv.class);
+    public Class<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageValueToStorageBinarySharedTxt.class);
     }
 }
