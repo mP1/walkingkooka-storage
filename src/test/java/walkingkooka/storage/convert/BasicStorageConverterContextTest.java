@@ -42,7 +42,6 @@ import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextPrinting;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
@@ -240,7 +239,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                         BinaryNumberConverterFunctions.fake(), // multiplier
                         TextPrinting.with(
                             Indentation.SPACES2,
-                            LineEnding.NL
+                            LINE_ENDING
                         ).setCharset(StandardCharsets.UTF_8),
                         currencyLocaleContext,
                         DateTimeContexts.basic(

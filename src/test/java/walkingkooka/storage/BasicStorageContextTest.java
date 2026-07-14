@@ -35,7 +35,6 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextPrinting;
 
 import java.math.MathContext;
@@ -62,7 +61,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         BinaryNumberConverterFunctions.fake(), // multiplier
         TextPrinting.with(
             Indentation.SPACES2,
-            LineEnding.NL
+            LINE_ENDING
         ).setCharset(StandardCharsets.UTF_8),
         new FakeCurrencyContext() {
             @Override
@@ -146,7 +145,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
             StandardCharsets.UTF_8,
             Currency.getInstance("AUD"),
             Indentation.SPACES2,
-            LineEnding.CRNL,
+            LINE_ENDING,
             Locale.GERMAN,
             HAS_NOW,
             Optional.of(
@@ -192,7 +191,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
                     StandardCharsets.UTF_8,
                     Currency.getInstance("AUD"),
                     Indentation.SPACES2,
-                    LineEnding.NL,
+                    LINE_ENDING,
                     Locale.FRANCE,
                     HAS_NOW,
                     Optional.of(

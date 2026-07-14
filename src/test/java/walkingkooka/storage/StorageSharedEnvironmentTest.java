@@ -54,8 +54,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
     implements EnvironmentContextTesting {
 
-    private final static LineEnding LINE_ENDING = LineEnding.NL;
-
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
         12,
@@ -625,7 +623,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 BinaryNumberConverterFunctions.fake(), // multiplier
                 TextPrinting.with(
                     Indentation.SPACES2,
-                    LineEnding.NL
+                    LINE_ENDING
                 ).setCharset(StandardCharsets.UTF_8),
                 new FakeCurrencyContext() {
                     @Override
