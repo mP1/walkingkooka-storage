@@ -110,6 +110,14 @@ public final class StorageConverterStorageBinaryToStorageValueCsvTest extends St
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.csv to StorageValue"
+        );
+    }
+
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueCsv<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueCsv.class);

@@ -133,6 +133,14 @@ public final class StorageConverterStorageBinaryToStorageValueExpressionTest ext
         };
     }
 
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "*.expression.txt to StorageValue"
+        );
+    }
+
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueExpression<FakeStorageConverterContext>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueExpression.class);

@@ -96,8 +96,9 @@ abstract class StorageConverterStorageBinaryToStorageValue<C extends StorageConv
 
     // Object...........................................................................................................
 
+    // *.csv to StorageValue
     @Override
     public final String toString() {
-        return "*." + this.fileExtension() + " AND " + StorageBinary.class.getSimpleName() + " to";
+        return "*." + this.fileExtension() + " to " + StorageValue.class.getSimpleName();
     }
 }
