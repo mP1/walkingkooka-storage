@@ -77,6 +77,25 @@ public final class StorageConverterToStorageBinaryTxtTest extends StorageConvert
         );
     }
 
+    @Test
+    public void testConvertStorageValueTxtAndStringToStorageBinary() {
+        final String value = "Hello world";
+        final StoragePath storagePath = StoragePath.parse("/dir/text-file.txt");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(value)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    value.getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
     @Override
     public StorageConverterToStorageBinaryTxt<FakeStorageConverterContext> createConverter() {
         return StorageConverterToStorageBinaryTxt.instance();
