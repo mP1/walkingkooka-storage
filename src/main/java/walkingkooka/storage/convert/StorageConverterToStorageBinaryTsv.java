@@ -22,6 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.io.FileExtension;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 
@@ -48,6 +49,11 @@ final class StorageConverterToStorageBinaryTsv<C extends StorageConverterContext
     @Override
     FileExtension fileExtension() {
         return FileExtension.TSV;
+    }
+
+    @Override
+    MediaType contentType() {
+        return MediaType.TEXT_TAB_SEPARATED_VALUES;
     }
 
     @Override

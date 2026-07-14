@@ -26,6 +26,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -50,6 +51,33 @@ public final class StorageConverterToStorageBinaryCsvTest extends StorageConvert
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
+        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(
+                        MediaType.TEXT_CSV
+                    )
                 ),
             StorageBinary.with(
                 storagePath,

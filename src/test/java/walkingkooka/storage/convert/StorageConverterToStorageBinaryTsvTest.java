@@ -26,6 +26,7 @@ import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -39,7 +40,7 @@ public final class StorageConverterToStorageBinaryTsvTest extends StorageConvert
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageValueTsvToStorageBinary() {
+    public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
         final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
@@ -50,6 +51,31 @@ public final class StorageConverterToStorageBinaryTsvTest extends StorageConvert
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithOnlyContentTypeToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 ),
             StorageBinary.with(
                 storagePath,

@@ -21,6 +21,7 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.tree.json.JsonNode;
@@ -47,6 +48,11 @@ final class StorageConverterToStorageBinaryJson<C extends StorageConverterContex
     @Override
     FileExtension fileExtension() {
         return FileExtension.JSON;
+    }
+
+    @Override
+    MediaType contentType() {
+        return MediaType.APPLICATION_JSON;
     }
 
     @Override

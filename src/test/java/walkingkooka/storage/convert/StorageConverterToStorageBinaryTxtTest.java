@@ -26,6 +26,7 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -53,7 +54,7 @@ public final class StorageConverterToStorageBinaryTxtTest extends StorageConvert
     }
 
     @Test
-    public void testConvertStorageValueTxtToStorageBinary() {
+    public void testConvertStorageValueWithFileExtensionTxtToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
@@ -86,6 +87,27 @@ public final class StorageConverterToStorageBinaryTxtTest extends StorageConvert
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(value)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    value.getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueStringAndContentTypeToStorageBinary() {
+        final String value = "Hello world";
+        final StoragePath storagePath = StoragePath.parse("/dir/text-file");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(value)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
                 ),
             StorageBinary.with(
                 storagePath,

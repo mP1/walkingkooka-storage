@@ -46,8 +46,26 @@ public final class StorageConverterToStorageBinaryExpressionTest extends Storage
     private final static String EXPRESSION_STRING = "111+222";
 
     @Test
-    public void testConvertStorageValueTextToStorageBinary() {
+    public void testConvertStorageValueWithFileExtensionToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(EXPRESSION)
+                ),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    EXPRESSION_STRING.getBytes(CHARSET)
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithoutFileExtensionAndMediaTypeToStorageBinary() {
+        final StoragePath storagePath = StoragePath.parse("/dir/add");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)

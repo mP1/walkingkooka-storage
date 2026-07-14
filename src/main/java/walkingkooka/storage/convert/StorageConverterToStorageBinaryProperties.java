@@ -21,6 +21,7 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StorageValue;
@@ -48,6 +49,11 @@ final class StorageConverterToStorageBinaryProperties<C extends StorageConverter
     @Override
     FileExtension fileExtension() {
         return FileExtension.PROPERTIES;
+    }
+
+    @Override
+    MediaType contentType() {
+        return MediaType.TEXT_PROPERTIES;
     }
 
     @Override
