@@ -57,7 +57,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -204,12 +203,11 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     @Override
     public BasicStorageConverterContext createContext() {
         final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
-        final Locale locale = Locale.forLanguageTag("en-AU");
-        final LocaleContext localeContext = LocaleContexts.jre(locale);
+        final LocaleContext localeContext = LocaleContexts.jre(LOCALE);
 
         final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
             CurrencyContexts.jre(
-                Currency.getInstance(locale),
+                Currency.getInstance(LOCALE),
                 CurrencyExchangeRaters.properties(
                     Properties.EMPTY,
                     (s, b) -> {
@@ -244,9 +242,9 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                         currencyLocaleContext,
                         DateTimeContexts.basic(
                             DateTimeSymbols.fromDateFormatSymbols(
-                                new DateFormatSymbols(locale)
+                                new DateFormatSymbols(LOCALE)
                             ),
-                            locale,
+                            LOCALE,
                             1920, // defaultYear
                             20, // twoDigitYear
                             LocalDateTime::now
