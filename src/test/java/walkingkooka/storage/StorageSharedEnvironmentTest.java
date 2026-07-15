@@ -37,7 +37,6 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
-import walkingkooka.text.TextPrinting;
 
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
@@ -619,10 +618,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 ',', // valueSeparator
                 Converters.fake(),
                 BinaryNumberConverterFunctions.fake(), // multiplier
-                TextPrinting.with(
-                    Indentation.SPACES2,
-                    LINE_ENDING
-                ).setCharset(StandardCharsets.UTF_8),
+                BINARY_TEXT_CONTEXT,
                 new FakeCurrencyContext() {
                     @Override
                     public Optional<Currency> currencyForLocale(final Locale locale) {
