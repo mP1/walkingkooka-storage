@@ -51,8 +51,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
     HashCodeEqualsDefinedTesting2<BasicStorageContext> {
 
-    private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
-
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,

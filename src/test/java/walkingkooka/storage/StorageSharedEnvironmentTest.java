@@ -595,15 +595,13 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
     @Override
     public StorageContext createContext() {
-        final Locale locale = Locale.forLanguageTag("en-AU");
-
         final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
                 StandardCharsets.UTF_8,
-                Currency.getInstance(locale),
+                Currency.getInstance(LOCALE),
                 Indentation.SPACES4,
                 LINE_ENDING,
-                locale,
+                LOCALE,
                 () -> NOW,
                 Optional.ofNullable(USER)
             )
@@ -633,13 +631,13 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                         );
                     }
                 }.setLocaleContext(
-                    LocaleContexts.jre(locale)
+                    LocaleContexts.jre(LOCALE)
                 ),
                 DateTimeContexts.basic(
                     DateTimeSymbols.fromDateFormatSymbols(
-                        new DateFormatSymbols(locale)
+                        new DateFormatSymbols(LOCALE)
                     ),
-                    locale,
+                    LOCALE,
                     1920,
                     20,
                     LocalDateTime::now
