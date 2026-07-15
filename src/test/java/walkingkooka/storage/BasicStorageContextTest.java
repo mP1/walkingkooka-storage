@@ -26,7 +26,6 @@ import walkingkooka.convert.Converters;
 import walkingkooka.currency.FakeCurrencyContext;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
-import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.locale.LocaleContexts;
@@ -86,8 +85,6 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
 
     private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
-
-    private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     @Test
     public void testWithNullConverterLikeFails() {
