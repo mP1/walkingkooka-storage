@@ -30,7 +30,6 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
@@ -139,9 +138,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
             LINE_ENDING,
             Locale.GERMAN,
             HAS_NOW,
-            Optional.of(
-                EmailAddress.parse("different@example.com")
-            )
+            Optional.of(DIFFERENT_USER)
         );
 
         final StorageContext after = context.setEnvironmentContext(environmentContext);
@@ -185,9 +182,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
                     LINE_ENDING,
                     Locale.FRANCE,
                     HAS_NOW,
-                    Optional.of(
-                        EmailAddress.parse("user@example.com")
-                    )
+                    Optional.of(USER)
                 )
             )
         );
