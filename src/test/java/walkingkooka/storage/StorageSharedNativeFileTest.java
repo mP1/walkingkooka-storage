@@ -29,13 +29,10 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.convert.ShortCircuitingConverter;
-import walkingkooka.currency.CurrencyContexts;
-import walkingkooka.currency.CurrencyLocaleContext;
-import walkingkooka.currency.CurrencyLocaleContexts;
+import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.environment.AuditInfo;
-import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
@@ -72,14 +69,14 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedNativeFileTest extends StorageSharedTestCase<StorageSharedNativeFile<FakeStorageContext>, FakeStorageContext>
-    implements ThrowableTesting {
+    implements CurrencyLocaleContextTesting,
+    ThrowableTesting {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -93,13 +90,6 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     );
 
     private final static ExpressionNumberKind EXPRESSION_NUMBER_KIND = ExpressionNumberKind.DEFAULT;
-
-    private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
-
-    private final static CurrencyLocaleContext CURRENCY_LOCALE_CONTEXT = CurrencyLocaleContexts.basic(
-        CurrencyContexts.fake(),
-        LocaleContexts.jre(LOCALE)
-    );
 
     private final static String EXPRESSION_FILE_PATH = "ExpressionFile111.expression.txt";
 
