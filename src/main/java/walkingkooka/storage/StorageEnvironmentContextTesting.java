@@ -24,10 +24,6 @@ import java.util.Optional;
 public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
     HasUserDirectoriesTesting {
 
-    StoragePath CURRENT_WORKING_DIRECTORY = StoragePath.parse("/current1/working2/directory3");
-
-    Optional<StoragePath> OPTIONAL_CURRENT_WORKING_DIRECTORY = Optional.of(CURRENT_WORKING_DIRECTORY);
-
     default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context) {
         this.setCurrentWorkingDirectoryAndCheck(
             context,
