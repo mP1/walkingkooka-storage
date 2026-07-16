@@ -23,6 +23,10 @@ import java.util.Optional;
 
 public interface HasHomeDirectoryTesting extends TreePrintableTesting {
 
+    StoragePath HOME_DIRECTORY = StoragePath.parse("/home/user");
+
+    Optional<StoragePath> OPTIONAL_HOME_DIRECTORY = Optional.of(HOME_DIRECTORY);
+
     // homeDirectory.....................................................................................................
 
     default void homeDirectoryAndCheck(final HasHomeDirectory has) {
