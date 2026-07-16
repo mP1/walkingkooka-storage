@@ -143,7 +143,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.toProperties(),
-                    Converters.hasText(),
+                    Converters.toText(),
                     Converters.textToBinary()
                 )
             );

@@ -126,7 +126,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.hasText(),
+                    Converters.toText(),
                     Converters.simple(),
                     Converters.textToBinary()
                 )
