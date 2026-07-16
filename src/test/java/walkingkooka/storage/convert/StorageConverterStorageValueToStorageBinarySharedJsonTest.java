@@ -158,7 +158,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     JsonNodeConverters.toJsonNode(),
-                    Converters.hasText(),
+                    Converters.toText(),
                     Converters.textToBinary()
                 )
             );
