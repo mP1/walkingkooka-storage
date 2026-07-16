@@ -17,6 +17,20 @@
 
 package walkingkooka.storage;
 
+import java.util.Optional;
+
 public interface HasUserDirectoriesTesting extends HasCurrentWorkingDirectoryTesting,
     HasHomeDirectoryTesting {
+
+    HasUserDirectories HAS_USER_DIRECTORIES = new HasUserDirectories() {
+        @Override
+        public Optional<StoragePath> currentWorkingDirectory() {
+            return OPTIONAL_CURRENT_WORKING_DIRECTORY;
+        }
+
+        @Override
+        public Optional<StoragePath> homeDirectory() {
+            return OPTIONAL_HOME_DIRECTORY;
+        }
+    };
 }
