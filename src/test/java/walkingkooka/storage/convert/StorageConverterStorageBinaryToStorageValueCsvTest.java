@@ -103,7 +103,7 @@ public final class StorageConverterStorageBinaryToStorageValueCsvTest extends St
             private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.hasBinaryToString(),
+                    Converters.binaryToString(),
                     Converters.textToCsvStringList()
                 )
             ).cast(StorageConverterContext.class);

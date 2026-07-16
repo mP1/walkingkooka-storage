@@ -103,7 +103,7 @@ public final class StorageConverterStorageBinaryToStorageValueExpressionTest ext
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.hasBinaryToString(),
+                    Converters.binaryToString(),
                     Converters.simple(),
                     new ShortCircuitingConverter<>() {
 
