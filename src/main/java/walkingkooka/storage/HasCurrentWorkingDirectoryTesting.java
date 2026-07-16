@@ -23,6 +23,10 @@ import java.util.Optional;
 
 public interface HasCurrentWorkingDirectoryTesting extends TreePrintableTesting {
 
+    StoragePath CURRENT_WORKING_DIRECTORY = StoragePath.parse("/current1/working2/directory3");
+
+    Optional<StoragePath> OPTIONAL_CURRENT_WORKING_DIRECTORY = Optional.of(CURRENT_WORKING_DIRECTORY);
+
     // currentWorkingDirectory..........................................................................................
 
     default void currentWorkingDirectoryAndCheck(final HasCurrentWorkingDirectory has) {
