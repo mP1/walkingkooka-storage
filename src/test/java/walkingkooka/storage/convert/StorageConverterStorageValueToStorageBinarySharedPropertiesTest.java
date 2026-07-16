@@ -142,7 +142,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.hasProperties(),
+                    Converters.toProperties(),
                     Converters.hasText(),
                     Converters.textToBinary()
                 )
