@@ -703,7 +703,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                     Converters.simple(),
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.hasText(),
-                    Converters.hasBinaryToString(),
+                    Converters.binaryToString(),
                     Converters.textToBinary(),
                     new ShortCircuitingConverter<>() {
 
