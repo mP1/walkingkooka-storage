@@ -79,8 +79,6 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
 
     private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
 
-    private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
-
     @Test
     public void testWithNullConverterLikeFails() {
         assertThrows(
