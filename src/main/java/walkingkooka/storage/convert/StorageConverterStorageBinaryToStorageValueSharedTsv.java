@@ -70,18 +70,18 @@ final class StorageConverterStorageBinaryToStorageValueSharedTsv<C extends Stora
         if (text.isRight()) {
             result = Cast.to(text);
         } else {
-            final Either<TsvStringList, String> csv = context.convert(
+            final Either<TsvStringList, String> tsv = context.convert(
                 storageBinary,
                 TsvStringList.class
             );
 
-            if (csv.isRight()) {
-                result = Cast.to(csv);
+            if (tsv.isRight()) {
+                result = Cast.to(tsv);
             } else {
                 result = this.successfulConversion(
                     storageBinary.path(),
                     type,
-                    csv.leftValue()
+                    tsv.leftValue()
                 );
             }
         }
