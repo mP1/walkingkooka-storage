@@ -22,82 +22,48 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
-import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
-import walkingkooka.datetime.DateTimeSymbols;
-import walkingkooka.props.Properties;
-import walkingkooka.props.PropertiesPath;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageBinaryToStorageValuePropertiesTest extends StorageConverterStorageBinaryToStorageValueTestCase<StorageConverterStorageBinaryToStorageValueProperties<FakeStorageConverterContext>> {
+public final class StorageConverterStorageBinaryToStorageValueSharedTsvTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedTsv<FakeStorageConverterContext>> {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryPropertiesToDateTimeSymbols() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.ENGLISH
-            )
-        );
+    public void testConvertStorageBinaryJsonToTsvStringList() {
+        final TsvStringList list = TsvStringList.EMPTY.concat(
+                "abc"
+            ).concat("def")
+            .concat("ghi");
 
-        final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.properties");
-
-        this.convertAndCheck(
-            StorageBinary.with(
-                storagePath,
-                Binary.with(
-                    dateTimeSymbols.properties()
-                        .text()
-                        .getBytes(CHARSET)
-                )
-            ),
-            StorageValue.with(storagePath)
-                .setValue(
-                    Optional.of(dateTimeSymbols)
-                )
-        );
-    }
-
-    @Test
-    public void testConvertStorageBinaryPropertiesToProperties() {
-        final Properties properties = Properties.EMPTY.set(
-            PropertiesPath.parse("hello.world.123"),
-            "Hello World"
-        ).set(
-            PropertiesPath.parse("country"),
-            "Australia"
-        );
-
-        final StoragePath storagePath = StoragePath.parse("/file.properties");
+        final StoragePath storagePath = StoragePath.parse("/letters.tsv");
 
         this.convertAndCheck(
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    properties.text()
+                    list.text()
                         .getBytes(CHARSET)
                 )
             ),
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(properties)
+                    Optional.of(list)
                 )
         );
     }
 
     @Override
-    public StorageConverterStorageBinaryToStorageValueProperties<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStorageBinaryToStorageValueProperties.instance();
+    public StorageConverterStorageBinaryToStorageValueSharedTsv<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageBinaryToStorageValueSharedTsv.instance();
     }
 
     @Override
@@ -107,11 +73,6 @@ public final class StorageConverterStorageBinaryToStorageValuePropertiesTest ext
             @Override
             public Charset charset() {
                 return CHARSET;
-            }
-
-            @Override
-            public char valueSeparator() {
-                return ',';
             }
 
             @Override
@@ -134,14 +95,13 @@ public final class StorageConverterStorageBinaryToStorageValuePropertiesTest ext
                 );
             }
 
-            private final Converter<ConverterContext> converter = Converters.collection(
+            private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.binaryToString(),
-                    Converters.textToProperties(),
-                    Converters.propertiesToDateTimeSymbols()
+                    Converters.textToTsvStringList()
                 )
-            );
+            ).cast(StorageConverterContext.class);
         };
     }
 
@@ -149,12 +109,12 @@ public final class StorageConverterStorageBinaryToStorageValuePropertiesTest ext
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.properties to StorageValue"
+            "*.tsv to StorageValue"
         );
     }
 
     @Override
-    public Class<StorageConverterStorageBinaryToStorageValueProperties<FakeStorageConverterContext>> type() {
-        return Cast.to(StorageConverterStorageBinaryToStorageValueProperties.class);
+    public Class<StorageConverterStorageBinaryToStorageValueSharedTsv<FakeStorageConverterContext>> type() {
+        return Cast.to(StorageConverterStorageBinaryToStorageValueSharedTsv.class);
     }
 }

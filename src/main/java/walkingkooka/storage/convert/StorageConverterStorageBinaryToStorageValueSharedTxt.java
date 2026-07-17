@@ -22,46 +22,41 @@ import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
-import walkingkooka.tree.expression.Expression;
-
 
 /**
- * Converts {@link FileExtension#EXPRESSION} files to {@link Expression} by converting the {@link StorageBinary} to
- * {@link String} then to {@link walkingkooka.tree.expression.Expression}.
+ * Converts {@link FileExtension#TXT} files after converting the {@link StorageBinary#binary()} to {@link String} and then converting that
+ * to the requested target type.
  */
-final class StorageConverterStorageBinaryToStorageValueExpression<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
+final class StorageConverterStorageBinaryToStorageValueSharedTxt<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValueShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueExpression<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueSharedTxt<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    /**
-     * Singleton
-     */
-    private final static StorageConverterStorageBinaryToStorageValueExpression INSTANCE = new StorageConverterStorageBinaryToStorageValueExpression<>();
+    private final static StorageConverterStorageBinaryToStorageValueSharedTxt INSTANCE = new StorageConverterStorageBinaryToStorageValueSharedTxt<>();
 
-    private StorageConverterStorageBinaryToStorageValueExpression() {
+    private StorageConverterStorageBinaryToStorageValueSharedTxt() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.EXPRESSION;
+        return FileExtension.TXT;
     }
 
     @Override
     MediaType contentType() {
-        return Expression.MEDIA_TYPE;
+        return MediaType.TEXT_PLAIN;
     }
 
     @Override
     <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary storageBinary,
                                                       final Class<T> type,
                                                       final C context) {
-        final Either<T, String> storageValue;
+        final Either<T, String> result;
 
         // convert Binary to String
         final Either<String, String> text = context.convert(
@@ -69,24 +64,15 @@ final class StorageConverterStorageBinaryToStorageValueExpression<C extends Stor
             String.class
         );
         if (text.isRight()) {
-            storageValue = Cast.to(text);
+            result = Cast.to(text);
         } else {
-            // parse String holding expression into an Expression etc
-            final Either<Expression, String> expression = context.convert(
-                text.leftValue(),
-                Expression.class
+            result = this.successfulConversion(
+                storageBinary.path(),
+                type,
+                text.leftValue()
             );
-            if (expression.isRight()) {
-                storageValue = Cast.to(text);
-            } else {
-                storageValue = this.successfulConversion(
-                    storageBinary.path(),
-                    type,
-                    expression.leftValue()
-                );
-            }
         }
 
-        return storageValue;
+        return result;
     }
 }

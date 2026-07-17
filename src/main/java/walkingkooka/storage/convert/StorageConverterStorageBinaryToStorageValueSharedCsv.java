@@ -19,74 +19,73 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
-import walkingkooka.storage.StorageValue;
 
 
 /**
- * If the file extension is {@link FileExtension#PROPERTIES}, convert the {@link StorageValue#value()} to {@link String},
- * and that {@link Properties}.
+ * Converts {@link FileExtension#CSV} files in several steps,
+ * <ul>
+ * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold CSV and then convert that to a {@link CsvStringList}</li>
+ * </ul>
  */
-final class StorageConverterStorageBinaryToStorageValueProperties<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
+final class StorageConverterStorageBinaryToStorageValueSharedCsv<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValueShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueProperties<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueSharedCsv<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    /**
-     * Singleton
-     */
-    private final static StorageConverterStorageBinaryToStorageValueProperties INSTANCE = new StorageConverterStorageBinaryToStorageValueProperties<>();
+    private final static StorageConverterStorageBinaryToStorageValueSharedCsv INSTANCE = new StorageConverterStorageBinaryToStorageValueSharedCsv<>();
 
-    private StorageConverterStorageBinaryToStorageValueProperties() {
+    private StorageConverterStorageBinaryToStorageValueSharedCsv() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.PROPERTIES;
+        return FileExtension.CSV;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.TEXT_PROPERTIES;
+        return MediaType.TEXT_CSV;
     }
 
     @Override
     <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary storageBinary,
                                                       final Class<T> type,
                                                       final C context) {
-        final Either<T, String> storageValue;
+        final Either<T, String> result;
 
-        // convert StorageBinary to String
+        // convert Binary to String
         final Either<String, String> text = context.convert(
             storageBinary,
             String.class
         );
         if (text.isRight()) {
-            storageValue = Cast.to(text);
+            result = Cast.to(text);
         } else {
-            final Either<Properties, String> properties = context.convert(
-                text.leftValue(),
-                Properties.class
+            final Either<CsvStringList, String> csv = context.convert(
+                storageBinary,
+                CsvStringList.class
             );
-            if (properties.isRight()) {
-                storageValue = Cast.to(properties);
+
+            if (csv.isRight()) {
+                result = Cast.to(csv);
             } else {
-                storageValue = this.successfulConversion(
+                result = this.successfulConversion(
                     storageBinary.path(),
                     type,
-                    properties.leftValue()
+                    csv
                 );
             }
         }
 
-        return storageValue;
+        return result;
     }
 }
