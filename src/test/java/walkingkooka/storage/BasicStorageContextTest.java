@@ -30,7 +30,6 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
-import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.Indentation;
 
@@ -76,8 +75,6 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         ),
         DecimalNumberContexts.american(MathContext.DECIMAL32)
     );
-
-    private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
 
     @Test
     public void testWithNullConverterLikeFails() {
