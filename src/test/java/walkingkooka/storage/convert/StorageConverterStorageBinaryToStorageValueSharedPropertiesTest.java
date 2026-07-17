@@ -43,12 +43,12 @@ public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTe
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryPropertiesToDateTimeSymbols() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+    public void testConvertStorageBinaryDateTimeSymbolsPropertiesToStorageValue() {
+        final Properties dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.ENGLISH
             )
-        );
+        ).properties();
 
         final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.properties");
 
@@ -56,8 +56,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTe
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.properties()
-                        .text()
+                    dateTimeSymbols.text()
                         .getBytes(CHARSET)
                 )
             ),
