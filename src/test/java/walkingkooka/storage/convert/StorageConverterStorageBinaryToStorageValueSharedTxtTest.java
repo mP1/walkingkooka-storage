@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
@@ -39,7 +38,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryTxtToString() {
+    public void testConvertStorageBinaryTxtToStorageValue() {
         final String text = "AA,BB,CC";
 
         final StoragePath storagePath = StoragePath.parse("/file.txt");
@@ -53,9 +52,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
             ),
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(
-                        CsvStringList.parse(text)
-                    )
+                    Optional.of(text)
                 )
         );
     }
@@ -102,8 +99,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
-                    Converters.binaryToString(),
-                    Converters.textToCsvStringList()
+                    Converters.binaryToString()
                 )
             );
         };
