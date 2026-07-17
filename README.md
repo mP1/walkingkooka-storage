@@ -27,7 +27,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [storage-binary-to-storage-value-json](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueSharedJson.java)
 - [storage-binary-to-storage-value-properties](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueSharedProperties.java)
 - [storage-binary-to-storage-value-tsv](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueSharedTsv.java)
-- [storage-binary-to-storage-value-txt](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueTxt.java)
+- [storage-binary-to-storage-value-txt](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueSharedTxt.java)
 - [storage-value-info-list-to-text](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueInfoListToText.java)
 - [storage-value-to-storage-binary-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueToStorageBinaryBinary.java)
 - [storage-value-to-storage-binary-csv](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueToStorageBinarySharedCsv.java)
