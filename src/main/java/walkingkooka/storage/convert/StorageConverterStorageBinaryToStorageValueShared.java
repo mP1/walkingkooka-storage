@@ -31,24 +31,14 @@ import java.util.Optional;
  * Base class for any {@link walkingkooka.convert.Converter} that matches a {@link StoragePath} and converts the
  * {@link Binary} to another type using other {@link walkingkooka.convert.Converter}.
  */
-abstract class StorageConverterStorageBinaryToStorageValueShared<C extends StorageConverterContext> extends StorageConverter<C> {
+abstract class StorageConverterStorageBinaryToStorageValueShared<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
 
     StorageConverterStorageBinaryToStorageValueShared() {
         super();
     }
 
     @Override
-    public final boolean canConvert(final Object value,
-                                    final Class<?> type,
-                                    final C context) {
-        return value instanceof StorageBinary &&
-            StorageValue.class == type &&
-            this.testStorageBinary(
-                (StorageBinary) value
-            );
-    }
-
-    private boolean testStorageBinary(final StorageBinary storageBinary) {
+    final boolean testStorageBinary(final StorageBinary storageBinary) {
         return this.fileExtension()
             .test(
                 storageBinary.path()
@@ -65,21 +55,6 @@ abstract class StorageConverterStorageBinaryToStorageValueShared<C extends Stora
     abstract FileExtension fileExtension();
 
     abstract MediaType contentType();
-
-    @Override
-    public final <T> Either<T, String> doConvert(final Object value,
-                                                 final Class<T> type,
-                                                 final C context) {
-        return this.storageBinaryToStorageValue(
-            (StorageBinary) value,
-            type,
-            context
-        );
-    }
-
-    abstract <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary value,
-                                                               final Class<T> type,
-                                                               final C context);
 
     final <T> Either<T, String> successfulConversion(final StoragePath storagePath,
                                                      final Class<T> type,
