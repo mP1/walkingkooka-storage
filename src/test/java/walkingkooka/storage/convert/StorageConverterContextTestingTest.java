@@ -34,7 +34,6 @@ import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
@@ -171,8 +170,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
         @Override
         public MediaType detect(final String filename,
                                 final Binary content) {
-            return MediaTypeDetectors.binary()
-                .detect(
+            return MEDIA_TYPE_DETECTOR.detect(
                     filename,
                     content
                 );

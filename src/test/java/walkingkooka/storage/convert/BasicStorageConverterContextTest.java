@@ -36,8 +36,6 @@ import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.net.header.MediaTypeDetector;
-import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
@@ -83,8 +81,6 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
-
-    private final static MediaTypeDetector MEDIA_TYPE_DETECTOR = MediaTypeDetectors.binary();
 
     // with.............................................................................................................
 
