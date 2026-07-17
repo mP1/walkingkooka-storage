@@ -29,6 +29,9 @@ import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.text.BinaryTextContextTesting;
+import walkingkooka.text.Indentation;
+import walkingkooka.text.LineEnding;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
@@ -38,17 +41,16 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
+import walkingkooka.util.HasLocaleTesting;
 
 import java.math.MathContext;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedJson<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
+public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedJson<FakeStorageConverterContext>>
+    implements BinaryTextContextTesting,
+    HasLocaleTesting {
 
     private final JsonNodeMarshallUnmarshallContext MARSHALL_UNMARSHALL_CONTEXT =  JsonNodeMarshallUnmarshallContexts.basic(
         JsonNodeMarshallContexts.basic(),
@@ -60,14 +62,14 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
     );
 
     @Test
-    public void testConvertStorageBinaryJsonToDateTimeSymbols() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.ENGLISH
+    public void testConvertStorageBinaryDateTimeSymbolsJsonToStorageValue() {
+        final FakeStorageConverterContext context = this.createContext();
+
+        final JsonNode dateTimeSymbols = context.marshall(
+            DateTimeSymbols.fromDateFormatSymbols(
+                new DateFormatSymbols(LOCALE)
             )
         );
-
-        final FakeStorageConverterContext context = this.createContext();
 
         final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.json");
 
@@ -75,8 +77,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    context.marshall(dateTimeSymbols)
-                        .toString()
+                    dateTimeSymbols.toJsonText(context)
                         .getBytes(CHARSET)
                 )
             ),
@@ -127,6 +128,16 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
             @Override
             public Charset charset() {
                 return CHARSET;
+            }
+
+            @Override
+            public Indentation indentation() {
+                return INDENTATION;
+            }
+
+            @Override
+            public LineEnding lineEnding() {
+                return LINE_ENDING;
             }
 
             @Override
