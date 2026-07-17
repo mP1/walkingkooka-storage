@@ -26,45 +26,45 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageConverters implements PublicStaticHelper {
 
     /**
-     * {see StorageConverterStorageBinaryToStorageValueCsv}
+     * {see StorageConverterStorageBinaryToStorageValueSharedCsv}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueCsv() {
-        return StorageConverterStorageBinaryToStorageValueCsv.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedCsv.instance();
     }
     
     /**
-     * {see StorageConverterStorageBinaryToStorageValueExpression}
+     * {see StorageConverterStorageBinaryToStorageValueSharedExpression}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueExpression() {
-        return StorageConverterStorageBinaryToStorageValueExpression.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedExpression.instance();
     }
 
     /**
-     * {see StorageConverterStorageBinaryToStorageValueJson}
+     * {see StorageConverterStorageBinaryToStorageValueSharedJson}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueJson() {
-        return StorageConverterStorageBinaryToStorageValueJson.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedJson.instance();
     }
 
     /**
-     * {see StorageConverterStorageBinaryToStorageValueProperties}
+     * {see StorageConverterStorageBinaryToStorageValueSharedProperties}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueProperties() {
-        return StorageConverterStorageBinaryToStorageValueProperties.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedProperties.instance();
     }
 
     /**
-     * {see StorageConverterStorageBinaryToStorageValueTsv}
+     * {see StorageConverterStorageBinaryToStorageValueSharedTsv}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueTsv() {
-        return StorageConverterStorageBinaryToStorageValueTsv.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedTsv.instance();
     }
 
     /**
-     * {see StorageConverterStorageBinaryToStorageValueTxt}
+     * {see StorageConverterStorageBinaryToStorageValueSharedTxt}
      */
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueTxt() {
-        return StorageConverterStorageBinaryToStorageValueTxt.instance();
+        return StorageConverterStorageBinaryToStorageValueSharedTxt.instance();
     }
 
     /**

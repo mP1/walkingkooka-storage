@@ -31,18 +31,18 @@ import walkingkooka.storage.StorageBinary;
  * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold TSV and then convert that to a {@link TsvStringList}</li>
  * </ul>
  */
-final class StorageConverterStorageBinaryToStorageValueTsv<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
+final class StorageConverterStorageBinaryToStorageValueSharedTsv<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValueShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueTsv<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueSharedTsv<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageBinaryToStorageValueTsv INSTANCE = new StorageConverterStorageBinaryToStorageValueTsv<>();
+    private final static StorageConverterStorageBinaryToStorageValueSharedTsv INSTANCE = new StorageConverterStorageBinaryToStorageValueSharedTsv<>();
 
-    private StorageConverterStorageBinaryToStorageValueTsv() {
+    private StorageConverterStorageBinaryToStorageValueSharedTsv() {
         super();
     }
 

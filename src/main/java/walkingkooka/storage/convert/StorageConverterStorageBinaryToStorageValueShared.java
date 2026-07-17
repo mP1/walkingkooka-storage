@@ -31,9 +31,9 @@ import java.util.Optional;
  * Base class for any {@link walkingkooka.convert.Converter} that matches a {@link StoragePath} and converts the
  * {@link Binary} to another type using other {@link walkingkooka.convert.Converter}.
  */
-abstract class StorageConverterStorageBinaryToStorageValue<C extends StorageConverterContext> extends StorageConverter<C> {
+abstract class StorageConverterStorageBinaryToStorageValueShared<C extends StorageConverterContext> extends StorageConverter<C> {
 
-    StorageConverterStorageBinaryToStorageValue() {
+    StorageConverterStorageBinaryToStorageValueShared() {
         super();
     }
 

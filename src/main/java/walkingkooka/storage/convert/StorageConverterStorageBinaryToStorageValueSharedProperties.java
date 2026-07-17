@@ -21,65 +21,72 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
+import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageBinary;
-import walkingkooka.tree.json.JsonNode;
+import walkingkooka.storage.StorageValue;
 
 
 /**
- * Converts {@link FileExtension#JSON} files in several steps,
- * <ul>
- * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold JSON</li>
- * <li>Parse but not convert {@link String} to a {@link JsonNode, converting will always create a {@link walkingkooka.tree.json.JsonString}</li>
- * </ul>
+ * If the file extension is {@link FileExtension#PROPERTIES}, convert the {@link StorageValue#value()} to {@link String},
+ * and that {@link Properties}.
  */
-final class StorageConverterStorageBinaryToStorageValueJson<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
+final class StorageConverterStorageBinaryToStorageValueSharedProperties<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValueShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueJson<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueSharedProperties<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageBinaryToStorageValueJson INSTANCE = new StorageConverterStorageBinaryToStorageValueJson<>();
+    /**
+     * Singleton
+     */
+    private final static StorageConverterStorageBinaryToStorageValueSharedProperties INSTANCE = new StorageConverterStorageBinaryToStorageValueSharedProperties<>();
 
-    private StorageConverterStorageBinaryToStorageValueJson() {
+    private StorageConverterStorageBinaryToStorageValueSharedProperties() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.JSON;
+        return FileExtension.PROPERTIES;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.APPLICATION_JSON;
+        return MediaType.TEXT_PROPERTIES;
     }
 
     @Override
     <T> Either<T, String> storageBinaryToStorageValue(final StorageBinary storageBinary,
                                                       final Class<T> type,
                                                       final C context) {
-        final Either<T, String> result;
+        final Either<T, String> storageValue;
 
-        // convert Binary to String
+        // convert StorageBinary to String
         final Either<String, String> text = context.convert(
             storageBinary,
             String.class
         );
         if (text.isRight()) {
-            result = Cast.to(text);
+            storageValue = Cast.to(text);
         } else {
-            result = this.successfulConversion(
-                storageBinary.path(),
-                type,
-                JsonNode.parse(
-                    text.leftValue()
-                )
+            final Either<Properties, String> properties = context.convert(
+                text.leftValue(),
+                Properties.class
             );
+            if (properties.isRight()) {
+                storageValue = Cast.to(properties);
+            } else {
+                storageValue = this.successfulConversion(
+                    storageBinary.path(),
+                    type,
+                    properties.leftValue()
+                );
+            }
         }
 
-        return result;
+        return storageValue;
     }
 }

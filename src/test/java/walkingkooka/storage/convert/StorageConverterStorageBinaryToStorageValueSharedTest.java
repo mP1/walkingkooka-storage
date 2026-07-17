@@ -21,11 +21,11 @@ import walkingkooka.Cast;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class StorageConverterStorageBinaryToStorageValueTest implements ClassTesting<StorageConverterStorageBinaryToStorageValue<?>> {
+public final class StorageConverterStorageBinaryToStorageValueSharedTest implements ClassTesting<StorageConverterStorageBinaryToStorageValueShared<?>> {
 
     @Override
-    public Class<StorageConverterStorageBinaryToStorageValue<?>> type() {
-        return Cast.to(StorageConverterStorageBinaryToStorageValue.class);
+    public Class<StorageConverterStorageBinaryToStorageValueShared<?>> type() {
+        return Cast.to(StorageConverterStorageBinaryToStorageValueShared.class);
     }
 
     @Override

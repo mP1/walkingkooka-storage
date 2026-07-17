@@ -19,41 +19,42 @@ package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
 import walkingkooka.Either;
-import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.io.FileExtension;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
+import walkingkooka.tree.json.JsonNode;
 
 
 /**
- * Converts {@link FileExtension#CSV} files in several steps,
+ * Converts {@link FileExtension#JSON} files in several steps,
  * <ul>
- * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold CSV and then convert that to a {@link CsvStringList}</li>
+ * <li>Convert {@link StorageBinary} to a {@link String}, which is expected to hold JSON</li>
+ * <li>Parse but not convert {@link String} to a {@link JsonNode, converting will always create a {@link walkingkooka.tree.json.JsonString}</li>
  * </ul>
  */
-final class StorageConverterStorageBinaryToStorageValueCsv<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValue<C> {
+final class StorageConverterStorageBinaryToStorageValueSharedJson<C extends StorageConverterContext> extends StorageConverterStorageBinaryToStorageValueShared<C> {
 
     /**
      * Type safe getter.
      */
-    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueCsv<C> instance() {
+    static <C extends StorageConverterContext> StorageConverterStorageBinaryToStorageValueSharedJson<C> instance() {
         return Cast.to(INSTANCE);
     }
 
-    private final static StorageConverterStorageBinaryToStorageValueCsv INSTANCE = new StorageConverterStorageBinaryToStorageValueCsv<>();
+    private final static StorageConverterStorageBinaryToStorageValueSharedJson INSTANCE = new StorageConverterStorageBinaryToStorageValueSharedJson<>();
 
-    private StorageConverterStorageBinaryToStorageValueCsv() {
+    private StorageConverterStorageBinaryToStorageValueSharedJson() {
         super();
     }
 
     @Override
     FileExtension fileExtension() {
-        return FileExtension.CSV;
+        return FileExtension.JSON;
     }
 
     @Override
     MediaType contentType() {
-        return MediaType.TEXT_CSV;
+        return MediaType.APPLICATION_JSON;
     }
 
     @Override
@@ -70,20 +71,13 @@ final class StorageConverterStorageBinaryToStorageValueCsv<C extends StorageConv
         if (text.isRight()) {
             result = Cast.to(text);
         } else {
-            final Either<CsvStringList, String> csv = context.convert(
-                storageBinary,
-                CsvStringList.class
+            result = this.successfulConversion(
+                storageBinary.path(),
+                type,
+                JsonNode.parse(
+                    text.leftValue()
+                )
             );
-
-            if (csv.isRight()) {
-                result = Cast.to(csv);
-            } else {
-                result = this.successfulConversion(
-                    storageBinary.path(),
-                    type,
-                    csv
-                );
-            }
         }
 
         return result;
