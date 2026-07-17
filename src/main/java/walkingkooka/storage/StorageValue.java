@@ -44,7 +44,6 @@ public final class StorageValue implements HasContentType,
     HasValue<Optional<Object>>,
     HasId<Optional<StoragePath>>,
     HasPath<StoragePath>,
-    Comparable<StorageValue>,
     TreePrintable {
 
     public final static Optional<Object> NO_VALUE = Optional.empty();
@@ -211,13 +210,6 @@ public final class StorageValue implements HasContentType,
             .separator(" ")
             .value(this.contentType)
             .build();
-    }
-
-    // Comparable.......................................................................................................
-
-    @Override
-    public int compareTo(final StorageValue other) {
-        return this.path.compareTo(other.path());
     }
 
     // TreePrintable....................................................................................................
