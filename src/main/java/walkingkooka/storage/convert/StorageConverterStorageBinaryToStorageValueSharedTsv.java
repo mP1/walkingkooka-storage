@@ -81,7 +81,7 @@ final class StorageConverterStorageBinaryToStorageValueSharedTsv<C extends Stora
                 result = this.successfulConversion(
                     storageBinary.path(),
                     type,
-                    csv
+                    csv.leftValue()
                 );
             }
         }
