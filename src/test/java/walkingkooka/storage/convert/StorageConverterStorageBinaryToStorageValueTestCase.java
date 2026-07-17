@@ -23,10 +23,10 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 
-public abstract class StorageConverterStorageBinaryToTestCase<C extends StorageConverterStorageBinaryTo<FakeStorageConverterContext>> extends StorageConverterTestCase<C>
+public abstract class StorageConverterStorageBinaryToStorageValueTestCase<C extends StorageConverterStorageBinaryToStorageValue<FakeStorageConverterContext>> extends StorageConverterTestCase<C>
 implements ToStringTesting<C> {
 
-    StorageConverterStorageBinaryToTestCase() {
+    StorageConverterStorageBinaryToStorageValueTestCase() {
         super();
     }
 
