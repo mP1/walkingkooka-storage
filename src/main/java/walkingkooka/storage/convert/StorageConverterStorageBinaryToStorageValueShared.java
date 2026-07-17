@@ -67,9 +67,9 @@ abstract class StorageConverterStorageBinaryToStorageValueShared<C extends Stora
     abstract MediaType contentType();
 
     @Override
-    public <T> Either<T, String> doConvert(final Object value,
-                                           final Class<T> type,
-                                           final C context) {
+    public final <T> Either<T, String> doConvert(final Object value,
+                                                 final Class<T> type,
+                                                 final C context) {
         return this.storageBinaryToStorageValue(
             (StorageBinary) value,
             type,
