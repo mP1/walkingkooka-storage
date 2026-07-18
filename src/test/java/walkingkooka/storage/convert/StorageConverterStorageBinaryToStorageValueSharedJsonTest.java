@@ -24,7 +24,6 @@ import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -32,34 +31,21 @@ import walkingkooka.storage.StorageValue;
 import walkingkooka.text.BinaryTextContextTesting;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
-import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.JsonString;
 import walkingkooka.tree.json.convert.JsonNodeConverters;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContextTesting;
 import walkingkooka.util.HasLocaleTesting;
 
-import java.math.MathContext;
 import java.nio.charset.Charset;
 import java.text.DateFormatSymbols;
 import java.util.Optional;
 
 public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedJson<FakeStorageConverterContext>>
     implements BinaryTextContextTesting,
-    HasLocaleTesting {
-
-    private final JsonNodeMarshallUnmarshallContext MARSHALL_UNMARSHALL_CONTEXT =  JsonNodeMarshallUnmarshallContexts.basic(
-        JsonNodeMarshallContexts.basic(),
-        JsonNodeUnmarshallContexts.basic(
-            ExpressionNumberKind.DEFAULT,
-            CurrencyLocaleContexts.fake(), // CurrencyCodeLanguageTagContext
-            MathContext.DECIMAL32
-        )
-    );
+    HasLocaleTesting,
+    JsonNodeMarshallUnmarshallContextTesting {
 
     @Test
     public void testConvertStorageBinaryDateTimeSymbolsJsonToStorageValue() {
@@ -175,18 +161,18 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
 
             @Override
             public Optional<JsonString> typeName(final Class<?> type) {
-                return MARSHALL_UNMARSHALL_CONTEXT.typeName(type);
+                return JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT.typeName(type);
             }
 
             @Override
             public JsonNode marshall(final Object value) {
-                return MARSHALL_UNMARSHALL_CONTEXT.marshall(value);
+                return JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT.marshall(value);
             }
 
             @Override
             public <T> T unmarshall(final JsonNode json,
                                     final Class<T> type) {
-                return MARSHALL_UNMARSHALL_CONTEXT.unmarshall(
+                return JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT.unmarshall(
                     json,
                     type
                 );
