@@ -23,6 +23,7 @@ import com.google.common.jimfs.Jimfs;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.Converter;
@@ -32,9 +33,12 @@ import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.AuditInfo;
+import walkingkooka.environment.HasUserTesting;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.math.MathTesting;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
@@ -43,11 +47,9 @@ import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.storage.convert.StorageConverterContext;
 import walkingkooka.storage.convert.StorageConverterContexts;
 import walkingkooka.storage.convert.StorageConverters;
-import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
-import walkingkooka.text.TextPrinting;
+import walkingkooka.text.BinaryTextContextTesting;
 import walkingkooka.tree.expression.Expression;
-import walkingkooka.tree.expression.ExpressionNumberKind;
+import walkingkooka.tree.expression.HasExpressionNumberKindTesting;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
 import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
 import walkingkooka.tree.json.JsonNode;
@@ -56,9 +58,7 @@ import walkingkooka.tree.json.convert.JsonNodeConverters;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContextTesting;
 
 import java.io.IOException;
-import java.math.MathContext;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,29 +66,28 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedNativeFileTest extends StorageSharedTestCase<StorageSharedNativeFile<FakeStorageContext>, FakeStorageContext>
-    implements CurrencyLocaleContextTesting,
+    implements BinaryTextContextTesting,
+    CurrencyLocaleContextTesting,
+    HasCharsetTesting,
+    HasExpressionNumberKindTesting,
+    HasNowTesting,
+    HasUserTesting,
     JsonNodeMarshallUnmarshallContextTesting,
+    MathTesting,
     ThrowableTesting {
 
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
-
-    private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(
-        MathContext.DECIMAL32
-    );
+    private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MATH_CONTEXT);
 
     private final static Expression EXPRESSION = Expression.add(
         Expression.value(111),
         Expression.value(222)
     );
-
-    private final static ExpressionNumberKind EXPRESSION_NUMBER_KIND = ExpressionNumberKind.DEFAULT;
 
     private final static String EXPRESSION_FILE_PATH = "ExpressionFile111.expression.txt";
 
@@ -111,22 +110,11 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     private final static String TEXT_CONTENT = "HelloWorldText123";
 
-    private final static LocalDateTime NOW = LocalDateTime.of(
-        1999,
-        12,
-        31,
-        12,
-        58,
-        59
-    );
-
     private final static FileTime FILE_TIME_NOW = FileTime.from(
         NOW.toInstant(
             walkingkooka.storage.StorageSharedNativeFile.UTC
         )
     );
-
-    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
 
     private final static WatchServicePoller<FakeStorageContext> POLLER = new WatchServicePoller<>() {
         @Override
@@ -754,10 +742,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                             ',', // valueSeparator
                             Converters.fake(),
                             BinaryNumberConverterFunctions.fake(), // multiplier
-                            TextPrinting.with(
-                                Indentation.SPACES2,
-                                LineEnding.NL
-                            ).setCharset(StandardCharsets.UTF_8),
+                            BINARY_TEXT_CONTEXT,
                             CURRENCY_LOCALE_CONTEXT,
                             DateTimeContexts.basic(
                                 DateTimeSymbols.fromDateFormatSymbols(
@@ -766,7 +751,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                                 StorageSharedNativeFileTest.LOCALE,
                                 1920, // defaultYear
                                 20, // twoDigitYear
-                                LocalDateTime::now
+                                HAS_NOW
                             ),
                             DECIMAL_NUMBER_CONTEXT
                         ),
@@ -778,9 +763,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
             @Override
             public Optional<EmailAddress> user() {
-                return Optional.of(
-                    StorageSharedNativeFileTest.USER
-                );
+                return OPTIONAL_USER;
             }
         };
     }
