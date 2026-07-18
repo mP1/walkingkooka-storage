@@ -22,22 +22,14 @@ import walkingkooka.Binary;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyContexts;
-import walkingkooka.currency.CurrencyExchangeRaters;
-import walkingkooka.currency.CurrencyLocaleContext;
-import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
-import walkingkooka.locale.LocaleContext;
-import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.props.Properties;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTestingTest.TestStorageConverterContext;
-import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
 import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
@@ -48,15 +40,11 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
 import java.math.MathContext;
 import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.Objects;
 import java.util.Optional;
 
 public final class StorageConverterContextTestingTest implements StorageConverterContextTesting<TestStorageConverterContext>,
     DecimalNumberContextDelegator {
-
-    private final static String CWD = "/current/working/directory/";
 
     private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
 
@@ -71,30 +59,26 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
     @Test
     public void testCurrentWorkingDirectoryWhenNotEmpty() {
-        final StoragePath path = StoragePath.parse(CWD);
-
         this.currentWorkingDirectoryAndCheck(
             new TestStorageConverterContext(
-                Optional.of(path)
+                OPTIONAL_CURRENT_WORKING_DIRECTORY
             ),
-            path
+            CURRENT_WORKING_DIRECTORY
         );
     }
 
     @Test
     public void testCurrentWorkingDirectoryFails() {
-        final StoragePath path = StoragePath.parse(CWD);
-
         boolean failed = false;
 
         try {
             this.currentWorkingDirectoryAndCheck(
                 new TestStorageConverterContext(
                     Optional.of(
-                        StoragePath.parse(CWD + "different")
+                        StoragePath.parse(CURRENT_WORKING_DIRECTORY + "different")
                     )
                 ),
-                path
+                CURRENT_WORKING_DIRECTORY
             );
         } catch (final AssertionError e) {
             failed = true;
@@ -118,11 +102,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
     @Override
     public TestStorageConverterContext createContext() {
-        return new TestStorageConverterContext(
-            Optional.of(
-                StoragePath.parse(CWD)
-            )
-        );
+        return new TestStorageConverterContext(OPTIONAL_CURRENT_WORKING_DIRECTORY);
     }
 
     // DecimalNumberContextDelegator....................................................................................
@@ -134,7 +114,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
     @Override
     public MathContext mathContext() {
-        return MathContext.DECIMAL32;
+        return MATH_CONTEXT;
     }
 
     @Override
@@ -201,25 +181,6 @@ public final class StorageConverterContextTestingTest implements StorageConverte
 
         @Override
         public JsonNodeConverterContext jsonNodeConverterContext() {
-            final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
-            final LocaleContext localeContext = LocaleContexts.jre(LOCALE);
-
-            final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
-                CurrencyContexts.jre(
-                    Currency.getInstance(LOCALE),
-                    CurrencyExchangeRaters.properties(
-                        Properties.EMPTY,
-                        (s, b) -> {
-                            throw new UnsupportedOperationException();
-                        }
-                    ),
-                    localeContext
-                ),
-                localeContext
-            );
-
-            final MathContext mathContext = MathContext.DECIMAL32;
-
             return JsonNodeConverterContexts.basic(
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
@@ -231,19 +192,19 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                         Converters.fake(),
                         BinaryNumberConverterFunctions.fake(), // multiplier
                         BINARY_TEXT_CONTEXT,
-                        currencyLocaleContext,
+                        CURRENCY_LOCALE_CONTEXT,
                         DateTimeContexts.basic(
                             DateTimeSymbols.fromDateFormatSymbols(
                                 new DateFormatSymbols(LOCALE)
                             ),
                             LOCALE,
-                            1920, // defaultYear
-                            20, // twoDigitYear
-                            LocalDateTime::now
+                            DEFAULT_YEAR,
+                            TWO_DIGIT_YEAR,
+                            HAS_NOW
                         ),
-                        DecimalNumberContexts.american(mathContext)
+                        DecimalNumberContexts.american(MATH_CONTEXT)
                     ),
-                    expressionNumberKind
+                    EXPRESSION_NUMBER_KIND
                 ),
                 JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
             );
