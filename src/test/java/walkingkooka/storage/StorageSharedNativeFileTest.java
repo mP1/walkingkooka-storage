@@ -53,9 +53,7 @@ import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.convert.JsonNodeConverterContexts;
 import walkingkooka.tree.json.convert.JsonNodeConverters;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContextTesting;
 
 import java.io.IOException;
 import java.math.MathContext;
@@ -76,6 +74,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedNativeFileTest extends StorageSharedTestCase<StorageSharedNativeFile<FakeStorageContext>, FakeStorageContext>
     implements CurrencyLocaleContextTesting,
+    JsonNodeMarshallUnmarshallContextTesting,
     ThrowableTesting {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
@@ -773,14 +772,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                         ),
                         EXPRESSION_NUMBER_KIND
                     ),
-                    JsonNodeMarshallUnmarshallContexts.basic(
-                        JsonNodeMarshallContexts.basic(),
-                        JsonNodeUnmarshallContexts.basic(
-                            EXPRESSION_NUMBER_KIND,
-                            CURRENCY_LOCALE_CONTEXT, // CurrencyCodeLanguageTagContext
-                            DECIMAL_NUMBER_CONTEXT.mathContext()
-                        )
-                    )
+                    JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
                 )
             );
 

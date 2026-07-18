@@ -44,10 +44,7 @@ import walkingkooka.tree.json.convert.JsonNodeConverterContext;
 import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
 import walkingkooka.tree.json.convert.JsonNodeConverterContexts;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContexts;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
 import java.math.MathContext;
 import java.text.DateFormatSymbols;
@@ -248,14 +245,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
                     ),
                     expressionNumberKind
                 ),
-                JsonNodeMarshallUnmarshallContexts.basic(
-                    JsonNodeMarshallContexts.basic(),
-                    JsonNodeUnmarshallContexts.basic(
-                        expressionNumberKind,
-                        currencyLocaleContext, // CurrencyCodeLanguageTagContext
-                        mathContext
-                    )
-                )
+                JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
             );
         }
 
