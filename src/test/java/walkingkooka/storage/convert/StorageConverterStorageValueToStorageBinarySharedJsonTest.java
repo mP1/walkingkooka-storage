@@ -20,10 +20,12 @@ package walkingkooka.storage.convert;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.locale.LocaleContextTesting;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -31,21 +33,18 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.JsonString;
 import walkingkooka.tree.json.convert.JsonNodeConverters;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContextTesting;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageValueToStorageBinarySharedJsonTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedJson<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
-
-    private final static JsonNodeMarshallContext MARSHALL_CONTEXT = JsonNodeMarshallContexts.basic();
-
+public final class StorageConverterStorageValueToStorageBinarySharedJsonTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedJson<FakeStorageConverterContext>>
+    implements HasCharsetTesting,
+    LocaleContextTesting,
+    JsonNodeMarshallContextTesting {
+    
     @Test
     public void testConvertEmptyStorageValueJsonToStorageBinaryFails() {
         this.convertFails(
@@ -59,9 +58,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
     @Test
     public void testConvertStorageValueFileExtensionJsonToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
+            new DateFormatSymbols(LOCALE)
         );
 
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
@@ -73,7 +70,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
                 ),
             StorageBinary.with(
                 storagePath,
-                MARSHALL_CONTEXT.marshall(dateTimeSymbols)
+                JSON_NODE_MARSHALL_CONTEXT.marshall(dateTimeSymbols)
                     .binary(CHARSET)
             )
         );
@@ -165,12 +162,12 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
 
             @Override
             public Optional<JsonString> typeName(final Class<?> type) {
-                return MARSHALL_CONTEXT.typeName(type);
+                return JSON_NODE_MARSHALL_CONTEXT.typeName(type);
             }
 
             @Override
             public JsonNode marshall(final Object value) {
-                return MARSHALL_CONTEXT.marshall(value);
+                return JSON_NODE_MARSHALL_CONTEXT.marshall(value);
             }
         };
     }
