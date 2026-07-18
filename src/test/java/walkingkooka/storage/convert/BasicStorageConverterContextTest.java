@@ -24,22 +24,14 @@ import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyContexts;
-import walkingkooka.currency.CurrencyExchangeRaters;
-import walkingkooka.currency.CurrencyLocaleContext;
-import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.DateTimeSymbols;
-import walkingkooka.locale.LocaleContext;
-import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
-import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.expression.convert.ExpressionNumberBinaryNumberConverterFunctions;
 import walkingkooka.tree.expression.convert.ExpressionNumberConverterContexts;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
@@ -48,9 +40,6 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContextTesting;
 
 import java.math.MathContext;
 import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -64,18 +53,6 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             StorageConverters.textToStoragePath()
         )
     );
-
-    private final static String CWD = "/current/working/directory/";
-
-    private static final FakeHasUserDirectories HAS_USER_DIRECTORIES = new FakeHasUserDirectories() {
-
-        @Override
-        public Optional<StoragePath> currentWorkingDirectory() {
-            return Optional.of(
-                StoragePath.parse(CWD)
-            );
-        }
-    };
 
     private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
 
@@ -165,7 +142,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     public void testCurrentWorkingDirectory() {
         this.currentWorkingDirectoryAndCheck(
             this.createContext(),
-            StoragePath.parse(CWD)
+            CURRENT_WORKING_DIRECTORY
         );
     }
 
@@ -188,31 +165,12 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
         this.parseStoragePathAndCheck(
             this.createContext(),
             "after123",
-            StoragePath.parse(CWD + "/after123")
+            StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/after123")
         );
     }
 
     @Override
     public BasicStorageConverterContext createContext() {
-        final ExpressionNumberKind expressionNumberKind = ExpressionNumberKind.DEFAULT;
-        final LocaleContext localeContext = LocaleContexts.jre(LOCALE);
-
-        final CurrencyLocaleContext currencyLocaleContext = CurrencyLocaleContexts.basic(
-            CurrencyContexts.jre(
-                Currency.getInstance(LOCALE),
-                CurrencyExchangeRaters.properties(
-                    Properties.EMPTY,
-                    (s, b) -> {
-                        throw new UnsupportedOperationException();
-                    }
-                ),
-                localeContext
-            ),
-            localeContext
-        );
-
-        final MathContext mathContext = MathContext.DECIMAL32;
-
         return BasicStorageConverterContext.with(
             CONVERTER,
             HAS_USER_DIRECTORIES,
@@ -228,7 +186,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                         Converters.fake(),
                         BinaryNumberConverterFunctions.fake(), // multiplier
                         BINARY_TEXT_CONTEXT,
-                        currencyLocaleContext,
+                        CURRENCY_LOCALE_CONTEXT,
                         DateTimeContexts.basic(
                             DateTimeSymbols.fromDateFormatSymbols(
                                 new DateFormatSymbols(LOCALE)
@@ -236,11 +194,11 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                             LOCALE,
                             1920, // defaultYear
                             20, // twoDigitYear
-                            LocalDateTime::now
+                            HAS_NOW
                         ),
-                        DecimalNumberContexts.american(mathContext)
+                        DecimalNumberContexts.american(MATH_CONTEXT)
                     ),
-                    expressionNumberKind
+                    EXPRESSION_NUMBER_KIND
                 ),
                 JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
             )
