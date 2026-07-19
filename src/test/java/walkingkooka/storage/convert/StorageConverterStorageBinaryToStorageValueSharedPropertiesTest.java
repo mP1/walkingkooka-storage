@@ -21,11 +21,12 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.HasDateTimeSymbolsTesting;
 import walkingkooka.props.Properties;
 import walkingkooka.props.PropertiesPath;
 import walkingkooka.storage.StorageBinary;
@@ -33,22 +34,15 @@ import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedProperties<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
+public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedProperties<FakeStorageConverterContext>>
+implements HasCharsetTesting,
+    HasDateTimeSymbolsTesting {
 
     @Test
     public void testConvertStorageBinaryDateTimeSymbolsPropertiesToStorageValue() {
-        final Properties dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.ENGLISH
-            )
-        ).properties();
+        final Properties dateTimeSymbols = DATE_TIME_SYMBOLS.properties();
 
         final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.properties");
 
