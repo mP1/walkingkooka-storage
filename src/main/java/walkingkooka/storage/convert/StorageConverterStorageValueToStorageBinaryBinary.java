@@ -105,6 +105,6 @@ final class StorageConverterStorageValueToStorageBinaryBinary<C extends StorageC
 
     @Override
     public String toString() {
-        return "BinaryFile";
+        return StorageValue.class.getSimpleName() + "(Binary) to " + StorageBinary.class.getSimpleName() ;
     }
 }

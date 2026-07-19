@@ -23,6 +23,7 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.HasBinary;
 import walkingkooka.HasCharsetTesting;
+import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
@@ -35,7 +36,8 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinaryBinaryTest extends StorageConverterTestCase<StorageConverterStorageValueToStorageBinaryBinary<FakeStorageConverterContext>>
-    implements HasCharsetTesting {
+    implements HasCharsetTesting,
+    ToStringTesting<StorageConverterStorageValueToStorageBinaryBinary<FakeStorageConverterContext>> {
 
     @Test
     public void testConvertStorageValueWithBinary() {
@@ -108,6 +110,14 @@ public final class StorageConverterStorageValueToStorageBinaryBinaryTest extends
                 )
             );
         };
+    }
+
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createConverter(),
+            "StorageValue(Binary) to StorageBinary"
+        );
     }
 
     @Override
