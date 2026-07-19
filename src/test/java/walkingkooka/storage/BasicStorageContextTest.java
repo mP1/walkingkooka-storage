@@ -23,21 +23,14 @@ import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.FakeCurrencyContext;
-import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.currency.CurrencyLocaleContextTesting;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
-import walkingkooka.locale.LocaleContexts;
-import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
-import walkingkooka.text.Indentation;
 
-import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -45,6 +38,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
+    CurrencyLocaleContextTesting,
+    DateTimeContextTesting,
+    DecimalNumberContextTesting,
     HashCodeEqualsDefinedTesting2<BasicStorageContext> {
 
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
@@ -54,26 +50,9 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
         BinaryNumberConverterFunctions.fake(), // multiplier
         BINARY_TEXT_CONTEXT,
-        new FakeCurrencyContext() {
-            @Override
-            public Optional<Currency> currencyForLocale(final Locale locale) {
-                return Optional.of(
-                    Currency.getInstance(locale)
-                );
-            }
-        }.setLocaleContext(
-            LocaleContexts.jre(LOCALE)
-        ),
-        DateTimeContexts.basic(
-            DateTimeSymbols.fromDateFormatSymbols(
-                new DateFormatSymbols(LOCALE)
-            ),
-            LOCALE,
-            1920,
-            20,
-            LocalDateTime::now
-        ),
-        DecimalNumberContexts.american(MathContext.DECIMAL32)
+        CURRENCY_LOCALE_CONTEXT,
+        DATE_TIME_CONTEXT,
+        DECIMAL_NUMBER_CONTEXT
     );
 
     @Test
@@ -128,8 +107,8 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
             StandardCharsets.UTF_8,
-            Currency.getInstance("AUD"),
-            Indentation.SPACES2,
+            CURRENCY,
+            INDENTATION,
             LINE_ENDING,
             Locale.GERMAN,
             HAS_NOW,
@@ -169,17 +148,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
         return BasicStorageContext.with(
             CONVERTER_LIKE,
             MEDIA_TYPE_DETECTOR,
-            EnvironmentContexts.map(
-                EnvironmentContexts.empty(
-                    StandardCharsets.UTF_8,
-                    Currency.getInstance("AUD"),
-                    Indentation.SPACES2,
-                    LINE_ENDING,
-                    Locale.FRANCE,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
-            )
+            ENVIRONMENT_CONTEXT.cloneEnvironment()
         );
     }
 
