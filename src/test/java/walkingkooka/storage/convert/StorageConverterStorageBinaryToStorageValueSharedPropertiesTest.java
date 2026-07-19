@@ -148,7 +148,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTe
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.properties to StorageValue"
+            "StorageBinary *.properties | text/x-java-properties to StorageValue"
         );
     }
 

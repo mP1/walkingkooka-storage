@@ -109,7 +109,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.txt to StorageValue"
+            "StorageBinary *.txt | text/plain to StorageValue"
         );
     }
 

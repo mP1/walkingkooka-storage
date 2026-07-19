@@ -109,7 +109,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTsvTest exte
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.tsv to StorageValue"
+            "StorageBinary *.tsv | text/tab-separated-values to StorageValue"
         );
     }
 

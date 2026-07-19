@@ -71,9 +71,15 @@ abstract class StorageConverterStorageBinaryToStorageValueShared<C extends Stora
 
     // Object...........................................................................................................
 
-    // *.csv to StorageValue
+    // StorageBinary *.csv | text/csv to StorageValue
     @Override
     public final String toString() {
-        return "*." + this.fileExtension() + " to " + StorageValue.class.getSimpleName();
+        return StorageBinary.class.getSimpleName() +
+            " *." +
+            this.fileExtension() +
+            " | " +
+            this.contentType() +
+            " to " +
+            StorageValue.class.getSimpleName();
     }
 }

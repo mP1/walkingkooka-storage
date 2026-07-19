@@ -184,7 +184,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.json to StorageValue"
+            "StorageBinary *.json | application/json to StorageValue"
         );
     }
 

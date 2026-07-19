@@ -137,7 +137,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.expression.txt to StorageValue"
+            "StorageBinary *.expression.txt | text/expression to StorageValue"
         );
     }
 

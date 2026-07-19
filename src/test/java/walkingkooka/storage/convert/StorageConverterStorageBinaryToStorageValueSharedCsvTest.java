@@ -114,7 +114,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedCsvTest exte
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "*.csv to StorageValue"
+            "StorageBinary *.csv | text/csv to StorageValue"
         );
     }
 
