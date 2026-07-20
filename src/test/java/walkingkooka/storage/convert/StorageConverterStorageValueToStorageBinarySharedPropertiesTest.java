@@ -49,7 +49,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
     }
 
     @Test
-    public void testConvertStorageValuePropertiesWithFileExtensionToStorageBinary() {
+    public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
@@ -62,6 +62,34 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(dateTimeSymbols)
+                ).clearContentType(),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    dateTimeSymbols.properties()
+                        .text()
+                        .getBytes(CHARSET)
+                )
+            ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageValuePropertiesWithFileExtensionWithTextPropertiesContentTypeToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
+            )
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(dateTimeSymbols)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -70,6 +98,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
                         .text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PROPERTIES)
             )
         );
     }
@@ -98,6 +128,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
                         .text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PROPERTIES)
             )
         );
     }
