@@ -25,18 +25,17 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
-import java.text.DateFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext>>
+    implements DateTimeContextTesting {
 
     @Test
     public void testConvertEmptyStorageValuePropertiesToStorageBinaryFails() {
@@ -50,23 +49,17 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
 
     @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.properties()
+                    DATE_TIME_SYMBOLS.properties()
                         .text()
                         .getBytes(CHARSET)
                 )
@@ -76,25 +69,19 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
 
     @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithTextPropertiesContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ).setContentType(
                     Optional.of(MediaType.TEXT_PROPERTIES)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.properties()
+                    DATE_TIME_SYMBOLS.properties()
                         .text()
                         .getBytes(CHARSET)
                 )
@@ -106,25 +93,19 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
 
     @Test
     public void testConvertStorageValuePropertiesWithOnlyContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ).setContentType(
                     Optional.of(MediaType.TEXT_PROPERTIES)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.properties()
+                    DATE_TIME_SYMBOLS.properties()
                         .text()
                         .getBytes(CHARSET)
                 )
