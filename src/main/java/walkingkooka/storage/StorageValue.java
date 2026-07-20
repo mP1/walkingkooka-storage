@@ -177,6 +177,10 @@ public final class StorageValue implements HasContentType,
             );
     }
 
+    public StorageValue clearContentType() {
+        return this.setContentType(NO_CONTENT_TYPE);
+    }
+
     // Object...........................................................................................................
 
     @Override
