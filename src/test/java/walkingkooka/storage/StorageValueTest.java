@@ -263,6 +263,25 @@ public final class StorageValueTest implements HasContentTypeTesting,
         );
     }
 
+    // clearContentType.................................................................................................
+
+    @Test
+    public void testClearContentTypeWithDifferent() {
+        final StorageValue storageValue = StorageValue.with(PATH)
+            .setValue(VALUE)
+            .setContentType(
+                Optional.of(CONTENT_TYPE)
+            );
+
+        final StorageValue different = storageValue.clearContentType();
+        assertNotSame(
+            storageValue,
+            different
+        );
+
+        this.contentTypeAndCheck(different);
+    }
+
     // Object...........................................................................................................
 
     @Test
