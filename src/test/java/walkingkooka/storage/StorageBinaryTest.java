@@ -143,6 +143,24 @@ public final class StorageBinaryTest implements HasPathTesting,
         );
     }
 
+    // clearContentType.................................................................................................
+
+    @Test
+    public void testClearContentTypeWithDifferent() {
+        final Optional<MediaType> contentType = Optional.of(MediaType.TEXT_PLAIN);
+
+        final StorageBinary storageBinary = this.createObject()
+            .setContentType(contentType);
+
+        final StorageBinary different = storageBinary.clearContentType();
+        assertNotSame(
+            storageBinary,
+            different
+        );
+
+        this.contentTypeAndCheck(different);
+    }
+
     // hashCode/equals..................................................................................................
 
     @Test

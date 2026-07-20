@@ -93,6 +93,10 @@ public final class StorageBinary implements HasPath<StoragePath>,
             );
     }
 
+    public StorageBinary clearContentType() {
+        return this.setContentType(NO_CONTENT_TYPE);
+    }
+
     // Object...........................................................................................................
 
     @Override
