@@ -24,7 +24,7 @@ import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.locale.LocaleContextTesting;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -36,12 +36,11 @@ import walkingkooka.tree.json.convert.JsonNodeConverters;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContextTesting;
 
 import java.nio.charset.Charset;
-import java.text.DateFormatSymbols;
-import java.util.Locale;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedJsonTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedJson<FakeStorageConverterContext>>
     implements HasCharsetTesting,
+    DateTimeContextTesting,
     LocaleContextTesting,
     JsonNodeMarshallContextTesting {
     
@@ -57,22 +56,18 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
 
     @Test
     public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(LOCALE)
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ).setContentType(
                     Optional.of(JsonNode.CONTENT_TYPE)
                 ),
             StorageBinary.with(
                 storagePath,
-                JSON_NODE_MARSHALL_CONTEXT.marshall(dateTimeSymbols)
+                JSON_NODE_MARSHALL_CONTEXT.marshall(DATE_TIME_SYMBOLS)
                     .binary(CHARSET)
             ).setContentType(
                 Optional.of(JsonNode.CONTENT_TYPE)
@@ -108,18 +103,12 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
 
     @Test
     public void testConvertStorageValueWithoutFileExtensionWithoutContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols");
 
         this.convertFails(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ),
             StorageBinary.class
         );
