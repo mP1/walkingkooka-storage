@@ -32,12 +32,9 @@ import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedTsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
     public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
