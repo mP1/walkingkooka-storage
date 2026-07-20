@@ -82,7 +82,8 @@ final class StorageConverterStorageBinaryToStorageValueSharedProperties<C extend
                 storageValue = this.successfulConversion(
                     storageBinary.path(),
                     type,
-                    properties.leftValue()
+                    properties.leftValue(),
+                    storageBinary.contentType()
                 );
             }
         }

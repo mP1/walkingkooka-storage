@@ -82,7 +82,8 @@ final class StorageConverterStorageBinaryToStorageValueSharedExpression<C extend
                 storageValue = this.successfulConversion(
                     storageBinary.path(),
                     type,
-                    expression.leftValue()
+                    expression.leftValue(),
+                    storageBinary.contentType()
                 );
             }
         }

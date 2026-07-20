@@ -76,7 +76,8 @@ final class StorageConverterStorageBinaryToStorageValueSharedJson<C extends Stor
                 type,
                 JsonNode.parse(
                     text.leftValue()
-                )
+                ),
+                storageBinary.contentType()
             );
         }
 

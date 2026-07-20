@@ -25,6 +25,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -38,7 +39,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryTxtToStorageValue() {
+    public void testConvertStorageBinaryTxtWithoutContentTypeToStorageValue() {
         final String text = "AA,BB,CC";
 
         final StoragePath storagePath = StoragePath.parse("/file.txt");
@@ -49,10 +50,34 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
                 Binary.with(
                     text.getBytes(CHARSET)
                 )
+            ).clearContentType(),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(text)
+                ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryTxtWithTextContentTypeToStorageValue() {
+        final String text = "AA,BB,CC";
+
+        final StoragePath storagePath = StoragePath.parse("/file.txt");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    text.getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
             ),
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(text)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
                 )
         );
     }

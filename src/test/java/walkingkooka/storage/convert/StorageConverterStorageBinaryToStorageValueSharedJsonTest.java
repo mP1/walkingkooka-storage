@@ -25,6 +25,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -75,7 +76,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
     }
 
     @Test
-    public void testConvertStorageBinaryJsonToJson() {
+    public void testConvertStorageBinaryJsonWithoutContentTypeToJson() {
         final JsonNode json = JsonNode.object()
             .set(
                 JsonPropertyName.with("key111"),
@@ -94,10 +95,44 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
                     json.toString()
                         .getBytes(CHARSET)
                 )
+            ).clearContentType(),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(json)
+                ).setContentType(
+                    Optional.of(JsonNode.CONTENT_TYPE)
+                )
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryJsonWithJsonContentTypeToJson() {
+        final JsonNode json = JsonNode.object()
+            .set(
+                JsonPropertyName.with("key111"),
+                "string111"
+            ).set(
+                JsonPropertyName.with("country"),
+                "Australia"
+            );
+
+        final StoragePath storagePath = StoragePath.parse("/jsonObject.json");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    json.toString()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(MediaType.APPLICATION_JSON)
             ),
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(json)
+                ).setContentType(
+                    Optional.of(MediaType.APPLICATION_JSON)
                 )
         );
     }

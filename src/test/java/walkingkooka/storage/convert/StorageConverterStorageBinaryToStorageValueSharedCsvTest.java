@@ -25,6 +25,7 @@ import walkingkooka.collect.list.CsvStringList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -38,10 +39,10 @@ public final class StorageConverterStorageBinaryToStorageValueSharedCsvTest exte
     private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
-    public void testConvertStorageBinaryJsonToCsvStringList() {
+    public void testConvertStorageBinaryJsonWithoutContentTypeToCsvStringList() {
         final CsvStringList list = CsvStringList.EMPTY.concat(
-            "abc"
-        ).concat("def")
+                "abc"
+            ).concat("def")
             .concat("ghi");
 
         final StoragePath storagePath = StoragePath.parse("/letters.csv");
@@ -53,10 +54,66 @@ public final class StorageConverterStorageBinaryToStorageValueSharedCsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
+            ).clearContentType(),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                )
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryJsonWithBinaryContentTypeToCsvStringList() {
+        final CsvStringList list = CsvStringList.EMPTY.concat(
+                "abc"
+            ).concat("def")
+            .concat("ghi");
+
+        final StoragePath storagePath = StoragePath.parse("/letters.csv");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(MediaType.BINARY)
             ),
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.BINARY)
+                )
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryJsonWithContentTypeToCsvStringList() {
+        final CsvStringList list = CsvStringList.EMPTY.concat(
+                "abc"
+            ).concat("def")
+            .concat("ghi");
+
+        final StoragePath storagePath = StoragePath.parse("/letters.csv");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_CSV)
+            ),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_CSV)
                 )
         );
     }
