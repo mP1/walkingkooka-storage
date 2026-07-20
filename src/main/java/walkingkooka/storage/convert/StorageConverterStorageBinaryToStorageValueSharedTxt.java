@@ -69,7 +69,8 @@ final class StorageConverterStorageBinaryToStorageValueSharedTxt<C extends Stora
             result = this.successfulConversion(
                 storageBinary.path(),
                 type,
-                text.leftValue()
+                text.leftValue(),
+                storageBinary.contentType()
             );
         }
 

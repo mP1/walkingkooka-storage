@@ -26,6 +26,7 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.convert.ShortCircuitingConverter;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -45,7 +46,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
     );
 
     @Test
-    public void testConvertStorageBinaryExpressionToStorageValueWithExpression() {
+    public void testConvertStorageBinaryExpressionWithoutContentTypeToStorageValueWithExpression() {
         final StoragePath path = StoragePath.parse("/add.expression.txt");
 
         this.convertAndCheck(
@@ -55,6 +56,30 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
                     EXPRESSION.text()
                         .getBytes(CHARSET)
                 )
+            ).clearContentType(),
+            StorageValue.class,
+            StorageValue.with(path)
+                .setContentType(
+                    Optional.of(Expression.MEDIA_TYPE)
+                ).setValue(
+                    Optional.of(EXPRESSION)
+                )
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryExpressionWithBinaryContentTypeToStorageValueWithExpression() {
+        final StoragePath path = StoragePath.parse("/add.expression.txt");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                path,
+                Binary.with(
+                    EXPRESSION.text()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(MediaType.BINARY)
             ),
             StorageValue.class,
             StorageValue.with(path)
@@ -62,6 +87,34 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
                     Optional.of(Expression.MEDIA_TYPE)
                 ).setValue(
                     Optional.of(EXPRESSION)
+                ).setContentType(
+                    Optional.of(MediaType.BINARY)
+                )
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryExpressionWithContentTypeToStorageValueWithExpression() {
+        final StoragePath path = StoragePath.parse("/add.expression.txt");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                path,
+                Binary.with(
+                    EXPRESSION.text()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(Expression.MEDIA_TYPE)
+            ),
+            StorageValue.class,
+            StorageValue.with(path)
+                .setContentType(
+                    Optional.of(Expression.MEDIA_TYPE)
+                ).setValue(
+                    Optional.of(EXPRESSION)
+                ).setContentType(
+                    Optional.of(Expression.MEDIA_TYPE)
                 )
         );
     }

@@ -58,13 +58,19 @@ abstract class StorageConverterStorageBinaryToStorageValueShared<C extends Stora
 
     final <T> Either<T, String> successfulConversion(final StoragePath storagePath,
                                                      final Class<T> type,
-                                                     final Object value) {
+                                                     final Object value,
+                                                     final Optional<MediaType> contentType) {
+        StorageValue storageValue = StorageValue.with(
+            storagePath
+        ).setValue(
+            Optional.of(value)
+        );
+        if(contentType.isPresent()) {
+            storageValue = storageValue.setContentType(contentType);
+        }
+
         return this.successfulConversion(
-            StorageValue.with(
-                storagePath
-            ).setValue(
-                Optional.of(value)
-            ),
+            storageValue,
             type
         );
     }

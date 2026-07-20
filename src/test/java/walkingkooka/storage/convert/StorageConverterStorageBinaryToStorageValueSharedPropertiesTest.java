@@ -27,6 +27,7 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.HasDateTimeSymbolsTesting;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.props.Properties;
 import walkingkooka.props.PropertiesPath;
 import walkingkooka.storage.StorageBinary;
@@ -37,7 +38,7 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 
 public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedProperties<FakeStorageConverterContext>>
-implements HasCharsetTesting,
+    implements HasCharsetTesting,
     HasDateTimeSymbolsTesting {
 
     @Test
@@ -62,7 +63,7 @@ implements HasCharsetTesting,
     }
 
     @Test
-    public void testConvertStorageBinaryPropertiesToProperties() {
+    public void testConvertStorageBinaryPropertiesWithoutContentTypeToProperties() {
         final Properties properties = Properties.EMPTY.set(
             PropertiesPath.parse("hello.world.123"),
             "Hello World"
@@ -80,10 +81,45 @@ implements HasCharsetTesting,
                     properties.text()
                         .getBytes(CHARSET)
                 )
+            ).clearContentType(),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(properties)
+                ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageBinaryPropertiesWithPropertiesContentTypeToProperties() {
+        final Properties properties = Properties.EMPTY.set(
+            PropertiesPath.parse("hello.world.123"),
+            "Hello World"
+        ).set(
+            PropertiesPath.parse("country"),
+            "Australia"
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/file.properties");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    properties.text()
+                        .getBytes(CHARSET)
+                )
+            ).setContentType(
+                Optional.of(
+                    MediaType.TEXT_PROPERTIES
+                )
             ),
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(properties)
+                ).setContentType(
+                    Optional.of(
+                        MediaType.TEXT_PROPERTIES
+                    )
                 )
         );
     }
