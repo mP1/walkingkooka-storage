@@ -37,7 +37,7 @@ import java.util.Optional;
 public final class StorageConverterStorageValueToStorageBinarySharedCsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedCsv<FakeStorageConverterContext>> {
 
     @Test
-    public void testConvertStorageValueCsvToStorageBinary() {
+    public void testConvertStorageValueCsvWithoutContentTypeToStorageBinary() {
         final CsvStringList list = CsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
@@ -48,6 +48,31 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ).clearContentType(),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueCsvWithContentTypeToStorageBinary() {
+        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_CSV)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -55,6 +80,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_CSV)
             )
         );
     }
@@ -72,9 +99,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
                 .setValue(
                     Optional.of(list)
                 ).setContentType(
-                    Optional.of(
-                        MediaType.TEXT_CSV
-                    )
+                    Optional.of(MediaType.TEXT_CSV)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -82,6 +107,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_CSV)
             )
         );
     }

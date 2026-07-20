@@ -51,7 +51,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
     }
 
     @Test
-    public void testConvertStorageValueWithFileExtensionTxtToStorageBinary() {
+    public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")
@@ -64,6 +64,33 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(dateTimeSymbols)
+                ).clearContentType(),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    dateTimeSymbols.text()
+                        .getBytes(CHARSET)
+                )
+            ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithFileExtensionTxtWithTextPlainContentTypeToStorageBinary() {
+        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
+            new DateFormatSymbols(
+                Locale.forLanguageTag("en-AU")
+            )
+        );
+
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(dateTimeSymbols)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -71,12 +98,14 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
                     dateTimeSymbols.text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
             )
         );
     }
 
     @Test
-    public void testConvertStorageValueTxtAndStringToStorageBinary() {
+    public void testConvertStorageValueTxtWithTextPlainContentTypeAndStringToStorageBinary() {
         final String value = "Hello world";
         final StoragePath storagePath = StoragePath.parse("/dir/text-file.txt");
 
@@ -84,12 +113,16 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(value)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
                 ),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
                     value.getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
             )
         );
     }
@@ -111,6 +144,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
                 Binary.with(
                     value.getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
             )
         );
     }

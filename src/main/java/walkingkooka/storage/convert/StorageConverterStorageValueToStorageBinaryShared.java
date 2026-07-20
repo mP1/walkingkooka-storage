@@ -104,7 +104,7 @@ abstract class StorageConverterStorageValueToStorageBinaryShared<C extends Stora
                 StorageBinary.with(
                     storageValue.path(),
                     binary.leftValue()
-                ),
+                ).setContentType(storageValue.contentType()),
                 type
             );
         }

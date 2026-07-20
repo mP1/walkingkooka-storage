@@ -56,7 +56,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
     }
 
     @Test
-    public void testConvertStorageValueFileExtensionJsonToStorageBinary() {
+    public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(LOCALE)
         );
@@ -67,17 +67,21 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(dateTimeSymbols)
+                ).setContentType(
+                    Optional.of(JsonNode.CONTENT_TYPE)
                 ),
             StorageBinary.with(
                 storagePath,
                 JSON_NODE_MARSHALL_CONTEXT.marshall(dateTimeSymbols)
                     .binary(CHARSET)
+            ).setContentType(
+                Optional.of(JsonNode.CONTENT_TYPE)
             )
         );
     }
 
     @Test
-    public void testConvertStorageValueJsonWithoutFileExtensionToStorageBinary() {
+    public void testConvertStorageValueJsonWithoutFileExtensionWithApplicationJsonContentTypeToStorageBinary() {
         final JsonNode json = JsonNode.object()
             .set(
                 JsonPropertyName.with("hello"),
@@ -90,16 +94,20 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(json)
+                ).setContentType(
+                    Optional.of(JsonNode.CONTENT_TYPE)
                 ),
             StorageBinary.with(
                 storagePath,
                 json.binary(CHARSET)
+            ).setContentType(
+                Optional.of(JsonNode.CONTENT_TYPE)
             )
         );
     }
 
     @Test
-    public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
+    public void testConvertStorageValueWithoutFileExtensionWithoutContentTypeToStorageBinary() {
         final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
             new DateFormatSymbols(
                 Locale.forLanguageTag("en-AU")

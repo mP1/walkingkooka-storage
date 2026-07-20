@@ -37,7 +37,7 @@ import java.util.Optional;
 public final class StorageConverterStorageValueToStorageBinarySharedTsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> {
 
     @Test
-    public void testConvertStorageValueTsvFileExtensionToStorageBinary() {
+    public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStorageBinary() {
         final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
@@ -48,6 +48,31 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ).clearContentType(),
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    list.text()
+                        .getBytes(CHARSET)
+                )
+            ).clearContentType()
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueTsvFileExtensionWithTextTsvContentTypeToStorageBinary() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
+
+        this.convertAndCheck(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 ),
             StorageBinary.with(
                 storagePath,
@@ -55,6 +80,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
             )
         );
     }
@@ -80,6 +107,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
+            ).setContentType(
+                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
             )
         );
     }
