@@ -32,14 +32,11 @@ import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedTxtTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     @Test
     public void testConvertEmptyStorageValueTxtToStorageBinaryFails() {

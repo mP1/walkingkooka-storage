@@ -31,12 +31,9 @@ import walkingkooka.storage.StorageValue;
 import walkingkooka.tree.expression.Expression;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedExpressionTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedExpression<FakeStorageConverterContext>> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     private final static Expression EXPRESSION = Expression.add(
         Expression.value(111),

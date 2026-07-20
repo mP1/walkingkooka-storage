@@ -19,10 +19,12 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
+import walkingkooka.HasCharsetTesting;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 
-public abstract class StorageConverterStorageValueToStorageBinarySharedTestCase<C extends StorageConverterStorageValueToStorageBinaryShared<FakeStorageConverterContext>> extends StorageConverterTestCase<C> {
+public abstract class StorageConverterStorageValueToStorageBinarySharedTestCase<C extends StorageConverterStorageValueToStorageBinaryShared<FakeStorageConverterContext>> extends StorageConverterTestCase<C>
+implements HasCharsetTesting {
 
     StorageConverterStorageValueToStorageBinarySharedTestCase() {
         super();
