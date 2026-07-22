@@ -71,7 +71,9 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
                     dateTimeSymbols.text()
                         .getBytes(CHARSET)
                 )
-            ).clearContentType()
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
+            )
         );
     }
 

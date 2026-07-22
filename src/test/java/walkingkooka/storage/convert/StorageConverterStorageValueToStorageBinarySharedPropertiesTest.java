@@ -63,7 +63,9 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
                         .text()
                         .getBytes(CHARSET)
                 )
-            ).clearContentType()
+            ).setContentType(
+                Optional.of(MediaType.TEXT_PROPERTIES)
+            )
         );
     }
 
