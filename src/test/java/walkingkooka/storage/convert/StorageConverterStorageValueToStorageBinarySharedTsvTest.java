@@ -55,7 +55,9 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
-            ).clearContentType()
+            ).setContentType(
+                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
+            )
         );
     }
 

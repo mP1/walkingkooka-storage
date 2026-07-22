@@ -56,7 +56,9 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
                 Binary.with(
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
-            ).clearContentType()
+            ).setContentType(
+                Optional.of(Expression.MEDIA_TYPE)
+            )
         );
     }
 

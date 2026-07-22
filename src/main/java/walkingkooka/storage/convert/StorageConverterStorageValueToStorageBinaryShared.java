@@ -26,6 +26,8 @@ import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 
+import java.util.Optional;
+
 /**
  * Base class for any {@link walkingkooka.convert.Converter} that converts a {@link walkingkooka.storage.StorageValue}
  * to a {@link StorageBinary} if the file extension and value object match.
@@ -100,11 +102,20 @@ abstract class StorageConverterStorageValueToStorageBinaryShared<C extends Stora
         if (binary.isRight()) {
             storageBinary = Cast.to(binary);
         } else {
+            final Optional<MediaType> contentType = storageValue.contentType();
+
+            // if StorageValue#contentType is empty set {@link #contentType
             storageBinary = this.successfulConversion(
                 StorageBinary.with(
                     storageValue.path(),
                     binary.leftValue()
-                ).setContentType(storageValue.contentType()),
+                ).setContentType(
+                    contentType.isPresent() ?
+                        contentType :
+                        Optional.of(
+                            this.contentType()
+                        )
+                ),
                 type
             );
         }

@@ -55,7 +55,9 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
                     list.text()
                         .getBytes(CHARSET)
                 )
-            ).clearContentType()
+            ).setContentType(
+                Optional.of(MediaType.TEXT_CSV)
+            )
         );
     }
 
