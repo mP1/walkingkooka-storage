@@ -54,7 +54,9 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(text)
-                ).clearContentType()
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
+                )
         );
     }
 

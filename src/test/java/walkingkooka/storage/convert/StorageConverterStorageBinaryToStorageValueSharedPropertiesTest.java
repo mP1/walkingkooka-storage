@@ -58,6 +58,8 @@ public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTe
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(dateTimeSymbols)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
                 )
         );
     }
@@ -85,7 +87,9 @@ public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTe
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(properties)
-                ).clearContentType()
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
+                )
         );
     }
 

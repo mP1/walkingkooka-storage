@@ -40,6 +40,7 @@ import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.math.MathTesting;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.props.Properties;
 import walkingkooka.props.PropertiesPath;
@@ -209,6 +210,8 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(PROPERTIES)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
                 )
         );
     }
@@ -224,6 +227,8 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(TEXT_CONTENT)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PLAIN)
                 )
         );
     }
@@ -311,7 +316,9 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             storage,
             storagePath,
             context,
-            storageValue
+            storageValue.setContentType(
+                Optional.of(MediaType.TEXT_PROPERTIES)
+            )
         );
     }
 
@@ -337,7 +344,9 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             storage,
             storagePath,
             context,
-            storageValue
+            storageValue.setContentType(
+                Optional.of(MediaType.TEXT_PLAIN)
+            )
         );
     }
 
@@ -533,6 +542,8 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             StoragePath.parse("/different.txt")
         ).setValue(
             Optional.of("different " + TEXT_CONTENT)
+        ).setContentType(
+            Optional.of(MediaType.TEXT_PLAIN)
         );
 
         storage.addWatcher(
