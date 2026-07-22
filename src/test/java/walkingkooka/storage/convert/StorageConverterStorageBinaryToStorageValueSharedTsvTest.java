@@ -25,6 +25,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.list.TsvStringList;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -57,6 +58,8 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTsvTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 )
         );
     }

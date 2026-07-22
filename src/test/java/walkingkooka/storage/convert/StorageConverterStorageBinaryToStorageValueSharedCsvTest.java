@@ -58,6 +58,8 @@ public final class StorageConverterStorageBinaryToStorageValueSharedCsvTest exte
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(list)
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_CSV)
                 )
         );
     }
