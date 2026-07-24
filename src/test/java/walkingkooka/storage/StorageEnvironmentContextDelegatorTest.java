@@ -20,14 +20,8 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.storage.StorageEnvironmentContextDelegatorTest.TestStorageEnvironmentContextDelegator;
-import walkingkooka.text.Indentation;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -120,17 +114,7 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
             return this.environmentContext;
         }
 
-        private final EnvironmentContext environmentContext = EnvironmentContexts.map(
-            EnvironmentContexts.empty(
-                StandardCharsets.UTF_8,
-                Currency.getInstance("AUD"),
-                Indentation.SPACES4,
-                StorageEnvironmentContextDelegatorTest.LINE_ENDING,
-                Locale.ENGLISH,
-                () -> LocalDateTime.MIN,
-                ANONYMOUS
-            )
-        );
+        private final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         @Override
         public StorageEnvironmentContext cloneEnvironment() {
