@@ -29,17 +29,13 @@ import walkingkooka.datetime.DateTimeSymbols;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaTypeDetectors;
-import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.math.MathContext;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -52,17 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
     implements EnvironmentContextTesting {
-
-    private final static LocalDateTime NOW = LocalDateTime.of(
-        1999,
-        12,
-        31,
-        12,
-        58,
-        59
-    );
-
-    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
 
     private final static EnvironmentValueName<Integer> MAGIC_ENVIRONMENT_VALUE_NAME = EnvironmentValueName.with(
         "magic-integer",
@@ -594,17 +579,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
     @Override
     public StorageContext createContext() {
-        final EnvironmentContext environmentContext = EnvironmentContexts.map(
-            EnvironmentContexts.empty(
-                StandardCharsets.UTF_8,
-                Currency.getInstance(LOCALE),
-                Indentation.SPACES4,
-                LINE_ENDING,
-                LOCALE,
-                () -> NOW,
-                Optional.ofNullable(USER)
-            )
-        );
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         environmentContext.setEnvironmentValue(
             MAGIC_ENVIRONMENT_VALUE_NAME,

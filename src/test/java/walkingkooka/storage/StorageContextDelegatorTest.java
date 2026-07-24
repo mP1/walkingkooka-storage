@@ -19,14 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelegator;
-import walkingkooka.text.Indentation;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -127,15 +121,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
             return StorageContexts.basic(
                 ConverterContexts.fake(), // ConverterLike
                 MEDIA_TYPE_DETECTOR,
-                EnvironmentContexts.empty(
-                    StandardCharsets.UTF_8,
-                    Currency.getInstance("AUD"),
-                    Indentation.SPACES4,
-                    StorageContextDelegatorTest.LINE_ENDING,
-                    Locale.ENGLISH,
-                    () -> LocalDateTime.MIN,
-                    EnvironmentContext.ANONYMOUS
-                )
+                ENVIRONMENT_CONTEXT.cloneEnvironment()
             );
         }
 
