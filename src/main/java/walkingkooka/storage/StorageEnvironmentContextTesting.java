@@ -49,4 +49,31 @@ public interface StorageEnvironmentContextTesting extends EnvironmentContextTest
             currentWorkingDirectory
         );
     }
+
+    // setHomeDirectory.................................................................................................
+
+    default void setHomeDirectoryAndCheck(final StorageEnvironmentContext context) {
+        this.setHomeDirectoryAndCheck(
+            context,
+            Optional.empty()
+        );
+    }
+
+    default void setHomeDirectoryAndCheck(final StorageEnvironmentContext context,
+                                          final StoragePath homeDirectory) {
+        this.setHomeDirectoryAndCheck(
+            context,
+            Optional.of(homeDirectory)
+        );
+    }
+
+    default void setHomeDirectoryAndCheck(final StorageEnvironmentContext context,
+                                          final Optional<StoragePath> homeDirectory) {
+        context.setHomeDirectory(homeDirectory);
+
+        this.homeDirectoryAndCheck(
+            context,
+            homeDirectory
+        );
+    }
 }
