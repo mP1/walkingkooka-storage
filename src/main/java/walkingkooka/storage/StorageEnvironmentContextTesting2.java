@@ -76,6 +76,17 @@ public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentC
         }
     }
 
+    // setHomeDirectory.................................................................................................
+
+    @Test
+    default void testSetHomeDirectoryWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .setHomeDirectory(null)
+        );
+    }
+    
     // class............................................................................................................
 
     @Override
