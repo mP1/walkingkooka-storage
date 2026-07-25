@@ -33,6 +33,13 @@ public final class StorageEnvironmentContexts implements PublicStaticHelper {
     }
 
     /**
+     * {@see FakeStorageEnvironmentContext}
+     */
+    public static FakeStorageEnvironmentContext fake() {
+        return new FakeStorageEnvironmentContext();
+    }
+
+    /**
      * Stop creation
      */
     private StorageEnvironmentContexts() {
