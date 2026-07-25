@@ -57,6 +57,25 @@ public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentC
         );
     }
 
+    // homeDirectory....................................................................................................
+
+    @Override
+    default void homeDirectoryAndCheck(final HasHomeDirectory has,
+                                       final Optional<StoragePath> expected) {
+        StorageEnvironmentContextTesting.super.homeDirectoryAndCheck(
+            has,
+            expected
+        );
+
+        if (has instanceof StorageEnvironmentContext) {
+            this.environmentValueAndCheck(
+                (StorageEnvironmentContext) has,
+                StorageEnvironmentContext.HOME_DIRECTORY,
+                expected
+            );
+        }
+    }
+
     // class............................................................................................................
 
     @Override
