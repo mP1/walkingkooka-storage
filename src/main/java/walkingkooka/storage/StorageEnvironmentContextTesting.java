@@ -17,13 +17,41 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
+import walkingkooka.environment.EnvironmentContexts;
+import walkingkooka.predicate.Predicates;
 
 import java.util.Optional;
 
 public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
     HasCurrentWorkingDirectoryTesting,
     HasUserDirectoriesTesting {
+
+    StorageEnvironmentContext STORAGE_ENVIRONMENT_CONTEXT = storageEnvironmentContext();
+
+    private static StorageEnvironmentContext storageEnvironmentContext() {
+        final EnvironmentContext context = ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY.setEnvironmentValue(
+            CURRENT_WORKING_DIRECTORY,
+            context
+        );
+
+        StorageEnvironmentContext.HOME_DIRECTORY.setEnvironmentValue(
+            HOME_DIRECTORY,
+            context
+        );
+
+        return StorageEnvironmentContexts.basic(
+            EnvironmentContexts.readOnly(
+                Predicates.always(),
+                context
+            )
+        );
+    }
+
+    // setCurrentWorkingDirectory.......................................................................................
 
     default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context) {
         this.setCurrentWorkingDirectoryAndCheck(
