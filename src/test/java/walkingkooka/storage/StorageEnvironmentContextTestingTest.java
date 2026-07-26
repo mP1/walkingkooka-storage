@@ -115,6 +115,14 @@ public final class StorageEnvironmentContextTestingTest implements StorageEnviro
         );
     }
 
+    @Test
+    public void testDifferentStorageEnvironmentContext() {
+        this.checkNotEquals(
+            STORAGE_ENVIRONMENT_CONTEXT,
+            DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
+        );
+    }
+
     // class............................................................................................................
 
     @Override
