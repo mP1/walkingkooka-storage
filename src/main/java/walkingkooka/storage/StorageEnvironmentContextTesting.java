@@ -51,6 +51,29 @@ public interface StorageEnvironmentContextTesting extends EnvironmentContextTest
         );
     }
 
+    StorageEnvironmentContext DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT = differentStorageEnvironmentContext();
+
+    private static StorageEnvironmentContext differentStorageEnvironmentContext() {
+        final EnvironmentContext context = DIFFERENT_ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY.setEnvironmentValue(
+            DIFFERENT_CURRENT_WORKING_DIRECTORY,
+            context
+        );
+
+        StorageEnvironmentContext.HOME_DIRECTORY.setEnvironmentValue(
+            DIFFERENT_HOME_DIRECTORY,
+            context
+        );
+
+        return StorageEnvironmentContexts.basic(
+            EnvironmentContexts.readOnly(
+                Predicates.always(),
+                context
+            )
+        );
+    }
+
     // setCurrentWorkingDirectory.......................................................................................
 
     default void setCurrentWorkingDirectoryAndCheck(final StorageEnvironmentContext context) {
