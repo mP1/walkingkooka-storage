@@ -19,9 +19,6 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContexts;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -92,21 +89,11 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
     public void testSetEnvironmentContext() {
         final StorageEnvironmentContextBasic context = this.createContext();
 
-        final EnvironmentContext differentEnvironmentContext = EnvironmentContexts.empty(
-            DIFFERENT_CHARSET,
-            DIFFERENT_CURRENCY,
-            DIFFERENT_INDENTATION,
-            DIFFERENT_LINE_ENDING,
-            DIFFERENT_LOCALE,
-            HAS_NOW,
-            Optional.of(DIFFERENT_USER)
-        );
-
-        final StorageEnvironmentContext different = context.setEnvironmentContext(differentEnvironmentContext);
+        final StorageEnvironmentContext different = context.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
 
         assertNotSame(
             different,
-            differentEnvironmentContext
+            DIFFERENT_ENVIRONMENT_CONTEXT
         );
 
         this.charsetAndCheck(
