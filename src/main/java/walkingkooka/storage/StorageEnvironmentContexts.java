@@ -18,7 +18,10 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.reflect.PublicStaticHelper;
+
+import java.util.function.Predicate;
 
 /**
  * A collection of {@link StorageEnvironmentContext}
@@ -37,6 +40,17 @@ public final class StorageEnvironmentContexts implements PublicStaticHelper {
      */
     public static FakeStorageEnvironmentContext fake() {
         return new FakeStorageEnvironmentContext();
+    }
+
+    /**
+     * {@see StorageEnvironmentContextReadOnly}
+     */
+    public static StorageEnvironmentContext readOnly(final Predicate<EnvironmentValueName<?>> readOnlyFilter,
+                                                     final EnvironmentContext environmentContext) {
+        return StorageEnvironmentContextReadOnly.with(
+            readOnlyFilter,
+            environmentContext
+        );
     }
 
     /**
