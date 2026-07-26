@@ -138,6 +138,25 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
     }
 
     @Test
+    public void testCloneEnvironmentContextWithReadOnlyEnvironmentContext() {
+        final EnvironmentContext notReadOnly = ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        final StorageEnvironmentContextReadOnly readOnly = StorageEnvironmentContextReadOnly.with(
+            READ_ONLY_FILTER,
+            notReadOnly
+        );
+        assertNotSame(
+            readOnly.cloneEnvironment(),
+            notReadOnly
+        );
+
+        this.setCharsetAndCheck(
+            notReadOnly,
+            DIFFERENT_CHARSET
+        );
+    }
+
+    @Test
     public void testSetEnvironmentContext() {
         final StorageEnvironmentContextReadOnly context = this.createContext();
 
