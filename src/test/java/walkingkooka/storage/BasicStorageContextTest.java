@@ -25,14 +25,9 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContextTesting;
-import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -105,17 +100,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
     public void testSetEnvironmentContext() {
         final BasicStorageContext context = this.createContext();
 
-        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
-            StandardCharsets.UTF_8,
-            CURRENCY,
-            INDENTATION,
-            LINE_ENDING,
-            Locale.GERMAN,
-            HAS_NOW,
-            Optional.of(DIFFERENT_USER)
-        );
-
-        final StorageContext after = context.setEnvironmentContext(environmentContext);
+        final StorageContext after = context.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
         assertNotSame(
             context,
             after
@@ -125,7 +110,7 @@ public final class BasicStorageContextTest implements StorageContextTesting<Basi
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
-                environmentContext
+                DIFFERENT_ENVIRONMENT_CONTEXT
             ),
             after
         );
