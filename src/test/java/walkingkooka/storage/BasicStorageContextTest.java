@@ -32,7 +32,7 @@ import walkingkooka.net.header.MediaTypeDetectors;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageContextTest implements StorageContextTesting<BasicStorageContext>,
+public final class BasicStorageContextTest implements StorageContextTesting2<BasicStorageContext>,
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,

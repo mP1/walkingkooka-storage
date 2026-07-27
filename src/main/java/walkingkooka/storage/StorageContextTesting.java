@@ -17,52 +17,17 @@
 
 package walkingkooka.storage;
 
-import org.junit.jupiter.api.Test;
-import walkingkooka.convert.ConverterLikeTesting2;
-import walkingkooka.net.header.MediaTypeDetectorTesting2;
+import walkingkooka.convert.ConverterLikeTesting;
+import walkingkooka.net.header.MediaTypeDetectorTesting;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting2<C>,
-    ConverterLikeTesting2<C>,
+public interface StorageContextTesting extends StorageEnvironmentContextTesting,
     CanParseStoragePathTesting,
-    MediaTypeDetectorTesting2<C> {
+    ConverterLikeTesting,
+    MediaTypeDetectorTesting {
 
     StorageContext STORAGE_CONTEXT = StorageContexts.basic(
         CONVERTER_LIKE,
         MEDIA_TYPE_DETECTOR,
         ENVIRONMENT_CONTEXT
     );
-
-    // parseStorageContext..............................................................................................
-
-    @Test
-    default void testParseStoragePathWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createContext()
-                .parseStoragePath(null)
-        );
-    }
-
-    // ConverterLike....................................................................................................
-
-    @Override
-    default C createConverterLike() {
-        return this.createContext();
-    }
-
-    // MediaTypeDetectorTesting.........................................................................................
-
-    @Override
-    default C createMediaTypeDetector() {
-        return this.createContext();
-    }
-
-    // class............................................................................................................
-
-    @Override
-    default String typeNameSuffix() {
-        return StorageContext.class.getSimpleName();
-    }
 }
