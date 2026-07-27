@@ -24,6 +24,8 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.net.header.MediaType;
 
+import java.util.Optional;
+
 public interface StorageContextDelegator extends StorageContext,
     ConverterLikeDelegator,
     EnvironmentContextDelegator {
@@ -42,6 +44,32 @@ public interface StorageContextDelegator extends StorageContext,
     default StoragePath parseStoragePath(final String text) {
         return this.storageContext()
             .parseStoragePath(text);
+    }
+
+    @Override
+    default Optional<StoragePath> currentWorkingDirectory() {
+        return CURRENT_WORKING_DIRECTORY.getEnvironmentValue(this);
+    }
+
+    @Override
+    default void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
+        CURRENT_WORKING_DIRECTORY.setOrRemoveEnvironmentValue(
+            currentWorkingDirectory,
+            this
+        );
+    }
+
+    @Override
+    default Optional<StoragePath> homeDirectory() {
+        return HOME_DIRECTORY.getEnvironmentValue(this);
+    }
+
+    @Override
+    default void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
+        HOME_DIRECTORY.setOrRemoveEnvironmentValue(
+            homeDirectory,
+            this
+        );
     }
 
     // StorageContextDelegator..........................................................................................
