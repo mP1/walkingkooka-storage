@@ -23,7 +23,7 @@ import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelega
 
 import java.util.Objects;
 
-public final class StorageContextDelegatorTest implements StorageContextTesting<TestStorageContextDelegator> {
+public final class StorageContextDelegatorTest implements StorageContextTesting2<TestStorageContextDelegator> {
 
     @Override
     public TestStorageContextDelegator createContext() {
