@@ -28,6 +28,12 @@ public interface StorageContextTesting<C extends StorageContext> extends Storage
     CanParseStoragePathTesting,
     MediaTypeDetectorTesting2<C> {
 
+    StorageContext STORAGE_CONTEXT = StorageContexts.basic(
+        CONVERTER_LIKE,
+        MEDIA_TYPE_DETECTOR,
+        ENVIRONMENT_CONTEXT
+    );
+
     // parseStorageContext..............................................................................................
 
     @Test
