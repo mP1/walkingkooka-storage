@@ -52,10 +52,10 @@ public interface Storage<C extends StorageContext> {
                                 final C context);
 
     Runnable addWatcher(final StorageWatcher watcher,
-                               final C context);
+                        final C context);
 
     Runnable addWatcherOnce(final StorageWatcher watcher,
-                                   final C context);
+                            final C context);
 
     /**
      * Returns a {@link Storage} with an additional prefix to all its {@link StoragePath}.
