@@ -22,7 +22,6 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelegator;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public final class StorageContextDelegatorTest implements StorageContextTesting<TestStorageContextDelegator> {
 
@@ -82,28 +81,6 @@ public final class StorageContextDelegatorTest implements StorageContextTesting<
     }
 
     final static class TestStorageContextDelegator implements StorageContextDelegator {
-
-        @Override
-        public Optional<StoragePath> currentWorkingDirectory() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
-            Objects.requireNonNull(currentWorkingDirectory, "currentWorkingDirectory");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Optional<StoragePath> homeDirectory() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
-            Objects.requireNonNull(homeDirectory, "homeDirectory");
-            throw new UnsupportedOperationException();
-        }
 
         @Override
         public TestStorageContextDelegator cloneEnvironment() {
