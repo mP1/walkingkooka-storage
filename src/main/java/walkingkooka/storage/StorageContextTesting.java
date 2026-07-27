@@ -18,13 +18,13 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.convert.ConverterLikeTesting;
+import walkingkooka.convert.ConverterLikeTesting2;
 import walkingkooka.net.header.MediaTypeDetectorTesting2;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageContextTesting<C extends StorageContext> extends StorageEnvironmentContextTesting2<C>,
-    ConverterLikeTesting<C>,
+    ConverterLikeTesting2<C>,
     CanParseStoragePathTesting,
     MediaTypeDetectorTesting2<C> {
 
