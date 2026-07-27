@@ -138,7 +138,7 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
     }
 
     @Test
-    public void testCloneEnvironmentContextWithReadOnlyEnvironmentContext() {
+    public void testCloneEnvironmentContextWithNotReadOnlyEnvironmentContext() {
         final EnvironmentContext notReadOnly = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final StorageEnvironmentContextReadOnly readOnly = StorageEnvironmentContextReadOnly.with(
@@ -152,6 +152,50 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
 
         this.setCharsetAndCheck(
             notReadOnly,
+            DIFFERENT_CHARSET
+        );
+    }
+
+    @Test
+    public void testCloneEnvironmentContextWithReadOnlyEnvironmentContext() {
+        final EnvironmentContext readOnlyEnvironmentContext = ENVIRONMENT_CONTEXT;
+
+        final StorageEnvironmentContextReadOnly readOnlyStorageEnvironmentContext = StorageEnvironmentContextReadOnly.with(
+            READ_ONLY_FILTER,
+            readOnlyEnvironmentContext
+        );
+
+        final StorageEnvironmentContext cloned = readOnlyStorageEnvironmentContext.cloneEnvironment();
+
+        assertNotSame(
+            cloned,
+            readOnlyEnvironmentContext
+        );
+
+        this.setCharsetAndCheck(
+            cloned,
+            DIFFERENT_CHARSET
+        );
+    }
+
+    @Test
+    public void testCloneEnvironmentContextWithStorageEnvironmentContext() {
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        final StorageEnvironmentContextReadOnly readOnlyStorageEnvironmentContext = StorageEnvironmentContextReadOnly.with(
+            READ_ONLY_FILTER,
+            storageEnvironmentContext
+        );
+
+        final StorageEnvironmentContext cloned = readOnlyStorageEnvironmentContext.cloneEnvironment();
+
+        assertNotSame(
+            cloned,
+            storageEnvironmentContext
+        );
+
+        this.setCharsetAndCheck(
+            cloned,
             DIFFERENT_CHARSET
         );
     }
