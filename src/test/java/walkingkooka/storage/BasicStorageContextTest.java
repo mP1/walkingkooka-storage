@@ -100,12 +100,24 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     // setEnvironmentContext............................................................................................
 
     @Test
-    public void testSetEnvironmentContextWithSame() {
+    public void testSetEnvironmentContextWithSameBasicStorageContext() {
         final BasicStorageContext context = this.createContext();
 
         assertSame(
             context,
             context.setEnvironmentContext(context)
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextWithSameEnvironmentContext() {
+        final BasicStorageContext context = this.createContext();
+
+        assertSame(
+            context,
+            context.setEnvironmentContext(
+                context.environmentContext()
+            )
         );
     }
 
