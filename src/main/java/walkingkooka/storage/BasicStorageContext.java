@@ -122,7 +122,7 @@ final class BasicStorageContext implements StorageContext,
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
         final StorageContext storageContext;
 
-        if (this == environmentContext) {
+        if (this == environmentContext || this.environmentContext == environmentContext) {
             storageContext = this;
         } else {
             EnvironmentContext wrappedEnvironmentContext = environmentContext;
