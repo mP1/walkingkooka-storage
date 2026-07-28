@@ -120,14 +120,29 @@ final class BasicStorageContext implements StorageContext,
 
     @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        // only re-create if different instance
-        return this.environmentContext == environmentContext ?
-            this :
-            with(
+        final StorageContext storageContext;
+
+        if (this == environmentContext) {
+            storageContext = this;
+        } else {
+            EnvironmentContext wrappedEnvironmentContext = environmentContext;
+
+            if (environmentContext instanceof BasicStorageContext) {
+                final BasicStorageContext basicStorageContext = (BasicStorageContext) environmentContext;
+
+                wrappedEnvironmentContext = basicStorageContext.environmentContext;
+            }
+
+            Objects.requireNonNull(wrappedEnvironmentContext, "environmentContext");
+
+            storageContext = new BasicStorageContext(
                 this.converterLike,
                 this.mediaTypeDetector,
-                environmentContext
+                wrappedEnvironmentContext
             );
+        }
+
+        return storageContext;
     }
 
     @Override

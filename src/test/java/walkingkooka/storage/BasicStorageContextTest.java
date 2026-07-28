@@ -30,6 +30,7 @@ import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicStorageContextTest implements StorageContextTesting2<BasicStorageContext>,
@@ -96,11 +97,75 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
+    // setEnvironmentContext............................................................................................
+
     @Test
-    public void testSetEnvironmentContext() {
+    public void testSetEnvironmentContextWithSame() {
+        final BasicStorageContext context = this.createContext();
+
+        assertSame(
+            context,
+            context.setEnvironmentContext(context)
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextWithDifferentEnvironmentContext() {
         final BasicStorageContext context = this.createContext();
 
         final StorageContext after = context.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
+        assertNotSame(
+            context,
+            after
+        );
+
+        this.checkEquals(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
+                DIFFERENT_ENVIRONMENT_CONTEXT
+            ),
+            after
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextWithBasicStorageContextWithDifferentEnvironmentContext() {
+        final BasicStorageContext context = this.createContext();
+
+        final StorageContext after = context.setEnvironmentContext(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
+                DIFFERENT_ENVIRONMENT_CONTEXT
+            )
+        );
+        assertNotSame(
+            context,
+            after
+        );
+
+        this.checkEquals(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
+                DIFFERENT_ENVIRONMENT_CONTEXT
+            ),
+            after
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextWithBasicStorageContextWithDifferentEnvironmentContext2() {
+        final BasicStorageContext context = this.createContext();
+
+        final StorageContext after = context.setEnvironmentContext(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MediaTypeDetectors.fake(),
+                DIFFERENT_ENVIRONMENT_CONTEXT
+            )
+        );
         assertNotSame(
             context,
             after
