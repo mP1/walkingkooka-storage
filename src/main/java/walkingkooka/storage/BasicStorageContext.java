@@ -76,27 +76,27 @@ final class BasicStorageContext implements StorageContext,
 
     @Override
     public Optional<StoragePath> currentWorkingDirectory() {
-        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
+        return CURRENT_WORKING_DIRECTORY.getEnvironmentValue(this);
     }
 
     @Override
     public void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
-        this.setOrRemoveEnvironmentValue(
-            CURRENT_WORKING_DIRECTORY,
-            currentWorkingDirectory
+        CURRENT_WORKING_DIRECTORY.setOrRemoveEnvironmentValue(
+            currentWorkingDirectory,
+            this
         );
     }
 
     @Override
     public Optional<StoragePath> homeDirectory() {
-        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
+        return CURRENT_WORKING_DIRECTORY.getEnvironmentValue(this);
     }
 
     @Override
     public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
-        this.setOrRemoveEnvironmentValue(
-            CURRENT_WORKING_DIRECTORY,
-            homeDirectory
+        CURRENT_WORKING_DIRECTORY.setOrRemoveEnvironmentValue(
+            homeDirectory,
+            this
         );
     }
 
