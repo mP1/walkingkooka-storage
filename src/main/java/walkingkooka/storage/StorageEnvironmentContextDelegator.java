@@ -23,14 +23,8 @@ import walkingkooka.environment.EnvironmentContextDelegator;
 import java.util.Optional;
 
 public interface StorageEnvironmentContextDelegator extends StorageEnvironmentContext,
-    EnvironmentContextDelegator {
-
-    // StorageEnvironmentContext........................................................................................
-
-    @Override
-    default Optional<StoragePath> currentWorkingDirectory() {
-        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
-    }
+    EnvironmentContextDelegator,
+    HasUserDirectoriesDelegator {
 
     @Override
     default void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
@@ -41,17 +35,21 @@ public interface StorageEnvironmentContextDelegator extends StorageEnvironmentCo
     }
 
     @Override
-    default Optional<StoragePath> homeDirectory() {
-        return this.environmentValue(HOME_DIRECTORY);
-    }
-
-    @Override
     default void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
         this.setOrRemoveEnvironmentValue(
             HOME_DIRECTORY,
             homeDirectory
         );
     }
+
+    // HasUserDirectoriesDelegator......................................................................................
+
+    @Override
+    default HasUserDirectories hasUserDirectories() {
+        return this.storageEnvironmentContext();
+    }
+
+    // StorageEnvironmentContext........................................................................................
 
     StorageEnvironmentContext storageEnvironmentContext();
 

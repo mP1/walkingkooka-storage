@@ -36,7 +36,6 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
         StoragePath.class
     );
 
-
     /**
      * Sets or replaces the current working directory.
      */
@@ -49,7 +48,6 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
         "homeDirectory",
         StoragePath.class
     );
-
 
     /**
      * Sets or replaces the home directory.
