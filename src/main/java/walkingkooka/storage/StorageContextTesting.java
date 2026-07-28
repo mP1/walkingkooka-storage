@@ -30,4 +30,10 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
         MEDIA_TYPE_DETECTOR,
         ENVIRONMENT_CONTEXT
     );
+
+    StorageContext DIFFERENT_STORAGE_CONTEXT = StorageContexts.basic(
+        CONVERTER_LIKE,
+        MEDIA_TYPE_DETECTOR,
+        DIFFERENT_ENVIRONMENT_CONTEXT
+    );
 }
