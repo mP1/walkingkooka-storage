@@ -1111,6 +1111,85 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    // replaceUserHomeDirectory.........................................................................................
+
+    @Test
+    public void testReplaceUserHomeDirectoryWithRoot() {
+        this.replaceUserHomeDirectoryAndCheck(
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testReplaceUserHomeDirectoryWithNot() {
+        this.replaceUserHomeDirectoryAndCheck(
+            "/hello/world/123"
+        );
+    }
+
+    @Test
+    public void testReplaceUserHomeDirectoryWithUserHomeDirectory() {
+        this.replaceUserHomeDirectoryAndCheck(
+            "/~",
+            "/home"
+        );
+    }
+
+    @Test
+    public void testReplaceUserHomeDirectoryWithUserHomeDirectory2() {
+        this.replaceUserHomeDirectoryAndCheck(
+            "/~/",
+            "/home/"
+        );
+    }
+
+    @Test
+    public void testReplaceUserHomeDirectoryWithUserHomeDirectory3() {
+        this.replaceUserHomeDirectoryAndCheck(
+            "/~/123",
+            "/home/123"
+        );
+    }
+
+    private void replaceUserHomeDirectoryAndCheck(final String path) {
+        this.replaceUserHomeDirectoryAndCheck(
+            StoragePath.parse(path)
+        );
+    }
+
+    private void replaceUserHomeDirectoryAndCheck(final StoragePath path) {
+        this.replaceUserHomeDirectoryAndCheck(
+            path,
+            path
+        );
+    }
+
+    private void replaceUserHomeDirectoryAndCheck(final String path,
+                                                  final String expected) {
+        this.replaceUserHomeDirectoryAndCheck(
+            StoragePath.parse(path),
+            StoragePath.parse(expected)
+        );
+    }
+
+    private void replaceUserHomeDirectoryAndCheck(final StoragePath path,
+                                                  final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.replaceUserHomeDirectory(
+                new HasHomeDirectory() {
+                    @Override
+                    public Optional<StoragePath> homeDirectory() {
+                        return Optional.of(
+                            StoragePath.parse("/home")
+                        );
+                    }
+                }
+            ),
+            path::toString
+        );
+    }
+
     // ClassTesting.....................................................................................................
 
     @Override
