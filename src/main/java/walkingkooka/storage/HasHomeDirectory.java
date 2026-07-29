@@ -33,4 +33,12 @@ public interface HasHomeDirectory {
      * Returns the home directory.
      */
     Optional<StoragePath> homeDirectory();
+
+    /**
+     * Returns the {@link StoragePath} or throws a {@link walkingkooka.environment.MissingEnvironmentValuesException}.
+     */
+    default StoragePath homeDirectoryOrFail() {
+        return this.homeDirectory()
+            .orElseThrow(() -> StorageContext.HOME_DIRECTORY.missingEnvironmentValueException());
+    }
 }
