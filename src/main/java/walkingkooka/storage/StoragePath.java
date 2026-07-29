@@ -565,5 +565,5 @@ final public class StoragePath
     /**
      * Prefix that should be replaced by the current users {@link StorageContext#homeDirectory()}.
      */
-    public final static StoragePath USER_HOME_DIRECTORY_PREFIX = parse("/~/");
+    public final static StoragePath USER_HOME_DIRECTORY_PREFIX = parse("/~");
 }
