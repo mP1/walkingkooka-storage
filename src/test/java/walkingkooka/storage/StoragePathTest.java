@@ -17,6 +17,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.InvalidTextLengthException;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.PathSeparator;
 import walkingkooka.naming.PathTesting;
@@ -28,6 +29,7 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,6 +51,24 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     // parse............................................................................................................
+
+    @Test
+    public void testParseTooLongFails() {
+        final char[] path = new char[256 + 1];
+        Arrays.fill(path, 'a');
+        path[0] = '/';
+        final String stringPath = String.valueOf(path);
+
+        this.parseStringFails(
+            stringPath,
+            new InvalidTextLengthException(
+                "path",
+                stringPath,
+                1,
+                255
+            )
+        );
+    }
 
     @Test
     public void testParseMissingRequiredLeadingSlashFails() {

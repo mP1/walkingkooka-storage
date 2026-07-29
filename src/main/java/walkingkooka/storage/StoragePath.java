@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.InvalidTextLengthException;
 import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
@@ -35,13 +36,33 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * A {@link Path} that identifies a storage entry.
+ * A {@link Path} that identifies a storage entry. Note a path must start with the {@link #SEPARATOR} and is limited to
+ * a length of {@link #MAX_LENGTH}.
  */
 final public class StoragePath
     implements Path<StoragePath, StorageName>,
     Comparable<StoragePath>,
     HasCaseSensitivity,
     TreePrintable {
+
+    /**
+     * Paths cannot be empty and must start with the {@link #SEPARATOR}
+     */
+    public final static int MIN_LENGTH = 1;
+
+    /**
+     * A practical limit on {@link StoragePath} lengths.
+     */
+    public final static int MAX_LENGTH = 255;
+
+    private static void pathLengthCheck(final String path) {
+        InvalidTextLengthException.throwIfFail(
+            "path",
+            path,
+            MIN_LENGTH,
+            MAX_LENGTH
+        );
+    }
 
     final static String SEPARATOR_STRING = "/";
 
@@ -65,6 +86,7 @@ final public class StoragePath
      */
     public static StoragePath parse(final String path) {
         SEPARATOR.checkBeginning(path);
+        pathLengthCheck(path);
 
         final StoragePath storagePath;
 
@@ -132,7 +154,7 @@ final public class StoragePath
                                 b.append(SEPARATOR_STRING);
                             }
 
-                            storagePath = new StoragePath(
+                            storagePath = with(
                                 b.toString(),
                                 StorageName.with(name),
                                 Optional.ofNullable(storagePath)
@@ -202,6 +224,21 @@ final public class StoragePath
     }
 
     /**
+     * Internal factory method, which adds a guard to check the path length
+     */
+    private static StoragePath with(final String path,
+                                    final StorageName name,
+                                    final Optional<StoragePath> parent) {
+        pathLengthCheck(path);
+
+        return new StoragePath(
+            path,
+            name,
+            parent
+        );
+    }
+
+    /**
      * Private constructor
      */
     private StoragePath(final String path,
@@ -227,7 +264,7 @@ final public class StoragePath
 
                 final String pathValue = path.value();
                 if (pathValue.endsWith(SEPARATOR_STRING)) {
-                    appended = new StoragePath(
+                    appended = with(
                         appended.path.concat(SEPARATOR_STRING), // replace #path with path ending with slash
                         appended.name,
                         appended.parent
