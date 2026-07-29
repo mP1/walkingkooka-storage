@@ -28,12 +28,12 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
     StorageContext STORAGE_CONTEXT = StorageContexts.basic(
         CONVERTER_LIKE,
         MEDIA_TYPE_DETECTOR,
-        ENVIRONMENT_CONTEXT
+        STORAGE_ENVIRONMENT_CONTEXT
     );
 
     StorageContext DIFFERENT_STORAGE_CONTEXT = StorageContexts.basic(
         CONVERTER_LIKE,
         MEDIA_TYPE_DETECTOR,
-        DIFFERENT_ENVIRONMENT_CONTEXT
+        DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
     );
 }
