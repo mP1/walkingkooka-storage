@@ -49,6 +49,13 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see StorageSharedWrapperHomeDirectory}
+     */
+    public static <C extends StorageContext> Storage<C> homeDirectory(final Storage<C> storage) {
+        return StorageSharedWrapperHomeDirectory.with(storage);
+    }
+
+    /**
      * {@see StorageSharedNativeFile}
      */
     @GwtIncompatible
