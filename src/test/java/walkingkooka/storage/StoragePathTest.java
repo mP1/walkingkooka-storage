@@ -1111,72 +1111,72 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
-    // replaceUserHomeDirectory.........................................................................................
+    // replaceHomeDirectory.............................................................................................
 
     @Test
-    public void testReplaceUserHomeDirectoryWithRoot() {
-        this.replaceUserHomeDirectoryAndCheck(
+    public void testReplaceHomeDirectoryWithRoot() {
+        this.replaceHomeDirectoryAndCheck(
             StoragePath.ROOT
         );
     }
 
     @Test
-    public void testReplaceUserHomeDirectoryWithNot() {
-        this.replaceUserHomeDirectoryAndCheck(
+    public void testReplaceHomeDirectoryWithNot() {
+        this.replaceHomeDirectoryAndCheck(
             "/hello/world/123"
         );
     }
 
     @Test
-    public void testReplaceUserHomeDirectoryWithUserHomeDirectory() {
-        this.replaceUserHomeDirectoryAndCheck(
+    public void testReplaceHomeDirectoryWithHomeDirectory() {
+        this.replaceHomeDirectoryAndCheck(
             "/~",
             "/home"
         );
     }
 
     @Test
-    public void testReplaceUserHomeDirectoryWithUserHomeDirectory2() {
-        this.replaceUserHomeDirectoryAndCheck(
+    public void testReplaceHomeDirectoryWithHomeDirectory2() {
+        this.replaceHomeDirectoryAndCheck(
             "/~/",
             "/home/"
         );
     }
 
     @Test
-    public void testReplaceUserHomeDirectoryWithUserHomeDirectory3() {
-        this.replaceUserHomeDirectoryAndCheck(
+    public void testReplaceHomeDirectoryWithHomeDirectory3() {
+        this.replaceHomeDirectoryAndCheck(
             "/~/123",
             "/home/123"
         );
     }
 
-    private void replaceUserHomeDirectoryAndCheck(final String path) {
-        this.replaceUserHomeDirectoryAndCheck(
+    private void replaceHomeDirectoryAndCheck(final String path) {
+        this.replaceHomeDirectoryAndCheck(
             StoragePath.parse(path)
         );
     }
 
-    private void replaceUserHomeDirectoryAndCheck(final StoragePath path) {
-        this.replaceUserHomeDirectoryAndCheck(
+    private void replaceHomeDirectoryAndCheck(final StoragePath path) {
+        this.replaceHomeDirectoryAndCheck(
             path,
             path
         );
     }
 
-    private void replaceUserHomeDirectoryAndCheck(final String path,
-                                                  final String expected) {
-        this.replaceUserHomeDirectoryAndCheck(
+    private void replaceHomeDirectoryAndCheck(final String path,
+                                              final String expected) {
+        this.replaceHomeDirectoryAndCheck(
             StoragePath.parse(path),
             StoragePath.parse(expected)
         );
     }
 
-    private void replaceUserHomeDirectoryAndCheck(final StoragePath path,
-                                                  final StoragePath expected) {
+    private void replaceHomeDirectoryAndCheck(final StoragePath path,
+                                              final StoragePath expected) {
         this.checkEquals(
             expected,
-            path.replaceUserHomeDirectory(
+            path.replaceHomeDirectory(
                 new HasHomeDirectory() {
                     @Override
                     public Optional<StoragePath> homeDirectory() {

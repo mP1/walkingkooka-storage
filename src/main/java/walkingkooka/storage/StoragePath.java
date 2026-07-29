@@ -572,7 +572,7 @@ final public class StoragePath
     /**
      * If this path starts with {@link #HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
      */
-    StoragePath replaceUserHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+    StoragePath replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
