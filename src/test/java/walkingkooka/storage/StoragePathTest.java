@@ -1210,7 +1210,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     public void testRestoreHomeDirectoryWithHomeDirectory() {
         this.restoreHomeDirectoryAndCheck(
             "/home",
-            "/~"
+            "/home"
         );
     }
 
@@ -1260,7 +1260,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                     @Override
                     public Optional<StoragePath> homeDirectory() {
                         return Optional.of(
-                            StoragePath.parse("/home")
+                            StoragePath.parse("/home/")
                         );
                     }
                 }
