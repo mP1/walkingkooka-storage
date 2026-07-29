@@ -604,6 +604,7 @@ final public class StoragePath
         if (value.startsWith(homeDirectory)) {
             storagePath = parse(
                 HOME_DIRECTORY_PREFIX.value() +
+                    StoragePath.SEPARATOR +
                     value.substring(
                         homeDirectory.length()
                     )
