@@ -1190,6 +1190,85 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    // restoreHomeDirectory.............................................................................................
+
+    @Test
+    public void testRestoreHomeDirectoryWithRoot() {
+        this.restoreHomeDirectoryAndCheck(
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testRestoreHomeDirectoryWithNot() {
+        this.restoreHomeDirectoryAndCheck(
+            "/hello/world/123"
+        );
+    }
+
+    @Test
+    public void testRestoreHomeDirectoryWithHomeDirectory() {
+        this.restoreHomeDirectoryAndCheck(
+            "/home",
+            "/~"
+        );
+    }
+
+    @Test
+    public void testRestoreHomeDirectoryWithHomeDirectory2() {
+        this.restoreHomeDirectoryAndCheck(
+            "/home/",
+            "/~/"
+        );
+    }
+
+    @Test
+    public void testRestoreHomeDirectoryWithHomeDirectory3() {
+        this.restoreHomeDirectoryAndCheck(
+            "/home/123",
+            "/~/123"
+        );
+    }
+
+    private void restoreHomeDirectoryAndCheck(final String path) {
+        this.restoreHomeDirectoryAndCheck(
+            StoragePath.parse(path)
+        );
+    }
+
+    private void restoreHomeDirectoryAndCheck(final StoragePath path) {
+        this.restoreHomeDirectoryAndCheck(
+            path,
+            path
+        );
+    }
+
+    private void restoreHomeDirectoryAndCheck(final String path,
+                                              final String expected) {
+        this.restoreHomeDirectoryAndCheck(
+            StoragePath.parse(path),
+            StoragePath.parse(expected)
+        );
+    }
+
+    private void restoreHomeDirectoryAndCheck(final StoragePath path,
+                                              final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.restoreHomeDirectory(
+                new HasHomeDirectory() {
+                    @Override
+                    public Optional<StoragePath> homeDirectory() {
+                        return Optional.of(
+                            StoragePath.parse("/home")
+                        );
+                    }
+                }
+            ),
+            path::toString
+        );
+    }
+
     // ClassTesting.....................................................................................................
 
     @Override
