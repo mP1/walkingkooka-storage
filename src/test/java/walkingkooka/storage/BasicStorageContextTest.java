@@ -25,6 +25,7 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContextTesting;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
@@ -193,6 +194,32 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
+    // homeDirectory....................................................................................................
+
+    @Test
+    public void testHomeDirectory() {
+        this.homeDirectoryAndCheck(
+            this.createContext(),
+            HOME_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testSetHomeDirectoryWithSame() {
+        this.setHomeDirectoryAndCheck(
+            this.createContext(),
+            HOME_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testSetHomeDirectoryWithDifferent() {
+        this.setHomeDirectoryAndCheck(
+            this.createContext(),
+            DIFFERENT_HOME_DIRECTORY
+        );
+    }
+
     // ConverterLike....................................................................................................
 
     @Test
@@ -207,10 +234,22 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Override
     public BasicStorageContext createContext() {
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        StorageContext.CURRENT_WORKING_DIRECTORY.setEnvironmentValue(
+            CURRENT_WORKING_DIRECTORY,
+            environmentContext
+        );
+
+        StorageContext.HOME_DIRECTORY.setEnvironmentValue(
+            HOME_DIRECTORY,
+            environmentContext
+        );
+
         return BasicStorageContext.with(
             CONVERTER_LIKE,
             MEDIA_TYPE_DETECTOR,
-            ENVIRONMENT_CONTEXT.cloneEnvironment()
+            environmentContext
         );
     }
 
