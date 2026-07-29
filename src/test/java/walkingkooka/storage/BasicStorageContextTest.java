@@ -88,16 +88,6 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
-    @Test
-    public void testSetCurrentWorkingDirectory() {
-        final StoragePath path = StoragePath.parse("/path1/path2");
-        final BasicStorageContext context = this.createContext();
-        this.setCurrentWorkingDirectoryAndCheck(
-            context,
-            path
-        );
-    }
-
     // setEnvironmentContext............................................................................................
 
     @Test
@@ -191,6 +181,32 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 DIFFERENT_ENVIRONMENT_CONTEXT
             ),
             after
+        );
+    }
+
+    // currentWorkingDirectory..........................................................................................
+
+    @Test
+    public void testCurrentWorkingDirectory() {
+        this.currentWorkingDirectoryAndCheck(
+            this.createContext(),
+            CURRENT_WORKING_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testSetCurrentWorkingDirectoryWithSame() {
+        this.setCurrentWorkingDirectoryAndCheck(
+            this.createContext(),
+            CURRENT_WORKING_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testSetCurrentWorkingDirectoryWithDifferent() {
+        this.setCurrentWorkingDirectoryAndCheck(
+            this.createContext(),
+            DIFFERENT_CURRENT_WORKING_DIRECTORY
         );
     }
 
