@@ -184,6 +184,9 @@ final public class StoragePath
 
     /**
      * Replaced by the {@link HasUserDirectories#homeDirectory()} by {@link #parseSpecial(String, HasUserDirectories)}.
+     * <pre>
+     * ~/documents == /user/miroslav/documents
+     * </pre>
      */
     public final static CharacterConstant USER_HOME = CharacterConstant.with('~');
 
