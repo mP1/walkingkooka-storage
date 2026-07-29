@@ -28,7 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedPrefixedTest extends StorageSharedTestCase<StorageSharedPrefixed<FakeStorageContext>, FakeStorageContext> {
+public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapperTestCase<StorageSharedWrapperPrefixed<FakeStorageContext>, FakeStorageContext> {
 
     private final static String PREFIX = "/prefix111";
 
@@ -47,20 +47,9 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     public void testWithNullPrefixFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedPrefixed.with(
+            () -> StorageSharedWrapperPrefixed.with(
                 null,
                 Storages.fake()
-            )
-        );
-    }
-
-    @Test
-    public void testWithNullStorageFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageSharedPrefixed.with(
-                StoragePath.ROOT,
-                null
             )
         );
     }
@@ -71,7 +60,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
         assertSame(
             storage,
-            StorageSharedPrefixed.with(
+            StorageSharedWrapperPrefixed.with(
                 StoragePath.ROOT,
                 storage
             )
@@ -80,12 +69,12 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testWithPrefixedStorage() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
 
         final StoragePath prefix2 = StoragePath.parse("/prefix222");
 
-        final StorageSharedPrefixed<FakeStorageContext> prefixedStorage = Cast.to(
-            StorageSharedPrefixed.with(
+        final StorageSharedWrapperPrefixed<FakeStorageContext> prefixedStorage = Cast.to(
+            StorageSharedWrapperPrefixed.with(
                 prefix2,
                 storage
             )
@@ -136,7 +125,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testLoad() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
@@ -181,7 +170,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testSave() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/value111");
@@ -229,7 +218,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testDeleteWithUnknownPath() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -259,15 +248,15 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testDelete() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
 
         final StorageValue value = StorageValue.with(path)
-                .setValue(
-                    Optional.of(999)
-                );
+            .setValue(
+                Optional.of(999)
+            );
 
         storage.storage.save(
             value,
@@ -309,7 +298,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testList() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(PREFIX + "/value111");
@@ -377,7 +366,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testAddWatcherAndSaveReplace() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
@@ -417,7 +406,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
                         "newValue"
                     );
 
-                    StorageSharedPrefixedTest.this.fired = true;
+                    StorageSharedWrapperPrefixedTest.this.fired = true;
                 }
             },
             context
@@ -441,7 +430,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
 
     @Test
     public void testAddWatcherOnceAndSaveReplace() {
-        final StorageSharedPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
@@ -481,7 +470,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
                         "newValue"
                     );
 
-                    StorageSharedPrefixedTest.this.fired = true;
+                    StorageSharedWrapperPrefixedTest.this.fired = true;
                 }
             },
             context
@@ -504,115 +493,120 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     private boolean fired;
 
     @Override
-    public StorageSharedPrefixed<FakeStorageContext> createStorage() {
+    public StorageSharedWrapperPrefixed<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
         return Cast.to(
-            StorageSharedPrefixed.with(
+            StorageSharedWrapperPrefixed.with(
                 StoragePath.parse(PREFIX),
-                new Storage<>() {
-
-                    @Override
-                    public boolean canRead(final StoragePath path,
-                                           final StorageContext context) {
-                        this.throwIfInvalid(path);
-
-                        return this.storage.canRead(
-                            path,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public boolean canWrite(final StoragePath path,
-                                            final StorageContext context) {
-                        this.throwIfInvalid(path);
-
-                        return this.storage.canWrite(
-                            path,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public Optional<StorageValue> load(final StoragePath path,
-                                                       final StorageContext context) {
-                        this.throwIfInvalid(path);
-
-                        return this.storage.load(
-                            path,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public StorageValue save(final StorageValue value,
-                                             final StorageContext context) {
-                        this.throwIfInvalid(value.path());
-
-                        return this.storage.save(
-                            value,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public void delete(final StoragePath path,
-                                       final StorageContext context) {
-                        this.throwIfInvalid(path);
-
-                        this.storage.delete(
-                            path,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public List<StorageValueInfo> list(final StoragePath parent,
-                                                       final int offset,
-                                                       final int count,
-                                                       final StorageContext context) {
-                        this.throwIfInvalid(parent);
-
-                        return this.storage.list(
-                            parent,
-                            offset,
-                            count,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public Runnable addWatcher(final StorageWatcher watcher,
-                                               final StorageContext context) {
-                        return this.storage.addWatcher(
-                            watcher,
-                            context
-                        );
-                    }
-
-                    @Override
-                    public Runnable addWatcherOnce(final StorageWatcher watcher,
-                                                   final StorageContext context) {
-                        return this.storage.addWatcherOnce(
-                            watcher,
-                            context
-                        );
-                    }
-
-                    private final Storage<StorageContext> storage = Storages.treeMapStore();
-
-                    private void throwIfInvalid(final StoragePath path) {
-                        if(path.value().contains("Invalid")) {
-                            throw path.invalidStoragePathException("Invalid path");
-                        }
-                    }
-
-                    @Override
-                    public String toString() {
-                        return this.storage.toString();
-                    }
-                }
+                storage
             )
         );
+    }
+
+    @Override
+    Storage<FakeStorageContext> createWrappedStorage() {
+        return new Storage<>() {
+
+            @Override
+            public boolean canRead(final StoragePath path,
+                                   final FakeStorageContext context) {
+                this.throwIfInvalid(path);
+
+                return this.storage.canRead(
+                    path,
+                    context
+                );
+            }
+
+            @Override
+            public boolean canWrite(final StoragePath path,
+                                    final FakeStorageContext context) {
+                this.throwIfInvalid(path);
+
+                return this.storage.canWrite(
+                    path,
+                    context
+                );
+            }
+
+            @Override
+            public Optional<StorageValue> load(final StoragePath path,
+                                               final FakeStorageContext context) {
+                this.throwIfInvalid(path);
+
+                return this.storage.load(
+                    path,
+                    context
+                );
+            }
+
+            @Override
+            public StorageValue save(final StorageValue value,
+                                     final FakeStorageContext context) {
+                this.throwIfInvalid(value.path());
+
+                return this.storage.save(
+                    value,
+                    context
+                );
+            }
+
+            @Override
+            public void delete(final StoragePath path,
+                               final FakeStorageContext context) {
+                this.throwIfInvalid(path);
+
+                this.storage.delete(
+                    path,
+                    context
+                );
+            }
+
+            @Override
+            public List<StorageValueInfo> list(final StoragePath parent,
+                                               final int offset,
+                                               final int count,
+                                               final FakeStorageContext context) {
+                this.throwIfInvalid(parent);
+
+                return this.storage.list(
+                    parent,
+                    offset,
+                    count,
+                    context
+                );
+            }
+
+            @Override
+            public Runnable addWatcher(final StorageWatcher watcher,
+                                       final FakeStorageContext context) {
+                return this.storage.addWatcher(
+                    watcher,
+                    context
+                );
+            }
+
+            @Override
+            public Runnable addWatcherOnce(final StorageWatcher watcher,
+                                           final FakeStorageContext context) {
+                return this.storage.addWatcherOnce(
+                    watcher,
+                    context
+                );
+            }
+
+            private final Storage<StorageContext> storage = Storages.treeMapStore();
+
+            private void throwIfInvalid(final StoragePath path) {
+                if (path.value().contains("Invalid")) {
+                    throw path.invalidStoragePathException("Invalid path");
+                }
+            }
+
+            @Override
+            public String toString() {
+                return this.storage.toString();
+            }
+        };
     }
 
     @Override
@@ -620,7 +614,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
         return new FakeStorageContext() {
             @Override
             public LocalDateTime now() {
-                return StorageSharedPrefixedTest.NOW;
+                return StorageSharedWrapperPrefixedTest.NOW;
             }
 
             @Override
@@ -645,7 +639,7 @@ public final class StorageSharedPrefixedTest extends StorageSharedTestCase<Stora
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedPrefixed<FakeStorageContext>> type() {
-        return Cast.to(StorageSharedPrefixed.class);
+    public Class<StorageSharedWrapperPrefixed<FakeStorageContext>> type() {
+        return Cast.to(StorageSharedWrapperPrefixed.class);
     }
 }

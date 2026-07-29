@@ -134,7 +134,7 @@ public final class StorageValue implements HasContentType,
                 );
     }
 
-    // StorageSharedPrefixed...................................................................................................
+    // StorageSharedWrapperPrefixed.....................................................................................
 
     StorageValue prependPath(final StoragePath prefix) {
         return this.setPath(

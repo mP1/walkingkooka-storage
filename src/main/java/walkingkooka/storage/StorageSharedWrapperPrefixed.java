@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * {@link StorageValueInfo}.
  * This is particularly useful for a {@link Storage} that unites one or more {@link Storage} at different mount points.
  */
-final class StorageSharedPrefixed<C extends StorageContext> extends StorageShared<C> {
+final class StorageSharedWrapperPrefixed<C extends StorageContext> extends StorageSharedWrapper<C> {
 
     static <C extends StorageContext> Storage<C> with(final StoragePath prefix,
                                                       final Storage<C> storage) {
@@ -42,13 +42,13 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
             StoragePath wrapPrefix = prefix;
             Storage<C> wrapStoraage = storage;
 
-            if (storage instanceof StorageSharedPrefixed) {
-                final StorageSharedPrefixed<C> prefixedStorage = (StorageSharedPrefixed<C>) storage;
+            if (storage instanceof StorageSharedWrapperPrefixed) {
+                final StorageSharedWrapperPrefixed<C> prefixedStorage = (StorageSharedWrapperPrefixed<C>) storage;
                 wrapPrefix = prefix.append(prefixedStorage.prefix);
                 wrapStoraage = prefixedStorage.storage;
             }
 
-            result = new StorageSharedPrefixed<>(
+            result = new StorageSharedWrapperPrefixed<>(
                 wrapPrefix,
                 wrapStoraage
             );
@@ -57,10 +57,10 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
         return result;
     }
 
-    private StorageSharedPrefixed(final StoragePath prefix,
-                                  final Storage<C> storage) {
+    private StorageSharedWrapperPrefixed(final StoragePath prefix,
+                                         final Storage<C> storage) {
+        super(storage);
         this.prefix = prefix;
-        this.storage = storage;
     }
 
     @Override
@@ -185,9 +185,6 @@ final class StorageSharedPrefixed<C extends StorageContext> extends StorageShare
 
     // @VisibleForTesting
     final StoragePath prefix;
-
-    // @VisibleForTesting
-    final Storage<C> storage;
 
     // Object...........................................................................................................
 
