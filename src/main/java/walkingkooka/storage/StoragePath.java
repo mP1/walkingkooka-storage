@@ -588,4 +588,28 @@ final public class StoragePath
 
         return storagePath;
     }
+
+    // restoreUserHomeDirectory.........................................................................................
+
+    /**
+     * If this path starts with {@link HasHomeDirectory#homeDirectory()} replace that with {@link #HOME_DIRECTORY_PREFIX}..
+     */
+    StoragePath restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+        StoragePath storagePath = this;
+        final String value = storagePath.value();
+
+        final String homeDirectory = hasHomeDirectory.homeDirectoryOrFail()
+            .value();
+
+        if (value.startsWith(homeDirectory)) {
+            storagePath = parse(
+                HOME_DIRECTORY_PREFIX.value() +
+                    value.substring(
+                        homeDirectory.length()
+                    )
+            );
+        }
+
+        return storagePath;
+    }
 }
