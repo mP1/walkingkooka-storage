@@ -61,11 +61,11 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageSharedPrefixed}
+     * {@see StorageSharedWrapperPrefixed}
      */
     public static <C extends StorageContext> Storage<C> prefixed(final StoragePath prefix,
                                                                  final Storage<C> storage) {
-        return StorageSharedPrefixed.with(
+        return StorageSharedWrapperPrefixed.with(
             prefix,
             storage
         );

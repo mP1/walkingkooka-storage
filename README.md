@@ -43,6 +43,6 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 
 - [empty](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedEmpty.java)
 - [native](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedNativeFile.java)
-- [prefixed](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedPrefixed.java)
+- [prefixed](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedWrapperPrefixed.java)
 - [readOnly](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/ReadOnlyStorage.java)
 - [treeMapStore](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedTreeMapStore.java)
