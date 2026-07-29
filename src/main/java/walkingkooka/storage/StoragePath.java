@@ -565,23 +565,23 @@ final public class StoragePath
     /**
      * Prefix that should be replaced by the current users {@link StorageContext#homeDirectory()}.
      */
-    public final static StoragePath USER_HOME_DIRECTORY_PREFIX = parse("/~");
+    public final static StoragePath HOME_DIRECTORY_PREFIX = parse("/~");
 
     // replaceUserHomeDirectory.........................................................................................
 
     /**
-     * If this path starts with {@link #USER_HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
+     * If this path starts with {@link #HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
      */
     StoragePath replaceUserHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
-        if(value.startsWith(USER_HOME_DIRECTORY_PREFIX.value())) {
+        if(value.startsWith(HOME_DIRECTORY_PREFIX.value())) {
             storagePath = parse(
                 hasHomeDirectory.homeDirectoryOrFail()
                     .value() +
                 value.substring(
-                    USER_HOME_DIRECTORY_PREFIX.value().length()
+                    HOME_DIRECTORY_PREFIX.value().length()
                 )
             );
         }
