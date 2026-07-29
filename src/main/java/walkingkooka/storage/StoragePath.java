@@ -559,4 +559,11 @@ final public class StoragePath
     public CaseSensitivity caseSensitivity() {
         return CASE_SENSITIVITY;
     }
+
+    // constants........................................................................................................
+
+    /**
+     * Prefix that should be replaced by the current users {@link StorageContext#homeDirectory()}.
+     */
+    public final static StoragePath USER_HOME_DIRECTORY_PREFIX = parse("/~/");
 }
