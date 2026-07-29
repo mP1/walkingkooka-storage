@@ -29,7 +29,7 @@ import java.util.Optional;
 
 public final class StorageConverterTextToStoragePathTest extends StorageConverterTestCase<StorageConverterTextToStoragePath<FakeStorageConverterContext>> {
 
-    private final static String CWD = "/current1/working2/directory3";
+    private final static String CWD = "/current1/working2/directory3/";
 
     @Test
     public void testConvertNullFails() {

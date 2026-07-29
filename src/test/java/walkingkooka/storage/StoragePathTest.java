@@ -459,7 +459,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
-    private final static String CWD = "/current1/working2/directory3";
+    private final static String CWD = "/current1/working2/directory3/";
 
     private final static String HOME = "/home/user123";
 
