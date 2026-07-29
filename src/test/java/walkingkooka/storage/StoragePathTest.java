@@ -96,6 +96,25 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Test
+    public void testParseSlashTilde() {
+        final String value = "/~";
+
+        final StoragePath path = StoragePath.parse(value);
+        this.valueAndCheck(
+            path,
+            value
+        );
+        this.nameCheck(
+            path,
+            StorageName.with("~")
+        );
+        this.parentCheck(
+            path,
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
     public void testParseFlat() {
         final String value = "/path to";
 
