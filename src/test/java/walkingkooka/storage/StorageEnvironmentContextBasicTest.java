@@ -152,7 +152,7 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
     public void testToString() {
         this.toStringAndCheck(
             this.createContext(),
-            "{charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3, homeDirectory=/home/user/, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, timeOffset=Z, user=user123@example.com}"
+            "{charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3/, homeDirectory=/home/user/, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, timeOffset=Z, user=user123@example.com}"
         );
     }
 
@@ -169,7 +169,7 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
                 "    currency\n" +
                 "      AUD (java.util.Currency)\n" +
                 "    currentWorkingDirectory\n" +
-                "      /current1/working2/directory3\n" +
+                "      /current1/working2/directory3/\n" +
                 "    homeDirectory\n" +
                 "      /home/user/\n" +
                 "    indentation\n" +
