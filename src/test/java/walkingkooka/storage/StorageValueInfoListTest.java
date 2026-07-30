@@ -252,6 +252,24 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         );
     }
 
+    // firstOrEmpty.....................................................................................................
+
+    @Test
+    public void testFirstOrEmptyWhenEmpty() {
+        this.firstOrEmptyAndCheck(
+            StorageValueInfoList.EMPTY
+        );
+    }
+
+    @Test
+    public void testFirstOrEmptyWhenNotEmpty() {
+        this.firstOrEmptyAndCheck(
+            StorageValueInfoList.EMPTY.concat(FILE1)
+                .concat(FILE2),
+            FILE1
+        );
+    }
+
     // class............................................................................................................
 
     @Override
