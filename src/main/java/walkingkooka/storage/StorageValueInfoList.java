@@ -156,7 +156,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     @Override
     public Optional<LocalDateTime> lastModified() {
         return this.infos.stream()
-            .map((StorageValueInfo storageValueInfo) -> storageValueInfo.lastModified().orElse(null))
+            .map((StorageValueInfo storageValueInfo) -> storageValueInfo.lastModified())
             .filter(Objects::nonNull)
             .sorted(Comparator.reverseOrder())
             .findFirst();

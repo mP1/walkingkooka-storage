@@ -17,7 +17,7 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.datetime.HasOptionalLastModified;
+import walkingkooka.datetime.HasLastModified;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.HasAuditInfo;
 import walkingkooka.naming.HasPath;
@@ -32,14 +32,13 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Holds the metadata for a single {@link StoragePath}.
  */
 public final class StorageValueInfo implements Comparable<StorageValueInfo>,
     HasAuditInfo,
-    HasOptionalLastModified,
+    HasLastModified,
     HasPath<StoragePath>,
     HasText,
     TreePrintable {
@@ -235,10 +234,10 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
         printer.outdent();
     }
 
-    // HasOptionalLastModified...................................................................................
+    // HasLastModified..................................................................................................
 
     @Override
-    public Optional<LocalDateTime> lastModified() {
+    public LocalDateTime lastModified() {
         return this.auditInfo.lastModified();
     }
 }
