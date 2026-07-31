@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.iterator.IteratorTesting;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.compare.ComparableTesting2;
+import walkingkooka.datetime.HasLastModifiedTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting2;
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueInfoTest implements ComparableTesting2<StorageValueInfo>,
     ClassTesting2<StorageValueInfo>,
+    HasLastModifiedTesting,
     HasTextTesting,
     TreePrintableTesting,
     JsonNodeMarshallingTesting<StorageValueInfo>,
@@ -210,6 +212,11 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
         this.checkEquals(
             expected,
             info.auditInfo()
+        );
+
+        this.hasLastModifiedAndCheck(
+            info,
+            expected.lastModified()
         );
     }
 
