@@ -214,7 +214,7 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
             info.auditInfo()
         );
 
-        this.hasLastModifiedAndCheck(
+        this.lastModifiedAndCheck(
             info,
             expected.lastModified()
         );

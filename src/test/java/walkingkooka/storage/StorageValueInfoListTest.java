@@ -275,23 +275,23 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     // HasLastModified..................................................................................................
 
     @Test
-    public void testHasLastModifiedWhenEmpty() {
-        this.hasLastModifiedAndCheck(
+    public void testLastModifiedWhenEmpty() {
+        this.lastModifiedAndCheck(
             StorageValueInfoList.EMPTY
         );
     }
 
     @Test
-    public void testHasLastModifiedWhenOneStorageValueInfo() {
-        this.hasLastModifiedAndCheck(
+    public void testLastModifiedWhenOneStorageValueInfo() {
+        this.lastModifiedAndCheck(
             StorageValueInfoList.EMPTY.concat(FILE1),
             FILE1.lastModified()
         );
     }
 
     @Test
-    public void testHasLastModifiedWhenNotEmpty2() {
-        this.hasLastModifiedAndCheck(
+    public void testLastModifiedWhenNotEmpty2() {
+        this.lastModifiedAndCheck(
             StorageValueInfoList.EMPTY.concat(FILE1)
                 .concat(
                     FILE2.setAuditInfo(
