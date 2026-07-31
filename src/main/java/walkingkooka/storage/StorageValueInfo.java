@@ -17,7 +17,7 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.datetime.HasLastModified;
+import walkingkooka.datetime.HasOptionalLastModified;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.HasAuditInfo;
 import walkingkooka.naming.HasPath;
@@ -39,7 +39,7 @@ import java.util.Optional;
  */
 public final class StorageValueInfo implements Comparable<StorageValueInfo>,
     HasAuditInfo,
-    HasLastModified,
+    HasOptionalLastModified,
     HasPath<StoragePath>,
     HasText,
     TreePrintable {
@@ -235,7 +235,7 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
         printer.outdent();
     }
 
-    // HasLastModified..................................................................................................
+    // HasOptionalLastModified...................................................................................
 
     @Override
     public Optional<LocalDateTime> lastModified() {
