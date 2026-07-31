@@ -19,7 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.datetime.HasLastModified;
+import walkingkooka.datetime.HasOptionalLastModified;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -40,7 +40,7 @@ import java.util.Optional;
  */
 public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo>,
-    HasLastModified,
+    HasOptionalLastModified,
     TreePrintable {
 
     /**
@@ -148,7 +148,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
         printer.outdent();
     }
 
-    // HasLastModified..................................................................................................
+    // HasOptionalLastModified...................................................................................
 
     /**
      * Returns the most recent {@link LocalDateTime} from the zero or many {@link StorageValueInfo}.

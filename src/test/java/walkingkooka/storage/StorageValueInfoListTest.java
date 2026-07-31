@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.datetime.HasLastModifiedTesting;
+import walkingkooka.datetime.HasOptionalLastModifiedTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting;
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
     ClassTesting<StorageValueInfoList>,
-    HasLastModifiedTesting,
+    HasOptionalLastModifiedTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallingTesting<StorageValueInfoList>,
     TreePrintableTesting {
@@ -272,7 +272,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         );
     }
 
-    // HasLastModified..................................................................................................
+    // HasOptionalLastModified...................................................................................
 
     @Test
     public void testLastModifiedWhenEmpty() {
