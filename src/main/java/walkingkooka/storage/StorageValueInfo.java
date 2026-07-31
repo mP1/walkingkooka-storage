@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.datetime.HasLastModified;
 import walkingkooka.environment.AuditInfo;
+import walkingkooka.environment.HasAuditInfo;
 import walkingkooka.naming.HasPath;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
@@ -37,6 +38,7 @@ import java.util.Optional;
  * Holds the metadata for a single {@link StoragePath}.
  */
 public final class StorageValueInfo implements Comparable<StorageValueInfo>,
+    HasAuditInfo,
     HasLastModified,
     HasPath<StoragePath>,
     HasText,
@@ -84,6 +86,7 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
 
     // auditInfo........................................................................................................
 
+    @Override
     public AuditInfo auditInfo() {
         return this.auditInfo;
     }
