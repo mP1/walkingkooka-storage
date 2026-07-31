@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.datetime.HasLastModifiedTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting;
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
     ClassTesting<StorageValueInfoList>,
+    HasLastModifiedTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallingTesting<StorageValueInfoList>,
     TreePrintableTesting {
@@ -267,6 +269,37 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
             StorageValueInfoList.EMPTY.concat(FILE1)
                 .concat(FILE2),
             FILE1
+        );
+    }
+
+    // HasLastModified..................................................................................................
+
+    @Test
+    public void testHasLastModifiedWhenEmpty() {
+        this.hasLastModifiedAndCheck(
+            StorageValueInfoList.EMPTY
+        );
+    }
+
+    @Test
+    public void testHasLastModifiedWhenOneStorageValueInfo() {
+        this.hasLastModifiedAndCheck(
+            StorageValueInfoList.EMPTY.concat(FILE1),
+            FILE1.lastModified()
+        );
+    }
+
+    @Test
+    public void testHasLastModifiedWhenNotEmpty2() {
+        this.hasLastModifiedAndCheck(
+            StorageValueInfoList.EMPTY.concat(FILE1)
+                .concat(
+                    FILE2.setAuditInfo(
+                        FILE2.auditInfo()
+                            .setModifiedTimestamp(DIFFERENT_LAST_MODIFIED)
+                    )
+                ),
+            DIFFERENT_LAST_MODIFIED
         );
     }
 

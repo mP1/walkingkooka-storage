@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.datetime.HasLastModified;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -26,16 +27,20 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.time.LocalDateTime;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * An immutable list of {@link StorageValueInfo}.
  */
 public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo>,
+    HasLastModified,
     TreePrintable {
 
     /**
@@ -141,5 +146,19 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
             this.infos.forEach(i -> i.printTree(printer));
         }
         printer.outdent();
+    }
+
+    // HasLastModified..................................................................................................
+
+    /**
+     * Returns the most recent {@link LocalDateTime} from the zero or many {@link StorageValueInfo}.
+     */
+    @Override
+    public Optional<LocalDateTime> lastModified() {
+        return this.infos.stream()
+            .map((StorageValueInfo storageValueInfo) -> storageValueInfo.lastModified().orElse(null))
+            .filter(Objects::nonNull)
+            .sorted(Comparator.reverseOrder())
+            .findFirst();
     }
 }
