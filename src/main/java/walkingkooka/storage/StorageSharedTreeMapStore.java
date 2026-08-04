@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A {@link Storage} that uses a {@link Stores#treeMap(Comparator, BiFunction)} to hold {@link StoragePath} to
@@ -154,12 +155,18 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                                  final C context) {
         this.saveRootIfNecessary(context);
 
-        return this.store.all()
-            .stream()
-            .filter(i -> parent.equals(i.path().parent().orElse(null)))
-            .skip(offset)
-            .limit(count)
-            .map(StorageSharedTreeMapStoreValue::info)
+        final Stream<StorageSharedTreeMapStoreValue> listing = parent.isParent() ?
+            this.store.all()
+                .stream()
+                .filter(i -> parent.equals(i.path().parent().orElse(null)))
+                .skip(offset)
+                .limit(count) :
+            0 == offset && count > 0 ?
+                this.store.load(parent)
+                    .stream() :
+                Stream.empty();
+
+        return listing.map(StorageSharedTreeMapStoreValue::info)
             .collect(
                 Collectors.collectingAndThen(
                     Collectors.toList(),

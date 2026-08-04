@@ -43,8 +43,8 @@ public interface Storage<C extends StorageContext> {
                 final C context);
 
     /**
-     * Gets the {@link StorageValueInfo} for the given range.<br>
-     * Conceptually equivalent to getting a directory listing.
+     * Gets the {@link StorageValueInfo} for the given range for a parent {@link StoragePath#isParent()} or a single
+     * value. Conceptually equivalent to getting a directory listing for the former.
      */
     List<StorageValueInfo> list(final StoragePath parent,
                                 final int offset,

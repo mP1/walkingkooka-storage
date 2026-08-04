@@ -21,6 +21,7 @@ import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.collect.list.ImmutableList;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
@@ -205,32 +206,51 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         // map StoragePath to file system path
         final Path fileSystemPath = this.toPath(parent);
 
-        try {
-            try (Stream<Path> stream = Files.list(fileSystemPath)) {
-                return stream.skip(
-                        offset
-                    ).limit(count)
-                    .map(
-                        (Path fileSystemPath2) -> this.toStorageValueInfo(
-                            fileSystemPath2,
-                            parent,
-                            context
-                        ))
-                    .collect(
-                        ImmutableList.collector()
-                    );
+        final List<StorageValueInfo> listing;
+
+        if(parent.isParent()) {
+            try {
+                try (Stream<Path> stream = Files.list(fileSystemPath)) {
+                    listing = stream.skip(
+                            offset
+                        ).limit(count)
+                        .map(
+                            (Path fileSystemPath2) -> this.toStorageValueInfo(
+                                fileSystemPath2,
+                                parent,
+                                context
+                            ))
+                        .collect(
+                            ImmutableList.collector()
+                        );
+                }
+            } catch (final NoSuchFileException cause) {
+                throw parent.invalidStoragePathException(
+                    "Invalid path",
+                    cause
+                );
+            } catch (final IOException cause) {
+                throw parent.invalidStoragePathException(
+                    "Unable to list",
+                    cause
+                );
             }
-        } catch (final NoSuchFileException cause) {
-            throw parent.invalidStoragePathException(
-                "Invalid path",
-                cause
-            );
-        } catch (final IOException cause) {
-            throw parent.invalidStoragePathException(
-                "Unable to list",
-                cause
-            );
+        } else {
+            // get metadata for file
+            listing = 0 == offset &
+                count > 0 &&
+                Files.exists(fileSystemPath) ?
+                Lists.of(
+                    this.toStorageValueInfo(
+                        fileSystemPath,
+                        parent,
+                        context
+                    )
+                ) :
+                Lists.empty();
         }
+
+        return listing;
     }
 
     // addWatcher.......................................................................................................
