@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageTesting2<S extends Storage<C>, C extends StorageContext> extends StorageTesting,
     ClassTesting<S>,
+    HasAuditInfoTesting,
     TreePrintableTesting {
 
     // canRead..........................................................................................................
@@ -280,6 +282,35 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
                     0,
                     1,
                     null // context
+                )
+        );
+    }
+
+    // setAuditInfo......................................................................................................
+
+    @Test
+    default void testSetAuditInfoWithNullStorageValueInfoFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .setAuditInfo(
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testSetAuditInfoWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .setAuditInfo(
+                    StorageValueInfo.with(
+                        StoragePath.ROOT,
+                        AUDIT_INFO
+                    ),
+                    null
                 )
         );
     }

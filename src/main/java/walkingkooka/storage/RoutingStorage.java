@@ -171,6 +171,26 @@ final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
         return dest;
     }
 
+    // setAuditInfo.....................................................................................................
+
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        final StoragePath path = value.path();
+
+        RoutingStorageRoute<C> route = this.firstRouteStartingWith(path);
+        if (null != route) {
+            route.storage.setAuditInfo(
+                value.setPath(
+                    route.remove(path)
+                ),
+                context
+            );
+        } else {
+            throw new UnsupportedOperationException("setAuditInfo " + path + " is not supported");
+        }
+    }
+
     // addWatcher.......................................................................................................
 
     @Override

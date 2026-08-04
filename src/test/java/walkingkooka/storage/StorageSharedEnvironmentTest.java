@@ -443,6 +443,23 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         );
     }
 
+    // setAuditInfo.....................................................................................................
+
+    @Test
+    public void testSetAuditInfoFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> StorageSharedEnvironment.instance()
+                .setAuditInfo(
+                    StorageValueInfo.with(
+                        StoragePath.ROOT,
+                        AUDIT_INFO
+                    ),
+                    this.createContext()
+                )
+        );
+    }
+
     // addWatcher.......................................................................................................
 
     private final static StoragePath LINE_ENDING_STORAGE_PATH = StoragePath.parse("/lineEnding");

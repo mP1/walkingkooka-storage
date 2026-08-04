@@ -577,6 +577,19 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
             }
 
             @Override
+            public void setAuditInfo(final StorageValueInfo value,
+                                     final FakeStorageContext context) {
+                this.throwIfInvalid(
+                    value.path()
+                );
+
+                this.storage.setAuditInfo(
+                    value,
+                    context
+                );
+            }
+
+            @Override
             public Runnable addWatcher(final StorageWatcher watcher,
                                        final FakeStorageContext context) {
                 return this.storage.addWatcher(

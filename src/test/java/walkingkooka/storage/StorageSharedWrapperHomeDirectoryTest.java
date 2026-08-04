@@ -306,6 +306,72 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
         );
     }
 
+    // setAuditInfo.....................................................................................................
+
+    @Test
+    public void testSetAuditInfoWithHomeDirectoryPath() {
+        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        this.saveAndCheck(
+            storage,
+            HOME_DIRECTORY_VALUE,
+            context,
+            HOME_DIRECTORY_VALUE
+        );
+
+        final StorageValueInfo storageValueInfo = StorageValueInfo.with(
+            HOME_DIRECTORY_PATH,
+            DIFFERENT_AUDIT_INFO
+        );
+
+        storage.setAuditInfo(
+            storageValueInfo,
+            context
+        );
+
+        this.listAndCheck(
+            storage.storage,
+            HOME_DIRECTORY_PATH,
+            0, // offset
+            2, // count
+            context,
+            storageValueInfo
+        );
+    }
+
+    @Test
+    public void testSetAuditInfoWithHomeDirectoryPrefixPath() {
+        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        this.saveAndCheck(
+            storage,
+            HOME_PREFIX_VALUE,
+            context,
+            HOME_PREFIX_VALUE
+        );
+
+        final StorageValueInfo storageValueInfo = StorageValueInfo.with(
+            HOME_PREFIX_PATH,
+            DIFFERENT_AUDIT_INFO
+        );
+
+        storage.setAuditInfo(
+            storageValueInfo,
+            context
+        );
+
+        this.listAndCheck(
+            storage.storage,
+            HOME_DIRECTORY_PATH,
+            0, // offset
+            2, // count
+            context,
+            storageValueInfo.setPath(HOME_DIRECTORY_PATH)
+        );
+    }
+
     // addWatcher.......................................................................................................
 
     @Test

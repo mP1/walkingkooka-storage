@@ -142,6 +142,18 @@ final class StorageSharedWrapperHomeDirectory<C extends StorageContext> extends 
         return infos;
     }
 
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        this.storage.setAuditInfo(
+            value.setPath(
+                value.path()
+                    .replaceHomeDirectory(context)
+            ),
+            context
+        );
+    }
+
     // addWatcher.......................................................................................................
 
     @Override

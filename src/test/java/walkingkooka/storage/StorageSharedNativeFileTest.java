@@ -521,13 +521,45 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
         );
     }
 
+    // setAuditInfo.....................................................................................................
+
+    @Test
+    public void testSetAuditInfo() {
+        final StoragePath storagePath = StoragePath.parse("/" + EXPRESSION_FILE_PATH);
+
+        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext();
+
+        // cant use DIFFERENT_AUDIT_INFO because it contains a different user and StorageSharedNativeFile always uses Context.user()
+        final StorageValueInfo value = this.storageValueInfo(storagePath)
+            .setAuditInfo(
+                AuditInfo.with(
+                    AUDIT_INFO.createdBy(),
+                    DIFFERENT_AUDIT_INFO.createdTimestamp(),
+                    AUDIT_INFO.modifiedBy(),
+                    DIFFERENT_AUDIT_INFO.modifiedTimestamp()
+                )
+            );
+
+        storage.setAuditInfo(
+            value,
+            context
+        );
+
+        this.listAndCheck(
+            storage,
+            storagePath,
+            0, // offset
+            2, // count
+            context,
+            value
+        );
+    }
+
     private StorageValueInfo storageValueInfo(final StoragePath storagePath) {
         return StorageValueInfo.with(
             storagePath,
-            AuditInfo.create(
-                USER,
-                NOW
-            )
+            AUDIT_INFO
         );
     }
 

@@ -17,6 +17,8 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.environment.AuditInfo;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +52,13 @@ public interface Storage<C extends StorageContext> {
                                 final int offset,
                                 final int count,
                                 final C context);
+
+    /**
+     * Supports replacing the {@link AuditInfo} for the given {@link StoragePath}, throwing an exception for
+     * an unknown path.
+     */
+    void setAuditInfo(final StorageValueInfo value,
+                      final C context);
 
     Runnable addWatcher(final StorageWatcher watcher,
                         final C context);

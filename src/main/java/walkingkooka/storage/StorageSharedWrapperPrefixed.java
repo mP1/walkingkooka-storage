@@ -149,6 +149,22 @@ final class StorageSharedWrapperPrefixed<C extends StorageContext> extends Stora
         }
     }
 
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        try {
+            this.storage.setAuditInfo(
+                value.setPath(
+                    value.path()
+                        .removePrefix(this.prefix)
+                ),
+                context
+            );
+        } catch (final InvalidStoragePathException rethrow) {
+            throw this.fixInvalidPath(rethrow);
+        }
+    }
+
     // addWatcher.......................................................................................................
 
     @Override
