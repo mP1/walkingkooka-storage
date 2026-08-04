@@ -452,7 +452,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
         storage.save(
-            StorageValue.with(file3)
+            StorageValue.with(file4)
                 .setValue(
                     Optional.of("file4-value")
                 ),
