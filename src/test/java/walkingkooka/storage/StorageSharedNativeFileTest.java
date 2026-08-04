@@ -396,7 +396,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             InvalidStoragePathException.class,
             () -> this.createStorage()
                 .list0(
-                    StoragePath.parse("/unknown-parent"),
+                    StoragePath.parse("/unknown-parent/"),
                     0,
                     1,
                     this.createContext()
@@ -405,12 +405,12 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
         this.getMessageAndCheck(
             thrown,
-            "Invalid path \"/unknown-parent\""
+            "Invalid path \"/unknown-parent/\""
         );
     }
 
     @Test
-    public void testList() {
+    public void testListParent() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
@@ -436,7 +436,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
-    public void testListOffset() {
+    public void testListParentWithOffset() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
@@ -459,7 +459,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
-    public void testListCount() {
+    public void testListParentWithCount() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
@@ -476,7 +476,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Test
-    public void testListOffsetAndCount() {
+    public void testListParentOffsetAndCount() {
         this.listAndCheck(
             this.createStorage(),
             StoragePath.ROOT,
@@ -485,6 +485,38 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             this.createContext(),
             this.storageValueInfo(
                 StoragePath.parse("/" + JSON_FILE_PATH)
+            )
+        );
+    }
+
+    @Test
+    public void testListStorageValue() {
+        final StoragePath storagePath = StoragePath.parse("/" + EXPRESSION_FILE_PATH);
+
+        this.listAndCheck(
+            this.createStorage(),
+            storagePath,
+            0, // offset
+            10, // count
+            this.createContext(),
+            this.storageValueInfo(
+                storagePath
+            )
+        );
+    }
+
+    @Test
+    public void testListStorageValue2() {
+        final StoragePath storagePath = StoragePath.parse("/" + JSON_FILE_PATH);
+
+        this.listAndCheck(
+            this.createStorage(),
+            storagePath,
+            0, // offset
+            10, // count
+            this.createContext(),
+            this.storageValueInfo(
+                storagePath
             )
         );
     }
