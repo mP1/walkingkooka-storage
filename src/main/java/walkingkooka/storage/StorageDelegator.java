@@ -87,6 +87,16 @@ public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
     }
 
     @Override
+    default void setAuditInfo(final StorageValueInfo value,
+                              final C context) {
+        this.storage()
+            .setAuditInfo(
+                value,
+                context
+            );
+    }
+
+    @Override
     default Runnable addWatcher(final StorageWatcher watcher,
                                        final C context) {
         return this.storage()

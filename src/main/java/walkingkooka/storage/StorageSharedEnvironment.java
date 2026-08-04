@@ -185,6 +185,12 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
         );
     }
 
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        throw new UnsupportedOperationException("Environment setAuditInfo");
+    }
+
     // addWatcher................................................................................................
 
     @Override

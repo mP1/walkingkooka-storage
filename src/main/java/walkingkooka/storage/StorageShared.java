@@ -144,6 +144,21 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                                           final C context);
 
     @Override
+    public final void setAuditInfo(final StorageValueInfo value,
+                                   final C context) {
+        Objects.requireNonNull(value, "value");
+        Objects.requireNonNull(context, "context");
+
+        this.setAuditInfo0(
+            value,
+            context
+        );
+    }
+
+    abstract void setAuditInfo0(final StorageValueInfo value,
+                                final C context);
+
+    @Override
     public final Runnable addWatcher(final StorageWatcher watcher,
                                      final C context) {
         Objects.requireNonNull(watcher, "watcher");

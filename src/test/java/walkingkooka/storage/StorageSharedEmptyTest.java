@@ -113,6 +113,21 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     }
 
     @Test
+    public void testSetAuditInfoFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> StorageSharedEmpty.instance()
+                .setAuditInfo(
+                    StorageValueInfo.with(
+                        StoragePath.parse("/hello"),
+                        AUDIT_INFO
+                    ),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
     public void testAddWatcher() {
         this.createStorage()
             .addWatcher(

@@ -82,6 +82,12 @@ final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C
         return Lists.of();
     }
 
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        throw new UnsupportedOperationException();
+    }
+
     // addWatcher.......................................................................................................
 
     @Override

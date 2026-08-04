@@ -40,6 +40,7 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
@@ -251,6 +252,46 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         }
 
         return listing;
+    }
+
+    // setAuditInfo.....................................................................................................
+
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        final StoragePath storagePath = value.path();
+
+        final Path fileSystemPath = this.toPath(storagePath);
+
+        final AuditInfo auditInfo = value.auditInfo();
+
+        try {
+            BasicFileAttributeView attributes = Files.getFileAttributeView(
+                fileSystemPath,
+                BasicFileAttributeView.class
+            );
+            attributes.setTimes(
+                toFileTime(
+                    auditInfo.lastModified()
+                ),
+                attributes.readAttributes()
+                    .lastAccessTime(),
+                toFileTime(
+                    auditInfo.createdTimestamp()
+                )
+            );
+        } catch (final IOException cause) {
+            throw storagePath.invalidStoragePathException(
+                "Unable to set creation & last modified",
+                cause
+            );
+        }
+    }
+
+    private static FileTime toFileTime(final LocalDateTime dateTime) {
+        return FileTime.from(
+            dateTime.toInstant(ZoneOffset.UTC)
+        );
     }
 
     // addWatcher.......................................................................................................

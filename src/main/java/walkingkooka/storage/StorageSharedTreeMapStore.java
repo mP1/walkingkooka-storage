@@ -189,6 +189,16 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         }
     }
 
+    @Override
+    void setAuditInfo0(final StorageValueInfo value,
+                       final C context) {
+        this.store.save(
+            this.store.loadOrFail(
+                value.path()
+            ).setInfo(value)
+        );
+    }
+
     // addWatcherXXX....................................................................................................
 
     @Override

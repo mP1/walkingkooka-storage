@@ -513,6 +513,49 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
+    public void testSetAuditInfo() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        final StoragePath file1 = StoragePath.parse("/file1.txt");
+        storage.save(
+            StorageValue.with(file1)
+                .setValue(
+                    Optional.of("file1-value")
+                ),
+            context
+        );
+
+        final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
+        storage.save(
+            StorageValue.with(file2)
+                .setValue(
+                    Optional.of("file2-value")
+                ),
+            context
+        );
+
+        final StorageValueInfo setAuditInfo = StorageValueInfo.with(
+            file1,
+            DIFFERENT_AUDIT_INFO
+        );
+
+        storage.setAuditInfo(
+            setAuditInfo,
+            context
+        );
+
+        this.listAndCheck(
+            storage,
+            file1,
+            0,
+            10,
+            context,
+            setAuditInfo
+        );
+    }
+
+    @Test
     public void testAddWatcher() {
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
