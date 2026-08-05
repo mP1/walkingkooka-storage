@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
@@ -34,6 +35,7 @@ import java.util.zip.ZipInputStream;
 /**
  * Uses a {@link StoragePath} to an archive and presents a read-only view of its contents.
  */
+@GwtIncompatible
 final class StorageSharedWrapperExplodedZipFile<C extends StorageContext> extends StorageSharedWrapper<C> {
 
     static <C extends StorageContext> StorageSharedWrapperExplodedZipFile<C> with(final StoragePath archive,
