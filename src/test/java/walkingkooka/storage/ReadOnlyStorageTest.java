@@ -55,6 +55,40 @@ public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorag
     }
 
     @Test
+    public void testCanReadExisting() {
+        final Storage<FakeStorageContext> storage = Storages.treeMapStore();
+
+        final FakeStorageContext context = createContext();
+
+        final StoragePath path = StoragePath.parse("/file1.txt");
+
+        storage.save(
+            StorageValue.with(path)
+                .setValue(
+                    Optional.of("1111")
+                ),
+            context
+        );
+
+        this.canReadAndCheck(
+            ReadOnlyStorage.with(storage),
+            path,
+            context,
+            true
+        );
+    }
+
+    @Test
+    public void testCanReadUnknown() {
+        this.canReadAndCheck(
+            this.createStorage(),
+            StoragePath.parse("/unknown-file-404.txt"),
+            this.createContext(),
+            false
+        );
+    }
+
+    @Test
     public void testSaveFails() {
         final StoragePath path = StoragePath.parse("/file.txt");
         final StorageValue storageValue = StorageValue.with(path)
