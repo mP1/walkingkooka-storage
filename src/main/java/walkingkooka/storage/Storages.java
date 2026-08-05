@@ -42,6 +42,17 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see StorageSharedWrapperExplodedZipFile}
+     */
+    public static <C extends StorageContext> Storage<C> explodedZipFile(final StoragePath archive,
+                                                                        final Storage<C> storage) {
+        return StorageSharedWrapperExplodedZipFile.with(
+            archive,
+            storage
+        );
+    }
+
+    /**
      * {@see FakeStorage}
      */
     public static <C extends StorageContext> Storage<C> fake() {
