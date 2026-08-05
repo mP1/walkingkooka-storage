@@ -46,9 +46,10 @@ final class ReadOnlyStorage<C extends StorageContext> implements StorageDelegato
     @Override
     public boolean canRead(final StoragePath path,
                            final C context) {
-        Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(context, "context");
-        return false;
+        return this.storage.canRead(
+            path,
+            context
+        );
     }
 
     @Override
