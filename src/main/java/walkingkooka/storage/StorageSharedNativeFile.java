@@ -288,12 +288,6 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         }
     }
 
-    private static FileTime toFileTime(final LocalDateTime dateTime) {
-        return FileTime.from(
-            dateTime.toInstant(ZoneOffset.UTC)
-        );
-    }
-
     // addWatcher.......................................................................................................
 
     private void registerTree(final Path start) {
@@ -486,15 +480,21 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
         );
     }
 
+    private static FileTime toFileTime(final LocalDateTime dateTime) {
+        return FileTime.from(
+            dateTime.toInstant(ZONE_OFFSET)
+        );
+    }
+
     private LocalDateTime toLocalDateTime(final FileTime fileTime) {
         return LocalDateTime.ofInstant(
             fileTime.toInstant(),
-            UTC // TODO read from Context
+            ZONE_OFFSET // TODO read from Context
         );
     }
 
     // @VisibleForTesting
-    final static ZoneOffset UTC = ZoneOffset.UTC;
+    final static ZoneOffset ZONE_OFFSET = ZoneOffset.UTC;
 
     /**
      * The root directory containing all files and directories.

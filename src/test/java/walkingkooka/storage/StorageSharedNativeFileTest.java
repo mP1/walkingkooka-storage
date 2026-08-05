@@ -113,7 +113,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     private final static FileTime FILE_TIME_NOW = FileTime.from(
         NOW.toInstant(
-            walkingkooka.storage.StorageSharedNativeFile.UTC
+            StorageSharedNativeFile.ZONE_OFFSET
         )
     );
 
