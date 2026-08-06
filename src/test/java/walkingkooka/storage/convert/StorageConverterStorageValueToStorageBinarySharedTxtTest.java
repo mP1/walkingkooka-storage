@@ -26,6 +26,7 @@ import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.HasDateTimeSymbolsTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -36,7 +37,8 @@ import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class StorageConverterStorageValueToStorageBinarySharedTxtTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>> {
+public final class StorageConverterStorageValueToStorageBinarySharedTxtTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>>
+implements HasDateTimeSymbolsTesting {
 
     @Test
     public void testConvertEmptyStorageValueTxtToStorageBinaryFails() {
@@ -52,23 +54,17 @@ public final class StorageConverterStorageValueToStorageBinarySharedTxtTest exte
 
     @Test
     public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStorageBinary() {
-        final DateTimeSymbols dateTimeSymbols = DateTimeSymbols.fromDateFormatSymbols(
-            new DateFormatSymbols(
-                Locale.forLanguageTag("en-AU")
-            )
-        );
-
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(dateTimeSymbols)
+                    Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    dateTimeSymbols.text()
+                    DATE_TIME_SYMBOLS.text()
                         .getBytes(CHARSET)
                 )
             ).setContentType(

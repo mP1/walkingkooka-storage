@@ -24,7 +24,7 @@ import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.HasDateTimeSymbolsTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
@@ -40,11 +40,11 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallUnmarshallContextTesting;
 import walkingkooka.util.HasLocaleTesting;
 
 import java.nio.charset.Charset;
-import java.text.DateFormatSymbols;
 import java.util.Optional;
 
 public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedJson<FakeStorageConverterContext>>
     implements BinaryTextContextTesting,
+    HasDateTimeSymbolsTesting,
     HasLocaleTesting,
     JsonNodeMarshallUnmarshallContextTesting {
 
@@ -53,9 +53,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
         final FakeStorageConverterContext context = this.createContext();
 
         final JsonNode dateTimeSymbols = context.marshall(
-            DateTimeSymbols.fromDateFormatSymbols(
-                new DateFormatSymbols(LOCALE)
-            )
+            DATE_TIME_SYMBOLS
         );
 
         final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.json");
