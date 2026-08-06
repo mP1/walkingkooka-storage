@@ -31,13 +31,11 @@ import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.convert.ShortCircuitingConverter;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
-import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.HasUserTesting;
-import walkingkooka.math.DecimalNumberContext;
-import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.math.MathTesting;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.MediaType;
@@ -66,7 +64,6 @@ import java.nio.file.Path;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
-import java.text.DateFormatSymbols;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -75,6 +72,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageSharedNativeFileTest extends StorageSharedTestCase<StorageSharedNativeFile<FakeStorageContext>, FakeStorageContext>
     implements BinaryTextContextTesting,
     CurrencyLocaleContextTesting,
+    DateTimeContextTesting,
+    DecimalNumberContextTesting,
     HasCharsetTesting,
     HasExpressionNumberKindTesting,
     HasNowTesting,
@@ -82,8 +81,6 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     JsonNodeMarshallUnmarshallContextTesting,
     MathTesting,
     ThrowableTesting {
-
-    private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MATH_CONTEXT);
 
     private final static Expression EXPRESSION = Expression.add(
         Expression.value(111),
@@ -819,15 +816,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                             BinaryNumberConverterFunctions.fake(), // multiplier
                             BINARY_TEXT_CONTEXT,
                             CURRENCY_LOCALE_CONTEXT,
-                            DateTimeContexts.basic(
-                                DateTimeSymbols.fromDateFormatSymbols(
-                                    new DateFormatSymbols(StorageSharedNativeFileTest.LOCALE)
-                                ),
-                                StorageSharedNativeFileTest.LOCALE,
-                                1920, // defaultYear
-                                20, // twoDigitYear
-                                HAS_NOW
-                            ),
+                            DATE_TIME_CONTEXT,
                             DECIMAL_NUMBER_CONTEXT
                         ),
                         EXPRESSION_NUMBER_KIND
