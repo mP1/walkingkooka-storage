@@ -26,7 +26,6 @@ import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
-import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
@@ -52,8 +51,6 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     );
 
     private final static JsonNodeConverterContext CONVERTER_CONTEXT = JsonNodeConverterContexts.fake();
-
-    private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
 
     // with.............................................................................................................
 
@@ -185,7 +182,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
                         BINARY_TEXT_CONTEXT,
                         CURRENCY_LOCALE_CONTEXT,
                         DATE_TIME_CONTEXT,
-                        DecimalNumberContexts.american(MATH_CONTEXT)
+                        DECIMAL_NUMBER_CONTEXT
                     ),
                     EXPRESSION_NUMBER_KIND
                 ),
