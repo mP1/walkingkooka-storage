@@ -28,7 +28,7 @@ public final class StorageHttpHandlers implements PublicStaticHelper {
     /**
      * {@link StorageGetHeadPostOrDeleteHttpHandler}
      */
-    public static <C extends StorageHttpHandlerContext> HttpHandler<C> with(final int pathAfter) {
+    public static <C extends StorageHttpHandlerContext> HttpHandler<C> storage(final int pathAfter) {
         return StorageGetHeadPostOrDeleteHttpHandler.with(pathAfter);
     }
 
