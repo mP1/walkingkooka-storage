@@ -24,7 +24,6 @@ import walkingkooka.convert.Converters;
 import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
-import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.storage.FakeHasUserDirectories;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextDelegatorTest.TestStorageConverterContextDelegator;
@@ -41,8 +40,6 @@ import java.util.Optional;
 public final class StorageConverterContextDelegatorTest implements StorageConverterContextTesting<TestStorageConverterContextDelegator>,
     DecimalNumberContextDelegator,
     EnvironmentContextTesting {
-
-    private final static DecimalNumberContext DECIMAL_NUMBER_CONTEXT = DecimalNumberContexts.american(MathContext.DECIMAL32);
 
     @Test
     public void testCurrentWorkingDirectoryWhenEmpty() {
@@ -69,7 +66,7 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
             this.currentWorkingDirectoryAndCheck(
                 new TestStorageConverterContextDelegator(
                     Optional.of(
-                        StoragePath.parse(CURRENT_WORKING_DIRECTORY + "different")
+                        DIFFERENT_CURRENT_WORKING_DIRECTORY
                     )
                 ),
                 CURRENT_WORKING_DIRECTORY
