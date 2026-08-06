@@ -23,31 +23,27 @@ import walkingkooka.InvalidCharacterException;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.FakeCurrencyContext;
-import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.datetime.DateTimeSymbols;
+import walkingkooka.currency.CurrencyLocaleContextTesting;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.locale.LocaleContexts;
-import walkingkooka.math.DecimalNumberContexts;
+import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.text.LineEnding;
 
-import java.math.MathContext;
-import java.text.DateFormatSymbols;
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
-    implements EnvironmentContextTesting {
+    implements CurrencyLocaleContextTesting,
+    DateTimeContextTesting,
+    DecimalNumberContextTesting,
+    EnvironmentContextTesting {
 
     private final static EnvironmentValueName<Integer> MAGIC_ENVIRONMENT_VALUE_NAME = EnvironmentValueName.with(
         "magic-integer",
@@ -611,26 +607,9 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
                 Converters.fake(),
                 BinaryNumberConverterFunctions.fake(), // multiplier
                 BINARY_TEXT_CONTEXT,
-                new FakeCurrencyContext() {
-                    @Override
-                    public Optional<Currency> currencyForLocale(final Locale locale) {
-                        return Optional.of(
-                            Currency.getInstance(locale)
-                        );
-                    }
-                }.setLocaleContext(
-                    LocaleContexts.jre(LOCALE)
-                ),
-                DateTimeContexts.basic(
-                    DateTimeSymbols.fromDateFormatSymbols(
-                        new DateFormatSymbols(LOCALE)
-                    ),
-                    LOCALE,
-                    1920,
-                    20,
-                    LocalDateTime::now
-                ),
-                DecimalNumberContexts.american(MathContext.DECIMAL32)
+                CURRENCY_LOCALE_CONTEXT,
+                DATE_TIME_CONTEXT,
+                DECIMAL_NUMBER_CONTEXT
             ),
             MediaTypeDetectors.fake(),
             environmentContext
