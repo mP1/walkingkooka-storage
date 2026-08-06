@@ -38,23 +38,4 @@ public interface StorageHttpHandlerContext extends HttpHandlerContext,
     List<StorageValueInfo> listStorage(final StoragePath parent,
                                        final int offset,
                                        final int count);
-//
-//    Storage<StorageHttpHandlerContext> storage();
-//    default Optional<StorageValue> loadStorage(StoragePath path) {
-//        return this.storage().load(path, this);
-//    }
-//
-//    default StorageValue saveStorage(StorageValue value) {
-//        return this.storage().save(value, this);
-//    }
-//
-//    default void deleteStorage(StoragePath path) {
-//        this.storage().delete(path, this);
-//    }
-//
-//    default List<StorageValueInfo> listStorage(StoragePath parent, int offset, int count) {
-//        return this.storage().list(parent, offset, count, this);
-//    }
-//
-//    Storage<StorageHttpHandlerContext> storage();
 }
