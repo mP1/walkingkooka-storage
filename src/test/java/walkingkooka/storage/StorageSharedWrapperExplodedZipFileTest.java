@@ -25,7 +25,6 @@ import walkingkooka.HasCharsetTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.storage.StorageSharedWrapperExplodedZipFileTest.TestStorageContext;
-import walkingkooka.text.CharSequences;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -183,15 +182,8 @@ public final class StorageSharedWrapperExplodedZipFileTest extends StorageShared
             4,
             new TestStorageContext(),
             StorageValueInfo.with(
-                StoragePath.parse(
-                    CharSequences.subSequence(
-                        FILE_STORAGE_PATH.parent()
-                            .get()
-                            .value(),
-                        0,
-                        -1
-                    ).toString()
-                ),
+                FILE_STORAGE_PATH.parent()
+                    .get(),
                 AUDIT_INFO
             )
         );

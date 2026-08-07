@@ -16,6 +16,7 @@
  */
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import walkingkooka.InvalidTextLengthException;
 import walkingkooka.collect.set.Sets;
@@ -24,6 +25,7 @@ import walkingkooka.naming.PathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
@@ -98,6 +100,22 @@ HasCurrentWorkingDirectoryTesting,
     }
 
     @Test
+    public void testParseTrailSlash() {
+        final String value = "/path1/";
+
+        final StoragePath path = StoragePath.parse(value);
+        this.valueAndCheck(
+            path,
+            value
+        );
+        this.nameCheck(
+            path,
+            StorageName.with("path1")
+        );
+        this.parentCheck(path);
+    }
+
+    @Test
     public void testParseSlashHome() {
         final String value = "/home";
 
@@ -146,7 +164,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             path,
-            "/path1/"
+            "/path1"
         );
     }
 
@@ -163,7 +181,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             path,
-            "/path1/"
+            "/path1"
         );
     }
 
@@ -179,7 +197,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             path,
-            "/path/"
+            "/path"
         );
     }
 
@@ -195,7 +213,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             path,
-            "/path/"
+            "/path"
         );
     }
 
@@ -213,7 +231,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path/to/"
+            "/path/to"
         );
 
         final StoragePath parent = path.parent()
@@ -221,7 +239,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.valueAndCheck(
             parent,
-            "/path/to/"
+            "/path/to"
         );
         this.rootNotCheck(parent);
         this.nameCheck(
@@ -230,7 +248,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             parent,
-            "/path/"
+            "/path"
         );
     }
 
@@ -248,7 +266,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path/to/"
+            "/path/to"
         );
 
         final StoragePath parent = path.parent()
@@ -256,7 +274,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.valueAndCheck(
             parent,
-            "/path/to/"
+            "/path/to"
         );
         this.rootNotCheck(parent);
         this.nameCheck(
@@ -265,7 +283,7 @@ HasCurrentWorkingDirectoryTesting,
         );
         this.parentCheck(
             parent,
-            "/path/"
+            "/path"
         );
     }
 
@@ -289,7 +307,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path1/path2/"
+            "/path1/path2"
         );
     }
 
@@ -298,7 +316,7 @@ HasCurrentWorkingDirectoryTesting,
         final StoragePath path = StoragePath.parse("/path1/path2/path3/.");
         this.valueAndCheck(
             path,
-            "/path1/path2/path3/"
+            "/path1/path2/path3"
         );
         this.rootNotCheck(path);
         this.nameCheck(
@@ -308,7 +326,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path1/path2/"
+            "/path1/path2"
         );
     }
 
@@ -327,7 +345,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path1/"
+            "/path1"
         );
     }
 
@@ -346,7 +364,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path1/"
+            "/path1"
         );
     }
 
@@ -355,7 +373,7 @@ HasCurrentWorkingDirectoryTesting,
         final StoragePath path = StoragePath.parse("/path1/path2/path3/..");
         this.valueAndCheck(
             path,
-            "/path1/path2/"
+            "/path1/path2"
         );
         this.rootNotCheck(path);
         this.nameCheck(
@@ -365,7 +383,7 @@ HasCurrentWorkingDirectoryTesting,
 
         this.parentCheck(
             path,
-            "/path1/"
+            "/path1"
         );
     }
 
@@ -757,6 +775,15 @@ HasCurrentWorkingDirectoryTesting,
     @Test
     public void testPrependPath2() {
         this.prependPathAndCheck(
+            "/path3",
+            "/path1/path2/",
+            "/path1/path2/path3"
+        );
+    }
+
+    @Test
+    public void testPrependPath3() {
+        this.prependPathAndCheck(
             "/path3/path4",
             "/path1/path2",
             "/path1/path2/path3/path4"
@@ -764,7 +791,7 @@ HasCurrentWorkingDirectoryTesting,
     }
 
     @Test
-    public void testPrependPath3() {
+    public void testPrependPath4() {
         this.prependPathAndCheck(
             "/path3/path4",
             "/path1/./lost/../path2",
@@ -1418,6 +1445,19 @@ HasCurrentWorkingDirectoryTesting,
                 }
             ),
             path::toString
+        );
+    }
+
+    @Override
+    public void parentCheck(final StoragePath path,
+                            final String value) {
+        if (value.endsWith(StoragePath.SEPARATOR_STRING)) {
+            Assertions.fail("Path " + CharSequences.quote(value) + " must NOT end with " + CharSequences.quote(StoragePath.SEPARATOR_STRING));
+        }
+
+        PathTesting.super.parentCheck(
+            path,
+            value
         );
     }
 

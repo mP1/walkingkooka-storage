@@ -80,6 +80,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
         assertThrows(
             NullPointerException.class,
             () -> StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 null,
                 VALUE
             )
@@ -91,6 +92,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
         assertThrows(
             NullPointerException.class,
             () -> StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 STORAGE_VALUE_INFO,
                 null
             )
@@ -100,6 +102,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     @Test
     public void testWith() {
         final StorageSharedTreeMapStoreValue value = StorageSharedTreeMapStoreValue.with(
+            StorageSharedTreeMapStoreValue.NOT_PARENT,
             STORAGE_VALUE_INFO,
             VALUE
         );
@@ -282,6 +285,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     public void testEqualsDifferentInfo() {
         this.checkNotEquals(
             StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 STORAGE_VALUE_INFO.setAuditInfo(
                     AUDIT_INFO.setModifiedTimestamp(
                         MODIFIED_TIMESTAMP.plusYears(1)
@@ -296,6 +300,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     public void testEqualsDifferentValue() {
         this.checkNotEquals(
             StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 STORAGE_VALUE_INFO,
                 VALUE.setValue(
                     Optional.of("Different")
@@ -307,6 +312,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     @Override
     public StorageSharedTreeMapStoreValue createObject() {
         return StorageSharedTreeMapStoreValue.with(
+            StorageSharedTreeMapStoreValue.NOT_PARENT,
             STORAGE_VALUE_INFO,
             VALUE
         );
@@ -326,6 +332,7 @@ public final class StorageSharedTreeMapStoreValueTest implements HashCodeEqualsD
     public void testToStringWithContentType() {
         this.toStringAndCheck(
             StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 STORAGE_VALUE_INFO,
                 VALUE.setContentType(
                     Optional.of(

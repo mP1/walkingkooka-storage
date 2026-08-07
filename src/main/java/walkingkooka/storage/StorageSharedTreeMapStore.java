@@ -21,14 +21,12 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
 import walkingkooka.store.StoreWatcher;
 import walkingkooka.store.Stores;
-import walkingkooka.text.CharSequences;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A {@link Storage} that uses a {@link Stores#treeMap(Comparator, BiFunction)} to hold {@link StoragePath} to
@@ -102,6 +100,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         } else {
             // set creator and modified
             newSave = StorageSharedTreeMapStoreValue.with(
+                StorageSharedTreeMapStoreValue.NOT_PARENT,
                 StorageValueInfo.with(
                     path,
                     context.createdAuditInfo()
@@ -114,13 +113,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                 .orElse(null);
 
             while (null != parentPath && false == parentPath.isRoot()) {
-                final StoragePath parentPathWithoutSlash = StoragePath.parse(
-                    CharSequences.subSequence(
-                        parentPath.value(),
-                        0,
-                        -1
-                    ).toString()
-                );
+                final StoragePath parentPathWithoutSlash = parentPath;
 
                 final StorageSharedTreeMapStoreValue parent = store.load(parentPathWithoutSlash)
                     .orElse(null);
@@ -131,6 +124,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                 // create parent entry
                 store.save(
                     StorageSharedTreeMapStoreValue.with(
+                        StorageSharedTreeMapStoreValue.PARENT,
                         StorageValueInfo.with(
                             parentPathWithoutSlash,
                             context.createdAuditInfo()
@@ -154,7 +148,16 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         if(path.isParent()) {
             throw path.invalidStoragePathException("Invalid parent path");
         }
-        this.store.delete(path);
+
+        final StorageSharedTreeMapStoreValue value = this.store.load(path)
+            .orElse(null);
+        if(null !=value) {
+            if(value.parent) {
+                throw path.invalidStoragePathException("Invalid parent path");
+            }
+
+            this.store.delete(path);
+        }
     }
 
     @Override
@@ -164,30 +167,43 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                                  final C context) {
         this.saveRootIfNecessary(context);
 
-        final Stream<StorageSharedTreeMapStoreValue> listing = parent.isParent() ?
-            this.store.all()
-                .stream()
-                .filter(i -> parent.equals(i.path().parent().orElse(null)))
-                .skip(offset)
-                .limit(count) :
-            0 == offset && count > 0 ?
-                this.store.load(parent)
-                    .stream() :
-                Stream.empty();
+        final StoragePath parentWithSlash = parent.parentWithoutTrailingSeparator();
 
-        return listing.map(StorageSharedTreeMapStoreValue::info)
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(),
-                    StorageValueInfoList::with
-                )
-            );
+        StorageSharedTreeMapStoreValue value = this.store.load(parentWithSlash)
+            .orElse(null);
+
+        StorageValueInfoList storageValueInfoList = StorageValueInfoList.EMPTY;
+
+        if(null != value) {
+            if(value.parent) {
+                storageValueInfoList = this.store.all()
+                    .stream()
+                    .filter(i -> parentWithSlash.equals(i.path().parent().orElse(null)))
+                    .skip(offset)
+                    .limit(count)
+                    .map(StorageSharedTreeMapStoreValue::info)
+                    .collect(
+                        Collectors.collectingAndThen(
+                            Collectors.toList(),
+                            StorageValueInfoList::with
+                        )
+                    );
+
+            } else {
+                storageValueInfoList = StorageValueInfoList.EMPTY.concat(value.info);
+            }
+        } else {
+            storageValueInfoList = StorageValueInfoList.EMPTY;
+        }
+
+        return storageValueInfoList;
     }
 
     private void saveRootIfNecessary(final StorageContext context) {
         if (this.store.count() == 0) {
             this.store.save(
                 StorageSharedTreeMapStoreValue.with(
+                    true, // parent
                     StorageValueInfo.with(
                         StoragePath.ROOT,
                         context.createdAuditInfo()
