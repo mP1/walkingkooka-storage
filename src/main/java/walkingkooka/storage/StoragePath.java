@@ -34,6 +34,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A {@link Path} that identifies a storage entry. Note a path must start with the {@link #SEPARATOR} and is limited to
@@ -568,22 +569,36 @@ final public class StoragePath
      */
     public final static StoragePath HOME_DIRECTORY_PREFIX = parse("/home");
 
+    /**
+     * Prefix that should be replaced by the current users {@link StorageContext#currentWorkingDirectory()}.
+     * This should be mounted as a user independent path for the current user resolving to their true current working directory.
+     */
+    public final static StoragePath CURRENT_WORKING_DIRECTORY_PREFIX = parse("/cwd");
+
     // replaceUserHomeDirectory.........................................................................................
 
     /**
      * If this path starts with {@link #HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
      */
     StoragePath replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+        return this.replacePrefix(
+            HOME_DIRECTORY_PREFIX,
+            hasHomeDirectory::homeDirectoryOrFail
+        );
+    }
+
+    private StoragePath replacePrefix(final StoragePath prefix,
+                                      final Supplier<StoragePath> replaceWith) {
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
-        if(value.startsWith(HOME_DIRECTORY_PREFIX.value())) {
+        if (value.startsWith(prefix.value())) {
             storagePath = parse(
-                hasHomeDirectory.homeDirectoryOrFail()
+                replaceWith.get()
                     .value() +
-                value.substring(
-                    HOME_DIRECTORY_PREFIX.value().length()
-                )
+                    value.substring(
+                        prefix.value().length()
+                    )
             );
         }
 
