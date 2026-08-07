@@ -564,8 +564,9 @@ final public class StoragePath
 
     /**
      * Prefix that should be replaced by the current users {@link StorageContext#homeDirectory()}.
+     * This should be mounted as a user independent path for the current user resolving to their true home directory.
      */
-    public final static StoragePath HOME_DIRECTORY_PREFIX = parse("/~");
+    public final static StoragePath HOME_DIRECTORY_PREFIX = parse("/home");
 
     // replaceUserHomeDirectory.........................................................................................
 
@@ -598,17 +599,28 @@ final public class StoragePath
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
-        final String homeDirectory = hasHomeDirectory.homeDirectoryOrFail()
+        String homeDirectory = hasHomeDirectory.homeDirectoryOrFail()
             .value();
+        if (homeDirectory.endsWith(SEPARATOR_STRING)) {
+            homeDirectory = homeDirectory.substring(
+                0,
+                homeDirectory.length() - 1
+            );
+        }
 
         if (value.startsWith(homeDirectory)) {
-            storagePath = parse(
-                HOME_DIRECTORY_PREFIX.value() +
-                    StoragePath.SEPARATOR +
-                    value.substring(
-                        homeDirectory.length()
-                    )
+            final String append = value.substring(
+                homeDirectory.length()
             );
+
+            storagePath = append.isEmpty() ?
+                HOME_DIRECTORY_PREFIX :
+                parse(
+                    HOME_DIRECTORY_PREFIX.value() +
+                        StoragePath.SEPARATOR +
+                        append
+
+                );
         }
 
         return storagePath;
