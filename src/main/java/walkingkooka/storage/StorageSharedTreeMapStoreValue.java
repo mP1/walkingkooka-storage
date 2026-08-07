@@ -29,16 +29,26 @@ import java.util.Optional;
  */
 final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath>> {
 
-    static StorageSharedTreeMapStoreValue with(final StorageValueInfo info,
+    final static boolean NOT_PARENT = false;
+
+    final static boolean PARENT = true;
+
+    static StorageSharedTreeMapStoreValue with(final boolean parent,
+                                               final StorageValueInfo info,
                                                final StorageValue value) {
         return new StorageSharedTreeMapStoreValue(
+            parent,
             Objects.requireNonNull(info, "info"),
             Objects.requireNonNull(value, "value")
         );
     }
 
-    private StorageSharedTreeMapStoreValue(final StorageValueInfo info,
+    private StorageSharedTreeMapStoreValue(final boolean parent,
+                                           final StorageValueInfo info,
                                            final StorageValue value) {
+        super();
+
+        this.parent = parent;
         this.info = info;
         this.value = value;
     }
@@ -50,6 +60,7 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
         return this.info.equals(info) && this.value.equals(value) ?
             this :
             StorageSharedTreeMapStoreValue.with(
+                this.parent,
                 info,
                 value
             );
@@ -68,6 +79,11 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
         return this.value.path();
     }
 
+    /**
+     * Keeps track whether this entry is a parent of other entries.
+     */
+    boolean parent;
+
     // info.............................................................................................................
 
     StorageValueInfo info() {
@@ -80,6 +96,7 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
         return this.info.equals(info) ?
             this :
             StorageSharedTreeMapStoreValue.with(
+                this.parent,
                 info,
                 this.value
             );
@@ -97,7 +114,8 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
         return this.value.equals(value) ?
             this :
             StorageSharedTreeMapStoreValue.with(
-                info,
+                this.parent,
+                this.info,
                 value
             );
     }
@@ -107,6 +125,7 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
     @Override
     public int hashCode() {
         return Objects.hash(
+            this.parent,
             this.info,
             this.value
         );
@@ -120,7 +139,8 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
     }
 
     private boolean equals0(final StorageSharedTreeMapStoreValue other) {
-        return this.info.equals(other.info) &&
+        return this.parent == other.parent &&
+            this.info.equals(other.info) &&
             this.value.equals(other.value);
     }
 

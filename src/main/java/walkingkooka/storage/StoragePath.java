@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.InvalidTextLengthException;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Path;
 import walkingkooka.naming.PathSeparator;
@@ -32,6 +33,7 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -64,6 +66,8 @@ final public class StoragePath
             MAX_LENGTH
         );
     }
+
+    final static char SEPARATOR_CHAR = '/';
 
     final static String SEPARATOR_STRING = "/";
 
@@ -105,17 +109,15 @@ final public class StoragePath
 
     private static StoragePath parseNonRoot(final String path) {
         try {
-            StoragePath storagePath = ROOT;
-
             final int length = path.length();
             int nameStart = 1; // must start with slash
 
-            final StringBuilder b = new StringBuilder()
-                .append(SEPARATOR);
+            final List<StorageName> names = Lists.array();
 
+            // capture StorageNames and normalize as well
             while (nameStart < length) {
                 final int next = path.indexOf(
-                    SEPARATOR.character(),
+                    SEPARATOR_CHAR,
                     nameStart
                 );
 
@@ -125,7 +127,7 @@ final public class StoragePath
                         (
                             path.charAt(
                                 length - 1
-                            ) == SEPARATOR.character() ?
+                            ) == SEPARATOR_CHAR ?
                                 1 :
                                 0
                         );
@@ -141,24 +143,13 @@ final public class StoragePath
                         case CURRENT:
                             break;
                         case PARENT:
-                            storagePath = storagePath.parent()
-                                .orElse(ROOT);
-
-                            b.setLength(
-                                storagePath.path.length()
+                            names.remove(
+                                names.size() - 1
                             );
                             break;
                         default:
-                            b.append(name);
-
-                            if (-1 != next) {
-                                b.append(SEPARATOR_STRING);
-                            }
-
-                            storagePath = with(
-                                b.toString(),
-                                StorageName.with(name),
-                                Optional.ofNullable(storagePath)
+                            names.add(
+                                StorageName.with(name)
                             );
                             break;
                     }
@@ -169,6 +160,29 @@ final public class StoragePath
                 }
 
                 nameStart = next + 1;
+            }
+
+            // build actual StoragePath with normalized name components
+            StoragePath storagePath = ROOT;
+
+            int lastCountdown = path.endsWith(SEPARATOR_STRING) ?
+                names.size() :
+                Integer.MAX_VALUE;
+            final StringBuilder pathBuilder = new StringBuilder();
+
+            for(final StorageName name : names) {
+                pathBuilder.append(SEPARATOR_CHAR);
+                pathBuilder.append(name.value());
+
+                if(--lastCountdown == 0) {
+                    pathBuilder.append(SEPARATOR_CHAR);
+                }
+
+                storagePath = new StoragePath(
+                    pathBuilder.toString(), // path
+                    name,
+                    Optional.of(storagePath) // parent
+                );
             }
 
             return storagePath;
@@ -291,6 +305,27 @@ final public class StoragePath
 
     private final String path;
 
+    /**
+     * Helper that removes the trailing SLASH from parent paths.
+     * <pre>
+     * /path1/path2/
+     * /path1/path2
+     * </pre>
+     */
+    StoragePath parentWithoutTrailingSeparator() {
+        return this.isRoot() || this.isValue() ?
+            this :
+            new StoragePath(
+                CharSequences.subSequence(
+                    this.path,
+                    0,
+                    -1
+                ).toString(),
+                this.name,
+                this.parent
+            );
+    }
+
     // removePrefix.....................................................................................................
 
     /**
@@ -386,7 +421,8 @@ final public class StoragePath
                 appended = this.parent.orElse(ROOT);
                 break;
             default:
-                appended = this.appendNonRootName(name);
+                appended = this.parentWithoutTrailingSeparator()
+                    .appendNonRootName(name);
                 break;
         }
 
@@ -396,7 +432,7 @@ final public class StoragePath
     private StoragePath appendNonRootName(final StorageName name) {
         final StringBuilder path = new StringBuilder();
         path.append(this.path);
-        if (false == this.isRoot()) {
+        if (false == this.isParent()) {
             path.append(SEPARATOR);
         }
         path.append(

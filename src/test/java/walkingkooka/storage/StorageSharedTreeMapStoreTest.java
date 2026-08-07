@@ -364,7 +364,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         this.getMessageAndCheck(
             thrown,
-            "Invalid parent path \"/parent1/\""
+            "Invalid parent path \"/parent1\""
         );
     }
 
@@ -468,7 +468,11 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             10,
             context,
             StorageValueInfo.with(
-                parent,
+                file2,
+                AUDIT_INFO
+            ),
+            StorageValueInfo.with(
+                file3,
                 AUDIT_INFO
             )
         );
