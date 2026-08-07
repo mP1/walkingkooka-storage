@@ -1210,7 +1210,7 @@ HasCurrentWorkingDirectoryTesting,
     public void testReplaceCurrentWorkingDirectoryWithCwd() {
         this.replaceCurrentWorkingDirectoryAndCheck(
             "/cwd",
-            "/current1/working2/directory3"
+            "/current1/working2/directory3/"
         );
     }
 
