@@ -41,6 +41,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 
 # [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
 
+- [currentWorkingDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedWrapperExpandedCurrentWorkingDirectory.java)
 - [empty](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedEmpty.java)
 - [homeDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedWrapperHomeDirectory.java)
 - [native](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedNativeFile.java)

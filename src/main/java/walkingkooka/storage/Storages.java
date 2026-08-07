@@ -28,6 +28,13 @@ import java.nio.file.Path;
 public final class Storages implements PublicStaticHelper {
 
     /**
+     * {@see StorageSharedWrapperExpandedCurrentWorkingDirectory}
+     */
+    public static <C extends StorageContext> Storage<C> currentWorkingDirectory(final Storage<C> storage) {
+        return StorageSharedWrapperExpandedCurrentWorkingDirectory.with(storage);
+    }
+
+    /**
      * {@see StorageSharedEmpty}
      */
     public static <C extends StorageContext> Storage<C> empty() {
