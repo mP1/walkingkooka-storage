@@ -575,6 +575,18 @@ final public class StoragePath
      */
     public final static StoragePath CURRENT_WORKING_DIRECTORY_PREFIX = parse("/cwd");
 
+    // replaceCurrentWorkingDirectory...................................................................................
+
+    /**
+     * If this path starts with {@link #CURRENT_WORKING_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
+     */
+    StoragePath replaceCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+        return this.replacePrefix(
+            CURRENT_WORKING_DIRECTORY_PREFIX,
+            hasCurrentWorkingDirectory::currentWorkingDirectoryOrFail
+        );
+    }
+
     // replaceUserHomeDirectory.........................................................................................
 
     /**
@@ -603,6 +615,18 @@ final public class StoragePath
         }
 
         return storagePath;
+    }
+
+    // restoreCurrentWorkingDirectory...................................................................................
+
+    /**
+     * If this path starts with {@link HasCurrentWorkingDirectory#currentWorkingDirectory()} replace that with {@link #CURRENT_WORKING_DIRECTORY_PREFIX}..
+     */
+    StoragePath restoreCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+        return this.restorePrefix(
+            CURRENT_WORKING_DIRECTORY_PREFIX,
+            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail()
+        );
     }
 
     // restoreUserHomeDirectory.........................................................................................
