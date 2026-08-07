@@ -21,6 +21,7 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
 import walkingkooka.store.StoreWatcher;
 import walkingkooka.store.Stores;
+import walkingkooka.text.CharSequences;
 
 import java.util.Comparator;
 import java.util.List;
@@ -113,7 +114,15 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                 .orElse(null);
 
             while (null != parentPath && false == parentPath.isRoot()) {
-                final StorageSharedTreeMapStoreValue parent = store.load(parentPath)
+                final StoragePath parentPathWithoutSlash = StoragePath.parse(
+                    CharSequences.subSequence(
+                        parentPath.value(),
+                        0,
+                        -1
+                    ).toString()
+                );
+
+                final StorageSharedTreeMapStoreValue parent = store.load(parentPathWithoutSlash)
                     .orElse(null);
                 if (null != parent) {
                     break;
@@ -123,10 +132,10 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                 store.save(
                     StorageSharedTreeMapStoreValue.with(
                         StorageValueInfo.with(
-                            parentPath,
+                            parentPathWithoutSlash,
                             context.createdAuditInfo()
                         ),
-                        StorageValue.with(parentPath)
+                        StorageValue.with(parentPathWithoutSlash)
                     )
                 );
 
