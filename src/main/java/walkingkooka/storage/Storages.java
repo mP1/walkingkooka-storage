@@ -61,10 +61,10 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageSharedWrapperHomeDirectory}
+     * {@see StorageSharedWrapperExpandedHomeDirectory}
      */
     public static <C extends StorageContext> Storage<C> homeDirectory(final Storage<C> storage) {
-        return StorageSharedWrapperHomeDirectory.with(storage);
+        return StorageSharedWrapperExpandedHomeDirectory.with(storage);
     }
 
     /**
