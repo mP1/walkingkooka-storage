@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final public class StoragePathTest implements PathTesting<StoragePath, StorageName>,
     ClassTesting2<StoragePath>,
+HasCurrentWorkingDirectoryTesting,
     HasHomeDirectoryTesting,
     ParseStringTesting<StoragePath>,
     JsonNodeMarshallingTesting<StoragePath>,
@@ -460,7 +461,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
-    private final static String CWD = "/current1/working2/directory3/";
+    private final static String CWD = "/current1/working2/directory31/working2/directory3/";
 
     private final static String HOME = "/home/user123";
 
@@ -1189,6 +1190,83 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
     }
 
+    // replaceCurrentWorkingDirectory...................................................................................
+
+    @Test
+    public void testReplaceCurrentWorkingDirectoryWithRoot() {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testReplaceCurrentWorkingDirectoryWithNot() {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            "/hello/world/123"
+        );
+    }
+
+    @Test
+    public void testReplaceCurrentWorkingDirectoryWithCwd() {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            "/cwd",
+            "/current1/working2/directory3"
+        );
+    }
+
+    @Test
+    public void testReplaceCurrentWorkingDirectoryWithCwd2() {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            "/cwd/",
+            "/current1/working2/directory3/"
+        );
+    }
+
+    @Test
+    public void testReplaceCurrentWorkingDirectoryWithCwd3() {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            "/cwd/123",
+            "/current1/working2/directory3/123"
+        );
+    }
+
+    private void replaceCurrentWorkingDirectoryAndCheck(final String path) {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            StoragePath.parse(path)
+        );
+    }
+
+    private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path) {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            path,
+            path
+        );
+    }
+
+    private void replaceCurrentWorkingDirectoryAndCheck(final String path,
+                                                        final String expected) {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            StoragePath.parse(path),
+            StoragePath.parse(expected)
+        );
+    }
+
+    private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path,
+                                                        final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.replaceCurrentWorkingDirectory(
+                new HasCurrentWorkingDirectory() {
+                    @Override
+                    public Optional<StoragePath> currentWorkingDirectory() {
+                        return OPTIONAL_CURRENT_WORKING_DIRECTORY;
+                    }
+                }
+            ),
+            path::toString
+        );
+    }
+    
     // restoreHomeDirectory.............................................................................................
 
     @Test
@@ -1259,6 +1337,83 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                     @Override
                     public Optional<StoragePath> homeDirectory() {
                         return OPTIONAL_HOME_DIRECTORY;
+                    }
+                }
+            ),
+            path::toString
+        );
+    }
+
+    // restoreCurrentWorkingDirectory...................................................................................
+
+    @Test
+    public void testRestoreCurrentWorkingDirectoryWithRoot() {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testRestoreCurrentWorkingDirectoryWithNot() {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            "/hello/world/123"
+        );
+    }
+
+    @Test
+    public void testRestoreCurrentWorkingDirectoryWithCurrentWorkingDirectory() {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            "/current1/working2/directory3",
+            "/cwd"
+        );
+    }
+
+    @Test
+    public void testRestoreCurrentWorkingDirectoryWithCurrentWorkingDirectory2() {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            "/current1/working2/directory3/",
+            "/cwd/"
+        );
+    }
+
+    @Test
+    public void testRestoreCurrentWorkingDirectoryWithCurrentWorkingDirectory3() {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            "/current1/working2/directory3/123",
+            "/cwd/123"
+        );
+    }
+
+    private void restoreCurrentWorkingDirectoryAndCheck(final String path) {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            StoragePath.parse(path)
+        );
+    }
+
+    private void restoreCurrentWorkingDirectoryAndCheck(final StoragePath path) {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            path,
+            path
+        );
+    }
+
+    private void restoreCurrentWorkingDirectoryAndCheck(final String path,
+                                                        final String expected) {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            StoragePath.parse(path),
+            StoragePath.parse(expected)
+        );
+    }
+
+    private void restoreCurrentWorkingDirectoryAndCheck(final StoragePath path,
+                                                        final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.restoreCurrentWorkingDirectory(
+                new HasCurrentWorkingDirectory() {
+                    @Override
+                    public Optional<StoragePath> currentWorkingDirectory() {
+                        return OPTIONAL_CURRENT_WORKING_DIRECTORY;
                     }
                 }
             ),
