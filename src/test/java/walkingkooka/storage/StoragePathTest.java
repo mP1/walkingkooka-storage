@@ -1181,9 +1181,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                 new HasHomeDirectory() {
                     @Override
                     public Optional<StoragePath> homeDirectory() {
-                        return Optional.of(
-                            StoragePath.parse("/users/user123@example.com/")
-                        );
+                        return OPTIONAL_HOME_DIRECTORY;
                     }
                 }
             ),
@@ -1260,7 +1258,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                 new HasHomeDirectory() {
                     @Override
                     public Optional<StoragePath> homeDirectory() {
-                        return Optional.of(HOME_DIRECTORY);
+                        return OPTIONAL_HOME_DIRECTORY;
                     }
                 }
             ),
