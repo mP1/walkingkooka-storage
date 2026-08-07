@@ -611,27 +611,34 @@ final public class StoragePath
      * If this path starts with {@link HasHomeDirectory#homeDirectory()} replace that with {@link #HOME_DIRECTORY_PREFIX}..
      */
     StoragePath restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+        return this.restorePrefix(
+            HOME_DIRECTORY_PREFIX,
+            hasHomeDirectory.homeDirectoryOrFail()
+        );
+    }
+
+    private StoragePath restorePrefix(final StoragePath prefix,
+                                      final StoragePath replaceWith) {
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
-        String homeDirectory = hasHomeDirectory.homeDirectoryOrFail()
-            .value();
-        if (homeDirectory.endsWith(SEPARATOR_STRING)) {
-            homeDirectory = homeDirectory.substring(
+        String restored = replaceWith.value();
+        if (restored.endsWith(SEPARATOR_STRING)) {
+            restored = restored.substring(
                 0,
-                homeDirectory.length() - 1
+                restored.length() - 1
             );
         }
 
-        if (value.startsWith(homeDirectory)) {
+        if (value.startsWith(restored)) {
             final String append = value.substring(
-                homeDirectory.length()
+                restored.length()
             );
 
             storagePath = append.isEmpty() ?
-                HOME_DIRECTORY_PREFIX :
+                prefix :
                 parse(
-                    HOME_DIRECTORY_PREFIX.value() +
+                    prefix.value() +
                         StoragePath.SEPARATOR +
                         append
 
