@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final public class StoragePathTest implements PathTesting<StoragePath, StorageName>,
     ClassTesting2<StoragePath>,
+    HasHomeDirectoryTesting,
     ParseStringTesting<StoragePath>,
     JsonNodeMarshallingTesting<StoragePath>,
     TreePrintableTesting {
@@ -96,8 +97,8 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Test
-    public void testParseSlashTilde() {
-        final String value = "/~";
+    public void testParseSlashHome() {
+        final String value = "/home";
 
         final StoragePath path = StoragePath.parse(value);
         this.valueAndCheck(
@@ -106,7 +107,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
         );
         this.nameCheck(
             path,
-            StorageName.with("~")
+            StorageName.with("home")
         );
         this.parentCheck(
             path,
@@ -1128,26 +1129,26 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     }
 
     @Test
-    public void testReplaceHomeDirectoryWithHomeDirectory() {
+    public void testReplaceHomeDirectoryWithUserDirectory() {
         this.replaceHomeDirectoryAndCheck(
-            "/~",
-            "/home"
+            "/home",
+            "/users/user123@example.com/"
         );
     }
 
     @Test
-    public void testReplaceHomeDirectoryWithHomeDirectory2() {
+    public void testReplaceHomeDirectoryWithUserDirectory2() {
         this.replaceHomeDirectoryAndCheck(
-            "/~/",
-            "/home/"
+            "/home/",
+            "/users/user123@example.com/"
         );
     }
 
     @Test
-    public void testReplaceHomeDirectoryWithHomeDirectory3() {
+    public void testReplaceHomeDirectoryWithUserDirectory3() {
         this.replaceHomeDirectoryAndCheck(
-            "/~/123",
-            "/home/123"
+            "/home/123",
+            "/users/user123@example.com/123"
         );
     }
 
@@ -1181,7 +1182,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                     @Override
                     public Optional<StoragePath> homeDirectory() {
                         return Optional.of(
-                            StoragePath.parse("/home")
+                            StoragePath.parse("/users/user123@example.com/")
                         );
                     }
                 }
@@ -1209,7 +1210,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testRestoreHomeDirectoryWithHomeDirectory() {
         this.restoreHomeDirectoryAndCheck(
-            "/home",
+            "/users/user123@example.com",
             "/home"
         );
     }
@@ -1217,16 +1218,16 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
     @Test
     public void testRestoreHomeDirectoryWithHomeDirectory2() {
         this.restoreHomeDirectoryAndCheck(
-            "/home/",
-            "/~/"
+            "/users/user123@example.com/",
+            "/home/"
         );
     }
 
     @Test
     public void testRestoreHomeDirectoryWithHomeDirectory3() {
         this.restoreHomeDirectoryAndCheck(
-            "/home/123",
-            "/~/123"
+            "/users/user123@example.com/123",
+            "/home/123"
         );
     }
 
@@ -1259,9 +1260,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
                 new HasHomeDirectory() {
                     @Override
                     public Optional<StoragePath> homeDirectory() {
-                        return Optional.of(
-                            StoragePath.parse("/home/")
-                        );
+                        return Optional.of(HOME_DIRECTORY);
                     }
                 }
             ),
