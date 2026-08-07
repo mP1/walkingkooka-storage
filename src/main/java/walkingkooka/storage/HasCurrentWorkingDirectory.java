@@ -33,4 +33,12 @@ public interface HasCurrentWorkingDirectory {
      * Returns the current working directory.
      */
     Optional<StoragePath> currentWorkingDirectory();
+
+    /**
+     * Returns the {@link StoragePath} or throws a {@link walkingkooka.environment.MissingEnvironmentValuesException}.
+     */
+    default StoragePath currentWorkingDirectoryOrFail() {
+        return this.currentWorkingDirectory()
+            .orElseThrow(() -> StorageContext.CURRENT_WORKING_DIRECTORY.missingEnvironmentValueException());
+    }
 }
