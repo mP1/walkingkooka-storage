@@ -25,7 +25,7 @@ import walkingkooka.net.email.EmailAddress;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWrapperTestCase<StorageSharedWrapperHomeDirectory<FakeStorageContext>, FakeStorageContext>
+public final class StorageSharedWrapperExpandedHomeDirectoryTest extends StorageSharedWrapperExpandedTestCase<StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext>, FakeStorageContext>
     implements HasHomeDirectoryTesting,
     HasNowTesting {
 
@@ -60,7 +60,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testLoadHomeDirectoryPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.storage.save(
@@ -78,7 +78,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testLoadHomeDirectoryPrefixPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.storage.save(
@@ -98,7 +98,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testSaveHomeDirectoryPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -118,7 +118,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testSaveHomeDirectoryPrefixPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -140,7 +140,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testDeleteHomePrefixDirectoryPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.delete(
@@ -157,7 +157,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testDeleteHomeDirectoryPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.delete(
@@ -176,7 +176,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testListHomeDirectoryPrefix() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(HOME_DIRECTORY + "/value111");
@@ -242,7 +242,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testListHomeDirectory() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(HOME_DIRECTORY + "/value111");
@@ -310,7 +310,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testSetAuditInfoWithHomeDirectoryPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -342,7 +342,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testSetAuditInfoWithHomeDirectoryPrefixPath() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -376,7 +376,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testAddWatcherAndSaveReplace() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(HOME_DIRECTORY + "/saveValue");
@@ -416,7 +416,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
                         "newValue"
                     );
 
-                    StorageSharedWrapperHomeDirectoryTest.this.fired = true;
+                    StorageSharedWrapperExpandedHomeDirectoryTest.this.fired = true;
                 }
             },
             context
@@ -440,7 +440,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
     @Test
     public void testAddWatcherOnceAndSaveReplace() {
-        final StorageSharedWrapperHomeDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(HOME_DIRECTORY + "/saveValue");
@@ -480,7 +480,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
                         "newValue"
                     );
 
-                    StorageSharedWrapperHomeDirectoryTest.this.fired = true;
+                    StorageSharedWrapperExpandedHomeDirectoryTest.this.fired = true;
                 }
             },
             context
@@ -503,9 +503,9 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
     private boolean fired;
 
     @Override
-    public StorageSharedWrapperHomeDirectory<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
+    public StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
         return Cast.to(
-            StorageSharedWrapperHomeDirectory.with(storage)
+            StorageSharedWrapperExpandedHomeDirectory.with(storage)
         );
     }
 
@@ -525,7 +525,7 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
 
             @Override
             public LocalDateTime now() {
-                return StorageSharedWrapperHomeDirectoryTest.NOW;
+                return StorageSharedWrapperExpandedHomeDirectoryTest.NOW;
             }
 
             @Override
@@ -543,14 +543,14 @@ public final class StorageSharedWrapperHomeDirectoryTest extends StorageSharedWr
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "[]"
+            "/home []"
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedWrapperHomeDirectory<FakeStorageContext>> type() {
-        return Cast.to(StorageSharedWrapperHomeDirectory.class);
+    public Class<StorageSharedWrapperExpandedHomeDirectory<FakeStorageContext>> type() {
+        return Cast.to(StorageSharedWrapperExpandedHomeDirectory.class);
     }
 }
