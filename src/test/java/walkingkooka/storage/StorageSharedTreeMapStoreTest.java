@@ -408,7 +408,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
             4,
             context,
             StorageValueInfo.with(
-                StoragePath.parse("/dir2/"),
+                StoragePath.parse("/dir2"),
                 AUDIT_INFO
             ),
             StorageValueInfo.with(
@@ -419,7 +419,63 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Test
-    public void testListSubdirectory() {
+    public void testListStorage() {
+        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = new TestStorageContext();
+
+        final StoragePath file1 = StoragePath.parse("/file1.txt");
+        storage.save(
+            StorageValue.with(file1)
+                .setValue(
+                    Optional.of("file1-value")
+                ),
+            context
+        );
+
+        final StoragePath file2 = StoragePath.parse("/dir2/file2.txt");
+        storage.save(
+            StorageValue.with(file2)
+                .setValue(
+                    Optional.of("file2-value")
+                ),
+            context
+        );
+
+        final StoragePath file3 = StoragePath.parse("/dir2/file3.txt");
+        storage.save(
+            StorageValue.with(file3)
+                .setValue(
+                    Optional.of("file3-value")
+                ),
+            context
+        );
+
+        final StoragePath file4 = StoragePath.parse("/dir4/file4.txt");
+        storage.save(
+            StorageValue.with(file4)
+                .setValue(
+                    Optional.of("file4-value")
+                ),
+            context
+        );
+
+        final StoragePath parent = StoragePath.parse("/dir2");
+
+        this.listAndCheck(
+            storage,
+            parent,
+            0,
+            10,
+            context,
+            StorageValueInfo.with(
+                parent,
+                AUDIT_INFO
+            )
+        );
+    }
+
+    @Test
+    public void testListStorageSlash() {
         final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
