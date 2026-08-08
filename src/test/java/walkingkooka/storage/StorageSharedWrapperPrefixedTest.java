@@ -602,11 +602,9 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
             @Override
             public void unmount(final StoragePath path,
-                                final Storage<FakeStorageContext> storage,
                                 final FakeStorageContext context) {
                 this.storage.unmount(
                     path,
-                    storage,
                     context
                 );
             }

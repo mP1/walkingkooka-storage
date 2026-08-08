@@ -175,10 +175,8 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
 
     @Override
     public void unmount(final StoragePath path,
-                        final Storage<C> storage,
                         final C context) {
         Objects.requireNonNull(path, "path");
-        Objects.requireNonNull(storage, "storage");
         Objects.requireNonNull(context, "context");
 
         throw new UnsupportedOperationException();

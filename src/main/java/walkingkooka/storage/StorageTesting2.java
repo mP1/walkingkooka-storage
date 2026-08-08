@@ -378,20 +378,6 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
             () -> this.createStorage()
                 .unmount(
                     null,
-                    Storages.fake(),
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testUnmountWithNullStorageFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .unmount(
-                    StoragePath.parse("/unmount"),
-                    null,
                     this.createContext()
                 )
         );
@@ -404,7 +390,6 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
             () -> this.createStorage()
                 .unmount(
                     StoragePath.parse("/unmount"),
-                    Storages.fake(),
                     null
                 )
         );

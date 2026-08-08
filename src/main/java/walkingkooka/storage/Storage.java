@@ -71,7 +71,6 @@ public interface Storage<C extends StorageContext> {
      * Unmounts a previous mount.
      */
     void unmount(final StoragePath path,
-                 final Storage<C> storage,
                  final C context);
 
     Runnable addWatcher(final StorageWatcher watcher,
