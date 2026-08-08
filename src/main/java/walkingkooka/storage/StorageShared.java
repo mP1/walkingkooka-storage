@@ -111,7 +111,7 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     }
 
     private void failIfParent(final StoragePath path) {
-        if(false == this instanceof RoutingStorage && false == this instanceof StorageSharedWrapperPrefixed) {
+        if(false == this instanceof RoutingStorage && false == this instanceof StorageShared2WrapperPrefixed) {
             if(path.isParent()) {
                 throw path.invalidStoragePathException("Invalid parent path");
             }
@@ -170,8 +170,16 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
         Objects.requireNonNull(storage, "storage");
         Objects.requireNonNull(context, "context");
 
-        throw new UnsupportedOperationException();
+        this.mount0(
+            path,
+            storage,
+            context
+        );
     }
+
+    abstract void mount0(final StoragePath path,
+                         final Storage<C> storage,
+                         final C context);
 
     @Override
     public final void unmount(final StoragePath path,
@@ -179,8 +187,14 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(context, "context");
 
-        throw new UnsupportedOperationException();
+        this.unmount0(
+            path,
+            context
+        );
     }
+
+    abstract void unmount0(final StoragePath path,
+                           final C context);
 
     @Override
     public final Runnable addWatcher(final StorageWatcher watcher,

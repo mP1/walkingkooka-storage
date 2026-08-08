@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-abstract class StorageSharedWrapperExpanded<C extends StorageContext> extends StorageSharedWrapper<C> {
+abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends StorageShared2Wrapper<C> {
 
-    StorageSharedWrapperExpanded(final Storage<C> storage) {
+    StorageShared2WrapperExpanded(final Storage<C> storage) {
         super(storage);
     }
 
@@ -67,7 +67,7 @@ abstract class StorageSharedWrapperExpanded<C extends StorageContext> extends St
         if (loaded.isPresent() && false == path.equals(replaced)) {
             loaded = loaded.map(
                 (storageValue) -> storageValue.setPath(
-                    StorageSharedWrapperExpanded.this.unexpand(
+                    StorageShared2WrapperExpanded.this.unexpand(
                         path,
                         context
                     )
@@ -148,7 +148,7 @@ abstract class StorageSharedWrapperExpanded<C extends StorageContext> extends St
             infos = infos.stream()
                 .map(
                     (storageValue) -> storageValue.setPath(
-                        StorageSharedWrapperExpanded.this.unexpand(
+                        StorageShared2WrapperExpanded.this.unexpand(
                             storageValue
                                 .path(),
                             context

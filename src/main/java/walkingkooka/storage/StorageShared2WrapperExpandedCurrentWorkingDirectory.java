@@ -21,19 +21,19 @@ package walkingkooka.storage;
  * Wraps another {@link Storage} resolving any paths that begin with {@link StoragePath#CURRENT_WORKING_DIRECTORY_PREFIX}
  * replacing that with the actual {@link StorageContext#currentWorkingDirectory()} ()}.
  */
-final class StorageSharedWrapperExpandedCurrentWorkingDirectory<C extends StorageContext> extends StorageSharedWrapperExpanded<C> {
+final class StorageShared2WrapperExpandedCurrentWorkingDirectory<C extends StorageContext> extends StorageShared2WrapperExpanded<C> {
 
-    static <C extends StorageContext> StorageSharedWrapperExpandedCurrentWorkingDirectory<C> with(final Storage<C> storage) {
-        return storage instanceof StorageSharedWrapperExpandedCurrentWorkingDirectory ?
-            (StorageSharedWrapperExpandedCurrentWorkingDirectory) storage :
-            new StorageSharedWrapperExpandedCurrentWorkingDirectory(storage);
+    static <C extends StorageContext> StorageShared2WrapperExpandedCurrentWorkingDirectory<C> with(final Storage<C> storage) {
+        return storage instanceof StorageShared2WrapperExpandedCurrentWorkingDirectory ?
+            (StorageShared2WrapperExpandedCurrentWorkingDirectory) storage :
+            new StorageShared2WrapperExpandedCurrentWorkingDirectory(storage);
     }
 
-    private StorageSharedWrapperExpandedCurrentWorkingDirectory(final Storage<C> storage) {
+    private StorageShared2WrapperExpandedCurrentWorkingDirectory(final Storage<C> storage) {
         super(storage);
     }
 
-    // StorageSharedWrapperExpanded.....................................................................................
+    // StorageShared2WrapperExpanded.....................................................................................
 
     @Override//
     StoragePath expand(final StoragePath path,

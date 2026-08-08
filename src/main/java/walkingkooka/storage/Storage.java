@@ -82,7 +82,7 @@ public interface Storage<C extends StorageContext> {
      * Returns a {@link Storage} with an additional prefix to all its {@link StoragePath}.
      */
     default Storage<C> setPrefix(final StoragePath prefix) {
-        return StorageSharedWrapperPrefixed.with(
+        return StorageShared2WrapperPrefixed.with(
             prefix,
             this
         );

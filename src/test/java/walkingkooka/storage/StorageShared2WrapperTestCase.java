@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public abstract class StorageSharedWrapperTestCase<S extends StorageSharedWrapper<C>, C extends StorageContext> extends StorageSharedTestCase<S, C> {
+public abstract class StorageShared2WrapperTestCase<S extends StorageShared2Wrapper<C>, C extends StorageContext> extends StorageShared2TestCase<S, C> {
 
-    StorageSharedWrapperTestCase() {
+    StorageShared2WrapperTestCase() {
         super();
     }
 

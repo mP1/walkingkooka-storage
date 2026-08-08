@@ -24,7 +24,7 @@ import walkingkooka.Either;
 import walkingkooka.HasCharsetTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.storage.StorageSharedWrapperExplodedZipFileTest.TestStorageContext;
+import walkingkooka.storage.StorageShared2WrapperExplodedZipFileTest.TestStorageContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import java.util.zip.ZipOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedWrapperExplodedZipFileTest extends StorageSharedTestCase<StorageSharedWrapperExplodedZipFile<TestStorageContext>, TestStorageContext>
+public final class StorageShared2WrapperExplodedZipFileTest extends StorageShared2TestCase<StorageShared2WrapperExplodedZipFile<TestStorageContext>, TestStorageContext>
     implements HasCharsetTesting {
 
     private final static StoragePath ARCHIVE_STORAGE_PATH = StoragePath.parse("/file1.zip");
@@ -73,7 +73,7 @@ public final class StorageSharedWrapperExplodedZipFileTest extends StorageShared
     public void testWithNullStoragePathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedWrapperExplodedZipFile.with(
+            () -> StorageShared2WrapperExplodedZipFile.with(
                 null,
                 Storages.fake()
             )
@@ -226,7 +226,7 @@ public final class StorageSharedWrapperExplodedZipFileTest extends StorageShared
     }
 
     @Override
-    public StorageSharedWrapperExplodedZipFile<TestStorageContext> createStorage() {
+    public StorageShared2WrapperExplodedZipFile<TestStorageContext> createStorage() {
         try {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -264,7 +264,7 @@ public final class StorageSharedWrapperExplodedZipFileTest extends StorageShared
                 this.createContext()
             );
 
-            return StorageSharedWrapperExplodedZipFile.with(
+            return StorageShared2WrapperExplodedZipFile.with(
                 ARCHIVE_STORAGE_PATH,
                 storage
             );
@@ -298,19 +298,19 @@ public final class StorageSharedWrapperExplodedZipFileTest extends StorageShared
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.ofNullable(StorageSharedWrapperExplodedZipFileTest.USER);
+            return Optional.ofNullable(StorageShared2WrapperExplodedZipFileTest.USER);
         }
 
         @Override
         public LocalDateTime now() {
-            return StorageSharedWrapperExplodedZipFileTest.NOW;
+            return StorageShared2WrapperExplodedZipFileTest.NOW;
         }
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedWrapperExplodedZipFile<TestStorageContext>> type() {
-        return Cast.to(StorageSharedWrapperExplodedZipFile.class);
+    public Class<StorageShared2WrapperExplodedZipFile<TestStorageContext>> type() {
+        return Cast.to(StorageShared2WrapperExplodedZipFile.class);
     }
 }

@@ -36,21 +36,21 @@ import java.util.stream.Collectors;
  * /path/LineEnding
  * </pre>
  */
-final class StorageSharedEnvironment<C extends StorageContext> extends StorageShared<C> {
+final class StorageShared2Environment<C extends StorageContext> extends StorageShared2<C> {
 
     /**
      * Type safe getter
      */
-    static <C extends StorageContext> StorageSharedEnvironment<C> instance() {
+    static <C extends StorageContext> StorageShared2Environment<C> instance() {
         return INSTANCE;
     }
 
     /**
      * Singleton instance
      */
-    private final static StorageSharedEnvironment INSTANCE = new StorageSharedEnvironment<>();
+    private final static StorageShared2Environment INSTANCE = new StorageShared2Environment<>();
 
-    private StorageSharedEnvironment() {
+    private StorageShared2Environment() {
         super();
     }
 
@@ -243,6 +243,6 @@ final class StorageSharedEnvironment<C extends StorageContext> extends StorageSh
 
     @Override
     public String toString() {
-        return StorageSharedEnvironment.class.getSimpleName();
+        return StorageShared2Environment.class.getSimpleName();
     }
 }

@@ -23,7 +23,7 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ThrowableTesting;
-import walkingkooka.storage.StorageSharedTreeMapStoreTest.TestStorageContext;
+import walkingkooka.storage.StorageShared2TreeMapStoreTest.TestStorageContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -31,8 +31,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<StorageSharedTreeMapStore<TestStorageContext>, TestStorageContext>
-    implements HashCodeEqualsDefinedTesting2<StorageSharedTreeMapStore<TestStorageContext>>,
+public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<StorageShared2TreeMapStore<TestStorageContext>, TestStorageContext>
+    implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStore<TestStorageContext>>,
     ThrowableTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
@@ -55,7 +55,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testCanWriteWithNonRoot() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         this.canWriteAndCheck(
@@ -83,7 +83,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndLoad() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue value = STORAGE_VALUE;
@@ -103,7 +103,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testReplaceAndLoad() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         storage.save(
@@ -130,7 +130,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testBuildPathSaveAndLoad() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base");
@@ -178,7 +178,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndList() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         storage.save(
@@ -202,7 +202,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveAndListMixedParents() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath base = StoragePath.parse("/base/");
@@ -304,7 +304,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSaveUpdateAndList() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         storage.save(
@@ -341,7 +341,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     @Test
     @Override
     public void testDeleteParentFails() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/parent1/file1.txt");
@@ -370,7 +370,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListRootPath() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -420,7 +420,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListStorage() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -480,7 +480,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListStorageSlash() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -538,7 +538,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testListStorageValueStoragePath() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -574,7 +574,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testSetAuditInfo() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StoragePath file1 = StoragePath.parse("/file1.txt");
@@ -617,7 +617,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testAddWatcher() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         storage.addWatcher(
@@ -657,7 +657,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testAddWatcher2() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue lost = STORAGE_VALUE.setValue(
@@ -706,7 +706,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testAddWatcherOnce() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = new TestStorageContext();
 
         final StorageValue lost = STORAGE_VALUE.setValue(
@@ -762,8 +762,8 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     private boolean fired;
 
     @Override
-    public StorageSharedTreeMapStore<TestStorageContext> createStorage() {
-        return StorageSharedTreeMapStore.empty();
+    public StorageShared2TreeMapStore<TestStorageContext> createStorage() {
+        return StorageShared2TreeMapStore.empty();
     }
 
     @Override
@@ -785,7 +785,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.ofNullable(StorageSharedTreeMapStoreTest.USER);
+            return Optional.ofNullable(StorageShared2TreeMapStoreTest.USER);
         }
 
         @Override
@@ -806,7 +806,7 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
 
     @Test
     public void testEqualsDifferentStore() {
-        final StorageSharedTreeMapStore<TestStorageContext> storage = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
 
         storage.save(
             StorageValue.with(
@@ -821,14 +821,14 @@ public class StorageSharedTreeMapStoreTest extends StorageSharedTestCase<Storage
     }
 
     @Override
-    public StorageSharedTreeMapStore<TestStorageContext> createObject() {
+    public StorageShared2TreeMapStore<TestStorageContext> createObject() {
         return this.createStorage();
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedTreeMapStore<TestStorageContext>> type() {
-        return Cast.to(StorageSharedTreeMapStore.class);
+    public Class<StorageShared2TreeMapStore<TestStorageContext>> type() {
+        return Cast.to(StorageShared2TreeMapStore.class);
     }
 }

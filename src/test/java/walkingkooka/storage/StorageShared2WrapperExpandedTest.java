@@ -17,16 +17,19 @@
 
 package walkingkooka.storage;
 
-import java.util.Objects;
+import walkingkooka.Cast;
+import walkingkooka.reflect.ClassTesting2;
+import walkingkooka.reflect.JavaVisibility;
 
-abstract class StorageSharedWrapper<C extends StorageContext> extends StorageShared<C> {
+public final class StorageShared2WrapperExpandedTest implements ClassTesting2<StorageShared2WrapperExpanded<?>> {
 
-    StorageSharedWrapper(final Storage<C> storage) {
-        super();
-
-        this.storage = Objects.requireNonNull(storage, "storage");
+    @Override
+    public Class<StorageShared2WrapperExpanded<?>> type() {
+        return Cast.to(StorageShared2WrapperExpanded.class);
     }
 
-    // @VisibleForTesting
-    final Storage<C> storage;
+    @Override
+    public JavaVisibility typeVisibility() {
+        return JavaVisibility.PACKAGE_PRIVATE;
+    }
 }

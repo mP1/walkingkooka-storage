@@ -28,7 +28,7 @@ import java.util.function.Function;
 /**
  * A {@link Storage} that uses the mounts defined by an instance of {@link RoutingStorageBuilder}.
  */
-final class RoutingStorage<C extends StorageContext> extends StorageShared<C> {
+final class RoutingStorage<C extends StorageContext> extends StorageShared2<C> {
 
     // assumes a defensive copy was given.
     static <C extends StorageContext> RoutingStorage<C> with(final List<RoutingStorageRoute<C>> routes) {

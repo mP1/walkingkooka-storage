@@ -17,9 +17,20 @@
 
 package walkingkooka.storage;
 
-public abstract class StorageSharedWrapperExpandedTestCase<S extends StorageSharedWrapperExpanded<C>, C extends StorageContext> extends StorageSharedWrapperTestCase<S, C> {
+abstract class StorageShared2<C extends StorageContext> extends StorageShared<C> {
 
-    StorageSharedWrapperExpandedTestCase() {
+    StorageShared2() {
         super();
+    }
+
+    @Override final void mount0(final StoragePath path,
+                                final Storage<C> storage,
+                                final C context) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override final void unmount0(final StoragePath path,
+                                  final C context) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -25,18 +25,18 @@ import java.util.Optional;
 /**
  * A {@link Storage} that is always empty and does not support saving, and deletes will fail.
  */
-final class StorageSharedEmpty<C extends StorageContext> extends StorageShared<C> {
+final class StorageShared2Empty<C extends StorageContext> extends StorageShared2<C> {
 
-    static <C extends StorageContext> StorageSharedEmpty<C> instance() {
+    static <C extends StorageContext> StorageShared2Empty<C> instance() {
         return INSTANCE;
     }
 
     /**
      * Singleton instance
      */
-    private final static StorageSharedEmpty INSTANCE = new StorageSharedEmpty<>();
+    private final static StorageShared2Empty INSTANCE = new StorageShared2Empty<>();
 
-    private StorageSharedEmpty() {
+    private StorageShared2Empty() {
         super();
     }
 

@@ -69,7 +69,7 @@ import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedNativeFileTest extends StorageSharedTestCase<StorageSharedNativeFile<FakeStorageContext>, FakeStorageContext>
+public final class StorageShared2NativeFileTest extends StorageShared2TestCase<StorageShared2NativeFile<FakeStorageContext>, FakeStorageContext>
     implements BinaryTextContextTesting,
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
@@ -110,7 +110,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     private final static FileTime FILE_TIME_NOW = FileTime.from(
         NOW.toInstant(
-            StorageSharedNativeFile.ZONE_OFFSET
+            StorageShared2NativeFile.ZONE_OFFSET
         )
     );
 
@@ -137,7 +137,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     public void testWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedNativeFile.with(
+            () -> StorageShared2NativeFile.with(
                 null,
                 POLLER
             )
@@ -148,7 +148,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     public void testWithNullConsumerFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedNativeFile.with(
+            () -> StorageShared2NativeFile.with(
                 null,
                 null
             )
@@ -234,7 +234,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     @Test
     public void testSaveExpressionFile() {
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath storagePath = StoragePath.parse("/different.expression.txt");
@@ -260,7 +260,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     @Test
     public void testSaveJsonFile() {
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath storagePath = StoragePath.parse("/different.json");
@@ -288,7 +288,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     @Test
     public void testSavePropertiesFile() {
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath storagePath = StoragePath.parse("/different.properties");
@@ -321,7 +321,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     @Test
     public void testSaveTextFile() {
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath storagePath = StoragePath.parse("/different.txt");
@@ -368,7 +368,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
 
     @Test
     public void testDelete() {
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final StoragePath storagePath = StoragePath.parse("/" + TEXT_FILE_PATH);
         final FakeStorageContext context = this.createContext();
 
@@ -524,10 +524,10 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     public void testSetAuditInfo() {
         final StoragePath storagePath = StoragePath.parse("/" + EXPRESSION_FILE_PATH);
 
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
-        // cant use DIFFERENT_AUDIT_INFO because it contains a different user and StorageSharedNativeFile always uses Context.user()
+        // cant use DIFFERENT_AUDIT_INFO because it contains a different user and StorageShared2NativeFile always uses Context.user()
         final StorageValueInfo value = this.storageValueInfo(storagePath)
             .setAuditInfo(
                 AuditInfo.with(
@@ -576,11 +576,11 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             @Override
             public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
                 new Thread(() -> {
-                    while (false == StorageSharedNativeFileTest.this.fired && System.currentTimeMillis() < end) {
+                    while (false == StorageShared2NativeFileTest.this.fired && System.currentTimeMillis() < end) {
                         poller.accept(this);
                     }
 
-                    StorageSharedNativeFileTest.this.polling = false;
+                    StorageShared2NativeFileTest.this.polling = false;
                 }).start();
             }
 
@@ -597,7 +597,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
             }
         };
 
-        final StorageSharedNativeFile<FakeStorageContext> storage = this.createStorage(poller);
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage(poller);
 
         final StorageValue storageValue = StorageValue.with(
             StoragePath.parse("/different.txt")
@@ -622,7 +622,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                         newValue,
                         "newValue"
                     );
-                    StorageSharedNativeFileTest.this.fired = true;
+                    StorageShared2NativeFileTest.this.fired = true;
                 }
             },
             context
@@ -656,11 +656,11 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     // Storage..........................................................................................................
 
     @Override
-    public StorageSharedNativeFile<FakeStorageContext> createStorage() {
+    public StorageShared2NativeFile<FakeStorageContext> createStorage() {
         return this.createStorage(POLLER);
     }
 
-    private StorageSharedNativeFile<FakeStorageContext> createStorage(final WatchServicePoller<FakeStorageContext> poller) {
+    private StorageShared2NativeFile<FakeStorageContext> createStorage(final WatchServicePoller<FakeStorageContext> poller) {
         try {
             final FileSystem fileSystem = Jimfs.newFileSystem(
                 Configuration.unix()
@@ -720,7 +720,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
                 )
             );
 
-            return StorageSharedNativeFile.with(
+            return StorageShared2NativeFile.with(
                 root,
                 poller
             );
@@ -734,7 +734,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
         return new FakeStorageContext() {
             @Override
             public Charset charset() {
-                return StorageSharedNativeFileTest.CHARSET;
+                return StorageShared2NativeFileTest.CHARSET;
             }
 
             @Override
@@ -833,7 +833,7 @@ public final class StorageSharedNativeFileTest extends StorageSharedTestCase<Sto
     }
 
     @Override
-    public Class<StorageSharedNativeFile<FakeStorageContext>> type() {
-        return Cast.to(StorageSharedNativeFile.class);
+    public Class<StorageShared2NativeFile<FakeStorageContext>> type() {
+        return Cast.to(StorageShared2NativeFile.class);
     }
 }

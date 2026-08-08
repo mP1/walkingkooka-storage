@@ -36,18 +36,18 @@ import java.util.zip.ZipInputStream;
  * Uses a {@link StoragePath} to an archive and presents a read-only view of its contents.
  */
 @GwtIncompatible
-final class StorageSharedWrapperExplodedZipFile<C extends StorageContext> extends StorageSharedWrapper<C> {
+final class StorageShared2WrapperExplodedZipFile<C extends StorageContext> extends StorageShared2Wrapper<C> {
 
-    static <C extends StorageContext> StorageSharedWrapperExplodedZipFile<C> with(final StoragePath archive,
-                                                                                  final Storage<C> storage) {
-        return new StorageSharedWrapperExplodedZipFile<>(
+    static <C extends StorageContext> StorageShared2WrapperExplodedZipFile<C> with(final StoragePath archive,
+                                                                                   final Storage<C> storage) {
+        return new StorageShared2WrapperExplodedZipFile<>(
             Objects.requireNonNull(archive, "archive"),
             storage
         );
     }
 
-    private StorageSharedWrapperExplodedZipFile(final StoragePath archive,
-                                                final Storage<C> storage) {
+    private StorageShared2WrapperExplodedZipFile(final StoragePath archive,
+                                                 final Storage<C> storage) {
         super(storage);
         this.archive = archive;
     }

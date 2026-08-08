@@ -27,25 +27,25 @@ import java.util.Optional;
  * A value type that combines the audit info and stored value into a single value which will be saved in the wrapped
  * {@link walkingkooka.store.Store}.
  */
-final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath>> {
+final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePath>> {
 
     final static boolean NOT_PARENT = false;
 
     final static boolean PARENT = true;
 
-    static StorageSharedTreeMapStoreValue with(final boolean parent,
-                                               final StorageValueInfo info,
-                                               final StorageValue value) {
-        return new StorageSharedTreeMapStoreValue(
+    static StorageShared2TreeMapStoreValue with(final boolean parent,
+                                                final StorageValueInfo info,
+                                                final StorageValue value) {
+        return new StorageShared2TreeMapStoreValue(
             parent,
             Objects.requireNonNull(info, "info"),
             Objects.requireNonNull(value, "value")
         );
     }
 
-    private StorageSharedTreeMapStoreValue(final boolean parent,
-                                           final StorageValueInfo info,
-                                           final StorageValue value) {
+    private StorageShared2TreeMapStoreValue(final boolean parent,
+                                            final StorageValueInfo info,
+                                            final StorageValue value) {
         super();
 
         this.parent = parent;
@@ -53,13 +53,13 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
         this.value = value;
     }
 
-    StorageSharedTreeMapStoreValue setPath(final StoragePath path) {
+    StorageShared2TreeMapStoreValue setPath(final StoragePath path) {
         final StorageValueInfo info = this.info.setPath(path);
         final StorageValue value = this.value.setPath(path);
 
         return this.info.equals(info) && this.value.equals(value) ?
             this :
-            StorageSharedTreeMapStoreValue.with(
+            StorageShared2TreeMapStoreValue.with(
                 this.parent,
                 info,
                 value
@@ -92,10 +92,10 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
 
     final StorageValueInfo info;
 
-    StorageSharedTreeMapStoreValue setInfo(final StorageValueInfo info) {
+    StorageShared2TreeMapStoreValue setInfo(final StorageValueInfo info) {
         return this.info.equals(info) ?
             this :
-            StorageSharedTreeMapStoreValue.with(
+            StorageShared2TreeMapStoreValue.with(
                 this.parent,
                 info,
                 this.value
@@ -110,10 +110,10 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
 
     final StorageValue value;
 
-    StorageSharedTreeMapStoreValue setValue(final StorageValue value) {
+    StorageShared2TreeMapStoreValue setValue(final StorageValue value) {
         return this.value.equals(value) ?
             this :
-            StorageSharedTreeMapStoreValue.with(
+            StorageShared2TreeMapStoreValue.with(
                 this.parent,
                 this.info,
                 value
@@ -134,11 +134,11 @@ final class StorageSharedTreeMapStoreValue implements HasId<Optional<StoragePath
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof StorageSharedTreeMapStoreValue &&
+            other instanceof StorageShared2TreeMapStoreValue &&
                 this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final StorageSharedTreeMapStoreValue other) {
+    private boolean equals0(final StorageShared2TreeMapStoreValue other) {
         return this.parent == other.parent &&
             this.info.equals(other.info) &&
             this.value.equals(other.value);
