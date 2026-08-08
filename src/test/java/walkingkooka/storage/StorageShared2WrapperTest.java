@@ -17,20 +17,19 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.ToStringTesting;
+import walkingkooka.Cast;
+import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-public abstract class StorageSharedTestCase<S extends StorageShared<C>, C extends StorageContext> implements StorageTesting2<S, C>,
-    ToStringTesting<S> {
-
-    StorageSharedTestCase() {
-        super();
-    }
-
-    // class............................................................................................................
+public final class StorageShared2WrapperTest implements ClassTesting2<StorageShared2Wrapper<?>> {
 
     @Override
-    public final JavaVisibility typeVisibility() {
+    public Class<StorageShared2Wrapper<?>> type() {
+        return Cast.to(StorageShared2Wrapper.class);
+    }
+
+    @Override
+    public JavaVisibility typeVisibility() {
         return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

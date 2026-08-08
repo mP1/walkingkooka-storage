@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * {@link StorageValueInfo}.
  * This is particularly useful for a {@link Storage} that unites one or more {@link Storage} at different mount points.
  */
-final class StorageSharedWrapperPrefixed<C extends StorageContext> extends StorageSharedWrapper<C> {
+final class StorageShared2WrapperPrefixed<C extends StorageContext> extends StorageShared2Wrapper<C> {
 
     static <C extends StorageContext> Storage<C> with(final StoragePath prefix,
                                                       final Storage<C> storage) {
@@ -42,13 +42,13 @@ final class StorageSharedWrapperPrefixed<C extends StorageContext> extends Stora
             StoragePath wrapPrefix = prefix;
             Storage<C> wrapStoraage = storage;
 
-            if (storage instanceof StorageSharedWrapperPrefixed) {
-                final StorageSharedWrapperPrefixed<C> prefixedStorage = (StorageSharedWrapperPrefixed<C>) storage;
+            if (storage instanceof StorageShared2WrapperPrefixed) {
+                final StorageShared2WrapperPrefixed<C> prefixedStorage = (StorageShared2WrapperPrefixed<C>) storage;
                 wrapPrefix = prefix.append(prefixedStorage.prefix);
                 wrapStoraage = prefixedStorage.storage;
             }
 
-            result = new StorageSharedWrapperPrefixed<>(
+            result = new StorageShared2WrapperPrefixed<>(
                 wrapPrefix,
                 wrapStoraage
             );
@@ -57,8 +57,8 @@ final class StorageSharedWrapperPrefixed<C extends StorageContext> extends Stora
         return result;
     }
 
-    private StorageSharedWrapperPrefixed(final StoragePath prefix,
-                                         final Storage<C> storage) {
+    private StorageShared2WrapperPrefixed(final StoragePath prefix,
+                                          final Storage<C> storage) {
         super(storage);
         this.prefix = prefix;
     }

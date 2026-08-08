@@ -17,19 +17,26 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.Cast;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import org.junit.jupiter.api.Test;
 
-public final class StorageSharedWrapperTest implements ClassTesting2<StorageSharedWrapper<?>> {
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-    @Override
-    public Class<StorageSharedWrapper<?>> type() {
-        return Cast.to(StorageSharedWrapper.class);
+public abstract class StorageShared2TestCase<S extends StorageShared2<C>, C extends StorageContext> extends StorageSharedTestCase<S, C> {
+
+    StorageShared2TestCase() {
+        super();
     }
 
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+    @Test
+    public final void testMountFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> this.createStorage()
+                .mount(
+                    StoragePath.parse("/mount"),
+                    Storages.fake(),
+                    this.createContext()
+                )
+        );
     }
 }

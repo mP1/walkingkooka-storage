@@ -32,21 +32,21 @@ import java.util.stream.Collectors;
  * A {@link Storage} that uses a {@link Stores#treeMap(Comparator, BiFunction)} to hold {@link StoragePath} to
  * entries.
  */
-final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageShared<C> {
+final class StorageShared2TreeMapStore<C extends StorageContext> extends StorageShared2<C> {
 
-    static <C extends StorageContext> StorageSharedTreeMapStore<C> empty() {
-        return new StorageSharedTreeMapStore<>();
+    static <C extends StorageContext> StorageShared2TreeMapStore<C> empty() {
+        return new StorageShared2TreeMapStore<>();
     }
 
-    private StorageSharedTreeMapStore() {
+    private StorageShared2TreeMapStore() {
         this.store = Stores.treeMap(
             Comparator.naturalOrder(),
             this::idSetter
         );
     }
 
-    private StorageSharedTreeMapStoreValue idSetter(final StoragePath path,
-                                                    final StorageSharedTreeMapStoreValue treeMapStoreStorageStoreValue) {
+    private StorageShared2TreeMapStoreValue idSetter(final StoragePath path,
+                                                     final StorageShared2TreeMapStoreValue treeMapStoreStorageStoreValue) {
         return treeMapStoreStorageStoreValue.setPath(path);
     }
 
@@ -69,7 +69,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         return path.isParent() ?
             Optional.empty() :
             this.store.load(path)
-                .map(StorageSharedTreeMapStoreValue::value);
+                .map(StorageShared2TreeMapStoreValue::value);
     }
 
     @Override
@@ -82,9 +82,9 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
 
         this.saveRootIfNecessary(context);
 
-        final Store<StoragePath, StorageSharedTreeMapStoreValue> store = this.store;
+        final Store<StoragePath, StorageShared2TreeMapStoreValue> store = this.store;
 
-        StorageSharedTreeMapStoreValue newSave = store.load(path)
+        StorageShared2TreeMapStoreValue newSave = store.load(path)
             .orElse(null);
 
         if (null != newSave) {
@@ -99,8 +99,8 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                 );
         } else {
             // set creator and modified
-            newSave = StorageSharedTreeMapStoreValue.with(
-                StorageSharedTreeMapStoreValue.NOT_PARENT,
+            newSave = StorageShared2TreeMapStoreValue.with(
+                StorageShared2TreeMapStoreValue.NOT_PARENT,
                 StorageValueInfo.with(
                     path,
                     context.createdAuditInfo()
@@ -115,7 +115,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
             while (null != parentPath && false == parentPath.isRoot()) {
                 final StoragePath parentPathWithoutSlash = parentPath;
 
-                final StorageSharedTreeMapStoreValue parent = store.load(parentPathWithoutSlash)
+                final StorageShared2TreeMapStoreValue parent = store.load(parentPathWithoutSlash)
                     .orElse(null);
                 if (null != parent) {
                     break;
@@ -123,8 +123,8 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
 
                 // create parent entry
                 store.save(
-                    StorageSharedTreeMapStoreValue.with(
-                        StorageSharedTreeMapStoreValue.PARENT,
+                    StorageShared2TreeMapStoreValue.with(
+                        StorageShared2TreeMapStoreValue.PARENT,
                         StorageValueInfo.with(
                             parentPathWithoutSlash,
                             context.createdAuditInfo()
@@ -149,7 +149,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
             throw path.invalidStoragePathException("Invalid parent path");
         }
 
-        final StorageSharedTreeMapStoreValue value = this.store.load(path)
+        final StorageShared2TreeMapStoreValue value = this.store.load(path)
             .orElse(null);
         if(null !=value) {
             if(value.parent) {
@@ -169,7 +169,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
 
         final StoragePath parentWithSlash = parent.parentWithoutTrailingSeparator();
 
-        StorageSharedTreeMapStoreValue value = this.store.load(parentWithSlash)
+        StorageShared2TreeMapStoreValue value = this.store.load(parentWithSlash)
             .orElse(null);
 
         StorageValueInfoList storageValueInfoList = StorageValueInfoList.EMPTY;
@@ -181,7 +181,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
                     .filter(i -> parentWithSlash.equals(i.path().parent().orElse(null)))
                     .skip(offset)
                     .limit(count)
-                    .map(StorageSharedTreeMapStoreValue::info)
+                    .map(StorageShared2TreeMapStoreValue::info)
                     .collect(
                         Collectors.collectingAndThen(
                             Collectors.toList(),
@@ -202,7 +202,7 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     private void saveRootIfNecessary(final StorageContext context) {
         if (this.store.count() == 0) {
             this.store.save(
-                StorageSharedTreeMapStoreValue.with(
+                StorageShared2TreeMapStoreValue.with(
                     true, // parent
                     StorageValueInfo.with(
                         StoragePath.ROOT,
@@ -242,12 +242,12 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         );
     }
 
-    private static StoreWatcher<StorageSharedTreeMapStoreValue> toStoreWatcher(final StorageWatcher watcher) {
+    private static StoreWatcher<StorageShared2TreeMapStoreValue> toStoreWatcher(final StorageWatcher watcher) {
         return new StoreWatcher<>() {
 
             @Override
-            public void onValueChange(final Optional<StorageSharedTreeMapStoreValue> oldValue,
-                                      final Optional<StorageSharedTreeMapStoreValue> newValue) {
+            public void onValueChange(final Optional<StorageShared2TreeMapStoreValue> oldValue,
+                                      final Optional<StorageShared2TreeMapStoreValue> newValue) {
                 // filter #saveRootIfNecessary
                 if(false == isRoot(oldValue) && false == isRoot(newValue)) {
                     watcher.onValueChange(
@@ -266,20 +266,20 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
         };
     }
 
-    private static boolean isRoot(final Optional<StorageSharedTreeMapStoreValue> value) {
+    private static boolean isRoot(final Optional<StorageShared2TreeMapStoreValue> value) {
         return value.map(
-            (StorageSharedTreeMapStoreValue v) -> v.path().isRoot()
+            (StorageShared2TreeMapStoreValue v) -> v.path().isRoot()
         ).orElse(false);
     }
 
-    private static Optional<StorageValue> toStorageValue(final Optional<StorageSharedTreeMapStoreValue> storeValue) {
+    private static Optional<StorageValue> toStorageValue(final Optional<StorageShared2TreeMapStoreValue> storeValue) {
         return storeValue.map(
-            StorageSharedTreeMapStoreValue::value
+            StorageShared2TreeMapStoreValue::value
         );
     }
 
     // @VisibleForTesting
-    final Store<StoragePath, StorageSharedTreeMapStoreValue> store;
+    final Store<StoragePath, StorageShared2TreeMapStoreValue> store;
 
     // Object...........................................................................................................
 
@@ -289,10 +289,10 @@ final class StorageSharedTreeMapStore<C extends StorageContext> extends StorageS
     }
 
     public boolean equals(Object other) {
-        return this == other || other instanceof StorageSharedTreeMapStore && this.equals0((StorageSharedTreeMapStore<?>) other);
+        return this == other || other instanceof StorageShared2TreeMapStore && this.equals0((StorageShared2TreeMapStore<?>) other);
     }
 
-    private boolean equals0(StorageSharedTreeMapStore<?> other) {
+    private boolean equals0(StorageShared2TreeMapStore<?> other) {
         return this.store.equals(other.store);
     }
 

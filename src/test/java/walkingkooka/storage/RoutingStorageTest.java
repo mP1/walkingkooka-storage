@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public final class RoutingStorageTest extends StorageSharedTestCase<RoutingStorage<StorageContext>, StorageContext> {
+public final class RoutingStorageTest extends StorageShared2TestCase<RoutingStorage<StorageContext>, StorageContext> {
 
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,

@@ -75,7 +75,7 @@ public final class StorageValueInfo implements Comparable<StorageValueInfo>,
 
     private final StoragePath path;
 
-    // StorageSharedWrapperPrefixed.....................................................................................
+    // StorageShared2WrapperPrefixed.....................................................................................
 
     StorageValueInfo prependPath(final StoragePath path) {
         return this.setPath(

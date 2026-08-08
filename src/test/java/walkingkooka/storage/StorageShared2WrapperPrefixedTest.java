@@ -28,7 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapperTestCase<StorageSharedWrapperPrefixed<FakeStorageContext>, FakeStorageContext> {
+public final class StorageShared2WrapperPrefixedTest extends StorageShared2WrapperTestCase<StorageShared2WrapperPrefixed<FakeStorageContext>, FakeStorageContext> {
 
     private final static String PREFIX = "/prefix111";
 
@@ -47,7 +47,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
     public void testWithNullPrefixFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageSharedWrapperPrefixed.with(
+            () -> StorageShared2WrapperPrefixed.with(
                 null,
                 Storages.fake()
             )
@@ -60,7 +60,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
         assertSame(
             storage,
-            StorageSharedWrapperPrefixed.with(
+            StorageShared2WrapperPrefixed.with(
                 StoragePath.ROOT,
                 storage
             )
@@ -69,12 +69,12 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testWithPrefixedStorage() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
 
         final StoragePath prefix2 = StoragePath.parse("/prefix222");
 
-        final StorageSharedWrapperPrefixed<FakeStorageContext> prefixedStorage = Cast.to(
-            StorageSharedWrapperPrefixed.with(
+        final StorageShared2WrapperPrefixed<FakeStorageContext> prefixedStorage = Cast.to(
+            StorageShared2WrapperPrefixed.with(
                 prefix2,
                 storage
             )
@@ -125,7 +125,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testLoad() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(
@@ -170,7 +170,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testSave() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/value111");
@@ -218,7 +218,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testDeleteWithUnknownPath() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -248,7 +248,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testDelete() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse("/value111");
@@ -298,7 +298,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testList() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(PREFIX + "/value111");
@@ -366,7 +366,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testAddWatcherAndSaveReplace() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
@@ -406,7 +406,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
                         "newValue"
                     );
 
-                    StorageSharedWrapperPrefixedTest.this.fired = true;
+                    StorageShared2WrapperPrefixedTest.this.fired = true;
                 }
             },
             context
@@ -430,7 +430,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
 
     @Test
     public void testAddWatcherOnceAndSaveReplace() {
-        final StorageSharedWrapperPrefixed<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperPrefixed<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(PREFIX + "/saveValue");
@@ -470,7 +470,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
                         "newValue"
                     );
 
-                    StorageSharedWrapperPrefixedTest.this.fired = true;
+                    StorageShared2WrapperPrefixedTest.this.fired = true;
                 }
             },
             context
@@ -493,9 +493,9 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
     private boolean fired;
 
     @Override
-    public StorageSharedWrapperPrefixed<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
+    public StorageShared2WrapperPrefixed<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
         return Cast.to(
-            StorageSharedWrapperPrefixed.with(
+            StorageShared2WrapperPrefixed.with(
                 StoragePath.parse(PREFIX),
                 storage
             )
@@ -647,7 +647,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
         return new FakeStorageContext() {
             @Override
             public LocalDateTime now() {
-                return StorageSharedWrapperPrefixedTest.NOW;
+                return StorageShared2WrapperPrefixedTest.NOW;
             }
 
             @Override
@@ -672,7 +672,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedWrapperPrefixed<FakeStorageContext>> type() {
-        return Cast.to(StorageSharedWrapperPrefixed.class);
+    public Class<StorageShared2WrapperPrefixed<FakeStorageContext>> type() {
+        return Cast.to(StorageShared2WrapperPrefixed.class);
     }
 }

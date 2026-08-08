@@ -56,18 +56,18 @@ import java.util.stream.Stream;
  * and converting the object to binary when saving.
  */
 @GwtIncompatible
-final class StorageSharedNativeFile<C extends StorageContext> extends StorageShared<C> {
+final class StorageShared2NativeFile<C extends StorageContext> extends StorageShared2<C> {
 
-    static <C extends StorageContext> StorageSharedNativeFile<C> with(final Path root,
-                                                                      final WatchServicePoller<C> poller) {
-        return new StorageSharedNativeFile<>(
+    static <C extends StorageContext> StorageShared2NativeFile<C> with(final Path root,
+                                                                       final WatchServicePoller<C> poller) {
+        return new StorageShared2NativeFile<>(
             Objects.requireNonNull(root, "root"),
             Objects.requireNonNull(poller, "poller")
         );
     }
 
-    private StorageSharedNativeFile(final Path root,
-                                    final WatchServicePoller<C> poller) {
+    private StorageShared2NativeFile(final Path root,
+                                     final WatchServicePoller<C> poller) {
         this.root = root;
 
         try {
@@ -298,7 +298,7 @@ final class StorageSharedNativeFile<C extends StorageContext> extends StorageSha
                     @Override
                     public FileVisitResult preVisitDirectory(final Path dir,
                                                              final BasicFileAttributes attributes) throws IOException {
-                        StorageSharedNativeFile.this.register(dir);
+                        StorageShared2NativeFile.this.register(dir);
                         return FileVisitResult.CONTINUE;
                     }
                 });

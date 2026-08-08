@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageSharedEmpty<StorageContext>, StorageContext> {
+public final class StorageShared2EmptyTest extends StorageShared2TestCase<StorageShared2Empty<StorageContext>, StorageContext> {
 
     @Test
     public void testCanReadRoot() {
@@ -79,7 +79,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     public void testSaveFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> StorageSharedEmpty.instance()
+            () -> StorageShared2Empty.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.parse("/hello")
@@ -93,7 +93,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     public void testDeleteFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> StorageSharedEmpty.instance()
+            () -> StorageShared2Empty.instance()
                 .delete(
                     StoragePath.parse("/missing.txt"),
                     this.createContext()
@@ -104,7 +104,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     @Test
     public void testList() {
         this.listAndCheck(
-            StorageSharedEmpty.instance(),
+            StorageShared2Empty.instance(),
             StoragePath.ROOT,
             0,
             999,
@@ -116,7 +116,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     public void testSetAuditInfoFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> StorageSharedEmpty.instance()
+            () -> StorageShared2Empty.instance()
                 .setAuditInfo(
                     StorageValueInfo.with(
                         StoragePath.parse("/hello"),
@@ -156,8 +156,8 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     }
 
     @Override
-    public StorageSharedEmpty<StorageContext> createStorage() {
-        return StorageSharedEmpty.instance();
+    public StorageShared2Empty<StorageContext> createStorage() {
+        return StorageShared2Empty.instance();
     }
 
     @Override
@@ -170,7 +170,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StorageSharedEmpty.instance(),
+            StorageShared2Empty.instance(),
             ""
         );
     }
@@ -178,7 +178,7 @@ public final class StorageSharedEmptyTest extends StorageSharedTestCase<StorageS
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedEmpty<StorageContext>> type() {
-        return Cast.to(StorageSharedEmpty.class);
+    public Class<StorageShared2Empty<StorageContext>> type() {
+        return Cast.to(StorageShared2Empty.class);
     }
 }

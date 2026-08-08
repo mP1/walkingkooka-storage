@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<StorageSharedEnvironment<StorageContext>, StorageContext>
+public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<StorageShared2Environment<StorageContext>, StorageContext>
     implements CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
@@ -172,7 +172,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     public void testSaveFails() {
         assertThrows(
             IllegalArgumentException.class,
-            () -> StorageSharedEnvironment.instance()
+            () -> StorageShared2Environment.instance()
                 .save(
                     StorageValue.with(StoragePath.ROOT),
                     this.createContext()
@@ -184,7 +184,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     public void testSaveInvalidPathFails() {
         assertThrows(
             IllegalArgumentException.class,
-            () -> StorageSharedEnvironment.instance()
+            () -> StorageShared2Environment.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.parse("/path1/" + MAGIC_ENVIRONMENT_VALUE_NAME)
@@ -208,7 +208,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
         assertThrows(
             IllegalArgumentException.class,
-            () -> StorageSharedEnvironment.instance()
+            () -> StorageShared2Environment.instance()
                 .save(
                     StorageValue.with(
                         StoragePath.parse("/!!-invalid-environment-value-name")
@@ -278,7 +278,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     public void testDeleteExisting() {
         final StoragePath path = StoragePath.parse("/magic-integer");
 
-        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
+        final StorageShared2Environment<StorageContext> storage = this.createStorage();
         final StorageContext context = this.createContext();
 
         final StorageValue value = StorageValue.with(path)
@@ -359,7 +359,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testListAll() {
         this.listAndCheck(
-            StorageSharedEnvironment.instance(),
+            StorageShared2Environment.instance(),
             StoragePath.ROOT,
             0,
             999,
@@ -379,7 +379,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testListWithOffsetAndCount() {
         this.listAndCheck(
-            StorageSharedEnvironment.instance(),
+            StorageShared2Environment.instance(),
             StoragePath.ROOT,
             2,
             2,
@@ -399,7 +399,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testListWithPrefix() {
         this.listAndCheck(
-            StorageSharedEnvironment.instance(),
+            StorageShared2Environment.instance(),
             StoragePath.parse("/cur"),
             0,
             999,
@@ -411,7 +411,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testListWithPrefix2() {
         this.listAndCheck(
-            StorageSharedEnvironment.instance(),
+            StorageShared2Environment.instance(),
             StoragePath.parse("/l"),
             0,
             999,
@@ -421,7 +421,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
         );
     }
 
-    private void listAndCheck(final StorageSharedEnvironment<StorageContext> storage,
+    private void listAndCheck(final StorageShared2Environment<StorageContext> storage,
                               final StoragePath path,
                               final int offset,
                               final int count,
@@ -434,7 +434,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
             count,
             context,
             Arrays.stream(environmentValueNames)
-                .map(StorageSharedEnvironmentTest::storageValueInfo)
+                .map(StorageShared2EnvironmentTest::storageValueInfo)
                 .collect(Collectors.toList())
         );
     }
@@ -445,7 +445,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     public void testSetAuditInfoFails() {
         assertThrows(
             UnsupportedOperationException.class,
-            () -> StorageSharedEnvironment.instance()
+            () -> StorageShared2Environment.instance()
                 .setAuditInfo(
                     StorageValueInfo.with(
                         StoragePath.ROOT,
@@ -462,7 +462,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
     @Test
     public void testAddWatcher() {
-        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
+        final StorageShared2Environment<StorageContext> storage = this.createStorage();
         final StorageContext context = this.createContext();
 
         this.fired = false;
@@ -516,7 +516,7 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
 
     @Test
     public void testAddWatcherOnce() {
-        final StorageSharedEnvironment<StorageContext> storage = this.createStorage();
+        final StorageShared2Environment<StorageContext> storage = this.createStorage();
         final StorageContext context = this.createContext();
 
         this.fired = false;
@@ -586,8 +586,8 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     }
 
     @Override
-    public StorageSharedEnvironment<StorageContext> createStorage() {
-        return StorageSharedEnvironment.instance();
+    public StorageShared2Environment<StorageContext> createStorage() {
+        return StorageShared2Environment.instance();
     }
 
     @Override
@@ -621,15 +621,15 @@ public final class StorageSharedEnvironmentTest extends StorageSharedTestCase<St
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            StorageSharedEnvironment.instance(),
-            StorageSharedEnvironment.class.getSimpleName()
+            StorageShared2Environment.instance(),
+            StorageShared2Environment.class.getSimpleName()
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedEnvironment<StorageContext>> type() {
-        return Cast.to(StorageSharedEnvironment.class);
+    public Class<StorageShared2Environment<StorageContext>> type() {
+        return Cast.to(StorageShared2Environment.class);
     }
 }

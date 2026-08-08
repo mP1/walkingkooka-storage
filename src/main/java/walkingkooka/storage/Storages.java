@@ -28,33 +28,33 @@ import java.nio.file.Path;
 public final class Storages implements PublicStaticHelper {
 
     /**
-     * {@see StorageSharedWrapperExpandedCurrentWorkingDirectory}
+     * {@see StorageShared2WrapperExpandedCurrentWorkingDirectory}
      */
     public static <C extends StorageContext> Storage<C> currentWorkingDirectory(final Storage<C> storage) {
-        return StorageSharedWrapperExpandedCurrentWorkingDirectory.with(storage);
+        return StorageShared2WrapperExpandedCurrentWorkingDirectory.with(storage);
     }
 
     /**
-     * {@see StorageSharedEmpty}
+     * {@see StorageShared2Empty}
      */
     public static <C extends StorageContext> Storage<C> empty() {
-        return StorageSharedEmpty.instance();
+        return StorageShared2Empty.instance();
     }
 
     /**
-     * {@see StorageSharedEnvironment}
+     * {@see StorageShared2Environment}
      */
     public static <C extends StorageContext> Storage<C> environment() {
-        return StorageSharedEnvironment.instance();
+        return StorageShared2Environment.instance();
     }
 
     /**
-     * {@see StorageSharedWrapperExplodedZipFile}
+     * {@see StorageShared2WrapperExplodedZipFile}
      */
     @GwtIncompatible
     public static <C extends StorageContext> Storage<C> explodedZipFile(final StoragePath archive,
                                                                         final Storage<C> storage) {
-        return StorageSharedWrapperExplodedZipFile.with(
+        return StorageShared2WrapperExplodedZipFile.with(
             archive,
             storage
         );
@@ -68,30 +68,30 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageSharedWrapperExpandedHomeDirectory}
+     * {@see StorageShared2WrapperExpandedHomeDirectory}
      */
     public static <C extends StorageContext> Storage<C> homeDirectory(final Storage<C> storage) {
-        return StorageSharedWrapperExpandedHomeDirectory.with(storage);
+        return StorageShared2WrapperExpandedHomeDirectory.with(storage);
     }
 
     /**
-     * {@see StorageSharedNativeFile}
+     * {@see StorageShared2NativeFile}
      */
     @GwtIncompatible
     public static <C extends StorageContext> Storage<C> nativeStorage(final Path root,
                                                                       final WatchServicePoller<C> poller) {
-        return StorageSharedNativeFile.with(
+        return StorageShared2NativeFile.with(
             root,
             poller
         );
     }
 
     /**
-     * {@see StorageSharedWrapperPrefixed}
+     * {@see StorageShared2WrapperPrefixed}
      */
     public static <C extends StorageContext> Storage<C> prefixed(final StoragePath prefix,
                                                                  final Storage<C> storage) {
-        return StorageSharedWrapperPrefixed.with(
+        return StorageShared2WrapperPrefixed.with(
             prefix,
             storage
         );
@@ -105,10 +105,10 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageSharedTreeMapStore}
+     * {@see StorageShared2TreeMapStore}
      */
     public static <C extends StorageContext> Storage<C> treeMapStore() {
-        return StorageSharedTreeMapStore.empty();
+        return StorageShared2TreeMapStore.empty();
     }
 
     /**

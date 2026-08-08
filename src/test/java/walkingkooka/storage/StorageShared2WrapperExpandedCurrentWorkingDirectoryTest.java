@@ -25,7 +25,7 @@ import walkingkooka.net.email.EmailAddress;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest extends StorageSharedWrapperExpandedTestCase<StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext>, FakeStorageContext>
+public final class StorageShared2WrapperExpandedCurrentWorkingDirectoryTest extends StorageShared2WrapperExpandedTestCase<StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext>, FakeStorageContext>
     implements HasCurrentWorkingDirectoryTesting,
     HasNowTesting {
 
@@ -60,7 +60,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testLoadCurrentWorkingDirectoryPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.storage.save(
@@ -78,7 +78,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testLoadCurrentWorkingDirectoryPrefixPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.storage.save(
@@ -98,7 +98,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testSaveCurrentWorkingDirectoryPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -118,7 +118,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testSaveCurrentWorkingDirectoryPrefixPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -140,7 +140,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testDeleteHomePrefixDirectoryPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.delete(
@@ -157,7 +157,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testDeleteCurrentWorkingDirectoryPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         storage.delete(
@@ -176,7 +176,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testListCurrentWorkingDirectoryPrefix() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/value111");
@@ -242,7 +242,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testListCurrentWorkingDirectory() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/value111");
@@ -310,7 +310,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testSetAuditInfoWithCurrentWorkingDirectoryPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -342,7 +342,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testSetAuditInfoWithCurrentWorkingDirectoryPrefixPath() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         this.saveAndCheck(
@@ -376,7 +376,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testAddWatcherAndSaveReplace() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/saveValue");
@@ -416,7 +416,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
                         "newValue"
                     );
 
-                    StorageSharedWrapperExpandedCurrentWorkingDirectoryTest.this.fired = true;
+                    StorageShared2WrapperExpandedCurrentWorkingDirectoryTest.this.fired = true;
                 }
             },
             context
@@ -440,7 +440,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
     @Test
     public void testAddWatcherOnceAndSaveReplace() {
-        final StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
         final FakeStorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/saveValue");
@@ -480,7 +480,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
                         "newValue"
                     );
 
-                    StorageSharedWrapperExpandedCurrentWorkingDirectoryTest.this.fired = true;
+                    StorageShared2WrapperExpandedCurrentWorkingDirectoryTest.this.fired = true;
                 }
             },
             context
@@ -503,9 +503,9 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
     private boolean fired;
 
     @Override
-    public StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
+    public StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
         return Cast.to(
-            StorageSharedWrapperExpandedCurrentWorkingDirectory.with(storage)
+            StorageShared2WrapperExpandedCurrentWorkingDirectory.with(storage)
         );
     }
 
@@ -525,7 +525,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
 
             @Override
             public LocalDateTime now() {
-                return StorageSharedWrapperExpandedCurrentWorkingDirectoryTest.NOW;
+                return StorageShared2WrapperExpandedCurrentWorkingDirectoryTest.NOW;
             }
 
             @Override
@@ -548,7 +548,7 @@ public final class StorageSharedWrapperExpandedCurrentWorkingDirectoryTest exten
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedWrapperExpandedCurrentWorkingDirectory<FakeStorageContext>> type() {
-        return Cast.to(StorageSharedWrapperExpandedCurrentWorkingDirectory.class);
+    public Class<StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext>> type() {
+        return Cast.to(StorageShared2WrapperExpandedCurrentWorkingDirectory.class);
     }
 }
