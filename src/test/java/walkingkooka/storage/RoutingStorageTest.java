@@ -20,24 +20,18 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.AuditInfo;
+import walkingkooka.environment.HasUserTesting;
 import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public final class RoutingStorageTest extends StorageShared2TestCase<RoutingStorage<StorageContext>, StorageContext> {
-
-    private final static LocalDateTime NOW = LocalDateTime.of(
-        1999,
-        12,
-        31,
-        12,
-        58
-    );
-
-    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
+public final class RoutingStorageTest extends StorageShared2TestCase<RoutingStorage<StorageContext>, StorageContext>
+implements HasNowTesting,
+    HasUserTesting {
 
     private final static String VALUE1 = "value1";
 
@@ -49,7 +43,7 @@ public final class RoutingStorageTest extends StorageShared2TestCase<RoutingStor
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.of(RoutingStorageTest.USER);
+            return OPTIONAL_USER;
         }
     };
 
