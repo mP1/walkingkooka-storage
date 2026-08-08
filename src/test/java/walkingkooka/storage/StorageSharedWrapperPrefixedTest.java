@@ -590,6 +590,28 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
             }
 
             @Override
+            public void mount(final StoragePath path,
+                              final Storage<FakeStorageContext> storage,
+                              final FakeStorageContext context) {
+                this.storage.mount(
+                    path,
+                    storage,
+                    context
+                );
+            }
+
+            @Override
+            public void unmount(final StoragePath path,
+                                final Storage<FakeStorageContext> storage,
+                                final FakeStorageContext context) {
+                this.storage.unmount(
+                    path,
+                    storage,
+                    context
+                );
+            }
+
+            @Override
             public Runnable addWatcher(final StorageWatcher watcher,
                                        final FakeStorageContext context) {
                 return this.storage.addWatcher(
@@ -607,7 +629,7 @@ public final class StorageSharedWrapperPrefixedTest extends StorageSharedWrapper
                 );
             }
 
-            private final Storage<StorageContext> storage = Storages.treeMapStore();
+            private final Storage<FakeStorageContext> storage = Storages.treeMapStore();
 
             private void throwIfInvalid(final StoragePath path) {
                 if (path.value().contains("Invalid")) {

@@ -315,6 +315,101 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
         );
     }
 
+    // mount............................................................................................................
+
+    @Test
+    default void testMountWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .mount(
+                    null,
+                    Storages.fake(),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testMountWithNullRootPathFails() {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> this.createStorage()
+                .mount(
+                    StoragePath.ROOT,
+                    Storages.fake(),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testMountWithNullStorageFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .mount(
+                    StoragePath.parse("/mount"),
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testMountWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .mount(
+                    StoragePath.parse("/mount"),
+                    Storages.fake(),
+                    null
+                )
+        );
+    }
+
+    // unmount............................................................................................................
+
+    @Test
+    default void testUnmountWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .unmount(
+                    null,
+                    Storages.fake(),
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testUnmountWithNullStorageFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .unmount(
+                    StoragePath.parse("/unmount"),
+                    null,
+                    this.createContext()
+                )
+        );
+    }
+
+    @Test
+    default void testUnmountWithNullContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createStorage()
+                .unmount(
+                    StoragePath.parse("/unmount"),
+                    Storages.fake(),
+                    null
+                )
+        );
+    }
+    
     // addWatcher.......................................................................................................
 
     @Test

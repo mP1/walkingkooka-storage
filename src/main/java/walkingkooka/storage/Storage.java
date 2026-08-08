@@ -60,12 +60,25 @@ public interface Storage<C extends StorageContext> {
     void setAuditInfo(final StorageValueInfo value,
                       final C context);
 
+    /**
+     * Adds the given {@link Storage} at the given {@link StoragePath} assuming the path is available.
+     */
+    void mount(final StoragePath path,
+               final Storage<C> storage,
+               final C context);
+
+    /**
+     * Unmounts a previous mount.
+     */
+    void unmount(final StoragePath path,
+                 final Storage<C> storage,
+                 final C context);
+
     Runnable addWatcher(final StorageWatcher watcher,
                         final C context);
 
     Runnable addWatcherOnce(final StorageWatcher watcher,
                             final C context);
-
     /**
      * Returns a {@link Storage} with an additional prefix to all its {@link StoragePath}.
      */

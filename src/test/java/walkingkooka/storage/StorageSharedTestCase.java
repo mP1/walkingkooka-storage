@@ -17,14 +17,30 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.reflect.JavaVisibility;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class StorageSharedTestCase<S extends StorageShared<C>, C extends StorageContext> implements StorageTesting2<S, C>,
     ToStringTesting<S> {
 
     StorageSharedTestCase() {
         super();
+    }
+
+    @Test
+    public final void testMountFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> this.createStorage()
+                .mount(
+                    StoragePath.parse("/mount"),
+                    Storages.fake(),
+                    this.createContext()
+                )
+        );
     }
 
     // class............................................................................................................

@@ -97,6 +97,30 @@ public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
     }
 
     @Override
+    default void mount(final StoragePath path,
+                       final Storage<C> storage,
+                       final C context) {
+        this.storage()
+            .mount(
+                path,
+                storage,
+                context
+            );
+    }
+
+    @Override
+    default void unmount(final StoragePath path,
+                         final Storage<C> storage,
+                         final C context) {
+        this.storage()
+            .unmount(
+                path,
+                storage,
+                context
+            );
+    }
+
+    @Override
     default Runnable addWatcher(final StorageWatcher watcher,
                                        final C context) {
         return this.storage()
