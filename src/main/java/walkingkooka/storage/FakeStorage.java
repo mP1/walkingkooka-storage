@@ -79,7 +79,6 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
 
     @Override
     public void unmount(final StoragePath path,
-                        final Storage<C> storage,
                         final C context) {
         throw new UnsupportedOperationException();
     }
