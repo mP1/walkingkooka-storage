@@ -600,6 +600,11 @@ final public class StoragePath
     // constants........................................................................................................
 
     /**
+     * A prefix for any environment mount.
+     */
+    public final static StoragePath ENV_PREFIX = parse("/env");
+
+    /**
      * Prefix that should be replaced by the current users {@link StorageContext#homeDirectory()}.
      * This should be mounted as a user independent path for the current user resolving to their true home directory.
      */
