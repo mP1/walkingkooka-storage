@@ -337,9 +337,7 @@ public final class StorageShared2WrapperExplodedZipFileTest extends StorageShare
                 "      StorageShared2TreeMapStore\n" +
                 "        TreeMapStore\n" +
                 "          /\n" +
-                "            null\n" +
                 "          /inside-zip\n" +
-                "            null\n" +
                 "          /inside-zip/hello.txt\n" +
                 "            48 65 6c 6c 6f 57 6f 72 6c 64 31 32 33                      HelloWorld123       \n" +
                 "             (walkingkooka.Binary)\n"

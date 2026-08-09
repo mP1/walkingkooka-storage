@@ -855,13 +855,10 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
             "StorageShared2TreeMapStore\n" +
                 "  TreeMapStore\n" +
                 "    /\n" +
-                "      null\n" +
                 "    /path1\n" +
-                "      null\n" +
                 "    /path1/value1\n" +
                 "      \"111\"\n" +
                 "    /path2\n" +
-                "      null\n" +
                 "    /path2/value2\n" +
                 "      \"222\"\n"
         );
