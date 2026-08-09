@@ -23,8 +23,8 @@ abstract class StorageShared2<C extends StorageContext> extends StorageShared<C>
         super();
     }
 
-    @Override final void mount0(final StoragePath path,
-                                final Storage<C> storage,
+    @Override //
+    final void mount0(final StorageMountPoint<C> mountPoint,
                                 final C context) {
         throw new UnsupportedOperationException();
     }

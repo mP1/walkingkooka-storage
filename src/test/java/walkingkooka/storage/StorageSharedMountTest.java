@@ -89,16 +89,20 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
         assertThrows(
             IllegalArgumentException.class,
             () -> storage.mount(
-                MOUNT1_PATH,
-                Storages.fake(),
+                StorageMountPoint.with(
+                    MOUNT1_PATH,
+                    Storages.fake()
+                ),
                 CONTEXT
             )
         );
@@ -111,22 +115,28 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
         assertThrows(
             IllegalArgumentException.class,
             () -> storage.mount(
-                MOUNT2_PATH,
-                Storages.fake(),
+                StorageMountPoint.with(
+                    MOUNT2_PATH,
+                    Storages.fake()
+                ),
                 CONTEXT
             )
         );
@@ -170,8 +180,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
         final Storage<StorageContext> mount1 = Storages.fake();
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -193,8 +205,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
         final Storage<StorageContext> mount1 = Storages.fake();
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -216,15 +230,19 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
         final Storage<StorageContext> mount1 = Storages.fake();
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
         final Storage<StorageContext> mount2 = Storages.fake();
         storage.mount(
-            MOUNT2_PATH,
-            mount2,
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                mount2
+            ),
             CONTEXT
         );
 
@@ -295,8 +313,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.fake());
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -320,8 +340,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -380,8 +402,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.fake());
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -405,8 +429,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -449,8 +475,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -473,8 +501,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -497,14 +527,18 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -521,8 +555,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.fake());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -533,8 +569,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            mount2,
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                mount2
+            ),
             CONTEXT
         );
 
@@ -567,8 +605,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -594,8 +634,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final Storage<StorageContext> mount1 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -621,14 +663,18 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final Storage<StorageContext> mount1 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -652,16 +698,20 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.fake());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
         final Storage<StorageContext> mount2 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT2_PATH,
-            mount2,
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                mount2
+            ),
             CONTEXT
         );
 
@@ -712,8 +762,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -743,8 +795,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final Storage<StorageContext> mount1 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
@@ -774,14 +828,18 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final Storage<StorageContext> mount1 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT1_PATH,
-            mount1,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
             CONTEXT
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -809,16 +867,20 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.fake());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
         final Storage<StorageContext> mount2 = Storages.treeMapStore();
 
         storage.mount(
-            MOUNT2_PATH,
-            mount2,
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                mount2
+            ),
             CONTEXT
         );
 
@@ -932,8 +994,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.fake(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
             CONTEXT
         );
 
@@ -1013,8 +1077,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.treeMapStore());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.treeMapStore(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.treeMapStore()
+            ),
             CONTEXT
         );
 
@@ -1061,8 +1127,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.treeMapStore());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.treeMapStore(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.treeMapStore()
+            ),
             CONTEXT
         );
 
@@ -1109,14 +1177,18 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.treeMapStore());
 
         storage.mount(
-            MOUNT1_PATH,
-            Storages.treeMapStore(),
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.treeMapStore()
+            ),
             CONTEXT
         );
 
         storage.mount(
-            MOUNT2_PATH,
-            Storages.treeMapStore(),
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.treeMapStore()
+            ),
             CONTEXT
         );
 
