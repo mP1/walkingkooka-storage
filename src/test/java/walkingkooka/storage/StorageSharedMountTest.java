@@ -1343,6 +1343,43 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(Storages.treeMapStore());
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.treeMapStore()
+            ),
+            CONTEXT
+        );
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.treeMapStore()
+            ),
+            CONTEXT
+        );
+
+        this.treePrintAndCheck(
+            storage,
+            "StorageSharedMount\n" +
+                "  StorageMountPoint\n" +
+                "    \"/mount1/mount2\"\n" +
+                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n" +
+                "  StorageMountPoint\n" +
+                "    \"/mount1\"\n" +
+                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n" +
+                "  StorageMountPoint\n" +
+                "    \"/\"\n" +
+                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
