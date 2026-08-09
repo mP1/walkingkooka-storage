@@ -825,6 +825,48 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         return this.createStorage();
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = this.createContext();
+
+        store.save(
+            StorageValue.with(
+                StoragePath.parse("/path1/value1")
+            ).setValue(
+                Optional.of("111")
+            ),
+            context
+        );
+
+        store.save(
+            StorageValue.with(
+                StoragePath.parse("/path2/value2")
+            ).setValue(
+                Optional.of("222")
+            ),
+            context
+        );
+
+        this.treePrintAndCheck(
+            store,
+            "StorageShared2TreeMapStore\n" +
+                "  TreeMapStore\n" +
+                "    /\n" +
+                "      null\n" +
+                "    /path1\n" +
+                "      null\n" +
+                "    /path1/value1\n" +
+                "      \"111\"\n" +
+                "    /path2\n" +
+                "      null\n" +
+                "    /path2/value2\n" +
+                "      \"222\"\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
