@@ -29,8 +29,8 @@ import java.util.Objects;
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
     TreePrintable {
 
-    static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
-                                                                final Storage<C> storage) {
+    public static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
+                                                                       final Storage<C> storage) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(storage, "storage");
 
