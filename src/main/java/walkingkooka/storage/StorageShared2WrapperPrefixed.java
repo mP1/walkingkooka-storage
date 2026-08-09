@@ -17,6 +17,10 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +31,8 @@ import java.util.stream.Collectors;
  * {@link StorageValueInfo}.
  * This is particularly useful for a {@link Storage} that unites one or more {@link Storage} at different mount points.
  */
-final class StorageShared2WrapperPrefixed<C extends StorageContext> extends StorageShared2Wrapper<C> {
+final class StorageShared2WrapperPrefixed<C extends StorageContext> extends StorageShared2Wrapper<C>
+    implements TreePrintable {
 
     static <C extends StorageContext> Storage<C> with(final StoragePath prefix,
                                                       final Storage<C> storage) {
@@ -207,5 +212,30 @@ final class StorageShared2WrapperPrefixed<C extends StorageContext> extends Stor
     @Override
     public String toString() {
         return this.prefix + " " + this.storage;
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            printer.println(
+                CharSequences.quoteAndEscape(
+                    this.prefix.value()
+                )
+            );
+
+            printer.indent();
+            {
+                TreePrintable.printTreeOrToString(
+                    this.storage,
+                    printer
+                );
+            }
+            printer.outdent();
+        }
+        printer.outdent();
     }
 }

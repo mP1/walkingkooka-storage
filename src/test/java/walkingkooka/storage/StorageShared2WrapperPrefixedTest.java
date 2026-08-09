@@ -672,6 +672,23 @@ public final class StorageShared2WrapperPrefixedTest extends StorageShared2Wrapp
         );
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        this.treePrintAndCheck(
+            (StorageShared2WrapperPrefixed<?>)
+                StorageShared2WrapperPrefixed.with(
+                    StoragePath.parse(PREFIX),
+                    Storages.treeMapStore()
+                ),
+            "StorageShared2WrapperPrefixed\n" +
+                "  \"/prefix111\"\n" +
+                "    StorageShared2TreeMapStore\n" +
+                "      TreeMapStore\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
