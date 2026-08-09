@@ -17,12 +17,17 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
+
 import java.util.Objects;
 
 /**
  * A single mount within a {@link RoutingStorage}.
  */
-public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>> {
+public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
+    TreePrintable {
 
     static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
                                                                 final Storage<C> storage) {
@@ -150,5 +155,29 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
     @Override
     public int compareTo(final StorageMountPoint<C> other) {
         return -this.path.compareTo(other.path);
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+
+        printer.indent();
+        {
+            printer.println(
+                CharSequences.quoteAndEscape(this.path.value())
+            );
+
+            printer.indent();
+            {
+                TreePrintable.printTreeOrToString(
+                    this.storage,
+                    printer
+                );
+            }
+            printer.outdent();
+        }
+        printer.outdent();
     }
 }

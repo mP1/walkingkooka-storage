@@ -21,8 +21,10 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.printer.TreePrintableTesting;
 
-public final class StorageMountPointTest implements ClassTesting2<StorageMountPoint<StorageContext>> {
+public final class StorageMountPointTest implements TreePrintableTesting,
+    ClassTesting2<StorageMountPoint<StorageContext>> {
 
     // add..............................................................................................................
 
@@ -270,6 +272,21 @@ public final class StorageMountPointTest implements ClassTesting2<StorageMountPo
         return StorageMountPoint.with(
             path,
             Storages.fake()
+        );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        this.treePrintAndCheck(
+            StorageMountPoint.with(
+                StoragePath.parse("/path1/path2"),
+                Storages.treeMapStore()
+            ),
+            "StorageMountPoint\n" +
+                "  \"/path1/path2\"\n" +
+                "    [] (walkingkooka.storage.StorageShared2TreeMapStore)\n"
         );
     }
 
