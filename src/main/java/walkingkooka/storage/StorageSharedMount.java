@@ -20,6 +20,8 @@ package walkingkooka.storage;
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.watch.Watchers;
 
 import java.util.Collection;
@@ -31,7 +33,8 @@ import java.util.function.Function;
 /**
  * A {@link Storage} that wraps another supporting dynamic mount/unmounts at unique {@link StoragePath}.
  */
-final class StorageSharedMount<C extends StorageContext> extends StorageShared<C> {
+final class StorageSharedMount<C extends StorageContext> extends StorageShared<C>
+    implements TreePrintable {
 
     // assumes a defensive copy was given.
     static <C extends StorageContext> StorageSharedMount<C> with(final Storage<C> storage) {
@@ -266,5 +269,19 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     public String toString() {
         return this.mountPoints.toString();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            for(final StorageMountPoint<C> mount : this.mountPoints) {
+                mount.printTree(printer);
+            }
+        }
+        printer.outdent();
     }
 }
