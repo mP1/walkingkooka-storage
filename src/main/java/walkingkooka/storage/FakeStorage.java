@@ -83,6 +83,11 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
     }
 
     @Override
+    public List<StorageMountPoint<C>> mountPoints() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Runnable addWatcher(final StorageWatcher watcher,
                                       final C context) {
         throw new UnsupportedOperationException();

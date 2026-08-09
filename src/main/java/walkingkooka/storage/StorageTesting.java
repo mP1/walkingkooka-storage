@@ -175,4 +175,23 @@ public interface StorageTesting extends TreePrintableTesting {
             () -> "list parent=" + parent + " offset=" + offset + " count=" + count
         );
     }
+
+    // mountPoints......................................................................................................
+
+    default <C extends StorageContext> void mountPointsAndCheck(final Storage<C> storage,
+                                                                final StorageMountPoint<C>... expected) {
+        this.mountPointsAndCheck(
+            storage,
+            Lists.of(expected)
+        );
+    }
+
+    default <C extends StorageContext> void mountPointsAndCheck(final Storage<C> storage,
+                                                                final List<StorageMountPoint<C>> expected) {
+        this.checkEquals(
+            expected,
+            storage.mountPoints(),
+            storage::toString
+        );
+    }
 }

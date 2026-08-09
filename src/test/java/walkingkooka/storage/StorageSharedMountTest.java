@@ -142,6 +142,29 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
     }
 
+    // mountPoints......................................................................................................
+
+    @Test
+    public void testMountPoints() {
+        final Storage<StorageContext> root = Storages.fake();
+
+        final StorageMountPoint<StorageContext> mountPoint1 = StorageMountPoint.with(
+            MOUNT1_PATH,
+            Storages.fake()
+        );
+
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+        storage.mount(
+            mountPoint1,
+            CONTEXT
+        );
+
+        this.mountPointsAndCheck(
+            storage,
+            mountPoint1
+        );
+    }
+
     // firstMount.......................................................................................................
 
     @Test

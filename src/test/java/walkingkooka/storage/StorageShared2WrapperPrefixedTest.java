@@ -608,6 +608,11 @@ public final class StorageShared2WrapperPrefixedTest extends StorageShared2Wrapp
             }
 
             @Override
+            public List<StorageMountPoint<FakeStorageContext>> mountPoints() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
             public Runnable addWatcher(final StorageWatcher watcher,
                                        final FakeStorageContext context) {
                 return this.storage.addWatcher(
