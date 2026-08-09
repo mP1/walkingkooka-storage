@@ -286,7 +286,8 @@ public final class StorageMountPointTest implements TreePrintableTesting,
             ),
             "StorageMountPoint\n" +
                 "  \"/path1/path2\"\n" +
-                "    StorageShared2TreeMapStore\n"
+                "    StorageShared2TreeMapStore\n" +
+                "      TreeMapStore\n"
         );
     }
 

@@ -1371,12 +1371,15 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
                 "  StorageMountPoint\n" +
                 "    \"/mount1/mount2\"\n" +
                 "      StorageShared2TreeMapStore\n" +
+                "        TreeMapStore\n" +
                 "  StorageMountPoint\n" +
                 "    \"/mount1\"\n" +
                 "      StorageShared2TreeMapStore\n" +
+                "        TreeMapStore\n" +
                 "  StorageMountPoint\n" +
                 "    \"/\"\n" +
-                "      StorageShared2TreeMapStore\n"
+                "      StorageShared2TreeMapStore\n" +
+                "        TreeMapStore\n"
         );
     }
 

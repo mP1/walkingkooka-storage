@@ -311,7 +311,10 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
         printer.println(this.getClass().getSimpleName());
         printer.indent();
         {
-
+            TreePrintable.printTreeOrToString(
+                this.store,
+                printer
+            );
         }
         printer.outdent();
     }

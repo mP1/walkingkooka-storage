@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.HasId;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +29,8 @@ import java.util.Optional;
  * A value type that combines the audit info and stored value into a single value which will be saved in the wrapped
  * {@link walkingkooka.store.Store}.
  */
-final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePath>> {
+final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePath>>,
+    TreePrintable {
 
     final static boolean NOT_PARENT = false;
 
@@ -147,5 +150,16 @@ final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePat
     @Override
     public String toString() {
         return this.info + " " + this.value.toString();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        TreePrintable.printTreeOrToString(
+            this.value.value()
+                .orElse(null),
+            printer
+        );
     }
 }
