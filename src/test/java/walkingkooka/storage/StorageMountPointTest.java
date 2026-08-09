@@ -286,7 +286,7 @@ public final class StorageMountPointTest implements TreePrintableTesting,
             ),
             "StorageMountPoint\n" +
                 "  \"/path1/path2\"\n" +
-                "    [] (walkingkooka.storage.StorageShared2TreeMapStore)\n"
+                "    StorageShared2TreeMapStore\n"
         );
     }
 

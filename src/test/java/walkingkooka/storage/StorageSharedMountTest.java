@@ -1370,13 +1370,13 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
             "StorageSharedMount\n" +
                 "  StorageMountPoint\n" +
                 "    \"/mount1/mount2\"\n" +
-                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n" +
+                "      StorageShared2TreeMapStore\n" +
                 "  StorageMountPoint\n" +
                 "    \"/mount1\"\n" +
-                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n" +
+                "      StorageShared2TreeMapStore\n" +
                 "  StorageMountPoint\n" +
                 "    \"/\"\n" +
-                "      [] (walkingkooka.storage.StorageShared2TreeMapStore)\n"
+                "      StorageShared2TreeMapStore\n"
         );
     }
 

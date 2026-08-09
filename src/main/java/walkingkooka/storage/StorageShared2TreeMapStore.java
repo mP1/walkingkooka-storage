@@ -21,6 +21,8 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
 import walkingkooka.store.StoreWatcher;
 import walkingkooka.store.Stores;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,7 +34,8 @@ import java.util.stream.Collectors;
  * A {@link Storage} that uses a {@link Stores#treeMap(Comparator, BiFunction)} to hold {@link StoragePath} to
  * entries.
  */
-final class StorageShared2TreeMapStore<C extends StorageContext> extends StorageShared2<C> {
+final class StorageShared2TreeMapStore<C extends StorageContext> extends StorageShared2<C>
+    implements TreePrintable {
 
     static <C extends StorageContext> StorageShared2TreeMapStore<C> empty() {
         return new StorageShared2TreeMapStore<>();
@@ -299,5 +302,17 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
     @Override
     public String toString() {
         return this.store.toString();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+
+        }
+        printer.outdent();
     }
 }
