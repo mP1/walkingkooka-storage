@@ -184,23 +184,18 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     // mount............................................................................................................
 
     @Override
-    void mount0(final StoragePath path,
-                final Storage<C> storage,
+    void mount0(final StorageMountPoint<C> mountPoint,
                 final C context) {
         final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
-        for (final StorageMountPoint<C> mounting : mountPoints) {
-            if (mounting.path.equals(path)) {
+        for (final StorageMountPoint<C> possible : mountPoints) {
+            final StoragePath path = mountPoint.path();
+            if (possible.path.equals(path)) {
                 throw path.invalidStoragePathException("Mount exists");
             }
         }
 
-        mountPoints.add(
-            StorageMountPoint.with(
-                path,
-                storage
-            )
-        );
+        mountPoints.add(mountPoint);
     }
 
     @Override

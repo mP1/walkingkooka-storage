@@ -590,12 +590,10 @@ public final class StorageShared2WrapperPrefixedTest extends StorageShared2Wrapp
             }
 
             @Override
-            public void mount(final StoragePath path,
-                              final Storage<FakeStorageContext> storage,
+            public void mount(final StorageMountPoint<FakeStorageContext> mountPoint,
                               final FakeStorageContext context) {
                 this.storage.mount(
-                    path,
-                    storage,
+                    mountPoint,
                     context
                 );
             }

@@ -318,13 +318,12 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
     // mount............................................................................................................
 
     @Test
-    default void testMountWithNullPathFails() {
+    default void testMountWithNullStorageMountPointFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createStorage()
                 .mount(
                     null,
-                    Storages.fake(),
                     this.createContext()
                 )
         );
@@ -336,21 +335,10 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
             IllegalArgumentException.class,
             () -> this.createStorage()
                 .mount(
-                    StoragePath.ROOT,
-                    Storages.fake(),
-                    this.createContext()
-                )
-        );
-    }
-
-    @Test
-    default void testMountWithNullStorageFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createStorage()
-                .mount(
-                    StoragePath.parse("/mount"),
-                    null,
+                    StorageMountPoint.with(
+                        StoragePath.ROOT,
+                        Storages.fake()
+                    ),
                     this.createContext()
                 )
         );
@@ -362,8 +350,10 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
             NullPointerException.class,
             () -> this.createStorage()
                 .mount(
-                    StoragePath.parse("/mount"),
-                    Storages.fake(),
+                    StorageMountPoint.with(
+                        StoragePath.parse("/mount"),
+                        Storages.fake()
+                    ),
                     null
                 )
         );

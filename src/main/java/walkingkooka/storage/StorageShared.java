@@ -159,26 +159,22 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
                                 final C context);
 
     @Override
-    public final void mount(final StoragePath path,
-                            final Storage<C> storage,
+    public final void mount(final StorageMountPoint<C> mountPoint,
                             final C context) {
-        Objects.requireNonNull(path, "path");
-        if (path.isRoot()) {
+        Objects.requireNonNull(mountPoint, "mountPoint");
+        if (mountPoint.path.isRoot()) {
             throw new IllegalArgumentException("Mounting at root not allowed");
         }
 
-        Objects.requireNonNull(storage, "storage");
         Objects.requireNonNull(context, "context");
 
         this.mount0(
-            path,
-            storage,
+            mountPoint,
             context
         );
     }
 
-    abstract void mount0(final StoragePath path,
-                         final Storage<C> storage,
+    abstract void mount0(final StorageMountPoint<C> mountPoint,
                          final C context);
 
     @Override

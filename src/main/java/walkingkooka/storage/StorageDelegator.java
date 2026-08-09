@@ -97,13 +97,11 @@ public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
     }
 
     @Override
-    default void mount(final StoragePath path,
-                       final Storage<C> storage,
+    default void mount(final StorageMountPoint<C> mountPoint,
                        final C context) {
         this.storage()
             .mount(
-                path,
-                storage,
+                mountPoint,
                 context
             );
     }

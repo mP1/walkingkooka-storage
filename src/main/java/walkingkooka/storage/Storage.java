@@ -63,8 +63,7 @@ public interface Storage<C extends StorageContext> {
     /**
      * Adds the given {@link Storage} at the given {@link StoragePath} assuming the path is available.
      */
-    void mount(final StoragePath path,
-               final Storage<C> storage,
+    void mount(final StorageMountPoint<C> mountPoint,
                final C context);
 
     /**

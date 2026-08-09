@@ -33,8 +33,10 @@ public abstract class StorageShared2TestCase<S extends StorageShared2<C>, C exte
             UnsupportedOperationException.class,
             () -> this.createStorage()
                 .mount(
-                    StoragePath.parse("/mount"),
-                    Storages.fake(),
+                    StorageMountPoint.with(
+                        StoragePath.parse("/mount"),
+                        Storages.fake()
+                    ),
                     this.createContext()
                 )
         );
