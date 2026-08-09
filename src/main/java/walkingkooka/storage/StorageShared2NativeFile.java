@@ -25,6 +25,9 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,7 +59,8 @@ import java.util.stream.Stream;
  * and converting the object to binary when saving.
  */
 @GwtIncompatible
-final class StorageShared2NativeFile<C extends StorageContext> extends StorageShared2<C> {
+final class StorageShared2NativeFile<C extends StorageContext> extends StorageShared2<C>
+    implements TreePrintable {
 
     static <C extends StorageContext> StorageShared2NativeFile<C> with(final Path root,
                                                                        final WatchServicePoller<C> poller) {
@@ -506,5 +510,21 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
     @Override
     public String toString() {
         return this.root.toString();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            printer.println(
+                CharSequences.quoteAndEscape(
+                    this.root.toString()
+                )
+            );
+        }
+        printer.outdent();
     }
 }
