@@ -333,8 +333,16 @@ public final class StorageShared2WrapperExplodedZipFileTest extends StorageShare
             storage,
             "StorageShared2WrapperExplodedZipFile\n" +
                 "  \"/file1.zip\"\n" +
-                "    ReadOnly [/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /inside-zip user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /inside-zip/hello.txt user123@example.com 2001-01-01T12:58:59 user123@example.com 2002-02-02T12:58:59 /inside-zip/hello.txt=48 65 6c 6c 6f 57 6f 72 6c 64 31 32 33                      HelloWorld123       \n" +
-                "    ] (walkingkooka.storage.ReadOnlyStorage)\n"
+                "    ReadOnlyStorage\n" +
+                "      StorageShared2TreeMapStore\n" +
+                "        TreeMapStore\n" +
+                "          /\n" +
+                "            null\n" +
+                "          /inside-zip\n" +
+                "            null\n" +
+                "          /inside-zip/hello.txt\n" +
+                "            48 65 6c 6c 6f 57 6f 72 6c 64 31 32 33                      HelloWorld123       \n" +
+                "             (walkingkooka.Binary)\n"
         );
     }
 
