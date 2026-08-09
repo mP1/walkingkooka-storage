@@ -832,6 +832,19 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
         };
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        this.treePrintAndCheck(
+            this.createStorage(),
+            "StorageShared2NativeFile\n" +
+                "  \"/111/222\"\n"
+        );
+    }
+
+    // class............................................................................................................
+
     @Override
     public Class<StorageShared2NativeFile<FakeStorageContext>> type() {
         return Cast.to(StorageShared2NativeFile.class);
