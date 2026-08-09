@@ -156,10 +156,13 @@ final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePat
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        TreePrintable.printTreeOrToString(
-            this.value.value()
-                .orElse(null),
-            printer
-        );
+        final Object value = this.value.value()
+                .orElse(null);
+        if(null != value) {
+            TreePrintable.printTreeOrToString(
+                value,
+                printer
+            );
+        }
     }
 }

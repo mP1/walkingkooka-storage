@@ -240,9 +240,7 @@ public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorag
                 "  StorageShared2TreeMapStore\n" +
                 "    TreeMapStore\n" +
                 "      /\n" +
-                "        null\n" +
                 "      /path1\n" +
-                "        null\n" +
                 "      /path1/value1\n" +
                 "        \"1111\"\n"
         );
