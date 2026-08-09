@@ -39,10 +39,10 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     }
 
     private StorageSharedMount(final Storage<C> storage) {
-        this.mountings = SortedSets.tree();
+        this.mountPoints = SortedSets.tree();
 
-        this.mountings.add(
-            StorageSharedMountMounting.with(
+        this.mountPoints.add(
+            StorageMountPoint.with(
                 StoragePath.ROOT,
                 storage
             )
@@ -54,10 +54,10 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     boolean canRead0(final StoragePath path,
                      final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(path);
+        final StorageMountPoint<C> mount = this.firstMount(path);
 
-        return mounting.storage.canRead(
-            mounting.remove(path),
+        return mount.storage.canRead(
+            mount.remove(path),
             context
         );
     }
@@ -65,10 +65,10 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     boolean canWrite0(final StoragePath path,
                       final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(path);
+        final StorageMountPoint<C> mount = this.firstMount(path);
 
-        return mounting.storage.canWrite(
-            mounting.remove(path),
+        return mount.storage.canWrite(
+            mount.remove(path),
             context
         );
     }
@@ -76,13 +76,13 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(path);
+        final StorageMountPoint<C> mount = this.firstMount(path);
 
-        return mounting.storage.load(
-            mounting.remove(path),
+        return mount.storage.load(
+            mount.remove(path),
             context
         ).map(v -> v.setPath(
-            mounting.add(
+            mount.add(
                 v.path()
             )
         ));
@@ -91,11 +91,11 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     StorageValue save0(final StorageValue value,
                        final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(value.path());
+        final StorageMountPoint<C> mount = this.firstMount(value.path());
 
-        final StorageValue saved = mounting.storage.save(
+        final StorageValue saved = mount.storage.save(
             value.setPath(
-                mounting.remove(
+                mount.remove(
                     value.path()
                 )
             ),
@@ -103,14 +103,14 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
         );
 
         return saved.setPath(
-            mounting.add(saved.path())
+            mount.add(saved.path())
         );
     }
 
     @Override
     void delete0(final StoragePath path,
                  final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(path);
+        final StorageMountPoint<C> mounting = this.firstMount(path);
 
         mounting.storage.delete(
             mounting.remove(path),
@@ -125,16 +125,16 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
                                  final int offset,
                                  final int count,
                                  final C context) {
-        final StorageSharedMountMounting<C> mounting = this.firstMount(parent);
+        final StorageMountPoint<C> mount = this.firstMount(parent);
 
-        return mounting.storage.list(
-                mounting.remove(parent),
+        return mount.storage.list(
+                mount.remove(parent),
                 offset,
                 count,
                 context
             ).stream()
             .map(i -> i.setPath(
-                    mounting.add(
+                    mount.add(
                         i.path()
                     )
                 )
@@ -142,11 +142,11 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     }
 
     /**
-     * Selects the first {@link StorageSharedMountMounting} that matches the given path.
+     * Selects the first {@link StorageMountPoint} that matches the given path.
      */
     // @VisibleForTesting
-    StorageSharedMountMounting<C> firstMount(final StoragePath path) {
-        for (final StorageSharedMountMounting<C> possible : this.mountings) {
+    StorageMountPoint<C> firstMount(final StoragePath path) {
+        for (final StorageMountPoint<C> possible : this.mountPoints) {
             if (possible.isMatch(path)) {
                 return possible;
             }
@@ -163,7 +163,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
      * /mount1
      * </pre>
      */
-    private final SortedSet<StorageSharedMountMounting<C>> mountings;
+    private final SortedSet<StorageMountPoint<C>> mountPoints;
 
     // setAuditInfo.....................................................................................................
 
@@ -172,10 +172,10 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
                        final C context) {
         final StoragePath path = value.path();
 
-        final StorageSharedMountMounting<C> mounting = this.firstMount(path);
-        mounting.storage.setAuditInfo(
+        final StorageMountPoint<C> mount = this.firstMount(path);
+        mount.storage.setAuditInfo(
             value.setPath(
-                mounting.remove(path)
+                mount.remove(path)
             ),
             context
         );
@@ -187,16 +187,16 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     void mount0(final StoragePath path,
                 final Storage<C> storage,
                 final C context) {
-        final Collection<StorageSharedMountMounting<C>> mountings = this.mountings;
+        final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
-        for (final StorageSharedMountMounting<C> mounting : mountings) {
+        for (final StorageMountPoint<C> mounting : mountPoints) {
             if (mounting.path.equals(path)) {
                 throw path.invalidStoragePathException("Mount exists");
             }
         }
 
-        mountings.add(
-            StorageSharedMountMounting.with(
+        mountPoints.add(
+            StorageMountPoint.with(
                 path,
                 storage
             )
@@ -207,11 +207,11 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     void unmount0(final StoragePath path,
                   final C context) {
         if (false == path.isRoot()) {
-            final Collection<StorageSharedMountMounting<C>> mountings = this.mountings;
+            final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
-            for (final StorageSharedMountMounting<C> mounting : mountings) {
+            for (final StorageMountPoint<C> mounting : mountPoints) {
                 if (mounting.path.equals(path)) {
-                    mountings.remove(mounting);
+                    mountPoints.remove(mounting);
                     return;
                 }
             }
@@ -225,8 +225,8 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     Runnable addWatcher0(final StorageWatcher watcher,
                          final C context) {
-        return this.addWatcherToRoutes(
-            (StorageSharedMountMounting<C> mounting) -> mounting.addWatcher(
+        return this.addWatcherToMounts(
+            (StorageMountPoint<C> mount) -> mount.addWatcher(
                 watcher,
                 context
             )
@@ -236,20 +236,20 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     Runnable addWatcherOnce0(final StorageWatcher watcher,
                              final C context) {
-        return this.addWatcherToRoutes(
-            (StorageSharedMountMounting<C> mounting) -> mounting.addWatcherOnce(
+        return this.addWatcherToMounts(
+            (StorageMountPoint<C> mount) -> mount.addWatcherOnce(
                 watcher,
                 context
             )
         );
     }
 
-    private Runnable addWatcherToRoutes(final Function<StorageSharedMountMounting<C>, Runnable> adder) {
+    private Runnable addWatcherToMounts(final Function<StorageMountPoint<C>, Runnable> adder) {
         final List<Runnable> removers = Lists.array();
 
-        for (final StorageSharedMountMounting<C> mounting : this.mountings) {
+        for (final StorageMountPoint<C> mount : this.mountPoints) {
             removers.add(
-                adder.apply(mounting)
+                adder.apply(mount)
             );
         }
 
@@ -260,6 +260,6 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
 
     @Override
     public String toString() {
-        return this.mountings.toString();
+        return this.mountPoints.toString();
     }
 }

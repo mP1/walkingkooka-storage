@@ -141,7 +141,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             StorageSharedMount.with(root),
             StoragePath.ROOT,
-            StorageSharedMountMounting.with(
+            StorageMountPoint.with(
                 StoragePath.ROOT,
                 root
             )
@@ -155,7 +155,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             StorageSharedMount.with(root),
             StoragePath.parse("/path1/value1"),
-            StorageSharedMountMounting.with(
+            StorageMountPoint.with(
                 StoragePath.ROOT,
                 root
             )
@@ -178,7 +178,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             storage,
             MOUNT1_PATH,
-            StorageSharedMountMounting.with(
+            StorageMountPoint.with(
                 MOUNT1_PATH,
                 mount1
             )
@@ -201,7 +201,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             storage,
             MOUNT1_VALUE_PATH,
-            StorageSharedMountMounting.with(
+            StorageMountPoint.with(
                 MOUNT1_PATH,
                 mount1
             )
@@ -231,7 +231,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             storage,
             MOUNT2_VALUE_PATH,
-            StorageSharedMountMounting.with(
+            StorageMountPoint.with(
                 MOUNT2_PATH,
                 mount2
             )
@@ -240,7 +240,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
     private void firstMountAndCheck(final StorageSharedMount<StorageContext> storage,
                                     final StoragePath path,
-                                    final StorageSharedMountMounting<StorageContext> expected) {
+                                    final StorageMountPoint<StorageContext> expected) {
         this.checkEquals(
             expected,
             storage.firstMount(path),

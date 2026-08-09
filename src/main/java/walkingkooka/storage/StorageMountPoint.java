@@ -22,21 +22,21 @@ import java.util.Objects;
 /**
  * A single mount within a {@link RoutingStorage}.
  */
-final class StorageSharedMountMounting<C extends StorageContext> implements Comparable<StorageSharedMountMounting<C>> {
+public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>> {
 
-    static <C extends StorageContext> StorageSharedMountMounting<C> with(final StoragePath path,
-                                                                         final Storage<C> storage) {
+    static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
+                                                                final Storage<C> storage) {
         Objects.requireNonNull(path, "path");
         Objects.requireNonNull(storage, "storage");
 
-        return new StorageSharedMountMounting<>(
+        return new StorageMountPoint<>(
             path,
             storage
         );
     }
 
-    private StorageSharedMountMounting(final StoragePath path,
-                                       final Storage<C> storage) {
+    private StorageMountPoint(final StoragePath path,
+                              final Storage<C> storage) {
         super();
         this.path = path;
         this.storage = storage;
@@ -99,7 +99,20 @@ final class StorageSharedMountMounting<C extends StorageContext> implements Comp
         );
     }
 
+    // path.............................................................................................................
+
+    public StoragePath path() {
+        return this.path;
+    }
+
     final StoragePath path;
+
+    // storage..........................................................................................................
+
+    public Storage<C> storage() {
+        return this.storage;
+    }
+
 
     final Storage<C> storage;
 
@@ -116,10 +129,10 @@ final class StorageSharedMountMounting<C extends StorageContext> implements Comp
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof StorageSharedMountMounting && this.equals0((StorageSharedMountMounting<?>) other);
+            other instanceof StorageMountPoint && this.equals0((StorageMountPoint<?>) other);
     }
 
-    private boolean equals0(final StorageSharedMountMounting<?> other) {
+    private boolean equals0(final StorageMountPoint<?> other) {
         return this.path.equals(other.path) &&
             this.storage.equals(other.storage);
     }
@@ -135,7 +148,7 @@ final class StorageSharedMountMounting<C extends StorageContext> implements Comp
      * Compares paths reversed, so parents will appear before children.
      */
     @Override
-    public int compareTo(final StorageSharedMountMounting<C> other) {
+    public int compareTo(final StorageMountPoint<C> other) {
         return -this.path.compareTo(other.path);
     }
 }

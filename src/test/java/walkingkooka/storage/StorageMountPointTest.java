@@ -22,7 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class StorageSharedMountMountingTest implements ClassTesting2<StorageSharedMountMounting<StorageContext>> {
+public final class StorageMountPointTest implements ClassTesting2<StorageMountPoint<StorageContext>> {
 
     // add..............................................................................................................
 
@@ -76,13 +76,13 @@ public final class StorageSharedMountMountingTest implements ClassTesting2<Stora
                              final StoragePath path,
                              final StoragePath expected) {
         this.addAndCheck(
-            this.createMounting(route),
+            this.createMountPoint(route),
             path,
             expected
         );
     }
 
-    private void addAndCheck(final StorageSharedMountMounting<StorageContext> route,
+    private void addAndCheck(final StorageMountPoint<StorageContext> route,
                              final StoragePath path,
                              final StoragePath expected) {
         this.checkEquals(
@@ -144,13 +144,13 @@ public final class StorageSharedMountMountingTest implements ClassTesting2<Stora
                                 final StoragePath path,
                                 final StoragePath expected) {
         this.removeAndCheck(
-            this.createMounting(route),
+            this.createMountPoint(route),
             path,
             expected
         );
     }
 
-    private void removeAndCheck(final StorageSharedMountMounting<StorageContext> route,
+    private void removeAndCheck(final StorageMountPoint<StorageContext> route,
                                 final StoragePath path,
                                 final StoragePath expected) {
         this.checkEquals(
@@ -248,13 +248,13 @@ public final class StorageSharedMountMountingTest implements ClassTesting2<Stora
                                  final StoragePath path,
                                  final boolean expected) {
         this.isMatchAndCheck(
-            this.createMounting(route),
+            this.createMountPoint(route),
             path,
             expected
         );
     }
 
-    private void isMatchAndCheck(final StorageSharedMountMounting<?> route,
+    private void isMatchAndCheck(final StorageMountPoint<?> route,
                                  final StoragePath path,
                                  final boolean expected) {
         this.checkEquals(
@@ -266,8 +266,8 @@ public final class StorageSharedMountMountingTest implements ClassTesting2<Stora
 
     // helpers..........................................................................................................
 
-    private StorageSharedMountMounting<StorageContext> createMounting(final StoragePath path) {
-        return StorageSharedMountMounting.with(
+    private StorageMountPoint<StorageContext> createMountPoint(final StoragePath path) {
+        return StorageMountPoint.with(
             path,
             Storages.fake()
         );
@@ -276,12 +276,12 @@ public final class StorageSharedMountMountingTest implements ClassTesting2<Stora
     // class............................................................................................................
 
     @Override
-    public Class<StorageSharedMountMounting<StorageContext>> type() {
-        return Cast.to(StorageSharedMountMounting.class);
+    public Class<StorageMountPoint<StorageContext>> type() {
+        return Cast.to(StorageMountPoint.class);
     }
 
     @Override
     public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
+        return JavaVisibility.PUBLIC;
     }
 }
