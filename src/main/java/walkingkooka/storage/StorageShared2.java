@@ -17,6 +17,10 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.collect.list.Lists;
+
+import java.util.List;
+
 abstract class StorageShared2<C extends StorageContext> extends StorageShared<C> {
 
     StorageShared2() {
@@ -32,5 +36,10 @@ abstract class StorageShared2<C extends StorageContext> extends StorageShared<C>
     @Override final void unmount0(final StoragePath path,
                                   final C context) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public final List<StorageMountPoint<C>> mountPoints() {
+        return Lists.empty();
     }
 }

@@ -72,6 +72,11 @@ public interface Storage<C extends StorageContext> {
     void unmount(final StoragePath path,
                  final C context);
 
+    /**
+     * Returns a list of all {@link StorageMountPoint}.
+     */
+    List<StorageMountPoint<C>> mountPoints();
+
     Runnable addWatcher(final StorageWatcher watcher,
                         final C context);
 

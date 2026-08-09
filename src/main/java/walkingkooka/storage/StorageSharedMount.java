@@ -215,6 +215,16 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
         throw path.invalidStoragePathException("Invalid mount");
     }
 
+    @Override
+    public List<StorageMountPoint<C>> mountPoints() {
+        ImmutableList<StorageMountPoint<C>> list = Lists.<StorageMountPoint<C>>empty()
+            .setElements(this.mountPoints);
+        list = list.deleteAtIndex(
+            list.size() - 1
+        );
+        return list;
+    }
+
     // addWatcher.......................................................................................................
 
     @Override
