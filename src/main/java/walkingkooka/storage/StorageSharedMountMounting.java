@@ -53,7 +53,10 @@ final class StorageSharedMountMounting<C extends StorageContext> implements Comp
     // / vs /under444 -> true
     boolean isMatch(final StoragePath path) {
         return this.path.equals(path) ||
-            path.toString().startsWith(this.storagePathSlash);
+            StoragePath.CASE_SENSITIVITY.startsWith(
+                path.value(),
+                this.storagePathSlash
+            );
     }
 
     private final String storagePathSlash;
