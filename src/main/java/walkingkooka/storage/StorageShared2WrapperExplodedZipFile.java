@@ -21,6 +21,9 @@ import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.io.IOException;
 import java.nio.file.attribute.FileTime;
@@ -36,7 +39,8 @@ import java.util.zip.ZipInputStream;
  * Uses a {@link StoragePath} to an archive and presents a read-only view of its contents.
  */
 @GwtIncompatible
-final class StorageShared2WrapperExplodedZipFile<C extends StorageContext> extends StorageShared2Wrapper<C> {
+final class StorageShared2WrapperExplodedZipFile<C extends StorageContext> extends StorageShared2Wrapper<C>
+    implements TreePrintable {
 
     static <C extends StorageContext> StorageShared2WrapperExplodedZipFile<C> with(final StoragePath archive,
                                                                                    final Storage<C> storage) {
@@ -231,5 +235,33 @@ final class StorageShared2WrapperExplodedZipFile<C extends StorageContext> exten
     @Override
     public String toString() {
         return this.storage.toString();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            printer.println(
+                CharSequences.quoteAndEscape(
+                    this.archive.value()
+                )
+            );
+
+            final Storage<C> exploded = this.exploded;
+            if(null != exploded) {
+                printer.indent();
+                {
+                    TreePrintable.printTreeOrToString(
+                        exploded,
+                        printer
+                    );
+                }
+                printer.outdent();
+            }
+        }
+        printer.outdent();
     }
 }
