@@ -75,6 +75,13 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see StorageSharedMount}
+     */
+    public static <C extends StorageContext> Storage<C> mount(final Storage<C> storage) {
+        return StorageSharedMount.with(storage);
+    }
+
+    /**
      * {@see StorageShared2NativeFile}
      */
     @GwtIncompatible
