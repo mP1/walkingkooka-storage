@@ -17,12 +17,16 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
+
 import java.util.Objects;
 
 /**
  * A read only {@link Storage}, with save and delete throwing {@link InvalidStoragePathException}.
  */
-final class ReadOnlyStorage<C extends StorageContext> implements StorageDelegator<C> {
+final class ReadOnlyStorage<C extends StorageContext> implements StorageDelegator<C>,
+    TreePrintable {
 
     static <C extends StorageContext> ReadOnlyStorage<C> with(final Storage<C> storage) {
         Objects.requireNonNull(storage, "storage");
@@ -94,5 +98,20 @@ final class ReadOnlyStorage<C extends StorageContext> implements StorageDelegato
     @Override
     public String toString() {
         return "ReadOnly " + this.storage;
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            TreePrintable.printTreeOrToString(
+                this.storage,
+                printer
+            );
+        }
+        printer.outdent();
     }
 }

@@ -219,6 +219,35 @@ public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorag
         );
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        final Storage<FakeStorageContext> storage = Storages.treeMapStore();
+
+        storage.save(
+            StorageValue.with(
+                StoragePath.parse("/path1/value1")
+            ).setValue(
+                Optional.of("1111")
+            ),
+            this.createContext()
+        );
+
+        this.treePrintAndCheck(
+            ReadOnlyStorage.with(storage),
+            "ReadOnlyStorage\n" +
+                "  StorageShared2TreeMapStore\n" +
+                "    TreeMapStore\n" +
+                "      /\n" +
+                "        null\n" +
+                "      /path1\n" +
+                "        null\n" +
+                "      /path1/value1\n" +
+                "        \"1111\"\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
