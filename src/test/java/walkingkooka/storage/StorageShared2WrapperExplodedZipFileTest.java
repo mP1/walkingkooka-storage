@@ -307,6 +307,37 @@ public final class StorageShared2WrapperExplodedZipFileTest extends StorageShare
         }
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTreeWhenNotExploded() {
+        this.treePrintAndCheck(
+            this.createStorage(),
+            "StorageShared2WrapperExplodedZipFile\n" +
+                "  \"/file1.zip\"\n"
+        );
+    }
+
+    @Test
+    public void testPrintTreeWhenExploded() {
+        final StorageShared2WrapperExplodedZipFile<TestStorageContext> storage = this.createStorage();
+        final TestStorageContext context = this.createContext();
+
+        this.loadAndCheck(
+            storage,
+            StoragePath.parse("/doesnt-matter"),
+            context
+        );
+
+        this.treePrintAndCheck(
+            storage,
+            "StorageShared2WrapperExplodedZipFile\n" +
+                "  \"/file1.zip\"\n" +
+                "    ReadOnly [/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /inside-zip user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /inside-zip/hello.txt user123@example.com 2001-01-01T12:58:59 user123@example.com 2002-02-02T12:58:59 /inside-zip/hello.txt=48 65 6c 6c 6f 57 6f 72 6c 64 31 32 33                      HelloWorld123       \n" +
+                "    ] (walkingkooka.storage.ReadOnlyStorage)\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
