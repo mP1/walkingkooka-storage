@@ -648,20 +648,18 @@ final public class StoragePath
         Objects.requireNonNull(prefix, "prefix");
         Objects.requireNonNull(replaceWith, "replaceWith");
 
-        StoragePath storagePath = this;
-        final String value = storagePath.value();
+        final String value = this.value();
+        final String prefixValue = prefix.value();
 
-        if (value.startsWith(prefix.value())) {
-            storagePath = parse(
+        return (value.startsWith(prefixValue)) ?
+            parse(
                 replaceWith
                     .value() +
                     value.substring(
-                        prefix.value().length()
+                        prefixValue.length()
                     )
-            );
-        }
-
-        return storagePath;
+            ) :
+            this;
     }
 
     // restoreCurrentWorkingDirectory...................................................................................
