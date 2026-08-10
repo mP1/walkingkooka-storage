@@ -1160,7 +1160,7 @@ HasCurrentWorkingDirectoryTesting,
     public void testReplaceHomeDirectoryWithUserDirectory() {
         this.replaceHomeDirectoryAndCheck(
             "/home",
-            "/users/user123@example.com/"
+            "/users/user123@example.com"
         );
     }
 
