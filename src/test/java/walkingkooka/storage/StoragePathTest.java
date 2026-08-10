@@ -1448,6 +1448,106 @@ HasCurrentWorkingDirectoryTesting,
         );
     }
 
+    // replacePrefix....................................................................................................
+
+    @Test
+    public void testReplacePrefixWithNullPrefixFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StoragePath.ROOT.replacePrefix(
+                null,
+                StoragePath.ROOT
+            )
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithNullReplaceWithFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StoragePath.ROOT.replacePrefix(
+                StoragePath.ROOT,
+                null
+            )
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithPrefixMissing() {
+        this.replacePrefixAndCheck(
+            "/hello",
+            "/prefix1",
+            "/prefix2",
+            "/hello"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithRootRootRoot() {
+        this.replacePrefixAndCheck(
+            StoragePath.ROOT,
+            StoragePath.ROOT,
+            StoragePath.ROOT,
+            StoragePath.ROOT
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithPrefixWithPrefixSlash() {
+        this.replacePrefixAndCheck(
+            "/prefix1/hello",
+            "/prefix1/",
+            "/prefix2/",
+            "/prefix2/hello"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithPrefixMissingSlash() {
+        this.replacePrefixAndCheck(
+            "/prefix1/hello",
+            "/prefix1",
+            "/prefix2",
+            "/prefix2/hello"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithPrefixMissingSlash2() {
+        this.replacePrefixAndCheck(
+            "/prefix1",
+            "/prefix1",
+            "/prefix2",
+            "/prefix2"
+        );
+    }
+
+    private void replacePrefixAndCheck(final String path,
+                                       final String prefix,
+                                       final String replaceWith,
+                                       final String expected) {
+        this.replacePrefixAndCheck(
+            parsePath(path),
+            parsePath(prefix),
+            parsePath(replaceWith),
+            parsePath(expected)
+        );
+    }
+
+    private void replacePrefixAndCheck(final StoragePath path,
+                                       final StoragePath prefix,
+                                       final StoragePath replaceWith,
+                                       final StoragePath expected) {
+        this.checkEquals(
+            expected,
+            path.replacePrefix(
+                prefix,
+                replaceWith
+            ),
+            () -> path + " replacePrefix " + prefix + " " + replaceWith
+        );
+    }
+
     // StoragePathTesting...............................................................................................
 
     @Override

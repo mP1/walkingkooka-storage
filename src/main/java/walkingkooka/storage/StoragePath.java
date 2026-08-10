@@ -639,8 +639,15 @@ final public class StoragePath
         );
     }
 
-    private StoragePath replacePrefix(final StoragePath prefix,
-                                      final StoragePath replaceWith) {
+    /**
+     * Removes the prefix from this {@link StoragePath prefix} and replaces that with {@link StoragePath replaceWith}.
+     * If the prefix is absent this is returned.
+     */
+    public StoragePath replacePrefix(final StoragePath prefix,
+                                     final StoragePath replaceWith) {
+        Objects.requireNonNull(prefix, "prefix");
+        Objects.requireNonNull(replaceWith, "replaceWith");
+
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
