@@ -610,6 +610,11 @@ final public class StoragePath
     public final static StoragePath HOME_DIRECTORY_PREFIX = parse("/home");
 
     /**
+     * Prefix for the home directory for all users.
+     */
+    public final static StoragePath USERS_DIRECTORY_PREFIX = parse("/users");
+
+    /**
      * Prefix that should be replaced by the current users {@link StorageContext#currentWorkingDirectory()}.
      * This should be mounted as a user independent path for the current user resolving to their true current working directory.
      */
