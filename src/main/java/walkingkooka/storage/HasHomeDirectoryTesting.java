@@ -25,9 +25,9 @@ import java.util.Optional;
 public interface HasHomeDirectoryTesting extends HasUserTesting,
     TreePrintableTesting {
 
-    StoragePath HOME_DIRECTORY = StoragePath.parse("/users/" + HasUserTesting.USER + "/");
+    StoragePath HOME_DIRECTORY = StoragePath.parse("/users/" + HasUserTesting.USER);
 
-    StoragePath DIFFERENT_HOME_DIRECTORY = StoragePath.parse("/users/different-user/");
+    StoragePath DIFFERENT_HOME_DIRECTORY = StoragePath.parse("/users/different-user");
 
     Optional<StoragePath> OPTIONAL_HOME_DIRECTORY = Optional.of(HOME_DIRECTORY);
 
