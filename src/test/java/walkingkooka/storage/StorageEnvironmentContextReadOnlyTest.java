@@ -18,7 +18,6 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.ReadOnlyEnvironmentValueException;
 import walkingkooka.predicate.Predicates;
@@ -138,47 +137,6 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
     }
 
     @Test
-    public void testCloneEnvironmentContextWithNotReadOnlyEnvironmentContext() {
-        final EnvironmentContext notReadOnly = ENVIRONMENT_CONTEXT.cloneEnvironment();
-
-        final StorageEnvironmentContextReadOnly readOnly = StorageEnvironmentContextReadOnly.with(
-            READ_ONLY_FILTER,
-            notReadOnly
-        );
-        assertNotSame(
-            readOnly.cloneEnvironment(),
-            notReadOnly
-        );
-
-        this.setCharsetAndCheck(
-            notReadOnly,
-            DIFFERENT_CHARSET
-        );
-    }
-
-    @Test
-    public void testCloneEnvironmentContextWithReadOnlyEnvironmentContext() {
-        final EnvironmentContext readOnlyEnvironmentContext = ENVIRONMENT_CONTEXT;
-
-        final StorageEnvironmentContextReadOnly readOnlyStorageEnvironmentContext = StorageEnvironmentContextReadOnly.with(
-            READ_ONLY_FILTER,
-            readOnlyEnvironmentContext
-        );
-
-        final StorageEnvironmentContext cloned = readOnlyStorageEnvironmentContext.cloneEnvironment();
-
-        assertNotSame(
-            cloned,
-            readOnlyEnvironmentContext
-        );
-
-        this.setCharsetAndCheck(
-            cloned,
-            DIFFERENT_CHARSET
-        );
-    }
-
-    @Test
     public void testCloneEnvironmentContextWithStorageEnvironmentContext() {
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
@@ -244,21 +202,9 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
 
     @Override
     public StorageEnvironmentContextReadOnly createContext() {
-        final EnvironmentContext context = ENVIRONMENT_CONTEXT.cloneEnvironment();
-
-        StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY.setEnvironmentValue(
-            CURRENT_WORKING_DIRECTORY,
-            context
-        );
-
-        StorageEnvironmentContext.HOME_DIRECTORY.setEnvironmentValue(
-            HOME_DIRECTORY,
-            context
-        );
-
         return StorageEnvironmentContextReadOnly.with(
             READ_ONLY_FILTER,
-            context
+            STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
         );
     }
 
@@ -282,27 +228,28 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
                 "  readOnlyFilter\n" +
                 "    READ_ONLY_FILTER (walkingkooka.storage.StorageEnvironmentContextReadOnlyTest$1)\n" +
                 "  context\n" +
-                "    EnvironmentContextSharedMap\n" +
-                "      charset\n" +
-                "        UTF-8 (sun.nio.cs.UTF_8)\n" +
-                "      currency\n" +
-                "        AUD (java.util.Currency)\n" +
-                "      currentWorkingDirectory\n" +
-                "        /current1/working2/directory3\n" +
-                "      homeDirectory\n" +
-                "        /users/user123@example.com\n" +
-                "      indentation\n" +
-                "        \"  \" (walkingkooka.text.Indentation)\n" +
-                "      lineEnding\n" +
-                "        \"\\n\"\n" +
-                "      locale\n" +
-                "        en_AU (java.util.Locale)\n" +
-                "      now\n" +
-                "        1999-12-31T12:58:59 (java.time.LocalDateTime)\n" +
-                "      timeOffset\n" +
-                "        Z (java.time.ZoneOffset)\n" +
-                "      user\n" +
-                "        user123@example.com (walkingkooka.net.email.EmailAddress)\n"
+                "    StorageEnvironmentContextBasic\n" +
+                "      EnvironmentContextSharedMap\n" +
+                "        charset\n" +
+                "          UTF-8 (sun.nio.cs.UTF_8)\n" +
+                "        currency\n" +
+                "          AUD (java.util.Currency)\n" +
+                "        currentWorkingDirectory\n" +
+                "          /current1/working2/directory3\n" +
+                "        homeDirectory\n" +
+                "          /users/user123@example.com\n" +
+                "        indentation\n" +
+                "          \"  \" (walkingkooka.text.Indentation)\n" +
+                "        lineEnding\n" +
+                "          \"\\n\"\n" +
+                "        locale\n" +
+                "          en_AU (java.util.Locale)\n" +
+                "        now\n" +
+                "          1999-12-31T12:58:59 (java.time.LocalDateTime)\n" +
+                "        timeOffset\n" +
+                "          Z (java.time.ZoneOffset)\n" +
+                "        user\n" +
+                "          user123@example.com (walkingkooka.net.email.EmailAddress)\n"
         );
     }
 
