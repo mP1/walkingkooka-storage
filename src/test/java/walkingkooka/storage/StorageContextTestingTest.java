@@ -27,7 +27,7 @@ public final class StorageContextTestingTest implements StorageContextTesting,
     @Test
     public void testStorageContextConstant() {
         this.checkEquals(
-            "application/octet-stream {charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3/, homeDirectory=/users/user123@example.com, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, timeOffset=Z, user=user123@example.com}",
+            "application/octet-stream {charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3, homeDirectory=/users/user123@example.com, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, timeOffset=Z, user=user123@example.com}",
             StorageContextTesting.STORAGE_CONTEXT.toString()
         );
     }
@@ -35,7 +35,7 @@ public final class StorageContextTestingTest implements StorageContextTesting,
     @Test
     public void testDifferentStorageContextConstant() {
         this.checkEquals(
-            "application/octet-stream {charset=ISO-8859-1, currency=NZD, currentWorkingDirectory=/different/current1/working2/directory3/, homeDirectory=/users/different-user, indentation=\"    \", lineEnding=\"\\r\\n\", locale=en_NZ, timeOffset=Z, user=different-user-456@example.com}",
+            "application/octet-stream {charset=ISO-8859-1, currency=NZD, currentWorkingDirectory=/different/current1/working2/directory3, homeDirectory=/users/different-user, indentation=\"    \", lineEnding=\"\\r\\n\", locale=en_NZ, timeOffset=Z, user=different-user-456@example.com}",
             StorageContextTesting.DIFFERENT_STORAGE_CONTEXT.toString()
         );
     }
