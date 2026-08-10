@@ -36,7 +36,6 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * A {@link Path} that identifies a storage entry. Note a path must start with the {@link #SEPARATOR} and is limited to
@@ -624,7 +623,7 @@ final public class StoragePath
     StoragePath replaceCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
         return this.replacePrefix(
             CURRENT_WORKING_DIRECTORY_PREFIX,
-            hasCurrentWorkingDirectory::currentWorkingDirectoryOrFail
+            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail()
         );
     }
 
@@ -636,18 +635,18 @@ final public class StoragePath
     StoragePath replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
         return this.replacePrefix(
             HOME_DIRECTORY_PREFIX,
-            hasHomeDirectory::homeDirectoryOrFail
+            hasHomeDirectory.homeDirectoryOrFail()
         );
     }
 
     private StoragePath replacePrefix(final StoragePath prefix,
-                                      final Supplier<StoragePath> replaceWith) {
+                                      final StoragePath replaceWith) {
         StoragePath storagePath = this;
         final String value = storagePath.value();
 
         if (value.startsWith(prefix.value())) {
             storagePath = parse(
-                replaceWith.get()
+                replaceWith
                     .value() +
                     value.substring(
                         prefix.value().length()
