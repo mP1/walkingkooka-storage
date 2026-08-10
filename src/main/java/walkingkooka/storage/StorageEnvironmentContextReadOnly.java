@@ -35,31 +35,29 @@
 package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
  * Wraps another {@link EnvironmentContext} using a {@link Predicate} to match and fail read only {@link EnvironmentValueName}.
  */
 final class StorageEnvironmentContextReadOnly implements StorageEnvironmentContext,
-    EnvironmentContextDelegator,
+    StorageEnvironmentContextDelegator,
     TreePrintable {
 
     static StorageEnvironmentContextReadOnly with(final Predicate<EnvironmentValueName<?>> readOnlyFilter,
-                                                  final EnvironmentContext environmentContext) {
+                                                  final StorageEnvironmentContext storageEnvironmentContext) {
         Objects.requireNonNull(readOnlyFilter, "readOnlyFilter");
-        Objects.requireNonNull(environmentContext, "environmentContext");
+        Objects.requireNonNull(storageEnvironmentContext, "storageEnvironmentContext");
 
         StorageEnvironmentContextReadOnly storageEnvironmentContextReadOnly = null;
 
-        if (environmentContext instanceof StorageEnvironmentContextReadOnly) {
-            storageEnvironmentContextReadOnly = (StorageEnvironmentContextReadOnly) environmentContext;
+        if (storageEnvironmentContext instanceof StorageEnvironmentContextReadOnly) {
+            storageEnvironmentContextReadOnly = (StorageEnvironmentContextReadOnly) storageEnvironmentContext;
 
             if (false == readOnlyFilter.equals(storageEnvironmentContextReadOnly.readOnlyFilter)) {
                 storageEnvironmentContextReadOnly = null;
@@ -69,48 +67,20 @@ final class StorageEnvironmentContextReadOnly implements StorageEnvironmentConte
         return null == storageEnvironmentContextReadOnly ?
             new StorageEnvironmentContextReadOnly(
                 readOnlyFilter,
-                environmentContext
+                storageEnvironmentContext
             ) :
             storageEnvironmentContextReadOnly;
     }
 
     private StorageEnvironmentContextReadOnly(final Predicate<EnvironmentValueName<?>> readOnlyFilter,
-                                              final EnvironmentContext context) {
+                                              final StorageEnvironmentContext context) {
         super();
 
         this.readOnlyFilter = readOnlyFilter;
         this.context = context;
     }
 
-    // StorageEnvironmentContext........................................................................................
-
-    @Override
-    public Optional<StoragePath> currentWorkingDirectory() {
-        return this.environmentValue(CURRENT_WORKING_DIRECTORY);
-    }
-
-    @Override
-    public void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
-        CURRENT_WORKING_DIRECTORY.setOrRemoveEnvironmentValue(
-            currentWorkingDirectory,
-            this
-        );
-    }
-
-    @Override
-    public Optional<StoragePath> homeDirectory() {
-        return HOME_DIRECTORY.getEnvironmentValue(this);
-    }
-
-    @Override
-    public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
-        HOME_DIRECTORY.setOrRemoveEnvironmentValue(
-            homeDirectory,
-            this
-        );
-    }
-
-    // EnvironmentContextDelegator......................................................................................
+    // StorageEnvironmentContextDelegator...............................................................................
 
     @Override
     public StorageEnvironmentContext cloneEnvironment() {
@@ -122,11 +92,14 @@ final class StorageEnvironmentContextReadOnly implements StorageEnvironmentConte
 
     @Override
     public StorageEnvironmentContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        return this.context == environmentContext ?
+        final StorageEnvironmentContext before = this.context;
+        final StorageEnvironmentContext after = before.setEnvironmentContext(environmentContext);
+
+        return this.context == after ?
             this :
             StorageEnvironmentContextReadOnly.with(
                 this.readOnlyFilter,
-                environmentContext
+                after
             );
     }
 
@@ -158,13 +131,13 @@ final class StorageEnvironmentContextReadOnly implements StorageEnvironmentConte
     }
 
     @Override
-    public EnvironmentContext environmentContext() {
+    public StorageEnvironmentContext storageEnvironmentContext() {
         return this.context;
     }
 
     private final Predicate<EnvironmentValueName<?>> readOnlyFilter;
 
-    private final EnvironmentContext context;
+    private final StorageEnvironmentContext context;
 
     // Object...........................................................................................................
 

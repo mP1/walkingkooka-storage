@@ -46,10 +46,10 @@ public final class StorageEnvironmentContexts implements PublicStaticHelper {
      * {@see StorageEnvironmentContextReadOnly}
      */
     public static StorageEnvironmentContext readOnly(final Predicate<EnvironmentValueName<?>> readOnlyFilter,
-                                                     final EnvironmentContext environmentContext) {
+                                                     final StorageEnvironmentContext storageEnvironmentContext) {
         return StorageEnvironmentContextReadOnly.with(
             readOnlyFilter,
-            environmentContext
+            storageEnvironmentContext
         );
     }
 
