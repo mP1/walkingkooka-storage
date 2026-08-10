@@ -668,9 +668,9 @@ final public class StoragePath
      * If this path starts with {@link HasCurrentWorkingDirectory#currentWorkingDirectory()} replace that with {@link #CURRENT_WORKING_DIRECTORY_PREFIX}..
      */
     StoragePath restoreCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
-        return this.restorePrefix(
-            CURRENT_WORKING_DIRECTORY_PREFIX,
-            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail()
+        return this.replacePrefix(
+            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail(),
+            CURRENT_WORKING_DIRECTORY_PREFIX
         );
     }
 
@@ -680,40 +680,9 @@ final public class StoragePath
      * If this path starts with {@link HasHomeDirectory#homeDirectory()} replace that with {@link #HOME_DIRECTORY_PREFIX}..
      */
     StoragePath restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
-        return this.restorePrefix(
-            HOME_DIRECTORY_PREFIX,
-            hasHomeDirectory.homeDirectoryOrFail()
+        return this.replacePrefix(
+            hasHomeDirectory.homeDirectoryOrFail(),
+            HOME_DIRECTORY_PREFIX
         );
-    }
-
-    private StoragePath restorePrefix(final StoragePath prefix,
-                                      final StoragePath replaceWith) {
-        StoragePath storagePath = this;
-        final String value = storagePath.value();
-
-        String restored = replaceWith.value();
-        if (restored.endsWith(SEPARATOR_STRING)) {
-            restored = restored.substring(
-                0,
-                restored.length() - 1
-            );
-        }
-
-        if (value.startsWith(restored)) {
-            final String append = value.substring(
-                restored.length()
-            );
-
-            storagePath = append.isEmpty() ?
-                prefix :
-                parse(
-                    prefix.value() +
-                        StoragePath.SEPARATOR +
-                        append
-
-                );
-        }
-
-        return storagePath;
     }
 }
