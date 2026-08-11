@@ -25,6 +25,7 @@ import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.watch.Watchers;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
@@ -220,12 +221,14 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
 
     @Override
     public List<StorageMountPoint<C>> mountPoints() {
-        ImmutableList<StorageMountPoint<C>> list = Lists.<StorageMountPoint<C>>empty()
-            .setElements(this.mountPoints);
-        list = list.deleteAtIndex(
-            list.size() - 1
-        );
-        return list;
+        final List<StorageMountPoint<C>> mountPoints = Lists.array();
+        mountPoints.addAll(this.mountPoints);
+
+        // reverse necessary because StorageMountPoints are reversed
+        Collections.reverse(mountPoints);
+
+        return Lists.<StorageMountPoint<C>>empty()
+            .setElements(mountPoints);
     }
 
     // addWatcher.......................................................................................................
