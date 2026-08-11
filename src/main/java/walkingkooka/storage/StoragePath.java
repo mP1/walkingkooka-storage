@@ -273,8 +273,8 @@ final public class StoragePath
 
         StoragePath appended = this;
 
-        if (false == path.isRoot()) {
-            if (false == this.isRoot() && false == this.isEmpty()) {
+        if (path.isNotRoot()) {
+            if (this.isNotRoot() && false == this.isEmpty()) {
                 for (StorageName component : path) {
                     appended = appended.append(component);
                 }

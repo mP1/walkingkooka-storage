@@ -205,7 +205,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     void unmount0(final StoragePath path,
                   final C context) {
-        if (false == path.isRoot()) {
+        if (path.isNotRoot()) {
             final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
             for (final StorageMountPoint<C> mounting : mountPoints) {

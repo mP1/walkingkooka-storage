@@ -115,7 +115,7 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
             StoragePath parentPath = path.parent()
                 .orElse(null);
 
-            while (null != parentPath && false == parentPath.isRoot()) {
+            while (null != parentPath && parentPath.isNotRoot()) {
                 final StoragePath parentPathWithoutSlash = parentPath;
 
                 final StorageShared2TreeMapStoreValue parent = store.load(parentPathWithoutSlash)
