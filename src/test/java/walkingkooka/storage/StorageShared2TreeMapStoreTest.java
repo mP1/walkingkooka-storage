@@ -39,8 +39,6 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
     private final static String VALUE = "value456";
 
-    private final static EmailAddress USER = EmailAddress.parse("user123@example.com");
-
     private final static LocalDateTime TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
 
     private final static AuditInfo AUDIT_INFO = AuditInfo.create(
@@ -785,7 +783,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
         @Override
         public Optional<EmailAddress> user() {
-            return Optional.ofNullable(StorageShared2TreeMapStoreTest.USER);
+            return OPTIONAL_USER;
         }
 
         @Override
