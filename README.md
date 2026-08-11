@@ -51,3 +51,4 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [prefixed](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperPrefixed.java)
 - [readOnly](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/ReadOnlyStorage.java)
 - [treeMapStore](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2TreeMapStore.java)
+- [value](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2Value.java)

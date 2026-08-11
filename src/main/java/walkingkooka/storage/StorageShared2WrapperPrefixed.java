@@ -93,17 +93,19 @@ final class StorageShared2WrapperPrefixed<C extends StorageContext> extends Stor
             throw this.fixInvalidPath(rethrow);
         }
     }
-    
+
     @Override
     Optional<StorageValue> load0(final StoragePath path,
                                  final C context) {
         try {
-            return this.storage.load(
-                path.removePrefix(this.prefix),
-                context
-            ).map(
-                v -> v.prependPath(this.prefix)
-            );
+            return StoragePath.ROOT.equals(path) ?
+                NO_STORAGE_VALUE :
+                this.storage.load(
+                    path.removePrefix(this.prefix),
+                    context
+                ).map(
+                    v -> v.prependPath(this.prefix)
+                );
         } catch (final InvalidStoragePathException rethrow) {
             throw this.fixInvalidPath(rethrow);
         }

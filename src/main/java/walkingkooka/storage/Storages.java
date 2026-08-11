@@ -21,6 +21,7 @@ import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.reflect.PublicStaticHelper;
 
 import java.nio.file.Path;
+import java.util.function.Supplier;
 
 /**
  * A collection of {@link Storage}.
@@ -116,6 +117,13 @@ public final class Storages implements PublicStaticHelper {
      */
     public static <C extends StorageContext> Storage<C> treeMapStore() {
         return StorageShared2TreeMapStore.empty();
+    }
+
+    /**
+     * {@see StorageShared2Value}
+     */
+    public static <C extends StorageContext> Storage<C> value(final Supplier<StorageValue> value) {
+        return StorageShared2Value.with(value);
     }
 
     /**

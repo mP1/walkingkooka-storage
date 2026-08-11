@@ -106,36 +106,38 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
     @Override
     Optional<StorageValue> load0(final StoragePath storagePath,
                                  final C context) {
-        // map StoragePath to file system path
-        final Path fileSystemPath = this.toPath(storagePath);
+        StorageValue storageValue = null;
 
-        StorageValue storageValue;
+        if(false == storagePath.isParent()) {
+            // map StoragePath to file system path
+            final Path fileSystemPath = this.toPath(storagePath);
 
-        try {
-            // load file binary into Binary
-            final Binary binary = Binary.with(
-                Files.readAllBytes(fileSystemPath)
-            );
+            try {
+                // load file binary into Binary
+                final Binary binary = Binary.with(
+                    Files.readAllBytes(fileSystemPath)
+                );
 
-            final StorageBinary storageBinary = StorageBinary.with(
-                storagePath,
-                binary
-            );
+                final StorageBinary storageBinary = StorageBinary.with(
+                    storagePath,
+                    binary
+                );
 
-            // convert StorageBinary into StorageValue
-            storageValue = context.convert(
-                storageBinary,
-                StorageValue.class
-            ).orElseLeft(
-                StorageValue.with(storagePath)
-            );
-        } catch (final FileNotFoundException | NoSuchFileException cause) {
-            storageValue = null;
-        } catch (final IOException cause) {
-            throw storagePath.invalidStoragePathException(
-                "Unable to read",
-                cause
-            );
+                // convert StorageBinary into StorageValue
+                storageValue = context.convert(
+                    storageBinary,
+                    StorageValue.class
+                ).orElseLeft(
+                    StorageValue.with(storagePath)
+                );
+            } catch (final FileNotFoundException | NoSuchFileException cause) {
+                storageValue = null;
+            } catch (final IOException cause) {
+                throw storagePath.invalidStoragePathException(
+                    "Unable to read",
+                    cause
+                );
+            }
         }
 
         return Optional.ofNullable(storageValue);
