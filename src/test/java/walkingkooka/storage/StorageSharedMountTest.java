@@ -161,6 +161,10 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
         this.mountPointsAndCheck(
             storage,
+            StorageMountPoint.with(
+                StoragePath.ROOT,
+                root
+            ),
             mountPoint1
         );
     }
