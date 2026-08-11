@@ -20,7 +20,6 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.storage.StorageShared2TreeMapStoreTest.TestStorageContext;
@@ -38,13 +37,6 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
     private final static String VALUE = "value456";
-
-    private final static LocalDateTime TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
-
-    private final static AuditInfo AUDIT_INFO = AuditInfo.create(
-        USER,
-        TIMESTAMP
-    );
 
     private final static StorageValue STORAGE_VALUE = StorageValue.with(PATH)
         .setValue(
@@ -310,7 +302,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
             context
         );
 
-        final LocalDateTime modifiedTimestamp = TIMESTAMP.plusYears(10);
+        final LocalDateTime modifiedTimestamp = NOW.plusYears(10);
         context.now = modifiedTimestamp;
 
         storage.save(
@@ -772,7 +764,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
     final static class TestStorageContext extends FakeStorageContext implements StorageContext {
 
         TestStorageContext() {
-            this.now = TIMESTAMP;
+            this.now = StorageShared2TreeMapStoreTest.NOW;
         }
 
         @Override
