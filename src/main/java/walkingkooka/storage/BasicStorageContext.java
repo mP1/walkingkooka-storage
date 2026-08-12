@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import walkingkooka.Binary;
+import walkingkooka.Cast;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
@@ -25,6 +26,7 @@ import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetector;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,19 +40,23 @@ final class BasicStorageContext implements StorageContext,
 
     static BasicStorageContext with(final ConverterLike converterLike,
                                     final MediaTypeDetector mediaTypeDetector,
+                                    final Storage<StorageContext> storage,
                                     final EnvironmentContext environmentContext) {
         return new BasicStorageContext(
             Objects.requireNonNull(converterLike, "converterLike"),
             Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector"),
+            Objects.requireNonNull(storage, "storage"),
             Objects.requireNonNull(environmentContext, "environmentContext")
         );
     }
 
     private BasicStorageContext(final ConverterLike converterLike,
                                 final MediaTypeDetector mediaTypeDetector,
+                                final Storage<StorageContext> storage,
                                 final EnvironmentContext environmentContext) {
         this.converterLike = converterLike;
         this.mediaTypeDetector = mediaTypeDetector;
+        this.storage = storage;
         this.environmentContext = environmentContext;
     }
 
@@ -71,6 +77,68 @@ final class BasicStorageContext implements StorageContext,
     public StoragePath parseStoragePath(final String text) {
         return StoragePath.parse(text);
     }
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath path) {
+        return this.storage.load(
+            path,
+            this
+        );
+    }
+
+    @Override
+    public StorageValue saveStorage(final StorageValue value) {
+        return this.storage.save(
+            value,
+            this
+        );
+    }
+
+    @Override
+    public void deleteStorage(final StoragePath path) {
+        this.storage.delete(
+            path,
+            this
+        );
+    }
+
+    @Override
+    public List<StorageValueInfo> listStorage(final StoragePath parent,
+                                              final int offset,
+                                              final int count) {
+        return this.storage.list(
+            parent,
+            offset,
+            count,
+            this
+        );
+    }
+
+    @Override
+    public void mountStorage(final StorageMountPoint<?> mountPoint) {
+        this.storage.mount(
+            Cast.to(mountPoint),
+            this
+        );
+    }
+
+    @Override
+    public void unmountStorage(final StoragePath path) {
+        this.storage.unmount(
+            Cast.to(path),
+            this
+        );
+    }
+
+    @Override
+    public List<StorageMountPoint<?>> storageMountPoints() {
+        return Cast.to(
+            this.storage.mountPoints()
+        );
+    }
+
+    // @VisibleForTesting
+    final Storage<StorageContext> storage;
 
     // StorageEnvironmentContext........................................................................................
 
@@ -138,6 +206,7 @@ final class BasicStorageContext implements StorageContext,
             storageContext = new BasicStorageContext(
                 this.converterLike,
                 this.mediaTypeDetector,
+                this.storage,
                 wrappedEnvironmentContext
             );
         }
@@ -159,6 +228,7 @@ final class BasicStorageContext implements StorageContext,
         return Objects.hash(
             this.converterLike,
             this.mediaTypeDetector,
+            this.storage,
             this.environmentContext
         );
     }
@@ -173,12 +243,14 @@ final class BasicStorageContext implements StorageContext,
     private boolean equals0(final BasicStorageContext other) {
         return this.converterLike.equals(other.converterLike) &&
             this.mediaTypeDetector.equals(other.mediaTypeDetector) &&
+            this.storage.equals(other.storage) &&
             this.environmentContext.equals(other.environmentContext);
     }
 
     @Override
     public String toString() {
         return this.mediaTypeDetector + " " +
+            this.storage + " " +
             this.environmentContext;
     }
 }

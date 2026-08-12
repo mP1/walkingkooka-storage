@@ -23,6 +23,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.net.header.MediaType;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FakeStorageContext extends FakeEnvironmentContext implements StorageContext {
@@ -36,6 +37,45 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
     @Override
     public StoragePath parseStoragePath(final String text) {
         throw new UnsupportedOperationException();
+    }
+
+    // StorageContext...................................................................................................
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public StorageValue saveStorage(final StorageValue value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<StorageValueInfo> listStorage(final StoragePath parent,
+                                              final int offset,
+                                              final int count) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void mountStorage(final StorageMountPoint<?> mountPoint) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void unmountStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<StorageMountPoint<?>> storageMountPoints() {
+        return List.of();
     }
 
     // StorageEnvironmentContext........................................................................................
