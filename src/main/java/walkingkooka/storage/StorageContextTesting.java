@@ -122,16 +122,16 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
 
     // storageMountPoints...............................................................................................
 
-    default void storageMountPoints(final StorageContext context,
-                                    final StorageMountPoint<?>... expected) {
-        this.storageMountPoints(
+    default void storageMountPointsAndCheck(final StorageContext context,
+                                            final StorageMountPoint<?>... expected) {
+        this.storageMountPointsAndCheck(
             context,
             Lists.of(expected)
         );
     }
 
-    default void storageMountPoints(final StorageContext context,
-                                    final List<StorageMountPoint<?>> expected) {
+    default void storageMountPointsAndCheck(final StorageContext context,
+                                            final List<StorageMountPoint<?>> expected) {
         this.checkEquals(
             expected,
             context.storageMountPoints(),
