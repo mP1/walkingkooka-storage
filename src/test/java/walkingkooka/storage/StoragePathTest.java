@@ -1189,7 +1189,7 @@ HasCurrentWorkingDirectoryTesting,
     private void replaceHomeDirectoryAndCheck(final StoragePath path) {
         this.replaceHomeDirectoryAndCheck(
             path,
-            path
+            Optional.empty()
         );
     }
 
@@ -1203,6 +1203,14 @@ HasCurrentWorkingDirectoryTesting,
 
     private void replaceHomeDirectoryAndCheck(final StoragePath path,
                                               final StoragePath expected) {
+        this.replaceHomeDirectoryAndCheck(
+            path,
+            Optional.of(expected)
+        );
+    }
+
+    private void replaceHomeDirectoryAndCheck(final StoragePath path,
+                                              final Optional<StoragePath> expected) {
         this.checkEquals(
             expected,
             path.replaceHomeDirectory(
@@ -1263,13 +1271,6 @@ HasCurrentWorkingDirectoryTesting,
         );
     }
 
-    private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path) {
-        this.replaceCurrentWorkingDirectoryAndCheck(
-            path,
-            path
-        );
-    }
-
     private void replaceCurrentWorkingDirectoryAndCheck(final String path,
                                                         final String expected) {
         this.replaceCurrentWorkingDirectoryAndCheck(
@@ -1278,8 +1279,23 @@ HasCurrentWorkingDirectoryTesting,
         );
     }
 
+    private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path) {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            path,
+            Optional.empty()
+        );
+    }
+
     private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path,
                                                         final StoragePath expected) {
+        this.replaceCurrentWorkingDirectoryAndCheck(
+            path,
+            Optional.of(expected)
+        );
+    }
+
+    private void replaceCurrentWorkingDirectoryAndCheck(final StoragePath path,
+                                                        final Optional<StoragePath> expected) {
         this.checkEquals(
             expected,
             path.replaceCurrentWorkingDirectory(
@@ -1293,6 +1309,7 @@ HasCurrentWorkingDirectoryTesting,
             path::toString
         );
     }
+
     
     // restoreHomeDirectory.............................................................................................
 
@@ -1340,13 +1357,6 @@ HasCurrentWorkingDirectoryTesting,
         );
     }
 
-    private void restoreHomeDirectoryAndCheck(final StoragePath path) {
-        this.restoreHomeDirectoryAndCheck(
-            path,
-            path
-        );
-    }
-
     private void restoreHomeDirectoryAndCheck(final String path,
                                               final String expected) {
         this.restoreHomeDirectoryAndCheck(
@@ -1355,8 +1365,23 @@ HasCurrentWorkingDirectoryTesting,
         );
     }
 
+    private void restoreHomeDirectoryAndCheck(final StoragePath path) {
+        this.restoreHomeDirectoryAndCheck(
+            path,
+            Optional.empty()
+        );
+    }
+
     private void restoreHomeDirectoryAndCheck(final StoragePath path,
                                               final StoragePath expected) {
+        this.restoreHomeDirectoryAndCheck(
+            path,
+            Optional.of(expected)
+        );
+    }
+
+    private void restoreHomeDirectoryAndCheck(final StoragePath path,
+                                              final Optional<StoragePath> expected) {
         this.checkEquals(
             expected,
             path.restoreHomeDirectory(
@@ -1420,7 +1445,7 @@ HasCurrentWorkingDirectoryTesting,
     private void restoreCurrentWorkingDirectoryAndCheck(final StoragePath path) {
         this.restoreCurrentWorkingDirectoryAndCheck(
             path,
-            path
+            Optional.empty()
         );
     }
 
@@ -1434,6 +1459,14 @@ HasCurrentWorkingDirectoryTesting,
 
     private void restoreCurrentWorkingDirectoryAndCheck(final StoragePath path,
                                                         final StoragePath expected) {
+        this.restoreCurrentWorkingDirectoryAndCheck(
+            path,
+            Optional.of(expected)
+        );
+    }
+
+    private void restoreCurrentWorkingDirectoryAndCheck(final StoragePath path,
+                                                        final Optional<StoragePath> expected) {
         this.checkEquals(
             expected,
             path.restoreCurrentWorkingDirectory(
@@ -1477,8 +1510,7 @@ HasCurrentWorkingDirectoryTesting,
         this.replacePrefixAndCheck(
             "/hello",
             "/prefix1",
-            "/prefix2",
-            "/hello"
+            "/prefix2"
         );
     }
 
@@ -1524,6 +1556,16 @@ HasCurrentWorkingDirectoryTesting,
 
     private void replacePrefixAndCheck(final String path,
                                        final String prefix,
+                                       final String replaceWith) {
+        this.replacePrefixAndCheck(
+            parsePath(path),
+            parsePath(prefix),
+            parsePath(replaceWith)
+        );
+    }
+
+    private void replacePrefixAndCheck(final String path,
+                                       final String prefix,
                                        final String replaceWith,
                                        final String expected) {
         this.replacePrefixAndCheck(
@@ -1536,8 +1578,31 @@ HasCurrentWorkingDirectoryTesting,
 
     private void replacePrefixAndCheck(final StoragePath path,
                                        final StoragePath prefix,
+                                       final StoragePath replaceWith) {
+        this.replacePrefixAndCheck(
+            path,
+            prefix,
+            replaceWith,
+            Optional.empty()
+        );
+    }
+
+    private void replacePrefixAndCheck(final StoragePath path,
+                                       final StoragePath prefix,
                                        final StoragePath replaceWith,
                                        final StoragePath expected) {
+        this.replacePrefixAndCheck(
+            path,
+            prefix,
+            replaceWith,
+            Optional.of(expected)
+        );
+    }
+
+    private void replacePrefixAndCheck(final StoragePath path,
+                                       final StoragePath prefix,
+                                       final StoragePath replaceWith,
+                                       final Optional<StoragePath> expected) {
         this.checkEquals(
             expected,
             path.replacePrefix(

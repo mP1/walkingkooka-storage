@@ -17,6 +17,8 @@
 
 package walkingkooka.storage;
 
+import java.util.Optional;
+
 /**
  * Wraps another {@link Storage} resolving any paths that begin with {@link StoragePath#HOME_DIRECTORY_PREFIX}
  * replacing that with the actual {@link StorageContext#homeDirectory()}.
@@ -36,14 +38,14 @@ final class StorageShared2WrapperExpandedHomeDirectory<C extends StorageContext>
     // StorageShared2WrapperExpanded.....................................................................................
 
     @Override//
-    StoragePath expand(final StoragePath path,
-                       final C context) {
+    Optional<StoragePath> expand(final StoragePath path,
+                                 final C context) {
         return path.replaceHomeDirectory(context);
     }
 
     @Override//
-    StoragePath unexpand(final StoragePath path,
-                         final C context) {
+    Optional<StoragePath> unexpand(final StoragePath path,
+                                   final C context) {
         return path.restoreHomeDirectory(context);
     }
 

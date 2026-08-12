@@ -17,6 +17,8 @@
 
 package walkingkooka.storage;
 
+import java.util.Optional;
+
 /**
  * Wraps another {@link Storage} resolving any paths that begin with {@link StoragePath#CURRENT_WORKING_DIRECTORY_PREFIX}
  * replacing that with the actual {@link StorageContext#currentWorkingDirectory()} ()}.
@@ -36,14 +38,14 @@ final class StorageShared2WrapperExpandedCurrentWorkingDirectory<C extends Stora
     // StorageShared2WrapperExpanded.....................................................................................
 
     @Override//
-    StoragePath expand(final StoragePath path,
-                       final C context) {
+    Optional<StoragePath> expand(final StoragePath path,
+                                 final C context) {
         return path.replaceCurrentWorkingDirectory(context);
     }
 
     @Override//
-    StoragePath unexpand(final StoragePath path,
-                         final C context) {
+    Optional<StoragePath> unexpand(final StoragePath path,
+                                   final C context) {
         return path.restoreCurrentWorkingDirectory(context);
     }
 

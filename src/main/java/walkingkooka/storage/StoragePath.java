@@ -625,7 +625,7 @@ final public class StoragePath
     /**
      * If this path starts with {@link #CURRENT_WORKING_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
      */
-    StoragePath replaceCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+    Optional<StoragePath> replaceCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
         return this.replacePrefix(
             CURRENT_WORKING_DIRECTORY_PREFIX,
             hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail()
@@ -637,7 +637,7 @@ final public class StoragePath
     /**
      * If this path starts with {@link #HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
      */
-    StoragePath replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+    Optional<StoragePath> replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
         return this.replacePrefix(
             HOME_DIRECTORY_PREFIX,
             hasHomeDirectory.homeDirectoryOrFail()
@@ -646,25 +646,27 @@ final public class StoragePath
 
     /**
      * Removes the prefix from this {@link StoragePath prefix} and replaces that with {@link StoragePath replaceWith}.
-     * If the prefix is absent this is returned.
+     * If the prefix is absent {@link Optional#empty()} is returned.
      */
-    public StoragePath replacePrefix(final StoragePath prefix,
-                                     final StoragePath replaceWith) {
+    public Optional<StoragePath> replacePrefix(final StoragePath prefix,
+                                               final StoragePath replaceWith) {
         Objects.requireNonNull(prefix, "prefix");
         Objects.requireNonNull(replaceWith, "replaceWith");
 
         final String value = this.value();
         final String prefixValue = prefix.value();
 
-        return (value.startsWith(prefixValue)) ?
-            parse(
-                replaceWith
-                    .value() +
-                    value.substring(
-                        prefixValue.length()
-                    )
-            ) :
-            this;
+        return Optional.ofNullable(
+            value.startsWith(prefixValue) ?
+                parse(
+                    replaceWith
+                        .value() +
+                        value.substring(
+                            prefixValue.length()
+                        )
+                ) :
+                null
+        );
     }
 
     // restoreCurrentWorkingDirectory...................................................................................
@@ -672,7 +674,7 @@ final public class StoragePath
     /**
      * If this path starts with {@link HasCurrentWorkingDirectory#currentWorkingDirectory()} replace that with {@link #CURRENT_WORKING_DIRECTORY_PREFIX}..
      */
-    StoragePath restoreCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
+    Optional<StoragePath> restoreCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
         return this.replacePrefix(
             hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail(),
             CURRENT_WORKING_DIRECTORY_PREFIX
@@ -684,7 +686,7 @@ final public class StoragePath
     /**
      * If this path starts with {@link HasHomeDirectory#homeDirectory()} replace that with {@link #HOME_DIRECTORY_PREFIX}..
      */
-    StoragePath restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
+    Optional<StoragePath> restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
         return this.replacePrefix(
             hasHomeDirectory.homeDirectoryOrFail(),
             HOME_DIRECTORY_PREFIX
