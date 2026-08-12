@@ -109,7 +109,7 @@ abstract class StorageShared<C extends StorageContext> implements Storage<C> {
     }
 
     private void failIfParent(final StoragePath path) {
-        if(false == this instanceof RoutingStorage && false == this instanceof StorageShared2WrapperPrefixed) {
+        if(false == this instanceof StorageShared2WrapperPrefixed) {
             if(path.isParent()) {
                 throw path.invalidStoragePathException("Invalid parent path");
             }
