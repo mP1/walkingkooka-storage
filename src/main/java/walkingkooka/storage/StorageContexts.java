@@ -32,10 +32,12 @@ public final class StorageContexts implements PublicStaticHelper {
      */
     public static StorageContext basic(final ConverterLike converterLike,
                                        final MediaTypeDetector mediaTypeDetector,
+                                       final Storage<StorageContext> storage,
                                        final EnvironmentContext environmentContext) {
         return BasicStorageContext.with(
             converterLike,
             mediaTypeDetector,
+            storage,
             environmentContext
         );
     }

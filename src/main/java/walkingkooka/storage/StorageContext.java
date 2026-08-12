@@ -21,10 +21,50 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaTypeDetector;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
     CanParseStoragePath,
     MediaTypeDetector {
+
+    /**
+     * {@link Storage#load(StoragePath, StorageContext)}.
+     */
+    Optional<StorageValue> loadStorage(final StoragePath path);
+
+    /**
+     * {@link Storage#save(StorageValue, StorageContext)}.
+     */
+    StorageValue saveStorage(final StorageValue value);
+
+    /**
+     * {@link Storage#delete(StoragePath, StorageContext)
+     */
+    void deleteStorage(final StoragePath path);
+
+    /**
+     * {@link Storage#list(StoragePath, int, int, StorageContext)}
+     */
+    List<StorageValueInfo> listStorage(final StoragePath parent,
+                                       final int offset,
+                                       final int count);
+
+    /**
+     * {@link Storage#mount(StorageMountPoint, StorageContext)}
+     */
+    void mountStorage(final StorageMountPoint<?> mountPoint);
+
+    /**
+     * {@link Storage#unmount(StoragePath, StorageContext)}
+     */
+    void unmountStorage(final StoragePath path);
+
+    /**
+     * {@link Storage#mountPoints()}
+     */
+    List<StorageMountPoint<?>> storageMountPoints();
 
     @Override
     StorageContext cloneEnvironment();

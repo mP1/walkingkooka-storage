@@ -24,6 +24,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.net.header.MediaType;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StorageContextDelegator extends StorageContext,
@@ -45,6 +46,55 @@ public interface StorageContextDelegator extends StorageContext,
         return this.storageContext()
             .parseStoragePath(text);
     }
+
+    @Override
+    default Optional<StorageValue> loadStorage(final StoragePath path) {
+        return this.storageContext()
+            .loadStorage(path);
+    }
+
+    @Override
+    default StorageValue saveStorage(final StorageValue value) {
+        return this.storageContext()
+            .saveStorage(value);
+    }
+
+    @Override
+    default void deleteStorage(final StoragePath path) {
+        this.storageContext()
+            .deleteStorage(path);
+    }
+
+    @Override
+    default List<StorageValueInfo> listStorage(final StoragePath parent,
+                                               final int offset,
+                                               final int count) {
+        return this.listStorage(
+                parent,
+                offset,
+                count
+            );
+    }
+
+    @Override
+    default void mountStorage(final StorageMountPoint<?> mountPoint) {
+        this.storageContext()
+            .mountStorage(mountPoint);
+    }
+
+    @Override
+    default void unmountStorage(final StoragePath path) {
+        this.storageContext()
+            .unmountStorage(path);
+    }
+
+    @Override
+    default List<StorageMountPoint<?>> storageMountPoints() {
+        return this.storageContext()
+            .storageMountPoints();
+    }
+
+    // StorageEnvironmentContextDelegator...............................................................................
 
     @Override
     default Optional<StoragePath> currentWorkingDirectory() {

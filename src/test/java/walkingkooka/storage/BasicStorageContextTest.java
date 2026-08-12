@@ -30,6 +30,8 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,6 +54,15 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         DECIMAL_NUMBER_CONTEXT
     );
 
+    private final static Storage<StorageContext> STORAGE = Storages.fake();
+
+    private final static StoragePath STORAGE_PATH = StoragePath.parse("/value111");
+
+    private final static StorageValue STORAGE_VALUE = StorageValue.with(STORAGE_PATH)
+        .setValue(
+            Optional.of(111)
+        );
+
     @Test
     public void testWithNullConverterLikeFails() {
         assertThrows(
@@ -59,6 +70,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             () -> BasicStorageContext.with(
                 null,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 ENVIRONMENT_CONTEXT
             )
         );
@@ -70,6 +82,20 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             NullPointerException.class,
             () -> BasicStorageContext.with(
                 CONVERTER_LIKE,
+                null,
+                STORAGE,
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullStoragetFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
                 null,
                 ENVIRONMENT_CONTEXT
             )
@@ -83,8 +109,20 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             () -> BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 null
             )
+        );
+    }
+
+    // loadStorage......................................................................................................
+
+    @Test
+    public void testLoadStorage() {
+        this.loadStorageAndCheck(
+            this.createContext(),
+            STORAGE_PATH,
+            STORAGE_VALUE
         );
     }
 
@@ -126,6 +164,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                context.storage,
                 DIFFERENT_ENVIRONMENT_CONTEXT
             ),
             after
@@ -140,6 +179,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 DIFFERENT_ENVIRONMENT_CONTEXT
             )
         );
@@ -152,6 +192,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                context.storage,
                 DIFFERENT_ENVIRONMENT_CONTEXT
             ),
             after
@@ -166,6 +207,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MediaTypeDetectors.fake(),
+                STORAGE,
                 DIFFERENT_ENVIRONMENT_CONTEXT
             )
         );
@@ -178,6 +220,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                context.storage,
                 DIFFERENT_ENVIRONMENT_CONTEXT
             ),
             after
@@ -262,11 +305,21 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             environmentContext
         );
 
-        return BasicStorageContext.with(
+        final Storage<StorageContext> storage = Storages.treeMapStore();
+
+        final BasicStorageContext context = BasicStorageContext.with(
             CONVERTER_LIKE,
             MEDIA_TYPE_DETECTOR,
+            storage,
             environmentContext
         );
+
+        storage.save(
+            STORAGE_VALUE,
+            context
+        );
+
+        return context;
     }
 
     // hashCode/equals..................................................................................................
@@ -277,6 +330,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 ConverterContexts.fake(),
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 ENVIRONMENT_CONTEXT
             )
         );
@@ -288,6 +342,19 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MediaTypeDetectors.fake(),
+                STORAGE,
+                ENVIRONMENT_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testEqualsDifferentStorage() {
+        this.checkNotEquals(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
+                Storages.fake(),
                 ENVIRONMENT_CONTEXT
             )
         );
@@ -299,6 +366,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 EnvironmentContexts.fake()
             )
         );

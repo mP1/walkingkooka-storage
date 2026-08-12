@@ -612,6 +612,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
                 DECIMAL_NUMBER_CONTEXT
             ),
             MediaTypeDetectors.fake(),
+            Storages.fake(),
             environmentContext
         );
     }
