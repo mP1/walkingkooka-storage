@@ -69,7 +69,8 @@ public interface StorageContextDelegator extends StorageContext,
     default List<StorageValueInfo> listStorage(final StoragePath parent,
                                                final int offset,
                                                final int count) {
-        return this.listStorage(
+        return this.storageContext()
+            .listStorage(
                 parent,
                 offset,
                 count
