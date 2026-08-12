@@ -75,7 +75,7 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
 
     @Override
     public List<StorageMountPoint<?>> storageMountPoints() {
-        return List.of();
+        throw new UnsupportedOperationException();
     }
 
     // StorageEnvironmentContext........................................................................................
