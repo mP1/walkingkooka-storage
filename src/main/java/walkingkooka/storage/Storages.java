@@ -21,7 +21,7 @@ import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.reflect.PublicStaticHelper;
 
 import java.nio.file.Path;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * A collection of {@link Storage}.
@@ -122,7 +122,7 @@ public final class Storages implements PublicStaticHelper {
     /**
      * {@see StorageShared2Value}
      */
-    public static <C extends StorageContext> Storage<C> value(final Supplier<StorageValue> value) {
+    public static <C extends StorageContext> Storage<C> value(final Function<C, StorageValue> value) {
         return StorageShared2Value.with(value);
     }
 
