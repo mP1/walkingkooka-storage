@@ -27,6 +27,8 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
+import walkingkooka.text.HasTextWithLineBreaksTesting;
+import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
@@ -41,6 +43,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     ClassTesting<StorageValueInfoList>,
     HasOptionalLastModifiedTesting,
     HasTextTesting,
+    HasTextWithLineBreaksTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallingTesting<StorageValueInfoList>,
     TreePrintableTesting {
@@ -170,8 +173,30 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     public void testText() {
         this.textAndCheck(
             this.createList(),
+            "/file1\r\n" +
+                "/file2\r\n"
+        );
+    }
+
+    // HasTextWithLineBreaks............................................................................................
+
+    @Test
+    public void testTextWithLineBreaksWithCrlf() {
+        this.textWithLineBreaksAndCheck(
+            this.createList(),
+            LineEnding.CRNL,
+            "/file1\r\n" +
+                "/file2\r\n"
+        );
+    }
+
+    @Test
+    public void testTextWithLineBreaksWithNl() {
+        this.textWithLineBreaksAndCheck(
+            this.createList(),
+            LineEnding.NL,
             "/file1\n" +
-                "/file2"
+                "/file2\n"
         );
     }
 
