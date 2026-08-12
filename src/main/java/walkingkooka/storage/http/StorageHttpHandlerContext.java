@@ -19,23 +19,7 @@ package walkingkooka.storage.http;
 
 import walkingkooka.net.http.server.HttpHandlerContext;
 import walkingkooka.storage.StorageContext;
-import walkingkooka.storage.StoragePath;
-import walkingkooka.storage.StorageValue;
-import walkingkooka.storage.StorageValueInfo;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface StorageHttpHandlerContext extends HttpHandlerContext,
     StorageContext {
-
-    Optional<StorageValue> loadStorage(final StoragePath path);
-
-    StorageValue saveStorage(final StorageValue value);
-
-    void deleteStorage(final StoragePath path);
-
-    List<StorageValueInfo> listStorage(final StoragePath parent,
-                                       final int offset,
-                                       final int count);
 }
