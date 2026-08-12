@@ -22,9 +22,9 @@ import walkingkooka.convert.ConverterLikeTesting;
 import walkingkooka.net.header.MediaTypeDetectorTesting;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StorageContextTesting extends StorageEnvironmentContextTesting,
+    CanLoadStorageTesting,
     CanParseStoragePathTesting,
     ConverterLikeTesting,
     MediaTypeDetectorTesting {
@@ -44,37 +44,6 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
         STORAGE,
         DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
     );
-
-    // loadStorage......................................................................................................
-
-    default void loadStorageAndCheck(final StorageContext context,
-                                     final StoragePath path) {
-        this.loadStorageAndCheck(
-            context,
-            path,
-            Optional.empty()
-        );
-    }
-
-    default void loadStorageAndCheck(final StorageContext context,
-                                     final StoragePath path,
-                                     final StorageValue expected) {
-        this.loadStorageAndCheck(
-            context,
-            path,
-            Optional.of(expected)
-        );
-    }
-
-    default void loadStorageAndCheck(final StorageContext context,
-                                     final StoragePath path,
-                                     final Optional<StorageValue> expected) {
-        this.checkEquals(
-            expected,
-            context.loadStorage(path),
-            () -> " loadStorage " + path
-        );
-    }
 
     // saveStorage......................................................................................................
 

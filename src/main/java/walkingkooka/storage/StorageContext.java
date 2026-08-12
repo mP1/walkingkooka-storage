@@ -22,17 +22,12 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaTypeDetector;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
     CanParseStoragePath,
+    CanLoadStorage,
     MediaTypeDetector {
-
-    /**
-     * {@link Storage#load(StoragePath, StorageContext)}.
-     */
-    Optional<StorageValue> loadStorage(final StoragePath path);
 
     /**
      * {@link Storage#save(StorageValue, StorageContext)}.
