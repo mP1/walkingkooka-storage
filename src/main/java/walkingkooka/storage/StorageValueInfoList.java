@@ -21,6 +21,7 @@ import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.datetime.HasOptionalLastModified;
 import walkingkooka.text.HasText;
+import walkingkooka.text.HasTextWithLineBreaks;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -45,6 +46,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo>,
     HasOptionalLastModified,
     HasText,
+    HasTextWithLineBreaks,
     TreePrintable {
 
     /**
@@ -143,9 +145,24 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
 
     @Override
     public String text() {
+        return this.textWithLineBreaks(LineEnding.CRNL);
+    }
+
+    // HasTextWithLineBreaks............................................................................................
+
+    @Override
+    public String textWithLineBreaks(final LineEnding lineEnding) {
+        Objects.requireNonNull(lineEnding, "lineEnding");
+
         return this.infos.stream()
             .map(HasText::text)
-            .collect(Collectors.joining(LineEnding.NL)); // YUCK shouldnt hardcode LineEnding
+            .collect(
+                Collectors.joining(
+                    lineEnding, // delimiter
+                    "", // prefix
+                    lineEnding // suffix
+                )
+            );
     }
 
     // TreePrintable....................................................................................................
