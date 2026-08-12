@@ -17,87 +17,9 @@
 
 package walkingkooka.storage.http;
 
-import walkingkooka.collect.list.Lists;
 import walkingkooka.net.http.server.HttpHandlerContextTesting;
 import walkingkooka.storage.StorageContextTesting;
-import walkingkooka.storage.StoragePath;
-import walkingkooka.storage.StorageValue;
-import walkingkooka.storage.StorageValueInfo;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface StorageHttpHandlerContextTesting extends HttpHandlerContextTesting,
     StorageContextTesting {
-
-    // Storage..........................................................................................................
-
-    default void loadStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StoragePath path) {
-        this.loadStorageAndCheck(
-            context,
-            path,
-            Optional.empty()
-        );
-    }
-
-    default void loadStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StoragePath path,
-                                     final StorageValue expected) {
-        this.loadStorageAndCheck(
-            context,
-            path,
-            Optional.of(expected)
-        );
-    }
-
-    default void loadStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StoragePath path,
-                                     final Optional<StorageValue> expected) {
-        this.checkEquals(
-            expected,
-            context.loadStorage(path),
-            () -> "loadStorage " + path
-        );
-    }
-
-    default void saveStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StorageValue value,
-                                     final StorageValue expected) {
-        this.checkEquals(
-            expected,
-            context.saveStorage(value),
-            () -> "saveStorage " + value
-        );
-    }
-
-    default void listStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StoragePath parent,
-                                     final int offset,
-                                     final int count,
-                                     final StorageValueInfo... expected) {
-        this.listStorageAndCheck(
-            context,
-            parent,
-            offset,
-            count,
-            Lists.of(expected)
-        );
-    }
-
-    default void listStorageAndCheck(final StorageHttpHandlerContext context,
-                                     final StoragePath parent,
-                                     final int offset,
-                                     final int count,
-                                     final List<StorageValueInfo> expected) {
-        this.checkEquals(
-            expected,
-            context.listStorage(
-                parent,
-                offset,
-                count
-            ),
-            () -> "listStorage " + parent + " offset=" + offset + " count=" + count + " " + expected
-        );
-    }
 }
