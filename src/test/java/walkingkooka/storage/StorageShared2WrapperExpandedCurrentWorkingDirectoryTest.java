@@ -94,6 +94,29 @@ public final class StorageShared2WrapperExpandedCurrentWorkingDirectoryTest exte
         );
     }
 
+    @Test
+    public void testLoadCurrentWorkingDirectoryAndEnvRoot() {
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext(
+            Optional.of(StoragePath.ROOT)
+        );
+
+        final StoragePath path = StoragePath.parse("/value111");
+        final StorageValue value = StorageValue.with(path);
+
+        storage.storage.save(
+            value,
+            context
+        );
+
+        this.loadAndCheck(
+            storage,
+            path,
+            context,
+            value
+        );
+    }
+
     // save.............................................................................................................
 
     @Test
@@ -296,11 +319,79 @@ public final class StorageShared2WrapperExpandedCurrentWorkingDirectoryTest exte
             2, // count
             context,
             StorageValueInfo.with(
-                StoragePath.parse(StoragePath.CURRENT_WORKING_DIRECTORY_PREFIX + "/value222"),
+                StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/value222"),
                 context.createdAuditInfo()
             ),
             StorageValueInfo.with(
-                StoragePath.parse(StoragePath.CURRENT_WORKING_DIRECTORY_PREFIX + "/value333"),
+                StoragePath.parse(CURRENT_WORKING_DIRECTORY + "/value333"),
+                context.createdAuditInfo()
+            )
+        );
+    }
+
+    @Test
+    public void testListCurrentWorkingDirectoryWithEnvRoot() {
+        final StorageShared2WrapperExpandedCurrentWorkingDirectory<FakeStorageContext> storage = this.createStorage();
+        final FakeStorageContext context = this.createContext(
+            Optional.of(StoragePath.ROOT)
+        );
+
+        final StoragePath path1 = StoragePath.parse("/value111");
+        final StorageValue value1 = StorageValue.with(path1)
+            .setValue(
+                Optional.of(111)
+            );
+
+        storage.save(
+            value1,
+            context
+        );
+
+        final StoragePath path2 = StoragePath.parse("/value222");
+        final StorageValue value2 = StorageValue.with(path2)
+            .setValue(
+                Optional.of(222)
+            );
+
+        storage.save(
+            value2,
+            context
+        );
+
+        final StoragePath path3 = StoragePath.parse("/value333");
+        final StorageValue value3 = StorageValue.with(path3)
+            .setValue(
+                Optional.of(333)
+            );
+
+        storage.save(
+            value3,
+            context
+        );
+
+        final StoragePath path4 = StoragePath.parse("/value444");
+        final StorageValue value4 = StorageValue.with(path4)
+            .setValue(
+                Optional.of(444)
+            );
+
+        storage.save(
+            value4,
+            context
+        );
+
+        this.listAndCheck(
+            storage,
+            StoragePath.ROOT,
+            1, // offset
+            2, // count
+            context,
+            StorageValueInfo.with(
+                StoragePath.parse("/value222"),
+                context.createdAuditInfo()
+            ),
+            StorageValueInfo.with(
+                StoragePath.parse("/value333"),
                 context.createdAuditInfo()
             )
         );
@@ -516,11 +607,15 @@ public final class StorageShared2WrapperExpandedCurrentWorkingDirectoryTest exte
 
     @Override
     public FakeStorageContext createContext() {
+        return this.createContext(OPTIONAL_CURRENT_WORKING_DIRECTORY);
+    }
+
+    private FakeStorageContext createContext(final Optional<StoragePath> currentWorkingDirectory) {
         return new FakeStorageContext() {
 
             @Override
             public Optional<StoragePath> currentWorkingDirectory() {
-                return OPTIONAL_CURRENT_WORKING_DIRECTORY;
+                return currentWorkingDirectory;
             }
 
             @Override

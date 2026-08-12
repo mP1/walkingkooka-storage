@@ -34,7 +34,7 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
             this.expand(
                 path,
                 context
-            ),
+            ).orElse(path),
             context
         );
     }
@@ -46,7 +46,7 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
             this.expand(
                 path,
                 context
-            ),
+            ).orElse(null),
             context
         );
     }
@@ -57,21 +57,27 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
         final StoragePath replaced = this.expand(
             path,
             context
-        );
+        ).orElse(null);
 
         Optional<StorageValue> loaded = this.storage.load(
-            replaced,
+            null != replaced ?
+                replaced :
+                path,
             context
         );
 
-        if (loaded.isPresent() && false == path.equals(replaced)) {
+        if (loaded.isPresent() && null != replaced && false == path.equals(replaced)) {
             loaded = loaded.map(
-                (storageValue) -> storageValue.setPath(
-                    StorageShared2WrapperExpanded.this.unexpand(
-                        path,
-                        context
-                    )
-                )
+                (storageValue) -> {
+                    final StoragePath p = storageValue.path();
+
+                    return storageValue.setPath(
+                        StorageShared2WrapperExpanded.this.unexpand(
+                            p,
+                            context
+                        ).orElse(p)
+                    );
+                }
             );
         }
 
@@ -85,31 +91,28 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
         final StoragePath replaced = this.expand(
             path,
             context
-        );
+        ).orElse(null);
 
         StorageValue saved;
-        if (path.equals(replaced)) {
+        if (null == replaced || path.equals(replaced)) {
             saved = this.storage.save(
                 value,
                 context
             );
         } else {
             saved = this.storage.save(
-                value.setPath(
-                    this.expand(
-                        path,
-                        context
-                    )
-                ),
+                value.setPath(replaced),
                 context
             );
 
-            saved = saved.setPath(
-                this.unexpand(
-                    saved.path(),
-                    context
-                )
-            );
+            final StoragePath savedPath = this.unexpand(
+                saved.path(),
+                context
+            ).orElse(null);
+
+            if(null != savedPath) {
+                saved = saved.setPath(savedPath);
+            }
         }
 
         return saved;
@@ -122,7 +125,7 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
             this.expand(
                 path,
                 context
-            ),
+            ).orElse(path),
             context
         );
     }
@@ -135,25 +138,31 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
         final StoragePath replaced = this.expand(
             parent,
             context
-        );
+        ).orElse(null);
 
         List<StorageValueInfo> infos = this.storage.list(
-            replaced,
+            null != replaced ?
+                replaced :
+                parent,
             offset,
             count,
             context
         );
 
-        if (parent.equals(replaced)) {
+        if (null != replaced && parent.equals(replaced)) {
             infos = infos.stream()
                 .map(
-                    (storageValue) -> storageValue.setPath(
-                        StorageShared2WrapperExpanded.this.unexpand(
-                            storageValue
-                                .path(),
+                    (storageValue) -> {
+                        final StoragePath p = storageValue.path();
+                        final StoragePath u = StorageShared2WrapperExpanded.this.unexpand(
+                            p,
                             context
-                        )
-                    )
+                        ).orElse(null);
+
+                        return null != u ?
+                            storageValue.setPath(u) :
+                            storageValue;
+                    }
                 ).collect(Collectors.toList());
         }
 
@@ -163,22 +172,24 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
     @Override //
     final void setAuditInfo0(final StorageValueInfo value,
                              final C context) {
+        final StoragePath path = value.path();
+
         this.storage.setAuditInfo(
             value.setPath(
                 this.expand(
-                    value.path(),
+                    path,
                     context
-                )
+                ).orElse(path)
             ),
             context
         );
     }
 
-    abstract StoragePath expand(final StoragePath path,
-                                final C context);
+    abstract Optional<StoragePath> expand(final StoragePath path,
+                                          final C context);
 
-    abstract StoragePath unexpand(final StoragePath path,
-                                  final C context);
+    abstract Optional<StoragePath> unexpand(final StoragePath path,
+                                            final C context);
 
     // addWatcher.......................................................................................................
 
