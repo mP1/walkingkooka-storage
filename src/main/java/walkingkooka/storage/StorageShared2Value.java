@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 final class StorageShared2Value<C extends StorageContext> extends StorageShared2<C> {
 
     static <C extends StorageContext> StorageShared2Value<C> with(final Function<C, StorageValue> value) {
-        return new StorageShared2Value(
+        return new StorageShared2Value<>(
             Objects.requireNonNull(value, "value")
         );
     }
