@@ -23,7 +23,7 @@ import walkingkooka.net.email.EmailAddress;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -35,7 +35,7 @@ public final class StorageShared2ValueTest extends StorageShared2TestCase<Storag
         Optional.of("999")
     );
 
-    private final static Supplier<StorageValue> VALUE_SUPPLIER = () -> VALUE;
+    private final static Function<StorageContext, StorageValue> VALUE_FUNCTION = (StorageContext c) -> VALUE;
 
     @Test
     public void testCanReadRoot() {
@@ -207,7 +207,7 @@ public final class StorageShared2ValueTest extends StorageShared2TestCase<Storag
 
     @Override
     public StorageShared2Value<StorageContext> createStorage() {
-        return StorageShared2Value.with(VALUE_SUPPLIER);
+        return StorageShared2Value.with(VALUE_FUNCTION);
     }
 
     @Override
@@ -231,7 +231,7 @@ public final class StorageShared2ValueTest extends StorageShared2TestCase<Storag
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            VALUE_SUPPLIER.toString()
+            VALUE_FUNCTION.toString()
         );
     }
 

@@ -22,6 +22,7 @@ import walkingkooka.collect.list.Lists;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -29,13 +30,13 @@ import java.util.function.Supplier;
  */
 final class StorageShared2Value<C extends StorageContext> extends StorageShared2<C> {
 
-    static <C extends StorageContext> StorageShared2Value<C> with(final Supplier<StorageValue> value) {
+    static <C extends StorageContext> StorageShared2Value<C> with(final Function<C, StorageValue> value) {
         return new StorageShared2Value(
             Objects.requireNonNull(value, "value")
         );
     }
 
-    private StorageShared2Value(final Supplier<StorageValue> value) {
+    private StorageShared2Value(final Function<C, StorageValue> value) {
         super();
         this.value = value;
     }
@@ -59,12 +60,12 @@ final class StorageShared2Value<C extends StorageContext> extends StorageShared2
                                  final C context) {
         return Optional.ofNullable(
             isPath(path) ?
-                this.value.get() :
+                this.value.apply(context) :
                 null
         );
     }
 
-    private final Supplier<StorageValue> value;
+    private final Function<C, StorageValue> value;
 
     @Override
     StorageValue save0(final StorageValue value,
