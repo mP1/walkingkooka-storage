@@ -17,34 +17,11 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.net.header.MediaTypeDetectorTesting2;
-import walkingkooka.storage.CanParseStoragePathTesting2;
+import walkingkooka.net.header.MediaTypeDetectorTesting;
+import walkingkooka.storage.CanParseStoragePathTesting;
 import walkingkooka.storage.HasUserDirectoriesTesting;
-import walkingkooka.tree.json.convert.JsonNodeConverterContextTesting;
 
-public interface StorageConverterContextTesting<C extends StorageConverterContext> extends JsonNodeConverterContextTesting<C>,
-    CanParseStoragePathTesting2<C>,
+public interface StorageConverterContextTesting extends CanParseStoragePathTesting,
     HasUserDirectoriesTesting,
-    MediaTypeDetectorTesting2<C> {
-
-    // CanParseStoragePath..............................................................................................
-
-    @Override
-    default C createCanParseStoragePath() {
-        return this.createContext();
-    }
-
-    // MediaTypeDetector................................................................................................
-
-    @Override
-    default C createMediaTypeDetector() {
-        return this.createContext();
-    }
-
-    // class............................................................................................................
-
-    @Override
-    default String typeNameSuffix() {
-        return StorageConverterContext.class.getSimpleName();
-    }
+    MediaTypeDetectorTesting {
 }

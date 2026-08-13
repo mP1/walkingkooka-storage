@@ -39,7 +39,7 @@ import java.math.MathContext;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class StorageConverterContextTestingTest implements StorageConverterContextTesting<TestStorageConverterContext>,
+public final class StorageConverterContextTestingTest implements StorageConverterContextTesting2<TestStorageConverterContext>,
     DecimalNumberContextDelegator {
 
     @Test

@@ -39,7 +39,7 @@ import java.math.MathContext;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageConverterContextTest implements StorageConverterContextTesting<BasicStorageConverterContext>,
+public final class BasicStorageConverterContextTest implements StorageConverterContextTesting2<BasicStorageConverterContext>,
     DecimalNumberContextDelegator,
     JsonNodeMarshallUnmarshallContextTesting {
 
