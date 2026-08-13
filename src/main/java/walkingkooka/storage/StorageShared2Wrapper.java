@@ -27,6 +27,13 @@ abstract class StorageShared2Wrapper<C extends StorageContext> extends StorageSh
         this.storage = Objects.requireNonNull(storage, "storage");
     }
 
+    // Stoppable........................................................................................................
+
+    @Override
+    public final void stop() {
+        this.storage.stop();
+    }
+
     // @VisibleForTesting
     final Storage<C> storage;
 }

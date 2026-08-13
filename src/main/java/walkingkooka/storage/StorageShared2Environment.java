@@ -239,6 +239,13 @@ final class StorageShared2Environment<C extends StorageContext> extends StorageS
         );
     }
 
+    // Stoppable........................................................................................................
+
+    @Override
+    public void stop() {
+        // NOP
+    }
+
     // Object...........................................................................................................
 
     @Override

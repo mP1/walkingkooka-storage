@@ -273,6 +273,13 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
         return Watchers.runnableCollection(removers);
     }
 
+    @Override
+    public void stop() {
+        this.mountPoints.forEach(
+            (StorageMountPoint p) -> p.storage.stop()
+        );
+    }
+
     // Object...........................................................................................................
 
     @Override

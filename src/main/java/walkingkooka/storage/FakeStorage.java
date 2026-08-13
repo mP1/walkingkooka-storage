@@ -98,4 +98,9 @@ public class FakeStorage<C extends StorageContext> implements Storage<C> {
                                           final C context) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void stop() {
+        throw new UnsupportedOperationException();
+    }
 }
