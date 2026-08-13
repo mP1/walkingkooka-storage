@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.ToStringTesting;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.storage.StorageShared2TreeMapStoreTest.TestStorageContext;
@@ -32,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<StorageShared2TreeMapStore<TestStorageContext>, TestStorageContext>
     implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStore<TestStorageContext>>,
-    ThrowableTesting {
+    ThrowableTesting,
+    ToStringTesting<StorageShared2TreeMapStore<TestStorageContext>> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
@@ -807,6 +809,68 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
     @Override
     public StorageShared2TreeMapStore<TestStorageContext> createObject() {
         return this.createStorage();
+    }
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testToStringWhenEmpty() {
+        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = this.createContext();
+
+        this.toStringAndCheck(
+            store,
+            "{}"
+        );
+    }
+
+    @Test
+    public void testToStringWhenOneEntry() {
+        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = this.createContext();
+
+        store.save(
+            StorageValue.with(
+                StoragePath.parse("/path1/value1")
+            ).setValue(
+                Optional.of("111")
+            ),
+            context
+        );
+
+        this.toStringAndCheck(
+            store,
+            "{/=/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1=/path1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1/value1=/path1/value1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path1/value1=\"111\"}"
+        );
+    }
+
+    @Test
+    public void testToStringTwoEntries() {
+        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final TestStorageContext context = this.createContext();
+
+        store.save(
+            StorageValue.with(
+                StoragePath.parse("/path1/value1")
+            ).setValue(
+                Optional.of("111")
+            ),
+            context
+        );
+
+        store.save(
+            StorageValue.with(
+                StoragePath.parse("/path2/value2")
+            ).setValue(
+                Optional.of("222")
+            ),
+            context
+        );
+
+        this.toStringAndCheck(
+            store,
+            "{/=/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1=/path1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1/value1=/path1/value1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path1/value1=\"111\", /path2=/path2 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path2/value2=/path2/value2 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path2/value2=\"222\"}"
+        );
     }
 
     // TreePrintable....................................................................................................
