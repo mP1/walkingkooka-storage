@@ -37,7 +37,7 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
         Objects.requireNonNull(storage, "storage");
 
         return new StorageMountPoint<>(
-            path,
+            path.parentWithoutTrailingSeparator(),
             storage
         );
     }
@@ -48,10 +48,13 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
         this.path = path;
         this.storage = storage;
 
-        this.storagePathSlash = path.isRoot() ?
-            path.value() :
-            path.value()
-                .concat(StoragePath.SEPARATOR.string());
+        final String value = path.value();
+
+        this.storagePathSlash = path.isRoot() || value.endsWith(StoragePath.SEPARATOR_STRING) ?
+            value :
+            value.concat(
+                StoragePath.SEPARATOR_STRING
+            );
     }
 
     // /mount111 vs /mount111 -> true

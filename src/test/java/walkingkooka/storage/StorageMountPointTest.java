@@ -57,7 +57,7 @@ public final class StorageMountPointTest implements TreePrintableTesting,
     }
 
     @Test
-    public void testWith() {
+    public void testWithRootPath() {
         final StorageMountPoint<StorageContext> storageMountPoint = StorageMountPoint.with(
             StoragePath.ROOT,
             STORAGE
@@ -66,6 +66,44 @@ public final class StorageMountPointTest implements TreePrintableTesting,
         this.pathAndCheck(
             storageMountPoint,
             StoragePath.ROOT
+        );
+
+        this.storageAndCheck(
+            storageMountPoint,
+            STORAGE
+        );
+    }
+
+    @Test
+    public void testWith() {
+        final StoragePath storagePath = StoragePath.parse("/value111");
+
+        final StorageMountPoint<StorageContext> storageMountPoint = StorageMountPoint.with(
+            storagePath,
+            STORAGE
+        );
+
+        this.pathAndCheck(
+            storageMountPoint,
+            storagePath
+        );
+
+        this.storageAndCheck(
+            storageMountPoint,
+            STORAGE
+        );
+    }
+
+    @Test
+    public void testWithPathTrailingSlash() {
+        final StorageMountPoint<StorageContext> storageMountPoint = StorageMountPoint.with(
+            StoragePath.parse("/path1/"),
+            STORAGE
+        );
+
+        this.pathAndCheck(
+            storageMountPoint,
+            StoragePath.parse("/path1")
         );
 
         this.storageAndCheck(
