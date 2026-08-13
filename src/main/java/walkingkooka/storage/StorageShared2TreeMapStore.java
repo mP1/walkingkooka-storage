@@ -284,6 +284,13 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
     // @VisibleForTesting
     final Store<StoragePath, StorageShared2TreeMapStoreValue> store;
 
+    // Stoppable........................................................................................................
+
+    @Override
+    public void stop() {
+        // store.stop()
+    }
+
     // Object...........................................................................................................
 
     @Override

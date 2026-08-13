@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Stoppable;
 import walkingkooka.environment.AuditInfo;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.Optional;
 /**
  * A {@link Storage} that supports storing values including support for tree or directory structure.
  */
-public interface Storage<C extends StorageContext> {
+public interface Storage<C extends StorageContext> extends Stoppable {
 
     Optional<StorageValue> NO_STORAGE_VALUE = Optional.empty();
 

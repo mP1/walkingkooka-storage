@@ -507,6 +507,13 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
      */
     private final Path root;
 
+    // Stoppable........................................................................................................
+
+    @Override
+    public void stop() {
+        // TODO stop background thread file system watcher
+    }
+
     // Object...........................................................................................................
 
     @Override

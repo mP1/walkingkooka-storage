@@ -639,6 +639,11 @@ public final class StorageShared2WrapperPrefixedTest extends StorageShared2Wrapp
             }
 
             @Override
+            public void stop() {
+                // nop
+            }
+
+            @Override
             public String toString() {
                 return this.storage.toString();
             }

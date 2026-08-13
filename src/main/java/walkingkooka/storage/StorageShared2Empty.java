@@ -102,6 +102,13 @@ final class StorageShared2Empty<C extends StorageContext> extends StorageShared2
         return () -> {};
     }
 
+    // Stoppable........................................................................................................
+
+    @Override
+    public void stop() {
+        // NOP
+    }
+
     // Object...........................................................................................................
 
     @Override

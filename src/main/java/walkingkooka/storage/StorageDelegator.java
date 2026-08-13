@@ -142,5 +142,11 @@ public interface StorageDelegator<C extends StorageContext> extends Storage<C> {
             );
     }
 
+    @Override
+    default void stop() {
+        this.storage()
+            .stop();;
+    }
+
     Storage<C> storage();
 }
