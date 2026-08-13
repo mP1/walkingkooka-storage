@@ -19,11 +19,13 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.naming.HasPathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public final class StorageMountPointTest implements TreePrintableTesting,
+    HasPathTesting,
     ClassTesting2<StorageMountPoint<StorageContext>> {
 
     // add..............................................................................................................
