@@ -22,12 +22,14 @@ import walkingkooka.Cast;
 import walkingkooka.naming.HasPathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageMountPointTest implements TreePrintableTesting,
     HasPathTesting,
+    HasTextTesting,
     ClassTesting2<StorageMountPoint<StorageContext>> {
 
     private final static Storage<StorageContext> STORAGE = Storages.fake();
@@ -367,6 +369,19 @@ public final class StorageMountPointTest implements TreePrintableTesting,
         return StorageMountPoint.with(
             path,
             Storages.fake()
+        );
+    }
+
+    // HasText..........................................................................................................
+
+    @Test
+    public void testHasText() {
+        this.textAndCheck(
+            StorageMountPoint.with(
+                StoragePath.parse("/path1/path2"),
+                Storages.treeMapStore()
+            ),
+            "/path1/path2=[]"
         );
     }
 
