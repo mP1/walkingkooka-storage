@@ -669,7 +669,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "/home []"
+            "/home {}"
         );
     }
 

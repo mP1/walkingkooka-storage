@@ -381,7 +381,7 @@ public final class StorageMountPointTest implements TreePrintableTesting,
                 StoragePath.parse("/path1/path2"),
                 Storages.treeMapStore()
             ),
-            "/path1/path2=[]"
+            "/path1/path2={}"
         );
     }
 

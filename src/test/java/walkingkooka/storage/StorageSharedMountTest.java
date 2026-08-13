@@ -1463,7 +1463,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "[\"/*\" []]"
+            "[\"/*\" {}]"
         );
     }
 
