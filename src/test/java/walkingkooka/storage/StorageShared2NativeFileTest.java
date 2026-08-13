@@ -61,11 +61,8 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.nio.file.attribute.FileTime;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -114,23 +111,6 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
         )
     );
 
-    private final static WatchServicePoller<FakeStorageContext> POLLER = new WatchServicePoller<>() {
-        @Override
-        public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
-            // NOP
-        }
-
-        @Override
-        public Optional<WatchKey> pollOrTakeWatchKey(final WatchService watchService) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public FakeStorageContext context() {
-            throw new UnsupportedOperationException();
-        }
-    };
-
     // with.............................................................................................................
 
     @Test
@@ -139,17 +119,17 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
             NullPointerException.class,
             () -> StorageShared2NativeFile.with(
                 null,
-                POLLER
+                this.createContext()
             )
         );
     }
 
     @Test
-    public void testWithNullConsumerFails() {
+    public void testWithNullContextFails() {
         assertThrows(
             NullPointerException.class,
             () -> StorageShared2NativeFile.with(
-                null,
+                Path.of("/temp"),
                 null
             )
         );
@@ -568,36 +548,9 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
     public void testAddWatcherAndSave() {
         final FakeStorageContext context = this.createContext();
 
-        this.polling = true;
-
         final long end = TIMEOUT + System.currentTimeMillis();
 
-        final WatchServicePoller<FakeStorageContext> poller = new WatchServicePoller<>() {
-            @Override
-            public void beginPolling(final Consumer<WatchServicePoller<FakeStorageContext>> poller) {
-                new Thread(() -> {
-                    while (false == StorageShared2NativeFileTest.this.fired && System.currentTimeMillis() < end) {
-                        poller.accept(this);
-                    }
-
-                    StorageShared2NativeFileTest.this.polling = false;
-                }).start();
-            }
-
-            @Override
-            public Optional<WatchKey> pollOrTakeWatchKey(final WatchService watchService) {
-                return Optional.ofNullable(
-                    watchService.poll()
-                );
-            }
-
-            @Override
-            public FakeStorageContext context() {
-                return context;
-            }
-        };
-
-        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage(poller);
+        final StorageShared2NativeFile<FakeStorageContext> storage = this.createStorage();
 
         final StorageValue storageValue = StorageValue.with(
             StoragePath.parse("/different.txt")
@@ -612,6 +565,7 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
                 @Override
                 public void onValueChange(final Optional<StorageValue> oldValue,
                                           final Optional<StorageValue> newValue) {
+                    System.out.println("onValueChange " + oldValue + " " + newValue);
                     checkEquals(
                         StorageValue.NO_VALUE,
                         oldValue,
@@ -635,7 +589,8 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
             context
         );
 
-        while (this.polling && System.currentTimeMillis() < end) {
+        while (false == this.fired && System.currentTimeMillis() < end) {
+            System.out.print('.');
             try {
                 Thread.sleep(100);
             } catch (final InterruptedException e) {
@@ -650,17 +605,12 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
         );
     }
 
-    private boolean polling;
     private boolean fired;
 
     // Storage..........................................................................................................
 
     @Override
     public StorageShared2NativeFile<FakeStorageContext> createStorage() {
-        return this.createStorage(POLLER);
-    }
-
-    private StorageShared2NativeFile<FakeStorageContext> createStorage(final WatchServicePoller<FakeStorageContext> poller) {
         try {
             final FileSystem fileSystem = Jimfs.newFileSystem(
                 Configuration.unix()
@@ -722,7 +672,7 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
 
             return StorageShared2NativeFile.with(
                 root,
-                poller
+                this.createContext()
             );
         } catch (final IOException cause) {
             throw new Error(cause.getMessage(), cause);
