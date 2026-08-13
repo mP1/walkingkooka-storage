@@ -28,6 +28,7 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.util.OpenChecker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -423,6 +424,8 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
      * Helper that converts a {@link StoragePath} to the equivalent file system {@link Path}.
      */
     private Path toPath(final StoragePath storagePath) {
+        this.stopped.check();
+
         final Path root = this.root;
 
         return root.getFileSystem()
@@ -511,8 +514,15 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
 
     @Override
     public void stop() {
-        // TODO stop background thread file system watcher
+        if(false == this.stopped.close()) {
+            // kill background thread
+        };
     }
+
+    private final OpenChecker<IllegalStateException> stopped = OpenChecker.with(
+        "NativeFile Storage stopped",
+        (String message) -> new IllegalStateException(message)
+    );
 
     // Object...........................................................................................................
 
