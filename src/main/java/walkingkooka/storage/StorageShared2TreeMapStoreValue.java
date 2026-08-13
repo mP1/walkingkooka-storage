@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.HasId;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -50,6 +51,20 @@ final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePat
                                             final StorageValueInfo info,
                                             final StorageValue value) {
         super();
+
+        final StoragePath infoPath = info.path();
+        final StoragePath valuePath = value.path();
+        if(false == infoPath.equals(valuePath)) {
+
+            // StorageValueInfo "/mount1/path1" and StorageValue "/mount1/different1" must be the same
+            throw new IllegalArgumentException(
+                "StorageValueInfo " +
+                    CharSequences.quoteAndEscape(infoPath.value()) +
+                    " and StorageValue " +
+                    CharSequences.quoteAndEscape(valuePath.value()) +
+                    " paths must be the same"
+            );
+        }
 
         this.parent = parent;
         this.info = info;
