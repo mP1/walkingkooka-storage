@@ -196,7 +196,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     void mount0(final StorageMountPoint<C> mountPoint,
                 final C context) {
         final StoragePath mountPath = mountPoint.path()
-            .parentWithoutTrailingSeparator();
+            .withoutTrailingSeparator();
         final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
         for (final StorageMountPoint<C> possible : mountPoints) {
@@ -213,7 +213,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     void unmount0(final StoragePath path,
                   final C context) {
         if (path.isNotRoot()) {
-            final StoragePath mountPath = path.parentWithoutTrailingSeparator();
+            final StoragePath mountPath = path.withoutTrailingSeparator();
 
             final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 

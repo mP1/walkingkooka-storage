@@ -311,7 +311,7 @@ final public class StoragePath
      * /path1/path2
      * </pre>
      */
-    StoragePath parentWithoutTrailingSeparator() {
+    StoragePath withoutTrailingSeparator() {
         return this.isRoot() || this.isValue() ?
             this :
             new StoragePath(
@@ -420,7 +420,7 @@ final public class StoragePath
                 appended = this.parent.orElse(ROOT);
                 break;
             default:
-                appended = this.parentWithoutTrailingSeparator()
+                appended = this.withoutTrailingSeparator()
                     .appendNonRootName(name);
                 break;
         }
