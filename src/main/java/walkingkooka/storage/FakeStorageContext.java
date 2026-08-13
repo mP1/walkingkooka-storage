@@ -34,11 +34,6 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public StoragePath parseStoragePath(final String text) {
-        throw new UnsupportedOperationException();
-    }
-
     // StorageContext...................................................................................................
 
     @Override
