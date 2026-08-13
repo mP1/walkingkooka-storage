@@ -32,6 +32,12 @@ import java.util.function.Function;
 
 /**
  * A {@link Storage} that wraps another supporting dynamic mount/unmounts at unique {@link StoragePath}.
+ * <br>
+ * Note that mount {@link StoragePath} with or without trailing {@link StoragePath#SEPARATOR} are equivalent.
+ * <pre>
+ * /mount1
+ * /mount1/
+ * </pre>
  */
 final class StorageSharedMount<C extends StorageContext> extends StorageShared<C>
     implements TreePrintable {
@@ -189,11 +195,13 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     void mount0(final StorageMountPoint<C> mountPoint,
                 final C context) {
+        final StoragePath mountPath = mountPoint.path()
+            .parentWithoutTrailingSeparator();
         final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
         for (final StorageMountPoint<C> possible : mountPoints) {
             final StoragePath path = mountPoint.path();
-            if (possible.path.equals(path)) {
+            if (possible.path.equals(mountPath)) {
                 throw path.invalidStoragePathException("Mount exists");
             }
         }
@@ -205,10 +213,12 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     void unmount0(final StoragePath path,
                   final C context) {
         if (path.isNotRoot()) {
+            final StoragePath mountPath = path.parentWithoutTrailingSeparator();
+
             final Collection<StorageMountPoint<C>> mountPoints = this.mountPoints;
 
             for (final StorageMountPoint<C> mounting : mountPoints) {
-                if (mounting.path.equals(path)) {
+                if (mounting.path.equals(mountPath)) {
                     mountPoints.remove(mounting);
                     return;
                 }
