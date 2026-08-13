@@ -37,7 +37,7 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
         Objects.requireNonNull(storage, "storage");
 
         return new StorageMountPoint<>(
-            path.parentWithoutTrailingSeparator(),
+            path.withoutTrailingSeparator(),
             storage
         );
     }

@@ -170,7 +170,7 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
                                  final C context) {
         this.saveRootIfNecessary(context);
 
-        final StoragePath parentWithSlash = parent.parentWithoutTrailingSeparator();
+        final StoragePath parentWithSlash = parent.withoutTrailingSeparator();
 
         StorageShared2TreeMapStoreValue value = this.store.load(parentWithSlash)
             .orElse(null);
