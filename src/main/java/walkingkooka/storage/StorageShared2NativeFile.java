@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -64,15 +65,15 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
     implements TreePrintable {
 
     static <C extends StorageContext> StorageShared2NativeFile<C> with(final Path root,
-                                                                       final WatchServicePoller<C> poller) {
+                                                                       final C context) {
         return new StorageShared2NativeFile<>(
             Objects.requireNonNull(root, "root"),
-            Objects.requireNonNull(poller, "poller")
+            Objects.requireNonNull(context, "context")
         );
     }
 
     private StorageShared2NativeFile(final Path root,
-                                     final WatchServicePoller<C> poller) {
+                                     final C context) {
         this.root = root;
 
         try {
@@ -85,7 +86,11 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
         this.watchKeyToPath = Maps.concurrent();
         this.registerTree(root);
 
-        poller.beginPolling(this::pollEvents);
+        final Thread thread = new Thread(
+            () -> this.pollWatchService(context)
+        );
+        thread.setName(this.getClass().getSimpleName() + " pollWatchService " + root.toAbsolutePath());
+        thread.start();
     }
 
     @Override
@@ -326,16 +331,22 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
         );
     }
 
-    /**
-     * Note the poll events below handles registering new watchers for created sub-directories. Events from directories
-     * such as create/modify/delete are filtered from the given {@link StorageWatcher}.
-     */
-    private void pollEvents(final WatchServicePoller<C> poller) {
-        for (; ; ) {
-            final WatchKey watchKey = poller.pollOrTakeWatchKey(this.watcher)
-                .orElse(null);
+    private void pollWatchService(final C context) {
+        while (false == this.stopped.isClosed()) {
+            // wait for key to be signaled
+            WatchKey watchKey;
+
+            try {
+                watchKey = this.watcher.poll(
+                    1000,
+                    TimeUnit.MILLISECONDS
+                );
+            } catch (final InterruptedException x) {
+                continue;
+            }
+
             if (null == watchKey) {
-                break;
+                continue;
             }
             final Path dir = this.watchKeyToPath.get(watchKey);
 
@@ -384,7 +395,7 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
                                         .flatMap(
                                             (final Path p) -> this.load(
                                                 this.toStoragePath(p),
-                                                poller.context()
+                                                context
                                             )
                                         )
                                 );
