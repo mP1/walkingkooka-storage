@@ -345,7 +345,7 @@ public final class StorageShared2TreeMapStoreValueTest implements HashCodeEquals
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\""
+            "\"Value999\" created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59"
         );
     }
 
@@ -361,7 +361,7 @@ public final class StorageShared2TreeMapStoreValueTest implements HashCodeEquals
                     )
                 )
             ),
-            "/path123 created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59 /path123=\"Value999\" text/plain; charset=UTF-8"
+            "text/plain; charset=UTF-8 \"Value999\" created-by@example.com 1999-12-31T12:58:59 modified-by@example.com 2000-01-02T12:58:59"
         );
     }
 
