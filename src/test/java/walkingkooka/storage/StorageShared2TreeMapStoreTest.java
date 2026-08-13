@@ -768,12 +768,6 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         }
 
         @Override
-        public StoragePath parseStoragePath(final String text) {
-            Objects.requireNonNull(text, "text");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public Optional<EmailAddress> user() {
             return OPTIONAL_USER;
         }

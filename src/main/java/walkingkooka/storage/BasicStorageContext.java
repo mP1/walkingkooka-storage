@@ -74,11 +74,6 @@ final class BasicStorageContext implements StorageContext,
     // StorageContext...................................................................................................
 
     @Override
-    public StoragePath parseStoragePath(final String text) {
-        return StoragePath.parse(text);
-    }
-
-    @Override
     public Optional<StorageValue> loadStorage(final StoragePath path) {
         return this.storage.load(
             path,

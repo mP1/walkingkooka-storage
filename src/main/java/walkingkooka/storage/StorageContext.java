@@ -25,7 +25,6 @@ import java.util.List;
 
 public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
-    CanParseStoragePath,
     CanLoadStorage,
     MediaTypeDetector {
 
