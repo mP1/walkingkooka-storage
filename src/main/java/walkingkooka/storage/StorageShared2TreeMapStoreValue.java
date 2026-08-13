@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.Cast;
 import walkingkooka.HasId;
+import walkingkooka.ToStringBuilder;
+import walkingkooka.UsesToStringBuilder;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -31,7 +33,8 @@ import java.util.Optional;
  * {@link walkingkooka.store.Store}.
  */
 final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePath>>,
-    TreePrintable {
+    TreePrintable,
+    UsesToStringBuilder {
 
     final static boolean NOT_PARENT = false;
 
@@ -164,7 +167,16 @@ final class StorageShared2TreeMapStoreValue implements HasId<Optional<StoragePat
 
     @Override
     public String toString() {
-        return this.info + " " + this.value.toString();
+        return ToStringBuilder.buildFrom(this);
+    }
+
+    // UsesToStringBuilder..............................................................................................
+
+    @Override
+    public void buildToString(final ToStringBuilder builder) {
+        builder.value(this.value.contentType())
+            .value(this.value.value())
+            .value(this.info.auditInfo());
     }
 
     // TreePrintable....................................................................................................

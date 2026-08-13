@@ -840,7 +840,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
         this.toStringAndCheck(
             store,
-            "{/=/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1=/path1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1/value1=/path1/value1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path1/value1=\"111\"}"
+            "{/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1/value1=\"111\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59}"
         );
     }
 
@@ -869,7 +869,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
         this.toStringAndCheck(
             store,
-            "{/=/ user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1=/path1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path1/value1=/path1/value1 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path1/value1=\"111\", /path2=/path2 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 , /path2/value2=/path2/value2 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59 /path2/value2=\"222\"}"
+            "{/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1/value1=\"111\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2/value2=\"222\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59}"
         );
     }
 
