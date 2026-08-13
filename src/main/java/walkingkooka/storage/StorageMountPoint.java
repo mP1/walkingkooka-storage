@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.naming.HasPath;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -27,6 +28,7 @@ import java.util.Objects;
  * A single mount within a {@link RoutingStorage}.
  */
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
+    HasPath<StoragePath>,
     TreePrintable {
 
     public static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
@@ -106,6 +108,7 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
 
     // path.............................................................................................................
 
+    @Override
     public StoragePath path() {
         return this.path;
     }
