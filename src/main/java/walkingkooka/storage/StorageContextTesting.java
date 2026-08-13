@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.ConverterLikeTesting;
+import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.net.header.MediaTypeDetectorTesting;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
     CanLoadStorageTesting,
     CanParseStoragePathTesting,
     ConverterLikeTesting,
+    HasAuditInfoTesting,
     MediaTypeDetectorTesting {
 
     Storage<StorageContext> STORAGE = Storages.empty();
