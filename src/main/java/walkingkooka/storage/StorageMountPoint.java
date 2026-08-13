@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.naming.HasPath;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -29,6 +30,7 @@ import java.util.Objects;
  */
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
     HasPath<StoragePath>,
+    HasText,
     TreePrintable {
 
     public static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
@@ -161,6 +163,19 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
     @Override
     public int compareTo(final StorageMountPoint<C> other) {
         return -this.path.compareTo(other.path);
+    }
+
+    // HasText..........................................................................................................
+
+    /**
+     * Returns a line something like
+     * <pre>
+     * /mount1/path2={@link Storage#toString()}.
+     * </pre>
+     */
+    @Override
+    public String text() {
+        return this.path.text() + "=" + this.storage;
     }
 
     // TreePrintable....................................................................................................
