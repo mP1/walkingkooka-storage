@@ -20,7 +20,8 @@ package walkingkooka.storage;
 import java.util.Optional;
 
 public interface HasUserDirectoriesTesting extends HasCurrentWorkingDirectoryTesting,
-    HasHomeDirectoryTesting {
+    HasHomeDirectoryTesting,
+    CanParseStoragePathTesting {
 
     HasUserDirectories HAS_USER_DIRECTORIES = new HasUserDirectories() {
         @Override
