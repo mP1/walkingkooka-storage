@@ -25,7 +25,7 @@ import walkingkooka.text.printer.TreePrintable;
 import java.util.Objects;
 
 /**
- * A single mount within a {@link RoutingStorage}.
+ * A single mount within a {@link Storage}.
  */
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
     HasPath<StoragePath>,
