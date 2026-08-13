@@ -24,9 +24,64 @@ import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public final class StorageMountPointTest implements TreePrintableTesting,
     HasPathTesting,
     ClassTesting2<StorageMountPoint<StorageContext>> {
+
+    private final static Storage<StorageContext> STORAGE = Storages.fake();
+
+    // with.............................................................................................................
+
+    @Test
+    public void testWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageMountPoint.with(
+                null,
+                STORAGE
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullStorageFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageMountPoint.with(
+                StoragePath.ROOT,
+                null
+            )
+        );
+    }
+
+    @Test
+    public void testWith() {
+        final StorageMountPoint<StorageContext> storageMountPoint = StorageMountPoint.with(
+            StoragePath.ROOT,
+            STORAGE
+        );
+
+        this.pathAndCheck(
+            storageMountPoint,
+            StoragePath.ROOT
+        );
+
+        this.storageAndCheck(
+            storageMountPoint,
+            STORAGE
+        );
+    }
+
+    private void storageAndCheck(final StorageMountPoint<StorageContext> storageMountPoint,
+                                 final Storage<StorageContext> expected) {
+        this.checkEquals(
+            expected,
+            storageMountPoint.storage(),
+            storageMountPoint::toString
+        );
+    }
 
     // add..............................................................................................................
 
