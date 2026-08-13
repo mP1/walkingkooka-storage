@@ -636,7 +636,7 @@ public final class StorageShared2WrapperExpandedCurrentWorkingDirectoryTest exte
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "/cwd []"
+            "/cwd {}"
         );
     }
 

@@ -673,7 +673,7 @@ public final class StorageShared2WrapperPrefixedTest extends StorageShared2Wrapp
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "/prefix111 []"
+            "/prefix111 {}"
         );
     }
 
