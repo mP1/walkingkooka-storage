@@ -21,21 +21,12 @@ import walkingkooka.Binary;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
-import walkingkooka.storage.StoragePath;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
 import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
 
 public interface StorageConverterContextDelegator extends JsonNodeConverterContextDelegator,
     StorageConverterContext,
     HasUserDirectoriesDelegator {
-
-    @Override
-    default StoragePath parseStoragePath(final String text) {
-        return this.storageConverterContext()
-            .parseStoragePath(
-                text
-            );
-    }
 
     // MediaTypeDetector................................................................................................
 
