@@ -24,7 +24,6 @@ import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.storage.HasUserDirectoriesDelegator;
-import walkingkooka.storage.StoragePath;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
 import walkingkooka.tree.json.convert.JsonNodeConverterContextDelegator;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
@@ -63,15 +62,6 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         this.hasUserDirectories = hasUserDirectories;
         this.mediaTypeDetector = mediaTypeDetector;
         this.context = context;
-    }
-
-
-    @Override
-    public StoragePath parseStoragePath(final String text) {
-        return StoragePath.parseSpecial(
-            text,
-            this
-        );
     }
 
     // MediaTypeDetector................................................................................................

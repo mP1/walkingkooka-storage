@@ -18,14 +18,12 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.net.header.MediaTypeDetector;
-import walkingkooka.storage.CanParseStoragePath;
 import walkingkooka.storage.HasUserDirectories;
 import walkingkooka.tree.json.convert.JsonNodeConverterContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContextObjectPostProcessor;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
 public interface StorageConverterContext extends JsonNodeConverterContext,
-    CanParseStoragePath,
     HasUserDirectories,
     MediaTypeDetector {
 

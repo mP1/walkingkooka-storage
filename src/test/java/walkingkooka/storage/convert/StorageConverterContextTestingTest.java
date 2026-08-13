@@ -129,14 +129,6 @@ public final class StorageConverterContextTestingTest implements StorageConverte
         }
 
         @Override
-        public StoragePath parseStoragePath(final String text) {
-            return StoragePath.parseSpecial(
-                text,
-                this
-            );
-        }
-
-        @Override
         public MediaType detect(final String filename,
                                 final Binary content) {
             return MEDIA_TYPE_DETECTOR.detect(
