@@ -48,6 +48,8 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
 
     private final static StoragePath MOUNT1_PATH = StoragePath.parse("/mount1");
 
+    private final static StoragePath MOUNT1_SLASH_PATH = StoragePath.parse("/mount1/");
+
     private final static StoragePath VALUE1_PATH = StoragePath.parse("/value1");
 
     private final static StoragePath MOUNT1_VALUE_PATH = StoragePath.parse(
@@ -142,6 +144,74 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         );
     }
 
+    @Test
+    public void testMountTrailingSlashDifferenceDuplicateFails2() {
+        final Storage<StorageContext> root = Storages.fake();
+
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.fake()
+            ),
+            CONTEXT
+        );
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
+            CONTEXT
+        );
+
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> storage.mount(
+                StorageMountPoint.with(
+                    MOUNT1_SLASH_PATH,
+                    Storages.fake()
+                ),
+                CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testMountTrailingSlashDifferenceDuplicateFails3() {
+        final Storage<StorageContext> root = Storages.fake();
+
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_SLASH_PATH,
+                Storages.fake()
+            ),
+            CONTEXT
+        );
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT2_PATH,
+                Storages.fake()
+            ),
+            CONTEXT
+        );
+
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> storage.mount(
+                StorageMountPoint.with(
+                    MOUNT1_PATH,
+                    Storages.fake()
+                ),
+                CONTEXT
+            )
+        );
+    }
+
     // mountPoints......................................................................................................
 
     @Test
@@ -186,7 +256,7 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
     }
 
     @Test
-    public void testFirstMountWhenOnlyMount1() {
+    public void testFirstMountWhenOnlyRoot() {
         final Storage<StorageContext> root = Storages.fake();
 
         this.firstMountAndCheck(
@@ -217,6 +287,56 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
         this.firstMountAndCheck(
             storage,
             MOUNT1_PATH,
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            )
+        );
+    }
+
+    @Test
+    public void testFirstMountWithMount1Slash() {
+        final Storage<StorageContext> root = Storages.fake();
+
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+
+        final Storage<StorageContext> mount1 = Storages.fake();
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_SLASH_PATH,
+                mount1
+            ),
+            CONTEXT
+        );
+
+        this.firstMountAndCheck(
+            storage,
+            MOUNT1_PATH,
+            StorageMountPoint.with(
+                MOUNT1_SLASH_PATH,
+                mount1
+            )
+        );
+    }
+
+    @Test
+    public void testFirstMountWithMount1Slash2() {
+        final Storage<StorageContext> root = Storages.fake();
+
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+
+        final Storage<StorageContext> mount1 = Storages.fake();
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                mount1
+            ),
+            CONTEXT
+        );
+
+        this.firstMountAndCheck(
+            storage,
+            MOUNT1_SLASH_PATH,
             StorageMountPoint.with(
                 MOUNT1_PATH,
                 mount1
