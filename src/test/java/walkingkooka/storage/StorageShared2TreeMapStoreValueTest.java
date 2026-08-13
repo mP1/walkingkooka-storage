@@ -26,6 +26,7 @@ import walkingkooka.net.header.CharsetName;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.ThrowableTesting;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageShared2TreeMapStoreValueTest implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStoreValue>,
     ClassTesting2<StorageShared2TreeMapStoreValue>,
+    ThrowableTesting,
     ToStringTesting<StorageShared2TreeMapStoreValue> {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
@@ -96,6 +98,25 @@ public final class StorageShared2TreeMapStoreValueTest implements HashCodeEquals
                 STORAGE_VALUE_INFO,
                 null
             )
+        );
+    }
+
+    @Test
+    public void testWithDifferentStorageValueInfoAndStorageValuePathsFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StorageShared2TreeMapStoreValue.with(
+                false,
+                STORAGE_VALUE_INFO,
+                VALUE.setPath(
+                    StoragePath.parse("/different")
+                )
+            )
+        );
+
+        this.getMessageAndCheck(
+            thrown,
+            "StorageValueInfo \"/path123\" and StorageValue \"/different\" paths must be the same"
         );
     }
 
