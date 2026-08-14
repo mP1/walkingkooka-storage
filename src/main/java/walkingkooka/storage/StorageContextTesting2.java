@@ -84,6 +84,57 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
+    // listStorage......................................................................................................
+
+    @Test
+    default void testListStorageWithNullParentFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .listStorage(
+                    null,
+                    0,
+                    0
+                )
+        );
+    }
+
+    @Test
+    default void testListStorageWithNegativeOffsetFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> this.createContext()
+                .listStorage(
+                    StoragePath.ROOT,
+                    -1,
+                    1
+                )
+        );
+
+        this.checkEquals(
+            "Invalid offset -1 < 0",
+            thrown.getMessage()
+        );
+    }
+
+    @Test
+    default void testListStorageWithNegativeCountFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> this.createContext()
+                .listStorage(
+                    StoragePath.ROOT,
+                    0,
+                    -1
+                )
+        );
+
+        this.checkEquals(
+            "Invalid count -1 < 0",
+            thrown.getMessage()
+        );
+    }
+
     // SetAuditInfoStorage..............................................................................................
 
     @Test
