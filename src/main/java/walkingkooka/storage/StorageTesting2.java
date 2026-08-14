@@ -84,7 +84,7 @@ public interface StorageTesting2<S extends Storage<C>, C extends StorageContext>
     // load.............................................................................................................
 
     @Test
-    default void testLoadWithNullIdFails() {
+    default void testLoadWithNullStoragePathFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createStorage()
