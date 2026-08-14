@@ -90,6 +90,12 @@ public interface StorageContextDelegator extends StorageContext,
     }
 
     @Override
+    default void setAuditInfoStorage(final StorageValueInfo info) {
+        this.storageContext()
+            .setAuditInfoStorage(info);
+    }
+
+    @Override
     default void mountStorage(final StorageMountPoint<?> mountPoint) {
         this.storageContext()
             .mountStorage(mountPoint);

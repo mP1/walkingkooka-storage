@@ -172,6 +172,28 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
+    // setAuditInfoStorage..............................................................................................
+
+    @Test
+    public void testSetAuditInfoStorage() {
+        final BasicStorageContext context = this.createContext();
+
+        final StorageValueInfo info = StorageValueInfo.with(
+            STORAGE_PATH,
+            DIFFERENT_AUDIT_INFO
+        );
+
+        context.setAuditInfoStorage(info);
+
+        this.listStorageAndCheck(
+            context,
+            StoragePath.ROOT,
+            0,
+            2,
+            info
+        );
+    }
+
     // setEnvironmentContext............................................................................................
 
     @Test
