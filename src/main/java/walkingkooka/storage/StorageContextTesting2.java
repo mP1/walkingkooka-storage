@@ -51,6 +51,17 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
+    // SetAuditInfoStorage..............................................................................................
+
+    @Test
+    default void testSetAuditInfoStorageWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .setAuditInfoStorage(null)
+        );
+    }
+
     // CanParseStoragePath..............................................................................................
 
     @Override

@@ -56,6 +56,11 @@ public interface StorageContext extends StorageEnvironmentContext,
                                        final int count);
 
     /**
+     * {@link Storage#setAuditInfo(StorageValueInfo, StorageContext)}
+     */
+    void setAuditInfoStorage(final StorageValueInfo info);
+
+    /**
      * {@link Storage#mount(StorageMountPoint, StorageContext)}
      */
     void mountStorage(final StorageMountPoint<?> mountPoint);
