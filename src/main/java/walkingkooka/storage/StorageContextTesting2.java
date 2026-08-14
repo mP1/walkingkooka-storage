@@ -51,10 +51,10 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
-    // load.............................................................................................................
+    // loadStorage......................................................................................................
 
     @Test
-    default void testLoadWithNullStoragePathFails() {
+    default void testLoadStorageWithNullStoragePathFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createContext()
