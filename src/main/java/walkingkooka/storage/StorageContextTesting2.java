@@ -32,7 +32,7 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
     // CanReadStorage...................................................................................................
 
     @Test
-    default void testCanReadStorageWithPath() {
+    default void testCanReadStorageWithNullPathFails() {
         assertThrows(
             NullPointerException.class,
             () -> this.createContext()
