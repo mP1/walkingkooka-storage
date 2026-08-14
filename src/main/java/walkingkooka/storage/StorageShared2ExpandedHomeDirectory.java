@@ -20,39 +20,47 @@ package walkingkooka.storage;
 import java.util.Optional;
 
 /**
- * Wraps another {@link Storage} resolving any paths that begin with {@link StoragePath#HOME_DIRECTORY_PREFIX}
- * replacing that with the actual {@link StorageContext#homeDirectory()}.
+ * Replaces the {@link StoragePath#ROOT} with the current {@link StorageEnvironmentContext#homeDirectory()}.
  */
-final class StorageShared2WrapperExpandedHomeDirectory<C extends StorageContext> extends StorageShared2WrapperExpanded<C> {
+final class StorageShared2ExpandedHomeDirectory<C extends StorageContext> extends StorageShared2Expanded<C> {
 
-    static <C extends StorageContext> StorageShared2WrapperExpandedHomeDirectory<C> with(final Storage<C> storage) {
-        return storage instanceof StorageShared2WrapperExpandedHomeDirectory ?
-            (StorageShared2WrapperExpandedHomeDirectory) storage :
-            new StorageShared2WrapperExpandedHomeDirectory(storage);
+    static <C extends StorageContext> StorageShared2ExpandedHomeDirectory<C> instance() {
+        return INSTANCE;
     }
 
-    private StorageShared2WrapperExpandedHomeDirectory(final Storage<C> storage) {
-        super(storage);
+    /**
+     * Singleton
+     */
+    private final static StorageShared2ExpandedHomeDirectory INSTANCE = new StorageShared2ExpandedHomeDirectory<>();
+
+    private StorageShared2ExpandedHomeDirectory() {
+        super();
     }
 
-    // StorageShared2WrapperExpanded.....................................................................................
+    // StorageShared2Expanded...........................................................................................
 
     @Override//
     Optional<StoragePath> expand(final StoragePath path,
                                  final C context) {
-        return path.replaceHomeDirectory(context);
+        return this.replacePrefixWithEnvironment(
+            path,
+            context.homeDirectory()
+        );
     }
 
     @Override//
     Optional<StoragePath> unexpand(final StoragePath path,
                                    final C context) {
-        return path.restoreHomeDirectory(context);
+        return this.replaceEnvironment(
+            path,
+            context.homeDirectory()
+        );
     }
 
     // Object...........................................................................................................
 
     @Override
     public String toString() {
-        return StoragePath.HOME_DIRECTORY_PREFIX + " " + this.storage.toString();
+        return StoragePath.HOME_DIRECTORY_PREFIX.toString();
     }
 }

@@ -21,11 +21,11 @@ import walkingkooka.Cast;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class StorageShared2WrapperExpandedTest implements ClassTesting2<StorageShared2WrapperExpanded<?>> {
+public final class StorageShared2ExpandedTest implements ClassTesting2<StorageShared2Expanded<?>> {
 
     @Override
-    public Class<StorageShared2WrapperExpanded<?>> type() {
-        return Cast.to(StorageShared2WrapperExpanded.class);
+    public Class<StorageShared2Expanded<?>> type() {
+        return Cast.to(StorageShared2Expanded.class);
     }
 
     @Override

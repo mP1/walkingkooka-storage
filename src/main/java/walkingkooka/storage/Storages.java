@@ -29,10 +29,10 @@ import java.util.function.Function;
 public final class Storages implements PublicStaticHelper {
 
     /**
-     * {@see StorageShared2WrapperExpandedCurrentWorkingDirectory}
+     * {@see StorageShared2ExpandedCurrentWorkingDirectory}
      */
-    public static <C extends StorageContext> Storage<C> currentWorkingDirectory(final Storage<C> storage) {
-        return StorageShared2WrapperExpandedCurrentWorkingDirectory.with(storage);
+    public static <C extends StorageContext> Storage<C> currentWorkingDirectory() {
+        return StorageShared2ExpandedCurrentWorkingDirectory.instance();
     }
 
     /**
@@ -69,10 +69,10 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
-     * {@see StorageShared2WrapperExpandedHomeDirectory}
+     * {@see StorageShared2ExpandedHomeDirectory}
      */
-    public static <C extends StorageContext> Storage<C> homeDirectory(final Storage<C> storage) {
-        return StorageShared2WrapperExpandedHomeDirectory.with(storage);
+    public static <C extends StorageContext> Storage<C> homeDirectory() {
+        return StorageShared2ExpandedHomeDirectory.instance();
     }
 
     /**
