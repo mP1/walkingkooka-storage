@@ -48,6 +48,12 @@ public interface StorageContextDelegator extends StorageContext,
     }
 
     @Override
+    default boolean canReadStorage(final StoragePath path) {
+        return this.storageContext()
+            .canReadStorage(path);
+    }
+
+    @Override
     default Optional<StorageValue> loadStorage(final StoragePath path) {
         return this.storageContext()
             .loadStorage(path);

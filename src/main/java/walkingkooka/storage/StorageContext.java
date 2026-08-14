@@ -29,6 +29,11 @@ public interface StorageContext extends StorageEnvironmentContext,
     MediaTypeDetector {
 
     /**
+     * {@link Storage#canRead(StoragePath, StorageContext)}
+     */
+    boolean canReadStorage(final StoragePath path);
+
+    /**
      * {@link Storage#save(StorageValue, StorageContext)}.
      */
     StorageValue saveStorage(final StorageValue value);
