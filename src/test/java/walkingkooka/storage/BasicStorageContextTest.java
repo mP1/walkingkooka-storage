@@ -115,6 +115,17 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
+    // canReadStorage...................................................................................................
+
+    @Test
+    public void testCanReadStorage() {
+        this.canReadStorageAndCheck(
+            this.createContext(),
+            STORAGE_PATH,
+            true
+        );
+    }
+
     // loadStorage......................................................................................................
 
     @Test

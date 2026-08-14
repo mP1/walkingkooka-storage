@@ -47,6 +47,18 @@ public interface StorageContextTesting extends StorageEnvironmentContextTesting,
         DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
     );
 
+    // canReadStorage...................................................................................................
+
+    default void canReadStorageAndCheck(final StorageContext context,
+                                        final StoragePath path,
+                                        final boolean expected) {
+        this.checkEquals(
+            expected,
+            context.canReadStorage(path),
+            () -> " canReadStorage " + path
+        );
+    }
+
     // saveStorage......................................................................................................
 
     default void saveStorageAndCheck(final StorageContext context,
