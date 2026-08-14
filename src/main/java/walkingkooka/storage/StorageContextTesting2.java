@@ -62,6 +62,17 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
+    // saveStorage......................................................................................................
+
+    @Test
+    default void testSaveStorageWithNullStorageValueFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .saveStorage(null)
+        );
+    }
+
     // SetAuditInfoStorage..............................................................................................
 
     @Test
