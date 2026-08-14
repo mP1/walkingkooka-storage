@@ -126,6 +126,41 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
     }
 
+    // canWriteStorage...................................................................................................
+
+    @Test
+    public void testCanWriteStorage() {
+        this.canWriteStorageAndCheck(
+            this.createContext(),
+            STORAGE_PATH,
+            true
+        );
+    }
+
+    @Test
+    public void testCanWriteStorage2() {
+        this.canWriteStorageAndCheck(
+            BasicStorageContext.with(
+                CONVERTER_LIKE,
+                MEDIA_TYPE_DETECTOR,
+                new FakeStorage<>() {
+                    @Override
+                    public boolean canWrite(final StoragePath path,
+                                            final StorageContext context) {
+                        checkEquals(
+                            STORAGE_PATH,
+                            path
+                        );
+                        return false;
+                    }
+                },
+                ENVIRONMENT_CONTEXT
+            ),
+            STORAGE_PATH,
+            false
+        );
+    }
+
     // loadStorage......................................................................................................
 
     @Test

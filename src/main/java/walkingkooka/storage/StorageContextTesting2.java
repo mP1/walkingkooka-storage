@@ -40,6 +40,17 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
+    // CanWriteStorage..................................................................................................
+
+    @Test
+    default void testCanWriteStorageWithNullPathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .canWriteStorage(null)
+        );
+    }
+
     // CanParseStoragePath..............................................................................................
 
     @Override
