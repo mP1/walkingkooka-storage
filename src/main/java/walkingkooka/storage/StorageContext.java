@@ -34,6 +34,11 @@ public interface StorageContext extends StorageEnvironmentContext,
     boolean canReadStorage(final StoragePath path);
 
     /**
+     * {@link Storage#canWrite(StoragePath, StorageContext)}
+     */
+    boolean canWriteStorage(final StoragePath path);
+
+    /**
      * {@link Storage#save(StorageValue, StorageContext)}.
      */
     StorageValue saveStorage(final StorageValue value);
