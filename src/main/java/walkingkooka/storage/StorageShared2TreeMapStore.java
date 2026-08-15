@@ -317,10 +317,7 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
 
     @Override
     public boolean isEmpty() {
-        final Store<StoragePath, StorageShared2TreeMapStoreValue> store = this.store;
-
-        return store instanceof CanBeEmpty &&
-            ((CanBeEmpty) store).isEmpty();
+        return CanBeEmpty.maybeCanBeEmpty(this.store);
     }
 
     // TreePrintable....................................................................................................
