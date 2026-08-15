@@ -18,6 +18,7 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.CanBeEmptyTesting;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
@@ -32,7 +33,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<StorageShared2TreeMapStore<TestStorageContext>, TestStorageContext>
-    implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStore<TestStorageContext>>,
+    implements CanBeEmptyTesting,
+    HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStore<TestStorageContext>>,
     ThrowableTesting,
     ToStringTesting<StorageShared2TreeMapStore<TestStorageContext>> {
 
@@ -870,6 +872,35 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         this.toStringAndCheck(
             store,
             "{/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1/value1=\"111\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2/value2=\"222\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59}"
+        );
+    }
+
+    // CanBeEmpty.......................................................................................................
+
+    @Test
+    public void testCanBeEmptyWhenEmpty() {
+        this.isEmptyAndCheck(
+            StorageShared2TreeMapStore.empty(),
+            true
+        );
+    }
+
+    @Test
+    public void testCanBeEmptyWhenNotEmpty() {
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
+
+        storage.save(
+            StorageValue.with(
+                StoragePath.parse("/value111")
+            ).setValue(
+                Optional.of("Hello")
+            ),
+            this.createContext()
+        );
+
+        this.isEmptyAndCheck(
+            storage,
+            false
         );
     }
 

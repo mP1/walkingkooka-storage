@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.CanBeEmpty;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.store.Store;
 import walkingkooka.store.StoreWatcher;
@@ -35,7 +36,8 @@ import java.util.stream.Collectors;
  * entries.
  */
 final class StorageShared2TreeMapStore<C extends StorageContext> extends StorageShared2<C>
-    implements TreePrintable {
+    implements CanBeEmpty,
+    TreePrintable {
 
     static <C extends StorageContext> StorageShared2TreeMapStore<C> empty() {
         return new StorageShared2TreeMapStore<>();
@@ -309,6 +311,16 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
     @Override
     public String toString() {
         return this.store.toString();
+    }
+
+    // CanBeEmpty.......................................................................................................
+
+    @Override
+    public boolean isEmpty() {
+        final Store<StoragePath, StorageShared2TreeMapStoreValue> store = this.store;
+
+        return store instanceof CanBeEmpty &&
+            ((CanBeEmpty) store).isEmpty();
     }
 
     // TreePrintable....................................................................................................
