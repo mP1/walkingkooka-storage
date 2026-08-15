@@ -620,30 +620,6 @@ final public class StoragePath
      */
     public final static StoragePath CURRENT_WORKING_DIRECTORY_PREFIX = parse("/cwd");
 
-    // replaceCurrentWorkingDirectory...................................................................................
-
-    /**
-     * If this path starts with {@link #CURRENT_WORKING_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
-     */
-    Optional<StoragePath> replaceCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
-        return this.replacePrefix(
-            CURRENT_WORKING_DIRECTORY_PREFIX,
-            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail()
-        );
-    }
-
-    // replaceUserHomeDirectory.........................................................................................
-
-    /**
-     * If this path starts with {@link #HOME_DIRECTORY_PREFIX} replace that with the {@link HasHomeDirectory#homeDirectory()}.
-     */
-    Optional<StoragePath> replaceHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
-        return this.replacePrefix(
-            HOME_DIRECTORY_PREFIX,
-            hasHomeDirectory.homeDirectoryOrFail()
-        );
-    }
-
     /**
      * Removes the prefix from this {@link StoragePath prefix} and replaces that with {@link StoragePath replaceWith}.
      * If the prefix is absent {@link Optional#empty()} is returned.
@@ -669,30 +645,6 @@ final public class StoragePath
                         )
                 ) :
                 null
-        );
-    }
-
-    // restoreCurrentWorkingDirectory...................................................................................
-
-    /**
-     * If this path starts with {@link HasCurrentWorkingDirectory#currentWorkingDirectory()} replace that with {@link #CURRENT_WORKING_DIRECTORY_PREFIX}..
-     */
-    Optional<StoragePath> restoreCurrentWorkingDirectory(final HasCurrentWorkingDirectory hasCurrentWorkingDirectory) {
-        return this.replacePrefix(
-            hasCurrentWorkingDirectory.currentWorkingDirectoryOrFail(),
-            CURRENT_WORKING_DIRECTORY_PREFIX
-        );
-    }
-
-    // restoreUserHomeDirectory.........................................................................................
-
-    /**
-     * If this path starts with {@link HasHomeDirectory#homeDirectory()} replace that with {@link #HOME_DIRECTORY_PREFIX}..
-     */
-    Optional<StoragePath> restoreHomeDirectory(final HasHomeDirectory hasHomeDirectory) {
-        return this.replacePrefix(
-            hasHomeDirectory.homeDirectoryOrFail(),
-            HOME_DIRECTORY_PREFIX
         );
     }
 }
