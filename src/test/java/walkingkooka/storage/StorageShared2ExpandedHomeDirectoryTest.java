@@ -19,15 +19,19 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.convert.ConverterLikeTesting;
 import walkingkooka.datetime.HasNowTesting;
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.MediaTypeDetectorTesting;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-public final class StorageShared2WrapperExpandedHomeDirectoryTest extends StorageShared2WrapperExpandedTestCase<StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext>, FakeStorageContext>
-    implements HasHomeDirectoryTesting,
-    HasNowTesting {
+public final class StorageShared2ExpandedHomeDirectoryTest extends StorageShared2ExpandedTestCase<StorageShared2ExpandedHomeDirectory<StorageContext>, StorageContext>
+    implements ConverterLikeTesting,
+    HasHomeDirectoryTesting,
+    HasNowTesting,
+    MediaTypeDetectorTesting,
+    StorageContextTesting,
+    StorageEnvironmentContextTesting {
 
     private final static StoragePath HOME_PREFIX_PATH = StoragePath.parse(
         StoragePath.HOME_DIRECTORY_PREFIX + "/111"
@@ -60,60 +64,48 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testLoadHomeDirectoryPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final Storage<StorageContext> root = Storages.treeMapStore();
+        final StorageContext context = this.createContext(root);
 
-        storage.storage.save(
+        root.save(
             HOME_DIRECTORY_VALUE,
             context
         );
 
-        this.loadAndCheck(
-            storage,
-            HOME_DIRECTORY_PATH,
+        context.mountStorage(
+            StorageMountPoint.with(
+                StoragePath.HOME_DIRECTORY_PREFIX,
+                this.createStorage()
+            )
+        );
+
+        this.loadStorageAndCheck(
             context,
+            HOME_DIRECTORY_PATH,
             HOME_DIRECTORY_VALUE
         );
     }
 
     @Test
-    public void testLoadRootWithEnvironmentHomeDirectorySlash() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
-
-        final StoragePath path = StoragePath.parse("/value111");
-        final StorageValue storageValue = StorageValue.with(path)
-            .setValue(
-                Optional.of(111)
-            );
-
-        storage.storage.save(
-            storageValue,
-            context
-        );
-
-        this.loadAndCheck(
-            storage,
-            path,
-            context,
-            storageValue
-        );
-    }
-
-    @Test
     public void testLoadHomeDirectoryPrefixPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final Storage<StorageContext> root = Storages.treeMapStore();
+        final StorageContext context = this.createContext(root);
 
-        storage.storage.save(
+        root.save(
             HOME_DIRECTORY_VALUE,
             context
         );
 
-        this.loadAndCheck(
-            storage,
-            HOME_PREFIX_PATH,
+        context.mountStorage(
+            StorageMountPoint.with(
+                StoragePath.HOME_DIRECTORY_PREFIX,
+                this.createStorage()
+            )
+        );
+
+        this.loadStorageAndCheck(
             context,
+            HOME_PREFIX_PATH,
             HOME_PREFIX_VALUE
         );
     }
@@ -122,68 +114,34 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testSaveHomeDirectoryPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        this.saveAndCheck(
-            storage,
+        this.saveStorageAndCheck(
+            context,
             HOME_DIRECTORY_VALUE,
-            context,
             HOME_DIRECTORY_VALUE
         );
 
-        this.loadAndCheck(
-            storage.storage,
+        this.loadStorageAndCheck(
+            context,
             HOME_DIRECTORY_PATH,
-            context,
             HOME_DIRECTORY_VALUE
-        );
-    }
-
-    @Test
-    public void testSaveHomeDirectoryPathWithEnvironmentRoot() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext(
-            Optional.of(StoragePath.ROOT)
-        );
-
-        final StoragePath path = StoragePath.parse("/value111");
-        final StorageValue storageValue = StorageValue.with(path)
-            .setValue(
-                Optional.of(111)
-            );
-
-        this.saveAndCheck(
-            storage,
-            storageValue,
-            context,
-            storageValue
-        );
-
-        this.loadAndCheck(
-            storage.storage,
-            path,
-            context,
-            storageValue
         );
     }
 
     @Test
     public void testSaveHomeDirectoryPrefixPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        this.saveAndCheck(
-            storage,
-            HOME_PREFIX_VALUE,
+        this.saveStorageAndCheck(
             context,
+            HOME_PREFIX_VALUE,
             HOME_PREFIX_VALUE
         );
 
-        this.loadAndCheck(
-            storage.storage,
-            HOME_DIRECTORY_PATH,
+        this.loadStorageAndCheck(
             context,
+            HOME_DIRECTORY_PATH,
             HOME_DIRECTORY_VALUE
         );
     }
@@ -192,35 +150,29 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testDeleteHomePrefixDirectoryPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        storage.delete(
-            HOME_PREFIX_PATH,
-            context
+        context.deleteStorage(
+            HOME_PREFIX_PATH
         );
 
-        this.loadAndCheck(
-            storage.storage,
-            HOME_DIRECTORY_PATH,
-            context
+        this.loadStorageAndCheck(
+            context,
+            HOME_DIRECTORY_PATH
         );
     }
 
     @Test
     public void testDeleteHomeDirectoryPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        storage.delete(
-            HOME_DIRECTORY_PATH,
-            context
+        context.deleteStorage(
+            HOME_DIRECTORY_PATH
         );
 
-        this.loadAndCheck(
-            storage.storage,
-            HOME_DIRECTORY_PATH,
-            context
+        this.loadStorageAndCheck(
+            context,
+            HOME_DIRECTORY_PATH
         );
     }
 
@@ -228,8 +180,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testListHomeDirectoryPrefix() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(HOME_DIRECTORY + "/value111");
         final StorageValue value1 = StorageValue.with(path1)
@@ -237,10 +188,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(111)
             );
 
-        storage.save(
-            value1,
-            context
-        );
+        context.saveStorage(value1);
 
         final StoragePath path2 = StoragePath.parse(HOME_DIRECTORY + "/value222");
         final StorageValue value2 = StorageValue.with(path2)
@@ -248,10 +196,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(222)
             );
 
-        storage.save(
-            value2,
-            context
-        );
+        context.saveStorage(value2);
 
         final StoragePath path3 = StoragePath.parse(HOME_DIRECTORY + "/value333");
         final StorageValue value3 = StorageValue.with(path3)
@@ -259,10 +204,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(333)
             );
 
-        storage.save(
-            value3,
-            context
-        );
+        context.saveStorage(value3);
 
         final StoragePath path4 = StoragePath.parse(HOME_DIRECTORY + "/value444");
         final StorageValue value4 = StorageValue.with(path4)
@@ -270,23 +212,19 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(444)
             );
 
-        storage.save(
-            value4,
-            context
-        );
+        context.saveStorage(value4);
 
-        this.listAndCheck(
-            storage,
+        this.listStorageAndCheck(
+            context,
             StoragePath.HOME_DIRECTORY_PREFIX,
             1, // offset
             2, // count
-            context,
             StorageValueInfo.with(
-                path2,
+                StoragePath.parse(StoragePath.HOME_DIRECTORY_PREFIX + "/value222"),
                 context.createdAuditInfo()
             ),
             StorageValueInfo.with(
-                path3,
+                StoragePath.parse(StoragePath.HOME_DIRECTORY_PREFIX + "/value333"),
                 context.createdAuditInfo()
             )
         );
@@ -294,8 +232,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testListHomeDirectory() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
         final StoragePath path1 = StoragePath.parse(HOME_DIRECTORY + "/value111");
         final StorageValue value1 = StorageValue.with(path1)
@@ -303,10 +240,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(111)
             );
 
-        storage.save(
-            value1,
-            context
-        );
+        context.saveStorage(value1);
 
         final StoragePath path2 = StoragePath.parse(HOME_DIRECTORY + "/value222");
         final StorageValue value2 = StorageValue.with(path2)
@@ -314,10 +248,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(222)
             );
 
-        storage.save(
-            value2,
-            context
-        );
+        context.saveStorage(value2);
 
         final StoragePath path3 = StoragePath.parse(HOME_DIRECTORY + "/value333");
         final StorageValue value3 = StorageValue.with(path3)
@@ -325,10 +256,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(333)
             );
 
-        storage.save(
-            value3,
-            context
-        );
+        context.saveStorage(value3);
 
         final StoragePath path4 = StoragePath.parse(HOME_DIRECTORY + "/value444");
         final StorageValue value4 = StorageValue.with(path4)
@@ -336,17 +264,13 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(444)
             );
 
-        storage.save(
-            value4,
-            context
-        );
+        context.saveStorage(value4);
 
-        this.listAndCheck(
-            storage,
+        this.listStorageAndCheck(
+            context,
             HOME_DIRECTORY,
             1, // offset
             2, // count
-            context,
             StorageValueInfo.with(
                 StoragePath.parse(HOME_DIRECTORY + "/value222"),
                 context.createdAuditInfo()
@@ -359,9 +283,8 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
     }
 
     @Test
-    public void testListSlashWithEnvHomeDirectoryWithSlash() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext(
+    public void testListHomeDirectoryWithEnvRoot() {
+        final StorageContext context = this.createContext(
             Optional.of(StoragePath.ROOT)
         );
 
@@ -371,10 +294,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(111)
             );
 
-        storage.save(
-            value1,
-            context
-        );
+        context.saveStorage(value1);
 
         final StoragePath path2 = StoragePath.parse("/value222");
         final StorageValue value2 = StorageValue.with(path2)
@@ -382,10 +302,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(222)
             );
 
-        storage.save(
-            value2,
-            context
-        );
+        context.saveStorage(value2);
 
         final StoragePath path3 = StoragePath.parse("/value333");
         final StorageValue value3 = StorageValue.with(path3)
@@ -393,10 +310,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(333)
             );
 
-        storage.save(
-            value3,
-            context
-        );
+        context.saveStorage(value3);
 
         final StoragePath path4 = StoragePath.parse("/value444");
         final StorageValue value4 = StorageValue.with(path4)
@@ -404,17 +318,13 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(444)
             );
 
-        storage.save(
-            value4,
-            context
-        );
+        context.saveStorage(value4);
 
-        this.listAndCheck(
-            storage,
+        this.listStorageAndCheck(
+            context,
             StoragePath.ROOT,
             1, // offset
             2, // count
-            context,
             StorageValueInfo.with(
                 StoragePath.parse("/value222"),
                 context.createdAuditInfo()
@@ -430,13 +340,11 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testSetAuditInfoWithHomeDirectoryPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        this.saveAndCheck(
-            storage,
-            HOME_DIRECTORY_VALUE,
+        this.saveStorageAndCheck(
             context,
+            HOME_DIRECTORY_VALUE,
             HOME_DIRECTORY_VALUE
         );
 
@@ -445,30 +353,24 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
             DIFFERENT_AUDIT_INFO
         );
 
-        storage.setAuditInfo(
-            storageValueInfo,
-            context
-        );
+        context.setAuditInfoStorage(storageValueInfo);
 
-        this.listAndCheck(
-            storage.storage,
+        this.listStorageAndCheck(
+            context,
             HOME_DIRECTORY_PATH,
             0, // offset
-            2, // count
-            context,
+            2, // co
             storageValueInfo
         );
     }
 
     @Test
     public void testSetAuditInfoWithHomeDirectoryPrefixPath() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
-        this.saveAndCheck(
-            storage,
-            HOME_PREFIX_VALUE,
+        this.saveStorageAndCheck(
             context,
+            HOME_PREFIX_VALUE,
             HOME_PREFIX_VALUE
         );
 
@@ -477,17 +379,13 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
             DIFFERENT_AUDIT_INFO
         );
 
-        storage.setAuditInfo(
-            storageValueInfo,
-            context
-        );
+        context.setAuditInfoStorage(storageValueInfo);
 
-        this.listAndCheck(
-            storage.storage,
+        this.listStorageAndCheck(
+            context,
             HOME_DIRECTORY_PATH,
             0, // offset
             2, // count
-            context,
             storageValueInfo.setPath(HOME_DIRECTORY_PATH)
         );
     }
@@ -496,8 +394,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testAddWatcherAndSaveReplace() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(HOME_DIRECTORY + "/saveValue");
 
@@ -506,10 +403,9 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(1)
             );
 
-        this.saveAndCheck(
-            storage,
-            value1,
+        this.saveStorageAndCheck(
             context,
+            value1,
             value1
         );
 
@@ -520,7 +416,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
         this.fired = false;
 
-        storage.addWatcher(
+        context.addStorageWatcher(
             new StorageWatcher() {
                 @Override
                 public void onValueChange(final Optional<StorageValue> oldValue,
@@ -536,16 +432,14 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                         "newValue"
                     );
 
-                    StorageShared2WrapperExpandedHomeDirectoryTest.this.fired = true;
+                    StorageShared2ExpandedHomeDirectoryTest.this.fired = true;
                 }
-            },
-            context
+            }
         );
 
-        this.saveAndCheck(
-            storage,
-            value2,
+        this.saveStorageAndCheck(
             context,
+            value2,
             value2
         );
 
@@ -560,8 +454,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
     @Test
     public void testAddWatcherOnceAndSaveReplace() {
-        final StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> storage = this.createStorage();
-        final FakeStorageContext context = this.createContext();
+        final StorageContext context = this.createContext();
 
         final StoragePath path = StoragePath.parse(HOME_DIRECTORY + "/saveValue");
 
@@ -570,10 +463,9 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                 Optional.of(1)
             );
 
-        this.saveAndCheck(
-            storage,
-            value1,
+        this.saveStorageAndCheck(
             context,
+            value1,
             value1
         );
 
@@ -584,7 +476,7 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
 
         this.fired = false;
 
-        storage.addWatcherOnce(
+        context.addStorageWatcherOnce(
             new StorageWatcher() {
                 @Override
                 public void onValueChange(final Optional<StorageValue> oldValue,
@@ -600,16 +492,14 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
                         "newValue"
                     );
 
-                    StorageShared2WrapperExpandedHomeDirectoryTest.this.fired = true;
+                    StorageShared2ExpandedHomeDirectoryTest.this.fired = true;
                 }
-            },
-            context
+            }
         );
 
-        this.saveAndCheck(
-            storage,
-            value2,
+        this.saveStorageAndCheck(
             context,
+            value2,
             value2
         );
 
@@ -623,44 +513,49 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
     private boolean fired;
 
     @Override
-    public StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext> createStorage(final Storage<FakeStorageContext> storage) {
-        return Cast.to(
-            StorageShared2WrapperExpandedHomeDirectory.with(storage)
+    public StorageShared2ExpandedHomeDirectory<StorageContext> createStorage() {
+        return StorageShared2ExpandedHomeDirectory.instance();
+    }
+
+    @Override
+    public StorageContext createContext() {
+        final StorageContext context = this.createContext(
+            Storages.treeMapStore()
         );
+        context.mountStorage(
+            StorageMountPoint.with(
+                StoragePath.HOME_DIRECTORY_PREFIX,
+                this.createStorage()
+            )
+        );
+        return context;
     }
 
-    @Override
-    Storage<FakeStorageContext> createWrappedStorage() {
-        return Storages.treeMapStore();
-    }
-
-    @Override
-    public FakeStorageContext createContext() {
+    private StorageContext createContext(final Storage<StorageContext> storage) {
         return this.createContext(
-            Optional.of(HOME_DIRECTORY)
+            OPTIONAL_HOME_DIRECTORY,
+            storage
         );
     }
 
-    private FakeStorageContext createContext(final Optional<StoragePath> homeDirectory) {
-        return new FakeStorageContext() {
+    private StorageContext createContext(final Optional<StoragePath> homeDirectory) {
+        return this.createContext(
+            homeDirectory,
+            Storages.treeMapStore()
+        );
+    }
 
-            @Override
-            public Optional<StoragePath> homeDirectory() {
-                return homeDirectory;
-            }
+    private StorageContext createContext(final Optional<StoragePath> homeDirectory,
+                                         final Storage<StorageContext> storage) {
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+        storageEnvironmentContext.setHomeDirectory(homeDirectory);
 
-            @Override
-            public LocalDateTime now() {
-                return StorageShared2WrapperExpandedHomeDirectoryTest.NOW;
-            }
-
-            @Override
-            public Optional<EmailAddress> user() {
-                return Optional.of(
-                    EmailAddress.parse("user@example.com")
-                );
-            }
-        };
+        return StorageContexts.basic(
+            CONVERTER_LIKE,
+            MEDIA_TYPE_DETECTOR,
+            Storages.mount(storage),
+            storageEnvironmentContext
+        );
     }
 
     // toString.........................................................................................................
@@ -669,14 +564,14 @@ public final class StorageShared2WrapperExpandedHomeDirectoryTest extends Storag
     public void testToString() {
         this.toStringAndCheck(
             this.createStorage(),
-            "/home {}"
+            "/home"
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<StorageShared2WrapperExpandedHomeDirectory<FakeStorageContext>> type() {
-        return Cast.to(StorageShared2WrapperExpandedHomeDirectory.class);
+    public Class<StorageShared2ExpandedHomeDirectory<StorageContext>> type() {
+        return Cast.to(StorageShared2ExpandedHomeDirectory.class);
     }
 }

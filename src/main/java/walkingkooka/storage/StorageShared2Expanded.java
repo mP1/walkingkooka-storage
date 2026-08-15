@@ -21,33 +21,31 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends StorageShared2Wrapper<C> {
+abstract class StorageShared2Expanded<C extends StorageContext> extends StorageShared2<C> {
 
-    StorageShared2WrapperExpanded(final Storage<C> storage) {
-        super(storage);
+    StorageShared2Expanded() {
+        super();
     }
 
     @Override //
     final boolean canRead0(final StoragePath path,
                            final C context) {
-        return this.storage.canRead(
+        return context.canReadStorage(
             this.expand(
                 path,
                 context
-            ).orElse(path),
-            context
+            ).orElse(path)
         );
     }
 
     @Override //
     final boolean canWrite0(final StoragePath path,
                             final C context) {
-        return this.storage.canWrite(
+        return context.canWriteStorage(
             this.expand(
                 path,
                 context
-            ).orElse(null),
-            context
+            ).orElse(null)
         );
     }
 
@@ -59,11 +57,10 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
             context
         ).orElse(null);
 
-        Optional<StorageValue> loaded = this.storage.load(
+        Optional<StorageValue> loaded = context.loadStorage(
             null != replaced ?
                 replaced :
-                path,
-            context
+                path
         );
 
         if (loaded.isPresent() && null != replaced && false == path.equals(replaced)) {
@@ -72,7 +69,7 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
                     final StoragePath p = storageValue.path();
 
                     return storageValue.setPath(
-                        StorageShared2WrapperExpanded.this.unexpand(
+                        StorageShared2Expanded.this.unexpand(
                             p,
                             context
                         ).orElse(p)
@@ -95,14 +92,10 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
 
         StorageValue saved;
         if (null == replaced || path.equals(replaced)) {
-            saved = this.storage.save(
-                value,
-                context
-            );
+            saved = context.saveStorage(value);
         } else {
-            saved = this.storage.save(
-                value.setPath(replaced),
-                context
+            saved = context.saveStorage(
+                value.setPath(replaced)
             );
 
             final StoragePath savedPath = this.unexpand(
@@ -110,7 +103,7 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
                 context
             ).orElse(null);
 
-            if(null != savedPath) {
+            if (null != savedPath) {
                 saved = saved.setPath(savedPath);
             }
         }
@@ -121,12 +114,11 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
     @Override //
     final void delete0(final StoragePath path,
                        final C context) {
-        this.storage.delete(
+        context.deleteStorage(
             this.expand(
                 path,
                 context
-            ).orElse(path),
-            context
+            ).orElse(path)
         );
     }
 
@@ -140,21 +132,20 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
             context
         ).orElse(null);
 
-        List<StorageValueInfo> infos = this.storage.list(
+        List<StorageValueInfo> infos = context.listStorage(
             null != replaced ?
                 replaced :
                 parent,
             offset,
-            count,
-            context
+            count
         );
 
-        if (null != replaced && parent.equals(replaced)) {
+        if (null != replaced) {
             infos = infos.stream()
                 .map(
                     (storageValue) -> {
                         final StoragePath p = storageValue.path();
-                        final StoragePath u = StorageShared2WrapperExpanded.this.unexpand(
+                        final StoragePath u = StorageShared2Expanded.this.unexpand(
                             p,
                             context
                         ).orElse(null);
@@ -174,40 +165,60 @@ abstract class StorageShared2WrapperExpanded<C extends StorageContext> extends S
                              final C context) {
         final StoragePath path = value.path();
 
-        this.storage.setAuditInfo(
+        context.setAuditInfoStorage(
             value.setPath(
                 this.expand(
                     path,
                     context
                 ).orElse(path)
-            ),
-            context
+            )
         );
     }
 
     abstract Optional<StoragePath> expand(final StoragePath path,
                                           final C context);
 
+    final Optional<StoragePath> replacePrefixWithEnvironment(final StoragePath path,
+                                                             final Optional<StoragePath> environment) {
+        return environment.flatMap(
+            (StoragePath p) -> path.replacePrefix(
+                StoragePath.ROOT,
+                p
+            )
+        );
+    }
+
     abstract Optional<StoragePath> unexpand(final StoragePath path,
                                             final C context);
+
+    final Optional<StoragePath> replaceEnvironment(final StoragePath path,
+                                                   final Optional<StoragePath> environment) {
+        return environment.flatMap(
+            (StoragePath p) -> path.replacePrefix(
+                p,
+                StoragePath.ROOT
+            )
+        );
+    }
 
     // addWatcher.......................................................................................................
 
     @Override //
     final Runnable addWatcher0(final StorageWatcher watcher,
                                final C context) {
-        return this.storage.addWatcher(
-            watcher,
-            context
-        );
+        return () -> {};
     }
 
     @Override //
     final Runnable addWatcherOnce0(final StorageWatcher watcher,
                                    final C context) {
-        return this.storage.addWatcherOnce(
-            watcher,
-            context
-        );
+        return () -> {};
+    }
+
+    // stop.............................................................................................................
+
+    @Override
+    public final void stop() {
+        // NOP
     }
 }

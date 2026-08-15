@@ -17,9 +17,9 @@
 
 package walkingkooka.storage;
 
-public abstract class StorageShared2WrapperExpandedTestCase<S extends StorageShared2WrapperExpanded<C>, C extends StorageContext> extends StorageShared2WrapperTestCase<S, C> {
+public abstract class StorageShared2ExpandedTestCase<S extends StorageShared2Expanded<C>, C extends StorageContext> extends StorageShared2TestCase<S, C> {
 
-    StorageShared2WrapperExpandedTestCase() {
+    StorageShared2ExpandedTestCase() {
         super();
     }
 }
