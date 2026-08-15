@@ -659,10 +659,13 @@ final public class StoragePath
         return Optional.ofNullable(
             value.startsWith(prefixValue) ?
                 parse(
-                    replaceWith
-                        .value() +
-                        value.substring(
-                            prefixValue.length()
+                    replaceWith.value() +
+                        (
+                            prefix.isRoot() ?
+                                value :
+                                value.substring(
+                                    prefixValue.length()
+                                )
                         )
                 ) :
                 null
