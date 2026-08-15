@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.CanBeEmpty;
 import walkingkooka.collect.list.Lists;
 
 import java.util.List;
@@ -25,7 +26,8 @@ import java.util.Optional;
 /**
  * A {@link Storage} that is always empty and does not support saving, and deletes will fail.
  */
-final class StorageShared2Empty<C extends StorageContext> extends StorageShared2<C> {
+final class StorageShared2Empty<C extends StorageContext> extends StorageShared2<C>
+    implements CanBeEmpty {
 
     static <C extends StorageContext> StorageShared2Empty<C> instance() {
         return INSTANCE;
@@ -114,5 +116,12 @@ final class StorageShared2Empty<C extends StorageContext> extends StorageShared2
     @Override
     public String toString() {
         return "";
+    }
+
+    // CanBeEmpty.......................................................................................................
+
+    @Override
+    public boolean isEmpty() {
+        return true;
     }
 }
