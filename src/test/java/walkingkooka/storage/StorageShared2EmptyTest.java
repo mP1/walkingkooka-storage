@@ -18,13 +18,15 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.CanBeEmptyTesting;
 import walkingkooka.Cast;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageShared2EmptyTest extends StorageShared2TestCase<StorageShared2Empty<StorageContext>, StorageContext> {
+public final class StorageShared2EmptyTest extends StorageShared2TestCase<StorageShared2Empty<StorageContext>, StorageContext>
+    implements CanBeEmptyTesting {
 
     @Test
     public void testCanReadRoot() {
@@ -172,6 +174,16 @@ public final class StorageShared2EmptyTest extends StorageShared2TestCase<Storag
         this.toStringAndCheck(
             StorageShared2Empty.instance(),
             ""
+        );
+    }
+
+    // CanBeEmpty.......................................................................................................
+
+    @Test
+    public void testCanBeEmpty() {
+        this.isEmptyAndCheck(
+            StorageShared2Empty.instance(),
+            true
         );
     }
 
