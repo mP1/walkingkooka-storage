@@ -113,6 +113,18 @@ public interface StorageContextDelegator extends StorageContext,
             .storageMountPoints();
     }
 
+    @Override
+    default Runnable addStorageWatcher(final StorageWatcher watcher) {
+        return this.storageContext()
+            .addStorageWatcher(watcher);
+    }
+
+    @Override
+    default Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
+        return this.storageContext()
+            .addStorageWatcherOnce(watcher);
+    }
+
     // StorageEnvironmentContextDelegator...............................................................................
 
     @Override

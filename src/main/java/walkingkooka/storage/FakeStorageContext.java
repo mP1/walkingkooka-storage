@@ -88,6 +88,16 @@ public class FakeStorageContext extends FakeEnvironmentContext implements Storag
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Runnable addStorageWatcher(final StorageWatcher watcher) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
+        throw new UnsupportedOperationException();
+    }
+
     // StorageEnvironmentContext........................................................................................
 
     @Override

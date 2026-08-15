@@ -146,6 +146,28 @@ public interface StorageContextTesting2<C extends StorageContext> extends Storag
         );
     }
 
+    // addStorageWatcher................................................................................................
+
+    @Test
+    default void testAddStorageWatcherWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .addStorageWatcher(null)
+        );
+    }
+
+    // addStorageWatcherOnce............................................................................................
+
+    @Test
+    default void testAddStorageWatcherOnceWithNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createContext()
+                .addStorageWatcherOnce(null)
+        );
+    }
+    
     // CanParseStoragePath..............................................................................................
 
     @Override

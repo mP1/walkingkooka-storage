@@ -75,6 +75,16 @@ public interface StorageContext extends StorageEnvironmentContext,
      */
     List<StorageMountPoint<?>> storageMountPoints();
 
+    /**
+     * {@link Storage#addWatcher(StorageWatcher, StorageContext)}
+     */
+    Runnable addStorageWatcher(final StorageWatcher watcher);
+
+    /**
+     * {@link Storage#addWatcherOnce(StorageWatcher, StorageContext)}
+     */
+    Runnable addStorageWatcherOnce(final StorageWatcher watcher);
+
     @Override
     StorageContext cloneEnvironment();
 
