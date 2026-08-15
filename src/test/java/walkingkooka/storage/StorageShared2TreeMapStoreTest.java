@@ -817,21 +817,20 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
     @Test
     public void testToStringWhenEmpty() {
-        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
-        final TestStorageContext context = this.createContext();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
 
         this.toStringAndCheck(
-            store,
+            storage,
             "{}"
         );
     }
 
     @Test
     public void testToStringWhenOneEntry() {
-        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = this.createContext();
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 StoragePath.parse("/path1/value1")
             ).setValue(
@@ -841,17 +840,17 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         );
 
         this.toStringAndCheck(
-            store,
+            storage,
             "{/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1/value1=\"111\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59}"
         );
     }
 
     @Test
     public void testToStringTwoEntries() {
-        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = this.createContext();
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 StoragePath.parse("/path1/value1")
             ).setValue(
@@ -860,7 +859,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
             context
         );
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 StoragePath.parse("/path2/value2")
             ).setValue(
@@ -870,7 +869,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         );
 
         this.toStringAndCheck(
-            store,
+            storage,
             "{/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path1/value1=\"111\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /path2/value2=\"222\" user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59}"
         );
     }
@@ -908,10 +907,10 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
 
     @Test
     public void testPrintTree() {
-        final StorageShared2TreeMapStore<TestStorageContext> store = this.createStorage();
+        final StorageShared2TreeMapStore<TestStorageContext> storage = this.createStorage();
         final TestStorageContext context = this.createContext();
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 StoragePath.parse("/path1/value1")
             ).setValue(
@@ -920,7 +919,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
             context
         );
 
-        store.save(
+        storage.save(
             StorageValue.with(
                 StoragePath.parse("/path2/value2")
             ).setValue(
@@ -930,7 +929,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
         );
 
         this.treePrintAndCheck(
-            store,
+            storage,
             "StorageShared2TreeMapStore\n" +
                 "  TreeMapStore\n" +
                 "    /\n" +
