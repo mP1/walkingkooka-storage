@@ -63,6 +63,13 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             Optional.of(111)
         );
 
+    private final static StoragePath DIFFERENT_STORAGE_PATH = StoragePath.parse("/value222");
+
+    private final static StorageValue DIFFERENT_STORAGE_VALUE = StorageValue.with(DIFFERENT_STORAGE_PATH)
+        .setValue(
+            Optional.of(222)
+        );
+
     @Test
     public void testWithNullConverterLikeFails() {
         assertThrows(
@@ -193,6 +200,136 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
             info
         );
     }
+
+    // addStorageWatcherXXX.............................................................................................
+
+    @Test
+    public void testAddStorageWatcher() {
+        final BasicStorageContext context = this.createContext();
+
+        context.addStorageWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.empty(),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(DIFFERENT_STORAGE_VALUE),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            }
+        );
+
+        this.fired = false;
+
+        context.saveStorage(DIFFERENT_STORAGE_VALUE);
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+    }
+
+    @Test
+    public void testAddStorageWatcher2() {
+        final BasicStorageContext context = this.createContext();
+
+        final StorageValue lost = DIFFERENT_STORAGE_VALUE.setValue(
+            Optional.of("lost")
+        );
+
+        context.saveStorage(lost);
+
+        context.addStorageWatcher(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(lost),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(DIFFERENT_STORAGE_VALUE),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            }
+        );
+
+        this.fired = false;
+
+        context.saveStorage(
+            DIFFERENT_STORAGE_VALUE
+        );
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+    }
+
+    @Test
+    public void testAddStorageWatcherOnce() {
+        final BasicStorageContext context = this.createContext();
+
+        final StorageValue lost = DIFFERENT_STORAGE_VALUE.setValue(
+            Optional.of("lost")
+        );
+
+        context.saveStorage(lost);
+
+        context.addStorageWatcherOnce(
+            new StorageWatcher() {
+                @Override
+                public void onValueChange(final Optional<StorageValue> oldValue,
+                                          final Optional<StorageValue> newValue) {
+                    checkEquals(
+                        Optional.of(lost),
+                        oldValue,
+                        "oldValue"
+                    );
+                    checkEquals(
+                        Optional.of(DIFFERENT_STORAGE_VALUE),
+                        newValue,
+                        "newValue"
+                    );
+
+                    fired = true;
+                }
+            }
+        );
+
+        this.fired = false;
+
+        context.saveStorage(
+            DIFFERENT_STORAGE_VALUE
+        );
+
+        this.checkEquals(
+            true,
+            this.fired
+        );
+
+        // if fired watcher checks will fail.
+        context.deleteStorage(
+            DIFFERENT_STORAGE_PATH
+        );
+    }
+
+    private boolean fired;
 
     // setEnvironmentContext............................................................................................
 

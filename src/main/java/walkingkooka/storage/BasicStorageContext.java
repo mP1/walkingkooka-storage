@@ -156,6 +156,22 @@ final class BasicStorageContext implements StorageContext,
         );
     }
 
+    @Override
+    public Runnable addStorageWatcher(final StorageWatcher watcher) {
+        return this.storage.addWatcher(
+            watcher,
+            this
+        );
+    }
+
+    @Override
+    public Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
+        return this.storage.addWatcherOnce(
+            watcher,
+            this
+        );
+    }
+
     // @VisibleForTesting
     final Storage<StorageContext> storage;
 
