@@ -41,11 +41,11 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 
 # [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
 
-- [currentWorkingDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperExpandedCurrentWorkingDirectory.java)
+- [currentWorkingDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2ExpandedCurrentWorkingDirectory.java)
 - [empty](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2Empty.java)
 - [environment](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2Environment.java)
 - [explodedZipFile](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperExplodedZipFile.java)
-- [homeDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperExpandedHomeDirectory.java)
+- [homeDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2ExpandedHomeDirectory.java)
 - [mount](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedMount.java)
 - [native](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2NativeFile.java)
 - [prefixed](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperPrefixed.java)
