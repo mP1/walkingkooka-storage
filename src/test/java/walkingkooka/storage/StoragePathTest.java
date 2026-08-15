@@ -1525,6 +1525,46 @@ HasCurrentWorkingDirectoryTesting,
     }
 
     @Test
+    public void testReplacePrefixWithRoot() {
+        this.replacePrefixAndCheck(
+            "/hello",
+            "/",
+            "/world",
+            "/world/hello"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithRoot2() {
+        this.replacePrefixAndCheck(
+            "/hello",
+            "/",
+            "/world/",
+            "/world/hello"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithRoot3() {
+        this.replacePrefixAndCheck(
+            "/hello/world",
+            "/",
+            "/newPrefix/",
+            "/newPrefix/hello/world"
+        );
+    }
+
+    @Test
+    public void testReplacePrefixWithRoot4() {
+        this.replacePrefixAndCheck(
+            "/hello/world",
+            "/",
+            "/newPrefix",
+            "/newPrefix/hello/world"
+        );
+    }
+
+    @Test
     public void testReplacePrefixWithPrefixWithPrefixSlash() {
         this.replacePrefixAndCheck(
             "/prefix1/hello",
