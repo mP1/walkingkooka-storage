@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A {@link Storage} that supports storing values including support for tree or directory structure.
+ * A {@link Storage} that supports storing values aka java {@link Object} including support for tree or directory structure.
+ * Think of the *NIX philosophy where everything is a file, but instead of files, paths map to java {@link Object}.
+ * Implementations exist where a {@link Storage} view is provided over files on a disk, paths and file extensions help
+ * to map the binary or text representation to an object.
  */
 public interface Storage<C extends StorageContext> extends Stoppable {
 
