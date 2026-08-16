@@ -125,6 +125,21 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
     }
 
     @Test
+    public void testWithInvalidPathFails() {
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> StorageShared2NativeFile.with(
+                Path.of("/temp/123456789012345678901234567890"),
+                this.createContext()
+            )
+        );
+        this.getMessageAndCheck(
+            thrown,
+            "Unable to register watchers for \"/temp/123456789012345678901234567890\""
+        );
+    }
+
+    @Test
     public void testWithNullContextFails() {
         assertThrows(
             NullPointerException.class,

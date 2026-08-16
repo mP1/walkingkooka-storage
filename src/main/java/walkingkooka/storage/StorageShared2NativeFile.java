@@ -80,7 +80,17 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
             this.watcher = root.getFileSystem()
                 .newWatchService();;
         } catch (final IOException rethrow) {
-            throw new IllegalArgumentException("Unable to open watch service", rethrow);
+            // Unable to open watch service "/temp/": File not found
+            throw new IllegalArgumentException(
+                "Unable to open watch service " +
+                    CharSequences.quote(
+                        root.toAbsolutePath()
+                            .toString()
+                    ) +
+                    ": " +
+                    rethrow.getMessage(),
+                rethrow
+            );
         }
 
         this.watchKeyToPath = Maps.concurrent();
@@ -315,7 +325,14 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
                     }
                 });
         } catch (final IOException cause) {
-            throw new IllegalArgumentException("Unable to register watchers for tree", cause);
+            throw new IllegalArgumentException(
+                "Unable to register watchers for " +
+                    CharSequences.quote(
+                        start.toAbsolutePath()
+                            .toString()
+                    ),
+                cause
+            );
         }
     }
 
