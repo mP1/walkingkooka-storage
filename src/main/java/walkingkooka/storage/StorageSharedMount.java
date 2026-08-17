@@ -280,7 +280,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     public void stop() {
         this.mountPoints.forEach(
-            (StorageMountPoint p) -> p.storage.stop()
+            (StorageMountPoint<?> p) -> p.storage.stop()
         );
     }
 
