@@ -145,7 +145,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
 
     @Override
     public String text() {
-        return this.textWithLineBreaks(LineEnding.CRNL);
+        return this.textWithLineBreaks(LineEnding.TERMINAL);
     }
 
     // HasTextWithLineBreaks............................................................................................
