@@ -68,9 +68,9 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
             StorageValueInfoList = (StorageValueInfoList) infos;
         } else {
             final List<StorageValueInfo> copy = Lists.array();
-            for (final StorageValueInfo name : infos) {
+            for (final StorageValueInfo info : infos) {
                 copy.add(
-                    Objects.requireNonNull(name, "includes null " + StorageValueInfo.class.getSimpleName())
+                    Objects.requireNonNull(info, "includes null " + StorageValueInfo.class.getSimpleName())
                 );
             }
 
