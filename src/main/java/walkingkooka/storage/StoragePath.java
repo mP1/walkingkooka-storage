@@ -621,6 +621,11 @@ final public class StoragePath
     public final static StoragePath CURRENT_WORKING_DIRECTORY_PREFIX = parse("/cwd");
 
     /**
+     * Path to read all current mount {@link StoragePath}
+     */
+    public final static StoragePath MOUNT_POINT_PATHS = parse("/mount-point-paths");
+
+    /**
      * Removes the prefix from this {@link StoragePath prefix} and replaces that with {@link StoragePath replaceWith}.
      * If the prefix is absent {@link Optional#empty()} is returned.
      */
