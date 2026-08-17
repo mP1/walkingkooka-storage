@@ -158,8 +158,8 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     public void testText() {
         this.textAndCheck(
             this.createList(),
-            "/mount1=\r\n" +
-                "/mount2=\r\n"
+            "/mount1={}\r\n" +
+                "/mount2={}\r\n"
         );
     }
 
@@ -170,8 +170,8 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         this.textWithLineBreaksAndCheck(
             this.createList(),
             LineEnding.CRNL,
-            "/mount1=\r\n" +
-                "/mount2=\r\n"
+            "/mount1={}\r\n" +
+                "/mount2={}\r\n"
         );
     }
 
@@ -180,8 +180,8 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         this.textWithLineBreaksAndCheck(
             this.createList(),
             LineEnding.NL,
-            "/mount1=\n" +
-                "/mount2=\n"
+            "/mount1={}\n" +
+                "/mount2={}\n"
         );
     }
 
@@ -194,10 +194,10 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
             "StorageMountPointList\n" +
                 "  StorageMountPoint\n" +
                 "    \"/mount1\"\n" +
-                "       (walkingkooka.storage.StorageShared2Empty)\n" +
+                "      {} (walkingkooka.storage.StorageShared2Empty)\n" +
                 "  StorageMountPoint\n" +
                 "    \"/mount2\"\n" +
-                "       (walkingkooka.storage.StorageShared2Empty)\n"
+                "      {} (walkingkooka.storage.StorageShared2Empty)\n"
         );
     }
 

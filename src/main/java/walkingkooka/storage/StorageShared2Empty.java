@@ -115,7 +115,7 @@ final class StorageShared2Empty<C extends StorageContext> extends StorageShared2
 
     @Override
     public String toString() {
-        return "";
+        return "{}";
     }
 
     // CanBeEmpty.......................................................................................................
