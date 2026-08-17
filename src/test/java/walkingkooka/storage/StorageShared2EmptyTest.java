@@ -173,7 +173,7 @@ public final class StorageShared2EmptyTest extends StorageShared2TestCase<Storag
     public void testToString() {
         this.toStringAndCheck(
             StorageShared2Empty.instance(),
-            ""
+            "{}"
         );
     }
 
