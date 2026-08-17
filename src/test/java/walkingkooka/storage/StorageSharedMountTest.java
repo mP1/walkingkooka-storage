@@ -22,6 +22,9 @@ import walkingkooka.Cast;
 import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.HasUserTesting;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.HasTextWithLineBreaks;
+import walkingkooka.text.HasTextWithLineBreaksTesting;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -30,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageSharedMountTest extends StorageSharedTestCase<StorageSharedMount<StorageContext>, StorageContext>
     implements HasNowTesting,
+    HasTextWithLineBreaksTesting,
     HasUserTesting {
 
     private final static StorageContext CONTEXT = new FakeStorageContext() {
@@ -1174,6 +1178,28 @@ public final class StorageSharedMountTest extends StorageSharedTestCase<StorageS
             2,
             CONTEXT,
             storageValueInfo(MOUNT1_VALUE_PATH)
+        );
+    }
+
+    @Test
+    public void testMountPointsTextWithLineBreaks() {
+        final Storage<StorageContext> root = Storages.treeMapStore();
+        final StorageSharedMount<StorageContext> storage = StorageSharedMount.with(root);
+
+        storage.mount(
+            StorageMountPoint.with(
+                MOUNT1_PATH,
+                Storages.empty()
+            ),
+            CONTEXT
+        );
+
+        this.textWithLineBreaksAndCheck(
+            (HasTextWithLineBreaks)
+                storage.mountPoints(),
+            LineEnding.TERMINAL,
+            "/={}\r\n" +
+                "/mount1={}\r\n"
         );
     }
 
