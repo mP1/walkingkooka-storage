@@ -47,6 +47,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [explodedZipFile](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperExplodedZipFile.java)
 - [homeDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2ExpandedHomeDirectory.java)
 - [mount](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageSharedMount.java)
+- [mountPointPaths](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageMountPointPaths.java)
 - [native](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2NativeFile.java)
 - [prefixed](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2WrapperPrefixed.java)
 - [readOnly](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/ReadOnlyStorage.java)
