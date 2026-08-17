@@ -23,6 +23,8 @@ import walkingkooka.naming.HasPathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
+import walkingkooka.text.HasTextWithLineBreaksTesting;
+import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageMountPointTest implements TreePrintableTesting,
     HasPathTesting,
     HasTextTesting,
+    HasTextWithLineBreaksTesting,
     ClassTesting2<StorageMountPoint<StorageContext>> {
 
     private final static Storage<StorageContext> STORAGE = Storages.fake();
@@ -398,6 +401,32 @@ public final class StorageMountPointTest implements TreePrintableTesting,
                 "  \"/path1/path2\"\n" +
                 "    StorageShared2TreeMapStore\n" +
                 "      TreeMapStore\n"
+        );
+    }
+
+    // HasTextWithLineBreaks............................................................................................
+
+    @Test
+    public void testTextWithLineBreakCr() {
+        this.textWithLineBreaksAndCheck(
+            StorageMountPoint.with(
+                StoragePath.parse("/path1/path2"),
+                Storages.treeMapStore()
+            ),
+            LineEnding.CR,
+            "/path1/path2={}\r"
+        );
+    }
+
+    @Test
+    public void testTextWithLineBreakNl() {
+        this.textWithLineBreaksAndCheck(
+            StorageMountPoint.with(
+                StoragePath.parse("/path1/path2"),
+                Storages.treeMapStore()
+            ),
+            LineEnding.NL,
+            "/path1/path2={}\n"
         );
     }
 

@@ -20,6 +20,8 @@ package walkingkooka.storage;
 import walkingkooka.naming.HasPath;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
+import walkingkooka.text.HasTextWithLineBreaks;
+import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -31,6 +33,7 @@ import java.util.Objects;
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
     HasPath<StoragePath>,
     HasText,
+    HasTextWithLineBreaks,
     TreePrintable {
 
     public static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
@@ -200,5 +203,14 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
             printer.outdent();
         }
         printer.outdent();
+    }
+
+    // HasTextWithLineBreaks............................................................................................
+
+    @Override
+    public String textWithLineBreaks(final LineEnding lineEnding) {
+        Objects.requireNonNull(lineEnding, "lineEnding");
+
+        return this.path + "=" + this.storage + lineEnding;
     }
 }
