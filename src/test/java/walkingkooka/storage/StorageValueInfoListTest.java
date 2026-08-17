@@ -22,8 +22,7 @@ import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.datetime.HasOptionalLastModifiedTesting;
-import walkingkooka.environment.AuditInfo;
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
@@ -34,24 +33,18 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
     ClassTesting<StorageValueInfoList>,
+    HasAuditInfoTesting,
     HasOptionalLastModifiedTesting,
     HasTextTesting,
     HasTextWithLineBreaksTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallingTesting<StorageValueInfoList>,
     TreePrintableTesting {
-
-    private final static AuditInfo AUDIT_INFO = AuditInfo.create(
-        EmailAddress.parse("user@example.com"),
-        LocalDateTime.MIN
-    );
 
     private final static StorageValueInfo FILE1 = StorageValueInfo.with(
         StoragePath.parse("/file1"),
@@ -210,19 +203,19 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
                 "  {\n" +
                 "    \"path\": \"/file1\",\n" +
                 "    \"auditInfo\": {\n" +
-                "      \"createdBy\": \"user@example.com\",\n" +
-                "      \"createdTimestamp\": \"-999999999-01-01T00:00\",\n" +
-                "      \"modifiedBy\": \"user@example.com\",\n" +
-                "      \"modifiedTimestamp\": \"-999999999-01-01T00:00\"\n" +
+                "      \"createdBy\": \"user123@example.com\",\n" +
+                "      \"createdTimestamp\": \"1999-12-31T12:58:59\",\n" +
+                "      \"modifiedBy\": \"user123@example.com\",\n" +
+                "      \"modifiedTimestamp\": \"1999-12-31T12:58:59\"\n" +
                 "    }\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"path\": \"/file2\",\n" +
                 "    \"auditInfo\": {\n" +
-                "      \"createdBy\": \"user@example.com\",\n" +
-                "      \"createdTimestamp\": \"-999999999-01-01T00:00\",\n" +
-                "      \"modifiedBy\": \"user@example.com\",\n" +
-                "      \"modifiedTimestamp\": \"-999999999-01-01T00:00\"\n" +
+                "      \"createdBy\": \"user123@example.com\",\n" +
+                "      \"createdTimestamp\": \"1999-12-31T12:58:59\",\n" +
+                "      \"modifiedBy\": \"user123@example.com\",\n" +
+                "      \"modifiedTimestamp\": \"1999-12-31T12:58:59\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]"
@@ -236,19 +229,19 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
                 "  {\n" +
                 "    \"path\": \"/file1\",\n" +
                 "    \"auditInfo\": {\n" +
-                "      \"createdBy\": \"user@example.com\",\n" +
-                "      \"createdTimestamp\": \"-999999999-01-01T00:00\",\n" +
-                "      \"modifiedBy\": \"user@example.com\",\n" +
-                "      \"modifiedTimestamp\": \"-999999999-01-01T00:00\"\n" +
+                "      \"createdBy\": \"user123@example.com\",\n" +
+                "      \"createdTimestamp\": \"1999-12-31T12:58:59\",\n" +
+                "      \"modifiedBy\": \"user123@example.com\",\n" +
+                "      \"modifiedTimestamp\": \"1999-12-31T12:58:59\"\n" +
                 "    }\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"path\": \"/file2\",\n" +
                 "    \"auditInfo\": {\n" +
-                "      \"createdBy\": \"user@example.com\",\n" +
-                "      \"createdTimestamp\": \"-999999999-01-01T00:00\",\n" +
-                "      \"modifiedBy\": \"user@example.com\",\n" +
-                "      \"modifiedTimestamp\": \"-999999999-01-01T00:00\"\n" +
+                "      \"createdBy\": \"user123@example.com\",\n" +
+                "      \"createdTimestamp\": \"1999-12-31T12:58:59\",\n" +
+                "      \"modifiedBy\": \"user123@example.com\",\n" +
+                "      \"modifiedTimestamp\": \"1999-12-31T12:58:59\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]",
@@ -280,15 +273,15 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
                 "  /file1\n" +
                 "    AuditInfo\n" +
                 "      created\n" +
-                "        user@example.com -999999999-01-01T00:00\n" +
+                "        user123@example.com 1999-12-31T12:58:59\n" +
                 "      modified\n" +
-                "        user@example.com -999999999-01-01T00:00\n" +
+                "        user123@example.com 1999-12-31T12:58:59\n" +
                 "  /file2\n" +
                 "    AuditInfo\n" +
                 "      created\n" +
-                "        user@example.com -999999999-01-01T00:00\n" +
+                "        user123@example.com 1999-12-31T12:58:59\n" +
                 "      modified\n" +
-                "        user@example.com -999999999-01-01T00:00\n"
+                "        user123@example.com 1999-12-31T12:58:59\n"
         );
     }
 
