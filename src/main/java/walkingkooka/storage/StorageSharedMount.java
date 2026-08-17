@@ -232,7 +232,7 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     @Override
     public List<StorageMountPoint<C>> mountPoints() {
 
-        // reverse necessary because StorageMountPoints are reversed
+        // reverse necessary because StorageMountPointPaths are reversed
         return Cast.to(
             StorageMountPointList.EMPTY
                 .setElements(

@@ -83,6 +83,13 @@ public final class Storages implements PublicStaticHelper {
     }
 
     /**
+     * {@see StorageMountPointPaths}
+     */
+    public static <C extends StorageContext> Storage<C> mountPointPaths() {
+        return StorageMountPointPaths.instance();
+    }
+
+    /**
      * {@see StorageShared2NativeFile}
      */
     @GwtIncompatible
