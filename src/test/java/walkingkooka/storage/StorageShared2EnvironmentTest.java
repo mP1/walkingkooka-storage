@@ -154,7 +154,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
     }
 
     @Test
-    public void testLoadExisting() {
+    public void testLoadEnvironmentValueName() {
         final StoragePath path = StoragePath.parse("/magic-integer");
 
         this.loadAndCheck(
@@ -165,6 +165,21 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
                     .setValue(
                         Optional.of(MAGIC_ENVIRONMENT_VALUE)
                     )
+        );
+    }
+
+    @Test
+    public void testLoadEnvironmentValueNameLineEnding() {
+        final StoragePath path = StoragePath.parse("/" + EnvironmentValueName.LINE_ENDING);
+
+        this.loadAndCheck(
+            this.createStorage(),
+            path,
+            this.createContext(),
+            StorageValue.with(path)
+                .setValue(
+                    Optional.of(LINE_ENDING)
+                )
         );
     }
 
