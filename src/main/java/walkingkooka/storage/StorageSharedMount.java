@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Cast;
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.SortedSets;
@@ -232,9 +233,12 @@ final class StorageSharedMount<C extends StorageContext> extends StorageShared<C
     public List<StorageMountPoint<C>> mountPoints() {
 
         // reverse necessary because StorageMountPoints are reversed
-        return Lists.<StorageMountPoint<C>>empty()
-            .setElements(this.mountPoints)
-            .reverse();
+        return Cast.to(
+            StorageMountPointList.EMPTY
+                .setElements(
+                    Cast.to(this.mountPoints)
+                ).reverse()
+        );
     }
 
     // addWatcher.......................................................................................................
