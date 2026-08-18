@@ -20,10 +20,10 @@ package walkingkooka.storage.convert;
 import walkingkooka.net.header.MediaTypeDetectorTesting2;
 import walkingkooka.storage.CanParseStoragePathTesting2;
 import walkingkooka.storage.HasUserDirectoriesTesting;
-import walkingkooka.tree.json.convert.JsonNodeConverterContextTesting;
+import walkingkooka.tree.json.convert.JsonNodeConverterContextTesting2;
 
 public interface StorageConverterContextTesting2<C extends StorageConverterContext> extends StorageConverterContextTesting,
-    JsonNodeConverterContextTesting<C>,
+    JsonNodeConverterContextTesting2<C>,
     CanParseStoragePathTesting2<C>,
     HasUserDirectoriesTesting,
     MediaTypeDetectorTesting2<C> {
