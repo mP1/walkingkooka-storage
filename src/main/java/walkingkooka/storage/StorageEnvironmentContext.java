@@ -31,7 +31,7 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
     /**
      * Constant that should be used to hold the current working directory or PWD.
      */
-    EnvironmentValueName<StoragePath> CURRENT_WORKING_DIRECTORY = EnvironmentValueName.with(
+    EnvironmentValueName<StoragePath> CURRENT_WORKING_DIRECTORY = EnvironmentValueName.registerConstant(
         "currentWorkingDirectory",
         StoragePath.class
     );
@@ -44,7 +44,7 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
     /**
      * Constant that should be used to hold the home directory.
      */
-    EnvironmentValueName<StoragePath> HOME_DIRECTORY = EnvironmentValueName.with(
+    EnvironmentValueName<StoragePath> HOME_DIRECTORY = EnvironmentValueName.registerConstant(
         "homeDirectory",
         StoragePath.class
     );
