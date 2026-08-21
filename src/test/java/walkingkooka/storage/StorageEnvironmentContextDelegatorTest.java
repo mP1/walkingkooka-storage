@@ -114,7 +114,7 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
             return this.environmentContext;
         }
 
-        private final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+        private final EnvironmentContext environmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         @Override
         public StorageEnvironmentContext cloneEnvironment() {
