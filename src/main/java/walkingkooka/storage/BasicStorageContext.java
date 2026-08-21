@@ -22,7 +22,6 @@ import walkingkooka.Cast;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetector;
 
@@ -36,28 +35,28 @@ import java.util.Optional;
  */
 final class BasicStorageContext implements StorageContext,
     ConverterLikeDelegator,
-    EnvironmentContextDelegator {
+    StorageEnvironmentContextDelegator {
 
     static BasicStorageContext with(final ConverterLike converterLike,
                                     final MediaTypeDetector mediaTypeDetector,
                                     final Storage<StorageContext> storage,
-                                    final EnvironmentContext environmentContext) {
+                                    final StorageEnvironmentContext storageEnvironmentContext) {
         return new BasicStorageContext(
             Objects.requireNonNull(converterLike, "converterLike"),
             Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector"),
             Objects.requireNonNull(storage, "storage"),
-            Objects.requireNonNull(environmentContext, "environmentContext")
+            Objects.requireNonNull(storageEnvironmentContext, "storageEnvironmentContext")
         );
     }
 
     private BasicStorageContext(final ConverterLike converterLike,
                                 final MediaTypeDetector mediaTypeDetector,
                                 final Storage<StorageContext> storage,
-                                final EnvironmentContext environmentContext) {
+                                final StorageEnvironmentContext storageEnvironmentContext) {
         this.converterLike = converterLike;
         this.mediaTypeDetector = mediaTypeDetector;
         this.storage = storage;
-        this.environmentContext = environmentContext;
+        this.storageEnvironmentContext = storageEnvironmentContext;
     }
 
     @Override
@@ -175,34 +174,6 @@ final class BasicStorageContext implements StorageContext,
     // @VisibleForTesting
     final Storage<StorageContext> storage;
 
-    // StorageEnvironmentContext........................................................................................
-
-    @Override
-    public Optional<StoragePath> currentWorkingDirectory() {
-        return CURRENT_WORKING_DIRECTORY.getEnvironmentValue(this);
-    }
-
-    @Override
-    public void setCurrentWorkingDirectory(final Optional<StoragePath> currentWorkingDirectory) {
-        CURRENT_WORKING_DIRECTORY.setOrRemoveEnvironmentValue(
-            currentWorkingDirectory,
-            this
-        );
-    }
-
-    @Override
-    public Optional<StoragePath> homeDirectory() {
-        return HOME_DIRECTORY.getEnvironmentValue(this);
-    }
-
-    @Override
-    public void setHomeDirectory(final Optional<StoragePath> homeDirectory) {
-        HOME_DIRECTORY.setOrRemoveEnvironmentValue(
-            homeDirectory,
-            this
-        );
-    }
-
     // StorageContext...................................................................................................
 
     @Override
@@ -217,44 +188,31 @@ final class BasicStorageContext implements StorageContext,
     @Override
     public StorageContext cloneEnvironment() {
         return this.setEnvironmentContext(
-            this.environmentContext.cloneEnvironment()
+            this.storageEnvironmentContext.cloneEnvironment()
         );
     }
 
     @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        final StorageContext storageContext;
+        final StorageEnvironmentContext before = this.storageEnvironmentContext;
+        final StorageEnvironmentContext after = before.setEnvironmentContext(environmentContext);
 
-        if (this == environmentContext || this.environmentContext == environmentContext) {
-            storageContext = this;
-        } else {
-            EnvironmentContext wrappedEnvironmentContext = environmentContext;
-
-            if (environmentContext instanceof BasicStorageContext) {
-                final BasicStorageContext basicStorageContext = (BasicStorageContext) environmentContext;
-
-                wrappedEnvironmentContext = basicStorageContext.environmentContext;
-            }
-
-            Objects.requireNonNull(wrappedEnvironmentContext, "environmentContext");
-
-            storageContext = new BasicStorageContext(
+        return before == after ?
+            this :
+            new BasicStorageContext(
                 this.converterLike,
                 this.mediaTypeDetector,
                 this.storage,
-                wrappedEnvironmentContext
+                after
             );
-        }
-
-        return storageContext;
     }
 
     @Override
-    public EnvironmentContext environmentContext() {
-        return environmentContext;
+    public StorageEnvironmentContext storageEnvironmentContext() {
+        return storageEnvironmentContext;
     }
 
-    private final EnvironmentContext environmentContext;
+    private final StorageEnvironmentContext storageEnvironmentContext;
 
     // Object...........................................................................................................
 
@@ -264,7 +222,7 @@ final class BasicStorageContext implements StorageContext,
             this.converterLike,
             this.mediaTypeDetector,
             this.storage,
-            this.environmentContext
+            this.storageEnvironmentContext
         );
     }
 
@@ -279,13 +237,13 @@ final class BasicStorageContext implements StorageContext,
         return this.converterLike.equals(other.converterLike) &&
             this.mediaTypeDetector.equals(other.mediaTypeDetector) &&
             this.storage.equals(other.storage) &&
-            this.environmentContext.equals(other.environmentContext);
+            this.storageEnvironmentContext.equals(other.storageEnvironmentContext);
     }
 
     @Override
     public String toString() {
         return this.mediaTypeDetector + " " +
             this.storage + " " +
-            this.environmentContext;
+            this.storageEnvironmentContext;
     }
 }
