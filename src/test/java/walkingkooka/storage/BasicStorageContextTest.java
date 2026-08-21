@@ -25,7 +25,6 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContextTesting;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
 
@@ -77,7 +76,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 null,
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
@@ -90,26 +89,26 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 CONVERTER_LIKE,
                 null,
                 STORAGE,
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
 
     @Test
-    public void testWithNullStoragetFails() {
+    public void testWithNullStorageFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageContext.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 null,
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
 
     @Test
-    public void testWithNullEnvironmentContextFails() {
+    public void testWithNullStorageEnvironmentContextFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicStorageContext.with(
@@ -160,7 +159,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                         return false;
                     }
                 },
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             ),
             STORAGE_PATH,
             false
@@ -333,16 +332,6 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     // setEnvironmentContext............................................................................................
 
     @Test
-    public void testSetEnvironmentContextWithSameBasicStorageContext() {
-        final BasicStorageContext context = this.createContext();
-
-        assertSame(
-            context,
-            context.setEnvironmentContext(context)
-        );
-    }
-
-    @Test
     public void testSetEnvironmentContextWithSameEnvironmentContext() {
         final BasicStorageContext context = this.createContext();
 
@@ -355,10 +344,10 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     }
 
     @Test
-    public void testSetEnvironmentContextWithDifferentEnvironmentContext() {
+    public void testSetEnvironmentContextWithDifferentStorageEnvironmentContext() {
         final BasicStorageContext context = this.createContext();
 
-        final StorageContext after = context.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
+        final StorageContext after = context.setEnvironmentContext(DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT);
         assertNotSame(
             context,
             after
@@ -369,63 +358,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 context.storage,
-                DIFFERENT_ENVIRONMENT_CONTEXT
-            ),
-            after
-        );
-    }
-
-    @Test
-    public void testSetEnvironmentContextWithBasicStorageContextWithDifferentEnvironmentContext() {
-        final BasicStorageContext context = this.createContext();
-
-        final StorageContext after = context.setEnvironmentContext(
-            BasicStorageContext.with(
-                CONVERTER_LIKE,
-                MEDIA_TYPE_DETECTOR,
-                STORAGE,
-                DIFFERENT_ENVIRONMENT_CONTEXT
-            )
-        );
-        assertNotSame(
-            context,
-            after
-        );
-
-        this.checkEquals(
-            BasicStorageContext.with(
-                CONVERTER_LIKE,
-                MEDIA_TYPE_DETECTOR,
-                context.storage,
-                DIFFERENT_ENVIRONMENT_CONTEXT
-            ),
-            after
-        );
-    }
-
-    @Test
-    public void testSetEnvironmentContextWithBasicStorageContextWithDifferentEnvironmentContext2() {
-        final BasicStorageContext context = this.createContext();
-
-        final StorageContext after = context.setEnvironmentContext(
-            BasicStorageContext.with(
-                CONVERTER_LIKE,
-                MediaTypeDetectors.fake(),
-                STORAGE,
-                DIFFERENT_ENVIRONMENT_CONTEXT
-            )
-        );
-        assertNotSame(
-            context,
-            after
-        );
-
-        this.checkEquals(
-            BasicStorageContext.with(
-                CONVERTER_LIKE,
-                MEDIA_TYPE_DETECTOR,
-                context.storage,
-                DIFFERENT_ENVIRONMENT_CONTEXT
+                DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
             ),
             after
         );
@@ -525,7 +458,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 ConverterContexts.fake(),
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
@@ -537,7 +470,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 CONVERTER_LIKE,
                 MediaTypeDetectors.fake(),
                 STORAGE,
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
@@ -549,7 +482,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 Storages.fake(),
-                ENVIRONMENT_CONTEXT
+                STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }
@@ -561,7 +494,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
-                EnvironmentContexts.fake()
+                DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT
             )
         );
     }

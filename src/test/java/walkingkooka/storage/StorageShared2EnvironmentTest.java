@@ -26,8 +26,6 @@ import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.environment.AuditInfo;
-import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.net.header.MediaTypeDetectors;
@@ -43,7 +41,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
     implements CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
-    EnvironmentContextTesting {
+    StorageEnvironmentContextTesting {
 
     private final static EnvironmentValueName<Integer> MAGIC_ENVIRONMENT_VALUE_NAME = EnvironmentValueName.with(
         "magic-integer",
@@ -381,6 +379,8 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             this.createContext(),
             EnvironmentValueName.CHARSET,
             EnvironmentValueName.CURRENCY,
+            StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY,
+            StorageEnvironmentContext.HOME_DIRECTORY,
             EnvironmentValueName.INDENTATION,
             EnvironmentValueName.LINE_ENDING,
             EnvironmentValueName.LOCALE,
@@ -401,8 +401,10 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             this.createContext(),
             //EnvironmentValueName.CHARSET,
             //EnvironmentValueName.CURRENCY,
-            EnvironmentValueName.INDENTATION,
-            EnvironmentValueName.LINE_ENDING
+            StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY,
+            StorageEnvironmentContext.HOME_DIRECTORY
+            //EnvironmentValueName.INDENTATION,
+            //EnvironmentValueName.LINE_ENDING
             //EnvironmentValueName.LOCALE,
             //MAGIC_ENVIRONMENT_VALUE_NAME,
             //EnvironmentValueName.NOW,
@@ -419,7 +421,8 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             0,
             999,
             this.createContext(),
-            EnvironmentValueName.CURRENCY
+            EnvironmentValueName.CURRENCY,
+            StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY
         );
     }
 
@@ -607,9 +610,9 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
 
     @Override
     public StorageContext createContext() {
-        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
-        environmentContext.setEnvironmentValue(
+        storageEnvironmentContext.setEnvironmentValue(
             MAGIC_ENVIRONMENT_VALUE_NAME,
             MAGIC_ENVIRONMENT_VALUE
         );
@@ -628,7 +631,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             ),
             MediaTypeDetectors.fake(),
             Storages.fake(),
-            environmentContext
+            storageEnvironmentContext
         );
     }
 

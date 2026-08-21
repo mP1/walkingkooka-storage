@@ -18,7 +18,6 @@
 package walkingkooka.storage;
 
 import walkingkooka.convert.ConverterLike;
-import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.reflect.PublicStaticHelper;
 
@@ -33,12 +32,12 @@ public final class StorageContexts implements PublicStaticHelper {
     public static StorageContext basic(final ConverterLike converterLike,
                                        final MediaTypeDetector mediaTypeDetector,
                                        final Storage<StorageContext> storage,
-                                       final EnvironmentContext environmentContext) {
+                                       final StorageEnvironmentContext storageEnvironmentContext) {
         return BasicStorageContext.with(
             converterLike,
             mediaTypeDetector,
             storage,
-            environmentContext
+            storageEnvironmentContext
         );
     }
 
