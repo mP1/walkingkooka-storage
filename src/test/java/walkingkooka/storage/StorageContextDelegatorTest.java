@@ -99,7 +99,7 @@ public final class StorageContextDelegatorTest implements StorageContextTesting2
                 ConverterContexts.fake(), // ConverterLike
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
-                ENVIRONMENT_CONTEXT.cloneEnvironment()
+                STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
             );
         }
 

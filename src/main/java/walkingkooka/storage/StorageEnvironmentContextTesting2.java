@@ -27,6 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentContext> extends StorageEnvironmentContextTesting,
     EnvironmentContextTesting2<C> {
 
+    @Test
+    default void testParseEnvironmentValueNameWithCurrentWorkingDirectory() {
+        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY);
+    }
+
+    @Test
+    default void testParseEnvironmentValueNameWithHomeDirectory() {
+        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.HOME_DIRECTORY);
+    }
+
     // currentWorkingDirectory..........................................................................................
 
     @Override
