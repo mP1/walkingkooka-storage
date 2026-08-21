@@ -187,7 +187,10 @@ final class BasicStorageContext implements StorageContext,
 
     @Override
     public StorageContext cloneEnvironment() {
-        return this.setEnvironmentContext(
+        return new BasicStorageContext(
+            this.converterLike,
+            this.mediaTypeDetector,
+            this.storage,
             this.storageEnvironmentContext.cloneEnvironment()
         );
     }

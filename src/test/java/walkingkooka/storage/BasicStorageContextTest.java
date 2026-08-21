@@ -329,6 +329,27 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     private boolean fired;
 
+    // cloneEnvironmentContext..........................................................................................
+
+    @Test
+    public void testCloneEnvironmentContext() {
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        final BasicStorageContext basicStorageContext = BasicStorageContext.with(
+            CONVERTER_LIKE,
+            MEDIA_TYPE_DETECTOR,
+            STORAGE,
+            storageEnvironmentContext
+        );
+
+        final StorageContext cloned = basicStorageContext.cloneEnvironment();
+
+        this.setHomeDirectoryAndCheck(
+            cloned,
+            DIFFERENT_HOME_DIRECTORY
+        );
+    }
+
     // setEnvironmentContext............................................................................................
 
     @Test
