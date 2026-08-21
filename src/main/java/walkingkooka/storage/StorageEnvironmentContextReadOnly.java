@@ -84,10 +84,7 @@ final class StorageEnvironmentContextReadOnly implements StorageEnvironmentConte
 
     @Override
     public StorageEnvironmentContext cloneEnvironment() {
-        final EnvironmentContext environmentContext = this.context.cloneEnvironment();
-        return environmentContext instanceof StorageEnvironmentContext ?
-            (StorageEnvironmentContext) environmentContext :
-            StorageEnvironmentContexts.basic(environmentContext);
+        return this.context.cloneEnvironment();
     }
 
     @Override
