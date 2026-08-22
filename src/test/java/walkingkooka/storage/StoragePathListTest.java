@@ -28,7 +28,7 @@ import walkingkooka.text.HasTextWithLineBreaksTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -39,7 +39,7 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
     HasTextTesting,
     HasTextWithLineBreaksTesting,
     ImmutableListTesting<StoragePathList, StoragePath>,
-    JsonNodeMarshallingTesting<StoragePathList>,
+    JsonNodeMarshallerTesting<StoragePathList>,
     TreePrintableTesting {
 
     private final static StoragePath STORAGE_PATH1 = StoragePath.parse("/value111");

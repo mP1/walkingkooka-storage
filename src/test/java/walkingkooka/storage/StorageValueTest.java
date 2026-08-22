@@ -25,7 +25,7 @@ import walkingkooka.net.header.HasContentTypeTesting;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Optional;
@@ -38,7 +38,7 @@ public final class StorageValueTest implements HasContentTypeTesting,
     HashCodeEqualsDefinedTesting2<StorageValue>,
     ToStringTesting<StorageValue>,
     TreePrintableTesting,
-    JsonNodeMarshallingTesting<StorageValue>,
+    JsonNodeMarshallerTesting<StorageValue>,
     HasValueTesting {
 
     static {
