@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentValueName;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -73,6 +74,26 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
         this.setHomeDirectoryAndCheck(
             this.createContext(),
             DIFFERENT_HOME_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testParseEnvironmentValueNameAfterSetEnvironmentValue() {
+        final EnvironmentValueName<String> name = EnvironmentValueName.with(
+            "magic",
+            String.class
+        );
+
+        final StorageEnvironmentContextBasic context = this.createContext();
+        this.setEnvironmentValueAndCheck(
+            context,
+            name,
+            "value123"
+        );
+
+        this.parseEnvironmentValueNameAndCheck(
+            context,
+            name
         );
     }
 
