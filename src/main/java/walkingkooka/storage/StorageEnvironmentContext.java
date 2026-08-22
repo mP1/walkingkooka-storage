@@ -17,11 +17,9 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.environment.CanParseEnvironmentValueName;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -55,29 +53,6 @@ public interface StorageEnvironmentContext extends EnvironmentContext,
      * Sets or replaces the home directory.
      */
     void setHomeDirectory(final Optional<StoragePath> homeDirectory);
-
-    /**
-     * A {@link CanParseEnvironmentValueName} that only works for {@link StorageEnvironmentContext}.
-     */
-    CanParseEnvironmentValueName STORAGE_ENVIRONMENT_CONTEXT_PARSE = (final String name) -> {
-        Objects.requireNonNull(name, "name");
-
-        final EnvironmentValueName<?> environmentValueName;
-
-        // assumes Case insensitive
-        switch (name.toLowerCase()) {
-            case "currentworkingdirectory":
-                environmentValueName = CURRENT_WORKING_DIRECTORY;
-                break;
-            case "homedirectory":
-                environmentValueName = HOME_DIRECTORY;
-                break;
-            default:
-                environmentValueName = EnvironmentContext.ENVIRONMENT_CONTEXT_PARSE.parseEnvironmentValueName(name);
-        }
-
-        return environmentValueName;
-    };
 
     // EnvironmentContext...............................................................................................
 
