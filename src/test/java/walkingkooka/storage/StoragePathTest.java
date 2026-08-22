@@ -28,7 +28,7 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Arrays;
@@ -43,7 +43,7 @@ final public class StoragePathTest implements PathTesting<StoragePath, StorageNa
 HasCurrentWorkingDirectoryTesting,
     HasHomeDirectoryTesting,
     ParseStringTesting<StoragePath>,
-    JsonNodeMarshallingTesting<StoragePath>,
+    JsonNodeMarshallerTesting<StoragePath>,
     TreePrintableTesting {
 
     @Override

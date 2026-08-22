@@ -31,7 +31,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
@@ -47,7 +47,7 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
     HasLastModifiedTesting,
     HasTextTesting,
     TreePrintableTesting,
-    JsonNodeMarshallingTesting<StorageValueInfo>,
+    JsonNodeMarshallerTesting<StorageValueInfo>,
     IteratorTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");

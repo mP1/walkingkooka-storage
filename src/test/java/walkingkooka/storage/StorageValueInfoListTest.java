@@ -30,7 +30,7 @@ import walkingkooka.text.HasTextWithLineBreaksTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -43,7 +43,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     HasTextTesting,
     HasTextWithLineBreaksTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
-    JsonNodeMarshallingTesting<StorageValueInfoList>,
+    JsonNodeMarshallerTesting<StorageValueInfoList>,
     TreePrintableTesting {
 
     private final static StorageValueInfo FILE1 = StorageValueInfo.with(
