@@ -35,6 +35,17 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
         );
     }
 
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final TestStorageEnvironmentContextDelegator context = this.createContext();
+
+        this.environmentContextAndCheck(
+            context,
+            context.storageEnvironmentContext
+        );
+    }
+
     @Override
     public void testSetEnvironmentContextWithEqualEnvironmentContext() {
         throw new UnsupportedOperationException();

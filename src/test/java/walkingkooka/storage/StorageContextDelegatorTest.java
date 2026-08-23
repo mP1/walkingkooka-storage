@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelegator;
@@ -24,6 +25,19 @@ import walkingkooka.storage.StorageContextDelegatorTest.TestStorageContextDelega
 import java.util.Objects;
 
 public final class StorageContextDelegatorTest implements StorageContextTesting2<TestStorageContextDelegator> {
+
+    // HasEnvironmentContext............................................................................................
+
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final TestStorageContextDelegator context = this.createContext();
+
+        this.environmentContextAndCheck(
+            context,
+            context.storageContext
+        );
+    }
 
     @Override
     public TestStorageContextDelegator createContext() {
@@ -95,13 +109,15 @@ public final class StorageContextDelegatorTest implements StorageContextTesting2
 
         @Override
         public StorageContext storageContext() {
-            return StorageContexts.basic(
-                ConverterContexts.fake(), // ConverterLike
-                MEDIA_TYPE_DETECTOR,
-                STORAGE,
-                STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
-            );
+            return this.storageContext;
         }
+
+        final StorageContext storageContext = StorageContexts.basic(
+            ConverterContexts.fake(), // ConverterLike
+            MEDIA_TYPE_DETECTOR,
+            STORAGE,
+            STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+        );
 
         // Object.......................................................................................................
 

@@ -215,7 +215,8 @@ final class BasicStorageContext implements StorageContext,
         return storageEnvironmentContext;
     }
 
-    private final StorageEnvironmentContext storageEnvironmentContext;
+    // @VisibleForTesting
+    final StorageEnvironmentContext storageEnvironmentContext;
 
     // Object...........................................................................................................
 

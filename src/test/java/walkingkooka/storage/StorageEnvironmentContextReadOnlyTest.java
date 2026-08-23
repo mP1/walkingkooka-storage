@@ -208,6 +208,24 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
         );
     }
 
+    // HasEnvironmentContext............................................................................................
+
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final StorageEnvironmentContext wrapped = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+
+        final StorageEnvironmentContextReadOnly context = StorageEnvironmentContextReadOnly.with(
+            READ_ONLY_FILTER,
+            wrapped
+        );
+
+        this.environmentContextAndCheck(
+            context,
+            wrapped
+        );
+    }
+
     // toString.........................................................................................................
 
     @Test

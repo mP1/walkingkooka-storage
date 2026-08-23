@@ -208,6 +208,17 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
         );
     }
 
+    // HasEnvironmentContext............................................................................................
+
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        this.environmentContextAndCheck(
+            StorageEnvironmentContextBasic.with(ENVIRONMENT_CONTEXT),
+            ENVIRONMENT_CONTEXT
+        );
+    }
+
     // class............................................................................................................
 
     @Override
