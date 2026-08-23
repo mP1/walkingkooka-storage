@@ -525,6 +525,19 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         return this.createContext();
     }
 
+    // HasEnvironmentContext............................................................................................
+
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final BasicStorageContext context = this.createContext();
+
+        this.environmentContextAndCheck(
+            context,
+            context.storageEnvironmentContext
+        );
+    }
+
     // class............................................................................................................
 
     @Override
