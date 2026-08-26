@@ -138,7 +138,6 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
                 },
                 MEDIA_TYPE_DETECTOR,
                 JsonNodeConverterContexts.basic(
-                    ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),
                         ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier

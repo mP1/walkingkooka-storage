@@ -772,7 +772,6 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
                 new FakeHasUserDirectories(),
                 MediaTypeDetectors.fake(),
                 JsonNodeConverterContexts.basic(
-                    ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),
                         ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
