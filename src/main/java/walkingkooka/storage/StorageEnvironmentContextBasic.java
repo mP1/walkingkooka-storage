@@ -132,19 +132,7 @@ final class StorageEnvironmentContextBasic implements StorageEnvironmentContext,
 
     @Override
     public EnvironmentValueName<?> parseEnvironmentValueName(final String name) {
-        Objects.requireNonNull(name, "name");
-
-        return EnvironmentValueName.CASE_SENSITIVITY.equals(
-            CURRENT_WORKING_DIRECTORY.value(),
-            name
-        ) ?
-            CURRENT_WORKING_DIRECTORY :
-            EnvironmentValueName.CASE_SENSITIVITY.equals(
-                HOME_DIRECTORY.value(),
-                name
-            ) ?
-                HOME_DIRECTORY :
-                context.parseEnvironmentValueName(name);
+        return this.context.parseEnvironmentValueName(name);
     }
 
     // Object...........................................................................................................
