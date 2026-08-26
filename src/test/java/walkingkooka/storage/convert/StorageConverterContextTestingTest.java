@@ -168,7 +168,6 @@ public final class StorageConverterContextTestingTest implements StorageConverte
         @Override
         public JsonNodeConverterContext jsonNodeConverterContext() {
             return JsonNodeConverterContexts.basic(
-                ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
                     ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
