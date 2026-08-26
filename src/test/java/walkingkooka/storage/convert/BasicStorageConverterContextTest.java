@@ -24,6 +24,7 @@ import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
+import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.net.header.MediaType;
@@ -41,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicStorageConverterContextTest implements StorageConverterContextTesting2<BasicStorageConverterContext>,
     DecimalNumberContextDelegator,
+    EnvironmentContextTesting,
     JsonNodeMarshallUnmarshallContextTesting {
 
     private final static Converter<StorageConverterContext> CONVERTER = Converters.collection(
@@ -170,6 +172,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
             HAS_USER_DIRECTORIES,
             MEDIA_TYPE_DETECTOR,
             JsonNodeConverterContexts.basic(
+                ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
                     ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
