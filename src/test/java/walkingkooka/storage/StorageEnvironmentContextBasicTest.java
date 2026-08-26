@@ -78,6 +78,26 @@ public final class StorageEnvironmentContextBasicTest implements StorageEnvironm
     }
 
     @Test
+    public void testParseEnvironmentValueNameMissingCurrentWorkingDirectory() {
+        this.parseEnvironmentValueNameAndCheck(
+            StorageEnvironmentContextBasic.with(
+                ENVIRONMENT_CONTEXT
+            ),
+            StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY
+        );
+    }
+
+    @Test
+    public void testParseEnvironmentValueNameMissingHomeDirectory() {
+        this.parseEnvironmentValueNameAndCheck(
+            StorageEnvironmentContextBasic.with(
+                ENVIRONMENT_CONTEXT
+            ),
+            StorageEnvironmentContext.HOME_DIRECTORY
+        );
+    }
+
+    @Test
     public void testParseEnvironmentValueNameAfterSetEnvironmentValue() {
         final EnvironmentValueName<String> name = EnvironmentValueName.with(
             "magic",
