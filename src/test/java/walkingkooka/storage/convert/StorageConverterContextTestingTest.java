@@ -22,6 +22,7 @@ import walkingkooka.Binary;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
+import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.math.DecimalNumberContext;
 import walkingkooka.math.DecimalNumberContextDelegator;
 import walkingkooka.net.header.MediaType;
@@ -40,7 +41,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class StorageConverterContextTestingTest implements StorageConverterContextTesting2<TestStorageConverterContext>,
-    DecimalNumberContextDelegator {
+    DecimalNumberContextDelegator,
+    EnvironmentContextTesting {
 
     @Test
     public void testCurrentWorkingDirectoryWhenEmpty() {
@@ -166,6 +168,7 @@ public final class StorageConverterContextTestingTest implements StorageConverte
         @Override
         public JsonNodeConverterContext jsonNodeConverterContext() {
             return JsonNodeConverterContexts.basic(
+                ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                 ExpressionNumberConverterContexts.basic(
                     Converters.fake(),
                     ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier

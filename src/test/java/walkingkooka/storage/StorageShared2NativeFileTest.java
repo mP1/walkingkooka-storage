@@ -34,6 +34,7 @@ import walkingkooka.currency.CurrencyLocaleContextTesting;
 import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.AuditInfo;
+import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.HasUserTesting;
 import walkingkooka.math.DecimalNumberContextTesting;
 import walkingkooka.math.MathTesting;
@@ -71,6 +72,7 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
+    EnvironmentContextTesting,
     HasCharsetTesting,
     HasExpressionNumberKindTesting,
     HasNowTesting,
@@ -770,6 +772,7 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
                 new FakeHasUserDirectories(),
                 MediaTypeDetectors.fake(),
                 JsonNodeConverterContexts.basic(
+                    ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),
                         ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier

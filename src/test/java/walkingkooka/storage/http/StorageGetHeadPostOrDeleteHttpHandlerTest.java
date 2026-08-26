@@ -462,6 +462,7 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
                 HAS_USER_DIRECTORIES,
                 MEDIA_TYPE_DETECTOR,
                 JsonNodeConverterContexts.basic(
+                    ENVIRONMENT_CONTEXT, // CanParseEnvironmentValueName
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),
                         ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
