@@ -38,7 +38,14 @@ public final class StorageConverters implements PublicStaticHelper {
     public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueCsv() {
         return StorageConverterStorageBinaryToStorageValueSharedCsv.instance();
     }
-    
+
+    /**
+     * {see StorageConverterStorageBinaryToStorageValueSharedEnvironment}
+     */
+    public static <C extends StorageConverterContext> Converter<C> storageBinaryToStorageValueEEnvironment() {
+        return StorageConverterStorageBinaryToStorageValueSharedEnvironment.instance();
+    }
+
     /**
      * {see StorageConverterStorageBinaryToStorageValueSharedExpression}
      */
