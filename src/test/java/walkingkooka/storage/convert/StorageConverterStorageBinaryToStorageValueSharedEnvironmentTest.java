@@ -25,32 +25,46 @@ import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyContextTesting;
+import walkingkooka.currency.CurrencyCode;
+import walkingkooka.currency.CurrencyLocaleContextTesting;
+import walkingkooka.datetime.DateTimeContext;
+import walkingkooka.datetime.DateTimeContextTesting;
 import walkingkooka.environment.Environment;
+import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.convert.EnvironmentConverterContext;
 import walkingkooka.environment.convert.EnvironmentConverters;
-import walkingkooka.net.header.MediaType;
+import walkingkooka.environment.convert.FakeEnvironmentConverterContext;
+import walkingkooka.locale.LocaleLanguageTag;
+import walkingkooka.math.DecimalNumberContextTesting;
+import walkingkooka.net.convert.NetConverters;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.text.LineEnding;
 
 import java.nio.charset.Charset;
+import java.time.format.DateTimeFormatter;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Optional;
 
 public final class StorageConverterStorageBinaryToStorageValueSharedEnvironmentTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedEnvironment<FakeStorageConverterContext>>
     implements HasCharsetTesting,
-    CurrencyContextTesting {
+    CurrencyLocaleContextTesting,
+    DateTimeContextTesting,
+    DecimalNumberContextTesting,
+    EnvironmentContextTesting {
 
     @Test
-    public void testConvertStorageBinaryEnvironmentToStorageValueWithTextPlainContentType() {
+    public void testConvertStorageBinaryEnvironmentWithCurrencyToStorageValue() {
         final Environment environment = Environment.empty()
             .set(
                 EnvironmentValueName.CURRENCY,
                 CURRENCY
             );
 
-        final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.env");
+        final StoragePath storagePath = StoragePath.parse("/currency.env");
 
         this.convertAndCheck(
             StorageBinary.with(
@@ -62,56 +76,32 @@ public final class StorageConverterStorageBinaryToStorageValueSharedEnvironmentT
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(environment)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_PLAIN)
                 )
         );
     }
 
     @Test
-    public void testConvertStorageBinaryEnvironmentToStorageValue() {
-        final Environment environment = Environment.empty()
-            .set(
-                EnvironmentValueName.CURRENCY,
-                CURRENCY
-            );
+    public void testConvertStorageBinaryEnvironmentWithAllEnvironmentContextEntriesToStorageValue() {
+        final Environment environment = ENVIRONMENT_CONTEXT.environment();
 
-        final StoragePath storagePath = StoragePath.parse("/dateTimeSymbols.env");
+        final StoragePath storagePath = StoragePath.parse("/EnvironmentContext.env");
 
-        this.convertAndCheck(
-            StorageBinary.with(
-                storagePath,
-                Binary.with(
-                    "currency=AUD".getBytes(CHARSET)
-                )
-            ),
-            StorageValue.with(storagePath)
-                .setValue(
-                    Optional.of(environment)
-                ).setContentType(
-                    Optional.of(Environment.CONTENT_TYPE)
-                )
-        );
-    }
-
-    @Override
-    public StorageConverterStorageBinaryToStorageValueSharedEnvironment<FakeStorageConverterContext> createConverter() {
-        return StorageConverterStorageBinaryToStorageValueSharedEnvironment.instance();
-    }
-
-    @Override
-    public FakeStorageConverterContext createContext() {
-        return new FakeStorageConverterContext() {
+        final String text = new FakeEnvironmentConverterContext() {
 
             @Override
-            public Charset charset() {
-                return CHARSET;
+            public Locale locale() {
+                return LOCALE;
             }
 
-//            @Override
-//            public char valueSeparator() {
-//                return ',';
-//            }
+            @Override
+            public LineEnding lineEnding() {
+                return LINE_ENDING;
+            }
+
+            @Override
+            public int twoDigitYear() {
+                return TWO_DIGIT_YEAR;
+            }
 
             @Override
             public boolean canConvert(final Object value,
@@ -133,11 +123,114 @@ public final class StorageConverterStorageBinaryToStorageValueSharedEnvironmentT
                 );
             }
 
+            private final Converter<FakeEnvironmentConverterContext> converter = Converters.collection(
+                Lists.of(
+                    Converters.localTimeToString(
+                        (c) -> DateTimeFormatter.ofPattern("ss:mm:hh")
+                    ),
+                    Converters.localeToString(),
+                    EnvironmentConverters.environmentToString(),
+                    Converters.objectToString()
+                )
+            );
+        }.convertOrFail(
+            environment,
+            String.class
+        );
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    text.getBytes(CHARSET)
+                )
+            ),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(environment)
+                ).setContentType(
+                    Optional.of(Environment.CONTENT_TYPE)
+                )
+        );
+    }
+
+
+    @Override
+    public StorageConverterStorageBinaryToStorageValueSharedEnvironment<FakeStorageConverterContext> createConverter() {
+        return StorageConverterStorageBinaryToStorageValueSharedEnvironment.instance();
+    }
+
+    @Override
+    public FakeStorageConverterContext createContext() {
+        return new FakeStorageConverterContext() {
+
+            @Override
+            public EnvironmentValueName<?> parseEnvironmentValueName(final String name) {
+                return ENVIRONMENT_CONTEXT.parseEnvironmentValueName(name);
+            }
+
+            @Override
+            public Charset charset() {
+                return CHARSET;
+            }
+
+            @Override
+            public Locale locale() {
+                return LOCALE;
+            }
+
+            @Override
+            public int twoDigitYear() {
+                return TWO_DIGIT_YEAR;
+            }
+
+            @Override
+            public boolean canConvert(final Object value,
+                                      final Class<?> type) {
+                return this.converter.canConvert(
+                    value,
+                    type,
+                    this
+                );
+            }
+
+            @Override
+            public Optional<Currency> currencyForCurrencyCode(final CurrencyCode currencyCode) {
+                return CURRENCY_CONTEXT.currencyForCurrencyCode(currencyCode);
+            }
+
+            @Override
+            public Optional<Locale> localeForLanguageTag(final LocaleLanguageTag languageTag) {
+                return LOCALE_CONTEXT.localeForLanguageTag(languageTag);
+            }
+
+            @Override
+            public <T> Either<T, String> convert(final Object value,
+                                                 final Class<T> target) {
+                return this.converter.convert(
+                    value,
+                    target,
+                    this
+                );
+            }
+
             private final Converter<EnvironmentConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
                     Converters.binaryToString(),
-                    EnvironmentConverters.textToEnvironment()
+                    Converters.textToCharset(),
+                    Converters.textToCurrencyCode(),
+                    Converters.textToCurrency(),
+                    Converters.textToIndentation(),
+                    Converters.textToLocalDateTime(
+                        (DateTimeContext dateTimeContext) -> DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                    ),
+                    Converters.textToLineEnding(),
+                    Converters.textToLocale(),
+                    NetConverters.textToEmailAddress(),
+                    Converters.textToZoneOffset(),
+                    EnvironmentConverters.textToEnvironment(),
+                    EnvironmentConverters.textToEnvironmentValueName()
                 )
             );
         };
@@ -147,7 +240,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedEnvironmentT
     public void testToString() {
         this.toStringAndCheck(
             this.createConverter(),
-            "StorageBinary *.env | text/x-java-properties to StorageValue"
+            "StorageBinary *.env | text/x-env to StorageValue"
         );
     }
 
