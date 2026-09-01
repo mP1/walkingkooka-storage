@@ -20,8 +20,9 @@ package walkingkooka.storage;
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.text.HasText;
-import walkingkooka.text.HasTextWithLineBreaks;
+import walkingkooka.text.HasTextWithTextContext;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 public final class StoragePathList extends AbstractList<StoragePath>
     implements ImmutableListDefaults<StoragePathList, StoragePath>,
     HasText,
-    HasTextWithLineBreaks,
+    HasTextWithTextContext,
     TreePrintable {
 
     /**
@@ -122,10 +123,18 @@ public final class StoragePathList extends AbstractList<StoragePath>
         return this.textWithLineBreaks(LineEnding.TERMINAL);
     }
 
-    // HasTextWithLineBreaks............................................................................................
+    // HasTextWithTextContext............................................................................................
 
     @Override
-    public String textWithLineBreaks(final LineEnding lineEnding) {
+    public String textWithTextContext(final TextContext context) {
+        Objects.requireNonNull(context, "context");
+
+        return this.textWithLineBreaks(
+            context.lineEnding()
+        );
+    }
+
+    private String textWithLineBreaks(final LineEnding lineEnding) {
         Objects.requireNonNull(lineEnding, "lineEnding");
 
         return this.paths.stream()

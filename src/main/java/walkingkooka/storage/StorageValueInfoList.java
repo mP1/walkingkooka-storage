@@ -21,8 +21,9 @@ import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.datetime.HasOptionalLastModified;
 import walkingkooka.text.HasText;
-import walkingkooka.text.HasTextWithLineBreaks;
+import walkingkooka.text.HasTextWithTextContext;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
@@ -46,7 +47,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     implements ImmutableListDefaults<StorageValueInfoList, StorageValueInfo>,
     HasOptionalLastModified,
     HasText,
-    HasTextWithLineBreaks,
+    HasTextWithTextContext,
     TreePrintable {
 
     /**
@@ -148,12 +149,18 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
         return this.textWithLineBreaks(LineEnding.TERMINAL);
     }
 
-    // HasTextWithLineBreaks............................................................................................
+    // HasTextWithTextContext............................................................................................
 
     @Override
-    public String textWithLineBreaks(final LineEnding lineEnding) {
-        Objects.requireNonNull(lineEnding, "lineEnding");
+    public String textWithTextContext(final TextContext context) {
+        Objects.requireNonNull(context, "context");
 
+        return this.textWithLineBreaks(
+            context.lineEnding()
+        );
+    }
+
+    private String textWithLineBreaks(final LineEnding lineEnding) {
         return this.infos.stream()
             .map(HasText::text)
             .collect(
