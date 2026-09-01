@@ -25,8 +25,8 @@ import walkingkooka.datetime.HasOptionalLastModifiedTesting;
 import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.HasTextWithTextContextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
@@ -41,7 +41,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     HasAuditInfoTesting,
     HasOptionalLastModifiedTesting,
     HasTextTesting,
-    HasTextWithTextContextTesting,
+    HasMultiLineTextTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallerTesting<StorageValueInfoList>,
     TreePrintableTesting {
@@ -171,11 +171,11 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         );
     }
 
-    // HasTextWithTextContext...........................................................................................
+    // HasMultiLineText...........................................................................................
 
     @Test
-    public void testTextWithTextContextWithCrlf() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithCrlf() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.CRNL,
             "/file1\r\n" +
@@ -184,8 +184,8 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     }
 
     @Test
-    public void testTextWithTextContextWithNl() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithNl() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.NL,
             "/file1\n" +

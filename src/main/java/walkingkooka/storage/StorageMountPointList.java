@@ -19,8 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.text.HasMultiLineText;
 import walkingkooka.text.HasText;
-import walkingkooka.text.HasTextWithTextContext;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public final class StorageMountPointList extends AbstractList<StorageMountPoint<?>>
     implements ImmutableListDefaults<StorageMountPointList, StorageMountPoint<?>>,
     HasText,
-    HasTextWithTextContext,
+    HasMultiLineText,
     TreePrintable {
 
     /**
@@ -119,10 +119,10 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
         return this.textWithLineBreaks(LineEnding.TERMINAL);
     }
 
-    // HasTextWithTextContext...........................................................................................
+    // HasMultiLineText.................................................................................................
 
     @Override
-    public String textWithTextContext(final TextContext context) {
+    public String multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
         return this.textWithLineBreaks(

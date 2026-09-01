@@ -19,8 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.naming.HasPath;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.HasMultiLineText;
 import walkingkooka.text.HasText;
-import walkingkooka.text.HasTextWithTextContext;
 import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -33,7 +33,7 @@ import java.util.Objects;
 public final class StorageMountPoint<C extends StorageContext> implements Comparable<StorageMountPoint<C>>,
     HasPath<StoragePath>,
     HasText,
-    HasTextWithTextContext,
+    HasMultiLineText,
     TreePrintable {
 
     public static <C extends StorageContext> StorageMountPoint<C> with(final StoragePath path,
@@ -205,10 +205,10 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
         printer.outdent();
     }
 
-    // HasTextWithTextContext............................................................................................
+    // HasMultiLineText.................................................................................................
 
     @Override
-    public String textWithTextContext(final TextContext context) {
+    public String multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
         return this.path + "=" + this.storage + context.lineEnding();

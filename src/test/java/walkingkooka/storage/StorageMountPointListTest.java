@@ -23,8 +23,8 @@ import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.HasTextWithTextContextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class StorageMountPointListTest implements ListTesting2<StorageMountPointList, StorageMountPoint<?>>,
     ClassTesting<StorageMountPointList>,
     HasTextTesting,
-    HasTextWithTextContextTesting,
+    HasMultiLineTextTesting,
     ImmutableListTesting<StorageMountPointList, StorageMountPoint<?>>,
     TreePrintableTesting {
 
@@ -163,11 +163,11 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         );
     }
 
-    // HasTextWithTextContext...........................................................................................
+    // HasMultiLineText...........................................................................................
 
     @Test
-    public void testTextWithTextContextWithCrlf() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithCrlf() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.CRNL,
             "/mount1={}\r\n" +
@@ -176,8 +176,8 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     }
 
     @Test
-    public void testTextWithTextContextWithNl() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithNl() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.NL,
             "/mount1={}\n" +

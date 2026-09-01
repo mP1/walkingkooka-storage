@@ -23,8 +23,8 @@ import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.HasTextWithTextContextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class StoragePathListTest implements ListTesting2<StoragePathList, StoragePath>,
     ClassTesting<StoragePathList>,
     HasTextTesting,
-    HasTextWithTextContextTesting,
+    HasMultiLineTextTesting,
     ImmutableListTesting<StoragePathList, StoragePath>,
     JsonNodeMarshallerTesting<StoragePathList>,
     TreePrintableTesting {
@@ -161,11 +161,11 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
         );
     }
 
-    // HasTextWithTextContext...........................................................................................
+    // HasMultiLineText...........................................................................................
 
     @Test
-    public void testTextWithTextContextWithCrlf() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithCrlf() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.CRNL,
             "/value111\r\n" +
@@ -174,8 +174,8 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
     }
 
     @Test
-    public void testTextWithTextContextWithNl() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextWithNl() {
+        this.multiLineTextAndCheck(
             this.createList(),
             LineEnding.NL,
             "/value111\n" +
