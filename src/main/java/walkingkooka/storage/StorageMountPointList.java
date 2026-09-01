@@ -20,8 +20,9 @@ package walkingkooka.storage;
 import walkingkooka.collect.list.ImmutableListDefaults;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.text.HasText;
-import walkingkooka.text.HasTextWithLineBreaks;
+import walkingkooka.text.HasTextWithTextContext;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public final class StorageMountPointList extends AbstractList<StorageMountPoint<?>>
     implements ImmutableListDefaults<StorageMountPointList, StorageMountPoint<?>>,
     HasText,
-    HasTextWithLineBreaks,
+    HasTextWithTextContext,
     TreePrintable {
 
     /**
@@ -118,12 +119,18 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
         return this.textWithLineBreaks(LineEnding.TERMINAL);
     }
 
-    // HasTextWithLineBreaks............................................................................................
+    // HasTextWithTextContext...........................................................................................
 
     @Override
-    public String textWithLineBreaks(final LineEnding lineEnding) {
-        Objects.requireNonNull(lineEnding, "lineEnding");
+    public String textWithTextContext(final TextContext context) {
+        Objects.requireNonNull(context, "context");
 
+        return this.textWithLineBreaks(
+            context.lineEnding()
+        );
+    }
+
+    private String textWithLineBreaks(final LineEnding lineEnding) {
         return this.storageMountPoints.stream()
             .map(HasText::text)
             .collect(

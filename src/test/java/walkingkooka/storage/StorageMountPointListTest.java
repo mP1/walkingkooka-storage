@@ -24,7 +24,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.HasTextWithLineBreaksTesting;
+import walkingkooka.text.HasTextWithTextContextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class StorageMountPointListTest implements ListTesting2<StorageMountPointList, StorageMountPoint<?>>,
     ClassTesting<StorageMountPointList>,
     HasTextTesting,
-    HasTextWithLineBreaksTesting,
+    HasTextWithTextContextTesting,
     ImmutableListTesting<StorageMountPointList, StorageMountPoint<?>>,
     TreePrintableTesting {
 
@@ -163,11 +163,11 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         );
     }
 
-    // HasTextWithLineBreaks............................................................................................
+    // HasTextWithTextContext...........................................................................................
 
     @Test
-    public void testTextWithLineBreaksWithCrlf() {
-        this.textWithLineBreaksAndCheck(
+    public void testTextWithTextContextWithCrlf() {
+        this.textWithTextContextAndCheck(
             this.createList(),
             LineEnding.CRNL,
             "/mount1={}\r\n" +
@@ -176,8 +176,8 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     }
 
     @Test
-    public void testTextWithLineBreaksWithNl() {
-        this.textWithLineBreaksAndCheck(
+    public void testTextWithTextContextWithNl() {
+        this.textWithTextContextAndCheck(
             this.createList(),
             LineEnding.NL,
             "/mount1={}\n" +
