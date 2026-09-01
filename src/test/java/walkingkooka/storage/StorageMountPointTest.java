@@ -22,8 +22,8 @@ import walkingkooka.Cast;
 import walkingkooka.naming.HasPathTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.HasTextWithTextContextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageMountPointTest implements TreePrintableTesting,
     HasPathTesting,
     HasTextTesting,
-    HasTextWithTextContextTesting,
+    HasMultiLineTextTesting,
     ClassTesting2<StorageMountPoint<StorageContext>> {
 
     private final static Storage<StorageContext> STORAGE = Storages.fake();
@@ -404,11 +404,11 @@ public final class StorageMountPointTest implements TreePrintableTesting,
         );
     }
 
-    // HasTextWithTextContext...........................................................................................
+    // HasMultiLineText...........................................................................................
 
     @Test
-    public void testTextWithTextContextCr() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextCr() {
+        this.multiLineTextAndCheck(
             StorageMountPoint.with(
                 StoragePath.parse("/path1/path2"),
                 Storages.treeMapStore()
@@ -419,8 +419,8 @@ public final class StorageMountPointTest implements TreePrintableTesting,
     }
 
     @Test
-    public void testTextWithTextContextNl() {
-        this.textWithTextContextAndCheck(
+    public void testMultiLineTextNl() {
+        this.multiLineTextAndCheck(
             StorageMountPoint.with(
                 StoragePath.parse("/path1/path2"),
                 Storages.treeMapStore()
