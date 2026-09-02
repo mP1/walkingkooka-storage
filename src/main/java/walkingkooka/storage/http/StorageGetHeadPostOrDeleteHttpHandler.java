@@ -163,7 +163,7 @@ final class StorageGetHeadPostOrDeleteHttpHandler<C extends StorageHttpHandlerCo
                     context.convertOrFail(
                         StorageValueInfoList.with(infos),
                         JsonNode.class
-                    ).toJsonText(context)
+                    ).multiLineText(context)
                 ).setContentLength()
         );
     }
