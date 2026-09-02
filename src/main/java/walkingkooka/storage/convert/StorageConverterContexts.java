@@ -29,13 +29,13 @@ import walkingkooka.tree.json.convert.JsonNodeConverterContext;
 public final class StorageConverterContexts implements PublicStaticHelper {
 
     /**
-     * {@see BasicStorageConverterContext}
+     * {@see StorageConverterContextBasic}
      */
     public static StorageConverterContext basic(final Converter<StorageConverterContext> converter,
                                                 final HasUserDirectories hasUserDirectories,
                                                 final MediaTypeDetector mediaTypeDetector,
                                                 final JsonNodeConverterContext context) {
-        return BasicStorageConverterContext.with(
+        return StorageConverterContextBasic.with(
             converter,
             hasUserDirectories,
             mediaTypeDetector,
