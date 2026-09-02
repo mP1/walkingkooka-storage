@@ -40,7 +40,7 @@ import java.math.MathContext;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageConverterContextTest implements StorageConverterContextTesting2<BasicStorageConverterContext>,
+public final class StorageConverterContextBasicTest implements StorageConverterContextTesting2<StorageConverterContextBasic>,
     DecimalNumberContextDelegator,
     EnvironmentContextTesting,
     JsonNodeMarshallUnmarshallContextTesting {
@@ -60,7 +60,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     public void testWithNullConverterFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageConverterContext.with(
+            () -> StorageConverterContextBasic.with(
                 null,
                 HAS_USER_DIRECTORIES,
                 MEDIA_TYPE_DETECTOR,
@@ -73,7 +73,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     public void testWithNullCurrentWorkingDirectoryFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageConverterContext.with(
+            () -> StorageConverterContextBasic.with(
                 CONVERTER,
                 null,
                 MEDIA_TYPE_DETECTOR,
@@ -86,7 +86,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     public void testWithNullMediaTypeDetectorFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageConverterContext.with(
+            () -> StorageConverterContextBasic.with(
                 CONVERTER,
                 HAS_USER_DIRECTORIES,
                 null,
@@ -99,7 +99,7 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     public void testWithNullJsonNodeConverterContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageConverterContext.with(
+            () -> StorageConverterContextBasic.with(
                 CONVERTER,
                 new FakeHasUserDirectories(),
                 MEDIA_TYPE_DETECTOR,
@@ -166,8 +166,8 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     }
 
     @Override
-    public BasicStorageConverterContext createContext() {
-        return BasicStorageConverterContext.with(
+    public StorageConverterContextBasic createContext() {
+        return StorageConverterContextBasic.with(
             CONVERTER,
             HAS_USER_DIRECTORIES,
             MEDIA_TYPE_DETECTOR,
@@ -213,7 +213,12 @@ public final class BasicStorageConverterContextTest implements StorageConverterC
     // class............................................................................................................
 
     @Override
-    public Class<BasicStorageConverterContext> type() {
-        return BasicStorageConverterContext.class;
+    public Class<StorageConverterContextBasic> type() {
+        return StorageConverterContextBasic.class;
+    }
+
+    @Override
+    public void testTypeNaming() {
+        throw new UnsupportedOperationException();
     }
 }

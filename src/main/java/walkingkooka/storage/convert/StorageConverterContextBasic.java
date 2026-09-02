@@ -31,11 +31,11 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextPreProcessor;
 
 import java.util.Objects;
 
-final class BasicStorageConverterContext implements StorageConverterContext,
+final class StorageConverterContextBasic implements StorageConverterContext,
     JsonNodeConverterContextDelegator,
     HasUserDirectoriesDelegator {
 
-    static BasicStorageConverterContext with(final Converter<StorageConverterContext> converter,
+    static StorageConverterContextBasic with(final Converter<StorageConverterContext> converter,
                                              final HasUserDirectories hasUserDirectories,
                                              final MediaTypeDetector mediaTypeDetector,
                                              final JsonNodeConverterContext context) {
@@ -44,7 +44,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector");
         Objects.requireNonNull(context, "context");
 
-        return new BasicStorageConverterContext(
+        return new StorageConverterContextBasic(
             converter,
             hasUserDirectories,
             mediaTypeDetector,
@@ -52,7 +52,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         );
     }
 
-    private BasicStorageConverterContext(final Converter<StorageConverterContext> converter,
+    private StorageConverterContextBasic(final Converter<StorageConverterContext> converter,
                                          final HasUserDirectories hasUserDirectories,
                                          final MediaTypeDetector mediaTypeDetector,
                                          final JsonNodeConverterContext context) {
@@ -116,7 +116,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         final JsonNodeConverterContext after = before.setObjectPostProcessor(jsonNodeMarshallContextObjectPostProcessor);
 
         return before != after ?
-            new BasicStorageConverterContext(
+            new StorageConverterContextBasic(
                 this.converter,
                 this.hasUserDirectories,
                 this.mediaTypeDetector,
@@ -131,7 +131,7 @@ final class BasicStorageConverterContext implements StorageConverterContext,
         final JsonNodeConverterContext after = before.setPreProcessor(jsonNodeUnmarshallContextPreProcessor);
 
         return before != after ?
-            new BasicStorageConverterContext(
+            new StorageConverterContextBasic(
                 this.converter,
                 this.hasUserDirectories,
                 this.mediaTypeDetector,
