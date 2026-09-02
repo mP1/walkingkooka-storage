@@ -34,11 +34,11 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicStorageContextTest implements StorageContextTesting2<BasicStorageContext>,
+public final class StorageContextBasicTest implements StorageContextTesting2<StorageContextBasic>,
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
-    HashCodeEqualsDefinedTesting2<BasicStorageContext> {
+    HashCodeEqualsDefinedTesting2<StorageContextBasic> {
 
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
@@ -72,7 +72,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     public void testWithNullConverterLikeFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageContext.with(
+            () -> StorageContextBasic.with(
                 null,
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
@@ -85,7 +85,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     public void testWithNullMediaTypeDetectorFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageContext.with(
+            () -> StorageContextBasic.with(
                 CONVERTER_LIKE,
                 null,
                 STORAGE,
@@ -98,7 +98,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     public void testWithNullStorageFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageContext.with(
+            () -> StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 null,
@@ -111,7 +111,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     public void testWithNullStorageEnvironmentContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicStorageContext.with(
+            () -> StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
@@ -145,7 +145,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     public void testCanWriteStorage2() {
         this.canWriteStorageAndCheck(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 new FakeStorage<>() {
@@ -181,7 +181,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testSetAuditInfoStorage() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         final StorageValueInfo info = StorageValueInfo.with(
             STORAGE_PATH,
@@ -203,7 +203,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testAddStorageWatcher() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         context.addStorageWatcher(
             new StorageWatcher() {
@@ -238,7 +238,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testAddStorageWatcher2() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         final StorageValue lost = DIFFERENT_STORAGE_VALUE.setValue(
             Optional.of("lost")
@@ -281,7 +281,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testAddStorageWatcherOnce() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         final StorageValue lost = DIFFERENT_STORAGE_VALUE.setValue(
             Optional.of("lost")
@@ -335,7 +335,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     public void testCloneEnvironmentContext() {
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
-        final BasicStorageContext basicStorageContext = BasicStorageContext.with(
+        final StorageContextBasic basicStorageContext = StorageContextBasic.with(
             CONVERTER_LIKE,
             MEDIA_TYPE_DETECTOR,
             STORAGE,
@@ -354,7 +354,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testSetEnvironmentContextWithSameEnvironmentContext() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         assertSame(
             context,
@@ -366,7 +366,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
 
     @Test
     public void testSetEnvironmentContextWithDifferentStorageEnvironmentContext() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         final StorageContext after = context.setEnvironmentContext(DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT);
         assertNotSame(
@@ -375,7 +375,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
         );
 
         this.checkEquals(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 context.storage,
@@ -450,12 +450,12 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     }
 
     @Override
-    public BasicStorageContext createContext() {
+    public StorageContextBasic createContext() {
         final StorageEnvironmentContext environmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final Storage<StorageContext> storage = Storages.treeMapStore();
 
-        final BasicStorageContext context = BasicStorageContext.with(
+        final StorageContextBasic context = StorageContextBasic.with(
             CONVERTER_LIKE,
             MEDIA_TYPE_DETECTOR,
             storage,
@@ -475,7 +475,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     public void testEqualsDifferentConverterLike() {
         this.checkNotEquals(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 ConverterContexts.fake(),
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
@@ -487,7 +487,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     public void testEqualsDifferentMediaTypeDetector() {
         this.checkNotEquals(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MediaTypeDetectors.fake(),
                 STORAGE,
@@ -499,7 +499,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     public void testEqualsDifferentStorage() {
         this.checkNotEquals(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 Storages.fake(),
@@ -511,7 +511,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     public void testEqualsDifferentEnvironmentContext() {
         this.checkNotEquals(
-            BasicStorageContext.with(
+            StorageContextBasic.with(
                 CONVERTER_LIKE,
                 MEDIA_TYPE_DETECTOR,
                 STORAGE,
@@ -521,7 +521,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     }
 
     @Override
-    public BasicStorageContext createObject() {
+    public StorageContextBasic createObject() {
         return this.createContext();
     }
 
@@ -530,7 +530,7 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     @Test
     @Override
     public void testEnvironmentContext() {
-        final BasicStorageContext context = this.createContext();
+        final StorageContextBasic context = this.createContext();
 
         this.environmentContextAndCheck(
             context,
@@ -541,7 +541,12 @@ public final class BasicStorageContextTest implements StorageContextTesting2<Bas
     // class............................................................................................................
 
     @Override
-    public Class<BasicStorageContext> type() {
-        return BasicStorageContext.class;
+    public Class<StorageContextBasic> type() {
+        return StorageContextBasic.class;
+    }
+
+    @Override
+    public void testTypeNaming() {
+        throw new UnsupportedOperationException();
     }
 }
