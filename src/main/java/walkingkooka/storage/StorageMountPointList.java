@@ -22,6 +22,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.text.HasMultiLineText;
 import walkingkooka.text.HasText;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.MultiLineText;
 import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -116,13 +117,14 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
 
     @Override
     public String text() {
-        return this.textWithLineBreaks(LineEnding.TERMINAL);
+        return this.textWithLineBreaks(LineEnding.TERMINAL)
+            .text();
     }
 
     // HasMultiLineText.................................................................................................
 
     @Override
-    public String multiLineText(final TextContext context) {
+    public MultiLineText multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
         return this.textWithLineBreaks(
@@ -130,16 +132,18 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
         );
     }
 
-    private String textWithLineBreaks(final LineEnding lineEnding) {
-        return this.storageMountPoints.stream()
-            .map(HasText::text)
-            .collect(
-                Collectors.joining(
-                    lineEnding, // delimiter
-                    "", // prefix
-                    lineEnding // suffix last mount point will have line break
+    private MultiLineText textWithLineBreaks(final LineEnding lineEnding) {
+        return MultiLineText.with(
+            this.storageMountPoints.stream()
+                .map(HasText::text)
+                .collect(
+                    Collectors.joining(
+                        lineEnding, // delimiter
+                        "", // prefix
+                        lineEnding // suffix last mount point will have line break
+                    )
                 )
-            );
+        );
     }
 
     // TreePrintable....................................................................................................

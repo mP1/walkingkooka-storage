@@ -21,6 +21,7 @@ import walkingkooka.naming.HasPath;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasMultiLineText;
 import walkingkooka.text.HasText;
+import walkingkooka.text.MultiLineText;
 import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -208,9 +209,11 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
     // HasMultiLineText.................................................................................................
 
     @Override
-    public String multiLineText(final TextContext context) {
+    public MultiLineText multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
-        return this.path + "=" + this.storage + context.lineEnding();
+        return MultiLineText.with(
+            this.path + "=" + this.storage + context.lineEnding()
+        );
     }
 }

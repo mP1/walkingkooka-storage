@@ -63,6 +63,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedJsonTest ext
                 storagePath,
                 Binary.with(
                     dateTimeSymbols.multiLineText(context)
+                        .text()
                         .getBytes(CHARSET)
                 )
             ),
