@@ -33,15 +33,15 @@ import java.util.Optional;
  * The provider of the {@link ConverterLike} should watch and recreate or modify itself when the {@link EnvironmentContext}
  * changes as necessary.
  */
-final class BasicStorageContext implements StorageContext,
+final class StorageContextBasic implements StorageContext,
     ConverterLikeDelegator,
     StorageEnvironmentContextDelegator {
 
-    static BasicStorageContext with(final ConverterLike converterLike,
+    static StorageContextBasic with(final ConverterLike converterLike,
                                     final MediaTypeDetector mediaTypeDetector,
                                     final Storage<StorageContext> storage,
                                     final StorageEnvironmentContext storageEnvironmentContext) {
-        return new BasicStorageContext(
+        return new StorageContextBasic(
             Objects.requireNonNull(converterLike, "converterLike"),
             Objects.requireNonNull(mediaTypeDetector, "mediaTypeDetector"),
             Objects.requireNonNull(storage, "storage"),
@@ -49,7 +49,7 @@ final class BasicStorageContext implements StorageContext,
         );
     }
 
-    private BasicStorageContext(final ConverterLike converterLike,
+    private StorageContextBasic(final ConverterLike converterLike,
                                 final MediaTypeDetector mediaTypeDetector,
                                 final Storage<StorageContext> storage,
                                 final StorageEnvironmentContext storageEnvironmentContext) {
@@ -187,7 +187,7 @@ final class BasicStorageContext implements StorageContext,
 
     @Override
     public StorageContext cloneEnvironment() {
-        return new BasicStorageContext(
+        return new StorageContextBasic(
             this.converterLike,
             this.mediaTypeDetector,
             this.storage,
@@ -202,7 +202,7 @@ final class BasicStorageContext implements StorageContext,
 
         return before == after ?
             this :
-            new BasicStorageContext(
+            new StorageContextBasic(
                 this.converterLike,
                 this.mediaTypeDetector,
                 this.storage,
@@ -233,11 +233,11 @@ final class BasicStorageContext implements StorageContext,
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            (other instanceof BasicStorageContext &&
-                this.equals0((BasicStorageContext) other));
+            (other instanceof StorageContextBasic &&
+                this.equals0((StorageContextBasic) other));
     }
 
-    private boolean equals0(final BasicStorageContext other) {
+    private boolean equals0(final StorageContextBasic other) {
         return this.converterLike.equals(other.converterLike) &&
             this.mediaTypeDetector.equals(other.mediaTypeDetector) &&
             this.storage.equals(other.storage) &&

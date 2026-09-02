@@ -27,13 +27,13 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class StorageContexts implements PublicStaticHelper {
 
     /**
-     * {@see BasicStorageContext}
+     * {@see StorageContextBasic}
      */
     public static StorageContext basic(final ConverterLike converterLike,
                                        final MediaTypeDetector mediaTypeDetector,
                                        final Storage<StorageContext> storage,
                                        final StorageEnvironmentContext storageEnvironmentContext) {
-        return BasicStorageContext.with(
+        return StorageContextBasic.with(
             converterLike,
             mediaTypeDetector,
             storage,
