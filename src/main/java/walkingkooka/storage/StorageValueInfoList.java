@@ -23,6 +23,7 @@ import walkingkooka.datetime.HasOptionalLastModified;
 import walkingkooka.text.HasMultiLineText;
 import walkingkooka.text.HasText;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.MultiLineText;
 import walkingkooka.text.TextContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -146,13 +147,14 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
 
     @Override
     public String text() {
-        return this.textWithLineBreaks(LineEnding.TERMINAL);
+        return this.textWithLineBreaks(LineEnding.TERMINAL)
+            .text();
     }
 
     // HasMultiLineText.................................................................................................
 
     @Override
-    public String multiLineText(final TextContext context) {
+    public MultiLineText multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
         return this.textWithLineBreaks(
@@ -160,16 +162,18 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
         );
     }
 
-    private String textWithLineBreaks(final LineEnding lineEnding) {
-        return this.infos.stream()
-            .map(HasText::text)
-            .collect(
-                Collectors.joining(
-                    lineEnding, // delimiter
-                    "", // prefix
-                    lineEnding // suffix
+    private MultiLineText textWithLineBreaks(final LineEnding lineEnding) {
+        return MultiLineText.with(
+            this.infos.stream()
+                .map(HasText::text)
+                .collect(
+                    Collectors.joining(
+                        lineEnding, // delimiter
+                        "", // prefix
+                        lineEnding // suffix
+                    )
                 )
-            );
+        );
     }
 
     // TreePrintable....................................................................................................
