@@ -494,7 +494,6 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
                 Converters.toBinary(),
                 JsonNodeConverters.toJsonNode(),
                 JsonNodeConverters.textToJsonNode(),//,
-                JsonNodeConverters.toJsonText(),
                 StorageConverters.storageBinaryToStorageValueJson(),
                 StorageConverters.storageBinaryToStorageValueTxt(),
                 StorageConverters.storageValueToStorageBinaryJson(),
