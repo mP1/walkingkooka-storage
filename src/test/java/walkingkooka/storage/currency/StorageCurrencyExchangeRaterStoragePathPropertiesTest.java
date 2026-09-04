@@ -17,26 +17,186 @@
 
 package walkingkooka.storage.currency;
 
+import org.junit.jupiter.api.Test;
+import walkingkooka.convert.ConverterContexts;
+import walkingkooka.currency.CurrencyCode;
+import walkingkooka.currency.CurrencyExchange;
 import walkingkooka.currency.CurrencyExchangeRaterTesting2;
 import walkingkooka.currency.FakeCurrencyExchangeRaterContext;
+import walkingkooka.net.header.MediaTypeDetectorTesting;
+import walkingkooka.props.Properties;
+import walkingkooka.storage.Storage;
+import walkingkooka.storage.StorageContext;
+import walkingkooka.storage.StorageContexts;
+import walkingkooka.storage.StorageEnvironmentContextTesting;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.Storages;
 
+import java.util.Optional;
 import java.util.function.Function;
 
-public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStoragePathProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext> {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStoragePathProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
+    MediaTypeDetectorTesting,
+    StorageEnvironmentContextTesting {
 
     private final static StoragePath STORAGE_PATH = StoragePath.parse("/currency-exchange-rates.properties");
 
     private final static Function<String, Number> NUMBER_PARSER = Double::parseDouble;
 
-    @Override
-    public StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater() {
-        return this.createCurrencyExchangeRater(
+    private final static StorageContext STORAGE_CONTEXT = StorageContexts.fake();
+
+    private final static Properties PROPERTIES = Properties.parse(
+        "AUD-NZD=0.9"
+    );
+
+    private final static CurrencyCode AUD = CurrencyCode.parse("AUD");
+
+    private final static CurrencyCode NZD = CurrencyCode.parse("NZD");
+
+    // with.............................................................................................................
+
+    @Test
+    public void testWithNullStoragePathFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+                null,
+                NUMBER_PARSER,
+                STORAGE_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullNumberParserFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+                STORAGE_PATH,
+                null,
+                STORAGE_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullStorageContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+                STORAGE_PATH,
+                NUMBER_PARSER,
+                null
+            )
+        );
+    }
+
+    @Test
+    public void testCurrencyExchanges() {
+        this.currencyExchangesAndCheck(
+            this.createCurrencyExchangeRater(),
+            this.createContext(),
+            CurrencyExchange.with(
+                AUD,
+                NZD
+            )
+        );
+    }
+
+    @Test
+    public void testCurrencyExchangeRate() {
+        this.currencyExchangeRateAndCheck(
+            this.createCurrencyExchangeRater(),
+            CurrencyExchange.with(
+                AUD,
+                NZD
+            ),
+            this.createContext(),
+            0.9
+        );
+    }
+
+    @Test
+    public void testCurrencyExchangeRateAfterPropertiesChange() {
+        final StorageContext storageContext = this.createStorageContext();
+
+        final StorageCurrencyExchangeRaterStoragePathProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+            storageContext
+        );
+
+        storageContext.saveStorage(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(
+                        Properties.parse(
+                            "AUD-NZD=0.8"
+                        )
+                    )
+                )
+        );
+
+        this.currencyExchangeRateAndCheck(
+            currencyExchangeRater,
+            CurrencyExchange.with(
+                AUD,
+                NZD
+            ),
+            this.createContext(),
+            0.8
+        );
+    }
+
+    @Test
+    public void testCurrencyExchangeRateAfterPropertiesDeleted() {
+        final StorageContext storageContext = this.createStorageContext();
+
+        final StorageCurrencyExchangeRaterStoragePathProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+            storageContext
+        );
+
+        storageContext.deleteStorage(STORAGE_PATH);
+
+        this.currencyExchangeRateAndCheck(
+            currencyExchangeRater,
+            CurrencyExchange.with(
+                AUD,
+                NZD
+            ),
             this.createContext()
         );
     }
 
-    private StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater(final FakeCurrencyExchangeRaterContext context) {
+    @Override
+    public StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater() {
+        return this.createCurrencyExchangeRater(
+            this.createStorageContext()
+        );
+    }
+
+    private StorageContext createStorageContext() {
+        final Storage<StorageContext> storage = Storages.treeMapStore();
+
+        final StorageContext context = StorageContexts.basic(
+            ConverterContexts.fake(), // ConverterLike
+            MEDIA_TYPE_DETECTOR,
+            storage,
+            STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+        );
+
+        context.saveStorage(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(PROPERTIES)
+                )
+        );
+
+        return context;
+    }
+
+    private StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater(final StorageContext context) {
         return StorageCurrencyExchangeRaterStoragePathProperties.with(
             STORAGE_PATH,
             NUMBER_PARSER,
@@ -46,8 +206,6 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
 
     @Override
     public FakeCurrencyExchangeRaterContext createContext() {
-        return new FakeCurrencyExchangeRaterContext() {
-
-        };
+        return new FakeCurrencyExchangeRaterContext();
     }
 }
