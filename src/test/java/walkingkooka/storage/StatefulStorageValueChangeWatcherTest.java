@@ -87,7 +87,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
     public void testWith() {
         final StorageContext storageContext = this.storageContext();
 
-        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new FakeValueChangeWatcher<>() {
                 @Override
@@ -99,12 +99,12 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
 
         this.pathAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             STORAGE_PATH
         );
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.empty()
         );
     }
@@ -122,7 +122,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         this.fired = false;
 
-        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
@@ -147,12 +147,12 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
 
         this.pathAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             STORAGE_PATH
         );
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.of(JSON)
         );
 
@@ -175,7 +175,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         this.fired = false;
 
-        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
@@ -196,7 +196,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.of(JSON)
         );
     }
@@ -214,7 +214,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         this.fired = false;
 
-        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
@@ -234,11 +234,11 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
                 )
         );
 
-        statefulStorageWatcher.value = null;
-        statefulStorageWatcher.load();
+        statefulStorageValueChangeWatcher.value = null;
+        statefulStorageValueChangeWatcher.load();
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.of(JSON)
         );
     }
@@ -256,7 +256,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         this.fired = false;
 
-        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
@@ -270,11 +270,11 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.of(JSON)
         );
 
-        statefulStorageWatcher.stop();
+        statefulStorageValueChangeWatcher.stop();
 
         storageContext.saveStorage(
             StorageValue.with(STORAGE_PATH)
@@ -284,7 +284,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
 
         this.valueAndCheck(
-            statefulStorageWatcher,
+            statefulStorageValueChangeWatcher,
             Optional.of(JSON)
         );
     }
