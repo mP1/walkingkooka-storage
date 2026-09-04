@@ -110,6 +110,24 @@ public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>
         );
     }
 
+    @Test
+    public void testSetPathPrefixToString() {
+        final StorageWatcher watcher = new FakeStorageWatcher() {
+
+            @Override
+            public String toString() {
+                return "StorageWatcher123";
+            }
+        };
+
+        this.checkEquals(
+            watcher.setPathPrefix(
+                StoragePath.parse("/prefix111")
+            ).toString(),
+            "/prefix111/* StorageWatcher123"
+        );
+    }
+
     // setFilter........................................................................................................
 
     @Test

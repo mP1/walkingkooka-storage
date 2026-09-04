@@ -67,7 +67,7 @@ public interface StorageWatcher extends ValueChangeWatcher<StorageValue> {
 
                 @Override
                 public String toString() {
-                    return path + " " + StorageWatcher.this;
+                    return path + "/* " + StorageWatcher.this;
                 }
             };
     }
