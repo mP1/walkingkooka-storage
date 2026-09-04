@@ -32,10 +32,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StatefulStorageWatcherTest implements StorageContextTesting,
+public final class StatefulStorageValueChangeWatcherTest implements StorageContextTesting,
     HasPathTesting,
     HasValueTesting,
-    ClassTesting<StatefulStorageWatcher<JsonNode>> {
+    ClassTesting<StatefulStorageValueChangeWatcher<JsonNode>> {
 
     private final static StoragePath STORAGE_PATH = StoragePath.parse("/watch/file.properties");
 
@@ -51,7 +51,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
     public void testWithNullStoragePathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StatefulStorageWatcher.with(
+            () -> StatefulStorageValueChangeWatcher.with(
                 null,
                 VALUE_CHANGE_WATCHER,
                 STORAGE_CONTEXT
@@ -63,7 +63,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
     public void testWithNullStorageValueChangeFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StatefulStorageWatcher.with(
+            () -> StatefulStorageValueChangeWatcher.with(
                 STORAGE_PATH,
                 null,
                 STORAGE_CONTEXT
@@ -75,7 +75,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
     public void testWithNullStorageContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StatefulStorageWatcher.with(
+            () -> StatefulStorageValueChangeWatcher.with(
                 STORAGE_PATH,
                 VALUE_CHANGE_WATCHER,
                 null
@@ -87,7 +87,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
     public void testWith() {
         final StorageContext storageContext = this.storageContext();
 
-        final StatefulStorageWatcher<JsonNode> statefulStorageWatcher = StatefulStorageWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new FakeValueChangeWatcher<>() {
                 @Override
@@ -122,7 +122,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
 
         this.fired = false;
 
-        final StatefulStorageWatcher<JsonNode> statefulStorageWatcher = StatefulStorageWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
@@ -140,7 +140,7 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
                         "newValue"
                     );
 
-                    StatefulStorageWatcherTest.this.fired = true;
+                    StatefulStorageValueChangeWatcherTest.this.fired = true;
                 }
             },
             storageContext
@@ -175,14 +175,14 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
 
         this.fired = false;
 
-        final StatefulStorageWatcher<JsonNode> statefulStorageWatcher = StatefulStorageWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
-                    StatefulStorageWatcherTest.this.lastValue = newValue;
-                    StatefulStorageWatcherTest.this.fired = true;
+                    StatefulStorageValueChangeWatcherTest.this.lastValue = newValue;
+                    StatefulStorageValueChangeWatcherTest.this.fired = true;
                 }
             },
             storageContext
@@ -214,14 +214,14 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
 
         this.fired = false;
 
-        final StatefulStorageWatcher<JsonNode> statefulStorageWatcher = StatefulStorageWatcher.with(
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
             new ValueChangeWatcher<JsonNode>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
-                    StatefulStorageWatcherTest.this.lastValue = newValue;
-                    StatefulStorageWatcherTest.this.fired = true;
+                    StatefulStorageValueChangeWatcherTest.this.lastValue = newValue;
+                    StatefulStorageValueChangeWatcherTest.this.fired = true;
                 }
             },
             storageContext
@@ -260,8 +260,8 @@ public final class StatefulStorageWatcherTest implements StorageContextTesting,
     // class............................................................................................................
 
     @Override
-    public Class<StatefulStorageWatcher<JsonNode>> type() {
-        return Cast.to(StatefulStorageWatcher.class);
+    public Class<StatefulStorageValueChangeWatcher<JsonNode>> type() {
+        return Cast.to(StatefulStorageValueChangeWatcher.class);
     }
 
     @Override
