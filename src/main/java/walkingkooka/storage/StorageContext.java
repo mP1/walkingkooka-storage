@@ -20,6 +20,7 @@ package walkingkooka.storage;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaTypeDetector;
+import walkingkooka.watch.ValueChangeWatcher;
 
 import java.util.List;
 
@@ -84,6 +85,20 @@ public interface StorageContext extends StorageEnvironmentContext,
      * {@link Storage#addWatcherOnce(StorageWatcher, StorageContext)}
      */
     Runnable addStorageWatcherOnce(final StorageWatcher watcher);
+
+    /**
+     * Creates a {@link StatefulStorageValueChangeWatcher}.
+     */
+    default <T> StatefulStorageValueChangeWatcher<T> statefulStorageValueChangeWatcher(final StoragePath path,
+                                                                                       final ValueChangeWatcher<T> watcher) {
+        return StatefulStorageValueChangeWatcher.with(
+            path,
+            watcher,
+            this
+        );
+    }
+
+    // StorageEnvironmentContext........................................................................................
 
     @Override
     StorageContext cloneEnvironment();
