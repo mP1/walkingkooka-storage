@@ -243,6 +243,51 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
         );
     }
 
+    @Test
+    public void testStop() {
+        final StorageContext storageContext = this.storageContext();
+
+        storageContext.saveStorage(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(JSON)
+                )
+        );
+
+        this.fired = false;
+
+        final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageWatcher = StatefulStorageValueChangeWatcher.with(
+            STORAGE_PATH,
+            new ValueChangeWatcher<JsonNode>() {
+                @Override
+                public void onValueChange(final Optional<JsonNode> oldValue,
+                                          final Optional<JsonNode> newValue) {
+                    StatefulStorageValueChangeWatcherTest.this.lastValue = newValue;
+                    StatefulStorageValueChangeWatcherTest.this.fired = true;
+                }
+            },
+            storageContext
+        );
+
+        this.valueAndCheck(
+            statefulStorageWatcher,
+            Optional.of(JSON)
+        );
+
+        statefulStorageWatcher.stop();
+
+        storageContext.saveStorage(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(JSON)
+                )
+        );
+
+        this.valueAndCheck(
+            statefulStorageWatcher,
+            Optional.of(JSON)
+        );
+    }
 
     private boolean fired;
 
