@@ -24,8 +24,6 @@ import walkingkooka.currency.CurrencyExchangeRaters;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StoragePath;
-import walkingkooka.storage.StorageValue;
-import walkingkooka.storage.StorageWatcher;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -33,6 +31,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * A {@link CurrencyExchangeRater} that watches the given path that should contain a {@link Properties}.
+ */
 final class StorageCurrencyExchangeRaterStoragePathProperties<C extends CurrencyExchangeRaterContext> implements CurrencyExchangeRater<C> {
 
     static <C extends CurrencyExchangeRaterContext> StorageCurrencyExchangeRaterStoragePathProperties<C> with(final StoragePath storagePath,
@@ -53,24 +54,9 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
         this.storagePath = storagePath;
         this.numberParser = numberParser;
 
-        storageContext.addStorageWatcher(
-            new StorageWatcher() {
-                @Override
-                public void onValueChange(final Optional<StorageValue> oldValue,
-                                          final Optional<StorageValue> newValue) {
-                    StorageCurrencyExchangeRaterStoragePathProperties.this.setProperties(newValue);
-                }
-
-                @Override
-                public String toString() {
-                    return StorageCurrencyExchangeRaterStoragePathProperties.this.toString();
-                }
-            }
-        );
-
-        // pre-load
-        this.setProperties(
-            storageContext.loadStorage(storagePath)
+        storageContext.statefulStorageValueChangeWatcher(
+            storagePath,
+            (Optional<Properties> oldValue, Optional<Properties> newValue) -> StorageCurrencyExchangeRaterStoragePathProperties.this.setProperties(newValue)
         );
     }
 
@@ -96,14 +82,11 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
 
     // StorageWatcher...................................................................................................
 
-    private void setProperties(final Optional<StorageValue> value) {
+    private void setProperties(final Optional<Properties> value) {
         Objects.requireNonNull(value, "value");
 
         this.properties = CurrencyExchangeRaters.properties(
-            value.map(
-                (StorageValue storageValue) -> (Properties) storageValue.value()
-                    .orElse(Properties.EMPTY)
-            ).orElse(
+            value.orElse(
                 Properties.EMPTY
             ),
             this.numberParser

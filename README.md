@@ -41,6 +41,10 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [storage-value-to-storage-binary-txt](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueToStorageBinarySharedTxt.java)
 - [text-to-storage-path](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterTextToStoragePath.java)
 
+# [CurrencyExchangeRater](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/currency/StorageCurrencyExchangeRaters.java)
+
+- [storagePathProperties](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/currency/StorageCurrencyExchangeRaterStoragePathProperties.java)
+
 # [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
 
 - [currentWorkingDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2ExpandedCurrentWorkingDirectory.java)
