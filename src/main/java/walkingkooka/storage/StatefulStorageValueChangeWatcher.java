@@ -29,23 +29,23 @@ import java.util.Optional;
 /**
  * A {@link StorageWatcher} that remembers the last value for a given {@link StoragePath}.
  */
-public final class StatefulStorageWatcher<T> implements HasPath<StoragePath>,
+public final class StatefulStorageValueChangeWatcher<T> implements HasPath<StoragePath>,
     HasValue<Optional<T>>,
     Stoppable {
 
-    public static <T> StatefulStorageWatcher<T> with(final StoragePath path,
-                                                     final ValueChangeWatcher<T> watcher,
-                                                     final StorageContext context) {
-        return new StatefulStorageWatcher(
+    public static <T> StatefulStorageValueChangeWatcher<T> with(final StoragePath path,
+                                                                final ValueChangeWatcher<T> watcher,
+                                                                final StorageContext context) {
+        return new StatefulStorageValueChangeWatcher(
             Objects.requireNonNull(path, "path"),
             Objects.requireNonNull(watcher, "watcher"),
             Objects.requireNonNull(context, "context")
         );
     }
 
-    private StatefulStorageWatcher(final StoragePath path,
-                                   final ValueChangeWatcher<T> watcher,
-                                   final StorageContext context) {
+    private StatefulStorageValueChangeWatcher(final StoragePath path,
+                                              final ValueChangeWatcher<T> watcher,
+                                              final StorageContext context) {
         super();
 
         this.path = path;
@@ -64,9 +64,9 @@ public final class StatefulStorageWatcher<T> implements HasPath<StoragePath>,
                         newStorageValue.flatMap(StorageValue::value)
                     );
 
-                    StatefulStorageWatcher.this.value = newValue;
+                    StatefulStorageValueChangeWatcher.this.value = newValue;
 
-                    StatefulStorageWatcher.this.valueChangeWatcher.onValueChange(
+                    StatefulStorageValueChangeWatcher.this.valueChangeWatcher.onValueChange(
                         Cast.to(
                             oldStorageValue.flatMap(StorageValue::value)
                         ),
