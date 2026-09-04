@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
+import walkingkooka.naming.HasPathTesting;
 import walkingkooka.predicate.Predicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>,
+    HasPathTesting,
     ClassTesting<StorageWatcher> {
 
     final StoragePath STORAGE_PATH = StoragePath.parse("/path222/path333");
@@ -194,6 +196,25 @@ public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>
     }
 
     private boolean fired;
+
+    // setPath..........................................................................................................
+
+    @Test
+    public void testSetPath() {
+        final StorageWatcher storageWatcher = new FakeStorageWatcher();
+
+        final StoragePathStorageWatcher storagePathStorageWatcher = storageWatcher.setPath(STORAGE_PATH);
+        assertSame(
+            storageWatcher,
+            storagePathStorageWatcher.watcher,
+            "watcher"
+        );
+
+        this.pathAndCheck(
+            storagePathStorageWatcher,
+            STORAGE_PATH
+        );
+    }
 
     // toString.........................................................................................................
 

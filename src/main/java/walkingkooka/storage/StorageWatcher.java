@@ -102,4 +102,16 @@ public interface StorageWatcher extends ValueChangeWatcher<StorageValue> {
             }
         };
     }
+
+    // StoragePathStorageWatcher........................................................................................
+
+    /**
+     * Creates a {@link StoragePathStorageWatcher} with the given path and this {@link StorageWatcher}.
+     */
+    default StoragePathStorageWatcher setPath(final StoragePath path) {
+        return StoragePathStorageWatcher.with(
+            this,
+            path
+        );
+    }
 }
