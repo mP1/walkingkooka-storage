@@ -17,6 +17,7 @@
 
 package walkingkooka.storage.currency;
 
+import walkingkooka.Cast;
 import walkingkooka.currency.CurrencyExchange;
 import walkingkooka.currency.CurrencyExchangeRater;
 import walkingkooka.currency.CurrencyExchangeRaterContext;
@@ -53,6 +54,8 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
 
         this.storagePath = storagePath;
         this.numberParser = numberParser;
+
+        this.storageContext = storageContext;
 
         storageContext.statefulStorageValueChangeWatcher(
             storagePath,
@@ -98,6 +101,32 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
     private CurrencyExchangeRater<C> properties;
 
     // Object...........................................................................................................
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.storagePath,
+            this.numberParser,
+            this.properties,
+            this.storageContext
+        );
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this == other ||
+            other instanceof StorageCurrencyExchangeRaterStoragePathProperties &&
+                this.equals0(Cast.to(other));
+    }
+
+    private boolean equals0(final StorageCurrencyExchangeRaterStoragePathProperties other) {
+        return this.storagePath.equals(other.storagePath) &&
+            this.numberParser.equals(other.numberParser) &&
+            this.properties.equals(other.properties) &&
+            this.storageContext.equals(other.storageContext);
+    }
+
+    private final StorageContext storageContext;
 
     @Override
     public String toString() {

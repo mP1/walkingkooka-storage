@@ -18,6 +18,7 @@
 package walkingkooka.storage.currency;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.currency.CurrencyCode;
 import walkingkooka.currency.CurrencyExchange;
@@ -25,12 +26,14 @@ import walkingkooka.currency.CurrencyExchangeRaterTesting2;
 import walkingkooka.currency.FakeCurrencyExchangeRaterContext;
 import walkingkooka.net.header.MediaTypeDetectorTesting;
 import walkingkooka.props.Properties;
+import walkingkooka.storage.FakeStorageContext;
 import walkingkooka.storage.Storage;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContexts;
 import walkingkooka.storage.StorageEnvironmentContextTesting;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageWatcher;
 import walkingkooka.storage.Storages;
 
 import java.util.Optional;
@@ -39,6 +42,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStoragePathProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
+    HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStoragePathProperties>,
     MediaTypeDetectorTesting,
     StorageEnvironmentContextTesting {
 
@@ -46,7 +50,18 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
 
     private final static Function<String, Number> NUMBER_PARSER = Double::parseDouble;
 
-    private final static StorageContext STORAGE_CONTEXT = StorageContexts.fake();
+    private final static StorageContext STORAGE_CONTEXT = new FakeStorageContext() {
+
+        @Override
+        public Optional<StorageValue> loadStorage(final StoragePath path) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Runnable addStorageWatcher(final StorageWatcher watcher) {
+            return StorageWatcher.NOTHING_REMOVER;
+        }
+    };
 
     private final static Properties PROPERTIES = Properties.parse(
         "AUD-NZD=0.9"
@@ -207,5 +222,60 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     @Override
     public FakeCurrencyExchangeRaterContext createContext() {
         return new FakeCurrencyExchangeRaterContext();
+    }
+
+    // hashCode/equals..................................................................................................
+
+    @Test
+    public void testEqualsWithDifferentStoragePath() {
+        this.checkNotEquals(
+            StorageCurrencyExchangeRaterStoragePathProperties.with(
+                StoragePath.parse("/different"),
+                NUMBER_PARSER,
+                STORAGE_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testEqualsWithDifferentNumberParser() {
+        this.checkNotEquals(
+            StorageCurrencyExchangeRaterStoragePathProperties.with(
+                STORAGE_PATH,
+                Double::parseDouble,
+                STORAGE_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testEqualsWithDifferentStorageContext() {
+        this.checkNotEquals(
+            StorageCurrencyExchangeRaterStoragePathProperties.with(
+                STORAGE_PATH,
+                NUMBER_PARSER,
+                new FakeStorageContext() {
+
+                    @Override
+                    public Optional<StorageValue> loadStorage(final StoragePath path) {
+                        return Optional.empty();
+                    }
+
+                    @Override
+                    public Runnable addStorageWatcher(final StorageWatcher watcher) {
+                        return StorageWatcher.NOTHING_REMOVER;
+                    }
+                }
+            )
+        );
+    }
+
+    @Override
+    public StorageCurrencyExchangeRaterStoragePathProperties createObject() {
+        return StorageCurrencyExchangeRaterStoragePathProperties.with(
+            STORAGE_PATH,
+            NUMBER_PARSER,
+            STORAGE_CONTEXT
+        );
     }
 }
