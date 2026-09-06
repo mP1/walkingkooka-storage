@@ -20,7 +20,6 @@ package walkingkooka.storage.convert;
 import walkingkooka.ToStringTesting;
 import walkingkooka.convert.ConverterTesting2;
 import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CharSequences;
 
 public abstract class StorageConverterTestCase<C extends StorageConverter<FakeStorageConverterContext>> implements ConverterTesting2<C, FakeStorageConverterContext>,
@@ -32,11 +31,6 @@ public abstract class StorageConverterTestCase<C extends StorageConverter<FakeSt
     }
 
     // class............................................................................................................
-
-    @Override
-    public final JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
-    }
 
     @Override
     public final String typeNamePrefix() {
