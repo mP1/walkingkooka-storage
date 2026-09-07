@@ -19,14 +19,14 @@ package walkingkooka.storage;
 
 import java.util.Optional;
 
-final class EmptyHasUserDirectories implements HasUserDirectories {
+final class HasUserDirectoriesEmpty implements HasUserDirectories {
 
     /**
      * Singleton
      */
-    final static EmptyHasUserDirectories INSTANCE = new EmptyHasUserDirectories();
+    final static HasUserDirectoriesEmpty INSTANCE = new HasUserDirectoriesEmpty();
 
-    private EmptyHasUserDirectories() {
+    private HasUserDirectoriesEmpty() {
         super();
     }
 

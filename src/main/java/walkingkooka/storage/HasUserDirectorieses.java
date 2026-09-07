@@ -22,10 +22,10 @@ import walkingkooka.reflect.PublicStaticHelper;
 public final class HasUserDirectorieses implements PublicStaticHelper {
 
     /**
-     * {@see EmptyHasUserDirectories}
+     * {@see HasUserDirectoriesEmpty}
      */
     public static HasUserDirectories empty() {
-        return EmptyHasUserDirectories.INSTANCE;
+        return HasUserDirectoriesEmpty.INSTANCE;
     }
 
     /**
