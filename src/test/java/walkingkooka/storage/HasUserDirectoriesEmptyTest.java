@@ -21,28 +21,28 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class EmptyHasUserDirectoriesTest implements HasUserDirectoriesTesting,
-    ClassTesting<EmptyHasUserDirectories> {
+public final class HasUserDirectoriesEmptyTest implements HasUserDirectoriesTesting,
+    ClassTesting<HasUserDirectoriesEmpty> {
 
     @Test
     public void testCurrentWorkingDirectory() {
         this.currentWorkingDirectoryAndCheck(
-            EmptyHasUserDirectories.INSTANCE
+            HasUserDirectoriesEmpty.INSTANCE
         );
     }
 
     @Test
     public void testHomeDirectory() {
         this.homeDirectoryAndCheck(
-            EmptyHasUserDirectories.INSTANCE
+            HasUserDirectoriesEmpty.INSTANCE
         );
     }
 
     // class............................................................................................................
 
     @Override
-    public Class<EmptyHasUserDirectories> type() {
-        return EmptyHasUserDirectories.class;
+    public Class<HasUserDirectoriesEmpty> type() {
+        return HasUserDirectoriesEmpty.class;
     }
 
     @Override
