@@ -478,6 +478,7 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
                         ),
                         EXPRESSION_NUMBER_KIND
                     ),
+                    ENVIRONMENT_CONTEXT,
                     JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
                 )
             ).convert(
