@@ -81,6 +81,19 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
         );
     }
 
+    @Override
+    public Set<CurrencyExchange> findCurrencyExchangeByText(final String text,
+                                                            final int offset,
+                                                            final int count,
+                                                            final C context) {
+        return this.properties.findCurrencyExchangeByText(
+            text,
+            offset,
+            count,
+            context
+        );
+    }
+
     private final StoragePath storagePath;
 
     // StorageWatcher...................................................................................................
