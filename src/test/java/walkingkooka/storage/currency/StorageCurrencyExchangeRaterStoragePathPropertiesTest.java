@@ -64,10 +64,12 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     };
 
     private final static Properties PROPERTIES = Properties.parse(
-        "AUD-NZD=0.9"
+        "AUD-NZD=0.9\nAUD-CAD=1.1"
     );
 
     private final static CurrencyCode AUD = CurrencyCode.parse("AUD");
+
+    private final static CurrencyCode CAD = CurrencyCode.parse("CAD");
 
     private final static CurrencyCode NZD = CurrencyCode.parse("NZD");
 
@@ -117,6 +119,10 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
             CurrencyExchange.with(
                 AUD,
                 NZD
+            ),
+            CurrencyExchange.with(
+                AUD,
+                CAD
             )
         );
     }
@@ -181,6 +187,21 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
                 NZD
             ),
             this.createContext()
+        );
+    }
+
+    @Test
+    public void testFindCurrencyExchangeByNonEmptyText2() {
+        this.findCurrencyExchangeByTextAndCheck(
+            this.createCurrencyExchangeRater(),
+            "CAD",
+            0,
+            2,
+            this.createContext(),
+            CurrencyExchange.with(
+                AUD,
+                CAD
+            )
         );
     }
 
