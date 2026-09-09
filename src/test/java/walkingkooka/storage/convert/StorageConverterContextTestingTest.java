@@ -123,6 +123,11 @@ public final class StorageConverterContextTestingTest implements StorageConverte
         return TestStorageConverterContext.class;
     }
 
+    @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
     final static class TestStorageConverterContext implements StorageConverterContext,
         JsonNodeConverterContextDelegator {
 

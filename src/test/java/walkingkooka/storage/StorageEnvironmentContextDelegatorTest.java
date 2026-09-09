@@ -62,6 +62,11 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
     }
 
     @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testTypeNaming() {
         throw new UnsupportedOperationException();
     }

@@ -116,6 +116,11 @@ public final class StorageConverterContextDelegatorTest implements StorageConver
     // class............................................................................................................
 
     @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testTypeNaming() {
         throw new UnsupportedOperationException();
     }
