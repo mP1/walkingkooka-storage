@@ -226,6 +226,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedEnvironmentT
                         (DateTimeContext dateTimeContext) -> DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
                     ),
                     Converters.textToLineEnding(),
+                    Converters.textToLoggingLevel(),
                     Converters.textToLocale(),
                     NetConverters.textToEmailAddress(),
                     Converters.textToZoneOffset(),

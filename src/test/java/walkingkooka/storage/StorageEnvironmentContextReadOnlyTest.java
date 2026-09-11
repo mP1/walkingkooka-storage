@@ -232,7 +232,7 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
     public void testToString() {
         this.toStringAndCheck(
             this.createContext(),
-            "{charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3, homeDirectory=/users/user123@example.com, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, timeOffset=Z, user=user123@example.com}"
+            "{charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3, homeDirectory=/users/user123@example.com, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, loggingLevel=NONE, timeOffset=Z, user=user123@example.com}"
         );
     }
 
@@ -262,6 +262,8 @@ public final class StorageEnvironmentContextReadOnlyTest implements StorageEnvir
                 "          \"\\n\"\n" +
                 "        locale\n" +
                 "          en_AU (java.util.Locale)\n" +
+                "        loggingLevel\n" +
+                "          NONE\n" +
                 "        now\n" +
                 "          1999-12-31T12:58:59 (java.time.LocalDateTime)\n" +
                 "        timeOffset\n" +
