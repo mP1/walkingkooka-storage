@@ -384,6 +384,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             EnvironmentValueName.INDENTATION,
             EnvironmentValueName.LINE_ENDING,
             EnvironmentValueName.LOCALE,
+            EnvironmentValueName.LOGGING_LEVEL,
             MAGIC_ENVIRONMENT_VALUE_NAME,
             EnvironmentValueName.NOW,
             EnvironmentValueName.TIME_OFFSET,
@@ -406,6 +407,7 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             //EnvironmentValueName.INDENTATION,
             //EnvironmentValueName.LINE_ENDING
             //EnvironmentValueName.LOCALE,
+            //EnvironmentValueName.LOGGING_LEVEL,
             //MAGIC_ENVIRONMENT_VALUE_NAME,
             //EnvironmentValueName.NOW,
             //EnvironmentValueName.TIME_OFFSET,
@@ -435,7 +437,8 @@ public final class StorageShared2EnvironmentTest extends StorageShared2TestCase<
             999,
             this.createContext(),
             EnvironmentValueName.LINE_ENDING,
-            EnvironmentValueName.LOCALE
+            EnvironmentValueName.LOCALE,
+            EnvironmentValueName.LOGGING_LEVEL
         );
     }
 

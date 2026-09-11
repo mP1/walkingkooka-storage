@@ -80,7 +80,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    "charset=UTF-8\ncurrency=AUD\nindentation=\"  \"\nlineEnding=\"\\n\"\nlocale=en_AU\nnow=1999-12-31T12:58:59\ntimeOffset=Z\nuser=user123@example.com\n"
+                    "charset=UTF-8\ncurrency=AUD\nindentation=\"  \"\nlineEnding=\"\\n\"\nlocale=en_AU\nloggingLevel=NONE\nnow=1999-12-31T12:58:59\ntimeOffset=Z\nuser=user123@example.com\n"
                         .getBytes(CHARSET)
                 )
             ).setContentType(
@@ -147,6 +147,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
                     Converters.textToCurrency(),
                     Converters.textToLineEnding(),
                     Converters.textToLocale(),
+                    Converters.textToLoggingLevel(),
                     Converters.textToBinary(),
                     Converters.objectToString() // eg Currency & Locale -> String
                 )
