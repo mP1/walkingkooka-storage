@@ -17,6 +17,7 @@
 
 package walkingkooka.storage;
 
+import walkingkooka.Binary;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.EnvironmentStartup;
 import walkingkooka.net.email.EmailAddress;
@@ -33,6 +34,13 @@ public final class StorageStartup implements PublicStaticHelper {
     static {
         EnvironmentStartup.init();
 
+        final StoragePath storagePath = StoragePath.parse("/hello");
+
+        StorageBinary.with(
+            storagePath,
+            Binary.EMPTY
+        );
+
         // register json marshallers/unmarshallers.
         Storages.empty()
             .hashCode();
@@ -41,7 +49,7 @@ public final class StorageStartup implements PublicStaticHelper {
 
         StorageValueInfoList.EMPTY.concat(
             StorageValueInfo.with(
-                StoragePath.parse("/hello"),
+                storagePath,
                 AuditInfo.create(
                     EmailAddress.parse("hello@example.com"),
                     LocalDateTime.MIN
