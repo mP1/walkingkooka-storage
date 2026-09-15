@@ -41,8 +41,8 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStoragePathProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
-    HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStoragePathProperties>,
+public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
+    HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStorageProperties>,
     MediaTypeDetectorTesting,
     StorageEnvironmentContextTesting {
 
@@ -79,7 +79,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     public void testWithNullStoragePathFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+            () -> StorageCurrencyExchangeRaterStorageProperties.with(
                 null,
                 NUMBER_PARSER,
                 STORAGE_CONTEXT
@@ -91,7 +91,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     public void testWithNullNumberParserFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+            () -> StorageCurrencyExchangeRaterStorageProperties.with(
                 STORAGE_PATH,
                 null,
                 STORAGE_CONTEXT
@@ -103,7 +103,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     public void testWithNullStorageContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> StorageCurrencyExchangeRaterStoragePathProperties.with(
+            () -> StorageCurrencyExchangeRaterStorageProperties.with(
                 STORAGE_PATH,
                 NUMBER_PARSER,
                 null
@@ -144,7 +144,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     public void testCurrencyExchangeRateAfterPropertiesChange() {
         final StorageContext storageContext = this.createStorageContext();
 
-        final StorageCurrencyExchangeRaterStoragePathProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+        final StorageCurrencyExchangeRaterStorageProperties currencyExchangeRater = this.createCurrencyExchangeRater(
             storageContext
         );
 
@@ -174,7 +174,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     public void testCurrencyExchangeRateAfterPropertiesDeleted() {
         final StorageContext storageContext = this.createStorageContext();
 
-        final StorageCurrencyExchangeRaterStoragePathProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+        final StorageCurrencyExchangeRaterStorageProperties currencyExchangeRater = this.createCurrencyExchangeRater(
             storageContext
         );
 
@@ -206,7 +206,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     }
 
     @Override
-    public StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater() {
+    public StorageCurrencyExchangeRaterStorageProperties createCurrencyExchangeRater() {
         return this.createCurrencyExchangeRater(
             this.createStorageContext()
         );
@@ -232,8 +232,8 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
         return context;
     }
 
-    private StorageCurrencyExchangeRaterStoragePathProperties createCurrencyExchangeRater(final StorageContext context) {
-        return StorageCurrencyExchangeRaterStoragePathProperties.with(
+    private StorageCurrencyExchangeRaterStorageProperties createCurrencyExchangeRater(final StorageContext context) {
+        return StorageCurrencyExchangeRaterStorageProperties.with(
             STORAGE_PATH,
             NUMBER_PARSER,
             context
@@ -250,7 +250,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     @Test
     public void testEqualsWithDifferentStoragePath() {
         this.checkNotEquals(
-            StorageCurrencyExchangeRaterStoragePathProperties.with(
+            StorageCurrencyExchangeRaterStorageProperties.with(
                 StoragePath.parse("/different"),
                 NUMBER_PARSER,
                 STORAGE_CONTEXT
@@ -261,7 +261,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     @Test
     public void testEqualsWithDifferentNumberParser() {
         this.checkNotEquals(
-            StorageCurrencyExchangeRaterStoragePathProperties.with(
+            StorageCurrencyExchangeRaterStorageProperties.with(
                 STORAGE_PATH,
                 Double::parseDouble,
                 STORAGE_CONTEXT
@@ -272,7 +272,7 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     @Test
     public void testEqualsWithDifferentStorageContext() {
         this.checkNotEquals(
-            StorageCurrencyExchangeRaterStoragePathProperties.with(
+            StorageCurrencyExchangeRaterStorageProperties.with(
                 STORAGE_PATH,
                 NUMBER_PARSER,
                 new FakeStorageContext() {
@@ -292,8 +292,8 @@ public final class StorageCurrencyExchangeRaterStoragePathPropertiesTest impleme
     }
 
     @Override
-    public StorageCurrencyExchangeRaterStoragePathProperties createObject() {
-        return StorageCurrencyExchangeRaterStoragePathProperties.with(
+    public StorageCurrencyExchangeRaterStorageProperties createObject() {
+        return StorageCurrencyExchangeRaterStorageProperties.with(
             STORAGE_PATH,
             NUMBER_PARSER,
             STORAGE_CONTEXT
