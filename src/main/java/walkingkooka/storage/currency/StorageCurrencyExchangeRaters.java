@@ -28,12 +28,12 @@ import java.util.function.Function;
 public final class StorageCurrencyExchangeRaters implements PublicStaticHelper {
 
     /**
-     * {@link StorageCurrencyExchangeRaterStoragePathProperties}
+     * {@link StorageCurrencyExchangeRaterStorageProperties}
      */
-    public static <C extends CurrencyExchangeRaterContext> CurrencyExchangeRater<C> storagePathProperties(final StoragePath storagePath,
-                                                                                                          final Function<String, Number> numberParser,
-                                                                                                          final StorageContext storageContext) {
-        return StorageCurrencyExchangeRaterStoragePathProperties.with(
+    public static <C extends CurrencyExchangeRaterContext> CurrencyExchangeRater<C> storageProperties(final StoragePath storagePath,
+                                                                                                      final Function<String, Number> numberParser,
+                                                                                                      final StorageContext storageContext) {
+        return StorageCurrencyExchangeRaterStorageProperties.with(
             storagePath,
             numberParser,
             storageContext

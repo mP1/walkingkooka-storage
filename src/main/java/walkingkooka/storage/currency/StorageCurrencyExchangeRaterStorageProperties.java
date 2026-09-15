@@ -35,21 +35,21 @@ import java.util.function.Function;
 /**
  * A {@link CurrencyExchangeRater} that watches the given path that should contain a {@link Properties}.
  */
-final class StorageCurrencyExchangeRaterStoragePathProperties<C extends CurrencyExchangeRaterContext> implements CurrencyExchangeRater<C> {
+final class StorageCurrencyExchangeRaterStorageProperties<C extends CurrencyExchangeRaterContext> implements CurrencyExchangeRater<C> {
 
-    static <C extends CurrencyExchangeRaterContext> StorageCurrencyExchangeRaterStoragePathProperties<C> with(final StoragePath storagePath,
-                                                                                                              final Function<String, Number> numberParser,
-                                                                                                              final StorageContext storageContext) {
-        return new StorageCurrencyExchangeRaterStoragePathProperties<>(
+    static <C extends CurrencyExchangeRaterContext> StorageCurrencyExchangeRaterStorageProperties<C> with(final StoragePath storagePath,
+                                                                                                          final Function<String, Number> numberParser,
+                                                                                                          final StorageContext storageContext) {
+        return new StorageCurrencyExchangeRaterStorageProperties<>(
             Objects.requireNonNull(storagePath, "storagePath"),
             Objects.requireNonNull(numberParser, "numberParser"),
             Objects.requireNonNull(storageContext, "storageContext")
         );
     }
 
-    private StorageCurrencyExchangeRaterStoragePathProperties(final StoragePath storagePath,
-                                                              final Function<String, Number> numberParser,
-                                                              final StorageContext storageContext) {
+    private StorageCurrencyExchangeRaterStorageProperties(final StoragePath storagePath,
+                                                          final Function<String, Number> numberParser,
+                                                          final StorageContext storageContext) {
         super();
 
         this.storagePath = storagePath;
@@ -59,7 +59,7 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
 
         storageContext.statefulStorageValueChangeWatcher(
             storagePath,
-            (Optional<Properties> oldValue, Optional<Properties> newValue) -> StorageCurrencyExchangeRaterStoragePathProperties.this.setProperties(newValue)
+            (Optional<Properties> oldValue, Optional<Properties> newValue) -> StorageCurrencyExchangeRaterStorageProperties.this.setProperties(newValue)
         );
     }
 
@@ -128,11 +128,11 @@ final class StorageCurrencyExchangeRaterStoragePathProperties<C extends Currency
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            other instanceof StorageCurrencyExchangeRaterStoragePathProperties &&
+            other instanceof StorageCurrencyExchangeRaterStorageProperties &&
                 this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final StorageCurrencyExchangeRaterStoragePathProperties other) {
+    private boolean equals0(final StorageCurrencyExchangeRaterStorageProperties other) {
         return this.storagePath.equals(other.storagePath) &&
             this.numberParser.equals(other.numberParser) &&
             this.properties.equals(other.properties) &&
