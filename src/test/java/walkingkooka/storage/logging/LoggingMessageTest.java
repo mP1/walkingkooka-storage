@@ -24,6 +24,7 @@ import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.HasUserTesting;
 import walkingkooka.logging.HasLoggingLevelTesting;
 import walkingkooka.reflect.PublicClassTesting;
+import walkingkooka.text.HasTextTesting;
 
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     HashCodeEqualsDefinedTesting2<LoggingMessage>,
     ToStringTesting<LoggingMessage>,
     HasNowTesting,
+    HasTextTesting,
     HasUserTesting,
     HasLoggingLevelTesting {
 
@@ -241,6 +243,16 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
                 Optional.empty()
             ),
             "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234"
+        );
+    }
+
+    // HasText..........................................................................................................
+
+    @Test
+    public void testText() {
+        this.textAndCheck(
+            this.createObject(),
+            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
         );
     }
 

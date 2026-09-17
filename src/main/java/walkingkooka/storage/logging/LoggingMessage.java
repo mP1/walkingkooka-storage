@@ -24,6 +24,7 @@ import walkingkooka.environment.HasUser;
 import walkingkooka.logging.HasLoggingLevel;
 import walkingkooka.logging.LoggingLevel;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -32,6 +33,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class LoggingMessage implements HasLoggingLevel,
+    HasText,
     HasUser,
     TreePrintable,
     UsesToStringBuilder {
@@ -144,6 +146,13 @@ public final class LoggingMessage implements HasLoggingLevel,
             .value(this.message)
             .value(this.throwable)
             .value(this.user);
+    }
+
+    // HasText..........................................................................................................
+
+    @Override
+    public String text() {
+        return this.toString();
     }
 
     // TreePrintable....................................................................................................
