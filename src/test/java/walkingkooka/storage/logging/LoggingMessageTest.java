@@ -226,7 +226,21 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "1999-12-31T12:58:59 NONE message123 Optional[java.lang.RuntimeException: RuntimeExceptionMessage234] Optional[user123@example.com]"
+            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
+        );
+    }
+
+    @Test
+    public void testToStringWithoutUser() {
+        this.toStringAndCheck(
+            LoggingMessage.with(
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                THROWABLE,
+                Optional.empty()
+            ),
+            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234"
         );
     }
 
