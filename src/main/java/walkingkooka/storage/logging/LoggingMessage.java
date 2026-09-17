@@ -17,6 +17,9 @@
 
 package walkingkooka.storage.logging;
 
+import walkingkooka.ToStringBuilder;
+import walkingkooka.ToStringBuilderOption;
+import walkingkooka.UsesToStringBuilder;
 import walkingkooka.environment.HasUser;
 import walkingkooka.logging.HasLoggingLevel;
 import walkingkooka.logging.LoggingLevel;
@@ -27,7 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class LoggingMessage implements HasLoggingLevel,
-    HasUser {
+    HasUser,
+    UsesToStringBuilder {
 
     public static LoggingMessage with(final LoggingLevel loggingLevel,
                                       final LocalDateTime timestamp,
@@ -124,6 +128,18 @@ public final class LoggingMessage implements HasLoggingLevel,
 
     @Override
     public String toString() {
-        return this.timestamp + " " + this.loggingLevel + " " + this.message + " " + this.throwable + " " + this.user;
+        return ToStringBuilder.buildFrom(this);
+    }
+
+    // UsesToStringBuilder..............................................................................................
+
+    @Override
+    public void buildToString(final ToStringBuilder b) {
+        b.enable(ToStringBuilderOption.QUOTE)
+            .value(this.loggingLevel)
+            .value(this.timestamp)
+            .value(this.message)
+            .value(this.throwable)
+            .value(this.user);
     }
 }
