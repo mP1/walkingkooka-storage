@@ -244,6 +244,16 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         );
     }
 
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testPrintTree() {
+        this.treePrintAndCheck(
+            this.createObject(),
+            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com\n"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
