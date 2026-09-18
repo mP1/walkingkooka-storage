@@ -17,7 +17,6 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class StoragesTest implements PublicStaticHelperTesting<Storages> {
     @Override
     public Class<Storages> type() {
         return Storages.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override

@@ -17,7 +17,6 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class HasUserDirectoriesesTest implements PublicStaticHelperTesting
     @Override
     public Class<HasUserDirectorieses> type() {
         return HasUserDirectorieses.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override

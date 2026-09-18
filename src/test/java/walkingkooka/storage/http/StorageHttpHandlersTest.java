@@ -17,7 +17,6 @@
 
 package walkingkooka.storage.http;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class StorageHttpHandlersTest implements PublicStaticHelperTesting<
     @Override
     public Class<StorageHttpHandlers> type() {
         return StorageHttpHandlers.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override

@@ -17,7 +17,6 @@
 
 package walkingkooka.storage.currency;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class StorageCurrencyExchangeRatersTest implements PublicStaticHelp
     @Override
     public Class<StorageCurrencyExchangeRaters> type() {
         return StorageCurrencyExchangeRaters.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override
