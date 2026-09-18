@@ -17,7 +17,6 @@
 
 package walkingkooka.storage.convert;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class StorageConvertersTest implements PublicStaticHelperTesting<St
     @Override
     public Class<StorageConverters> type() {
         return StorageConverters.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override
