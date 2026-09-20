@@ -21,12 +21,14 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextTesting;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.predicate.Predicates;
+import walkingkooka.storage.logging.StorageLoggingContextTesting;
 
 import java.util.Optional;
 
 public interface StorageEnvironmentContextTesting extends EnvironmentContextTesting,
     HasCurrentWorkingDirectoryTesting,
-    HasUserDirectoriesTesting {
+    HasUserDirectoriesTesting,
+    StorageLoggingContextTesting {
 
     StorageEnvironmentContext STORAGE_ENVIRONMENT_CONTEXT = storageEnvironmentContext();
 

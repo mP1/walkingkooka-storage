@@ -19,13 +19,15 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContextTesting2;
+import walkingkooka.storage.logging.StorageLoggingContextTesting2;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentContext> extends StorageEnvironmentContextTesting,
-    EnvironmentContextTesting2<C> {
+    EnvironmentContextTesting2<C>,
+    StorageLoggingContextTesting2<C> {
 
     @Test
     default void testParseEnvironmentValueNameWithCurrentWorkingDirectory() {

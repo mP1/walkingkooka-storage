@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.storage.logging.StorageLoggingContext;
 
 import java.util.Optional;
 
@@ -26,7 +27,8 @@ import java.util.Optional;
  * An {@link EnvironmentContext} with additional values, {@link #CURRENT_WORKING_DIRECTORY} and {@link #HOME_DIRECTORY}.
  */
 public interface StorageEnvironmentContext extends EnvironmentContext,
-    HasUserDirectories {
+    HasUserDirectories,
+    StorageLoggingContext {
 
     /**
      * Constant that should be used to hold the current working directory or PWD.
