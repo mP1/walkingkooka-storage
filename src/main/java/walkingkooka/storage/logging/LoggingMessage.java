@@ -22,6 +22,7 @@ import walkingkooka.ToStringBuilderOption;
 import walkingkooka.UsesToStringBuilder;
 import walkingkooka.environment.HasUser;
 import walkingkooka.logging.HasLoggingLevel;
+import walkingkooka.logging.LoggerPath;
 import walkingkooka.logging.LoggingLevel;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.HasText;
@@ -38,11 +39,13 @@ public final class LoggingMessage implements HasLoggingLevel,
     TreePrintable,
     UsesToStringBuilder {
 
-    public static LoggingMessage with(final LoggingLevel loggingLevel,
+    public static LoggingMessage with(final Optional<LoggerPath> logger,
+                                      final LoggingLevel loggingLevel,
                                       final LocalDateTime timestamp,
                                       final String message,
                                       final Optional<Throwable> throwable,
                                       final Optional<EmailAddress> user) {
+        Objects.requireNonNull(logger, "logger");
         Objects.requireNonNull(loggingLevel, "loggingLevel");
         Objects.requireNonNull(timestamp, "timestamp");
         Objects.requireNonNull(message, "message");
@@ -50,6 +53,7 @@ public final class LoggingMessage implements HasLoggingLevel,
         Objects.requireNonNull(user, "user");
 
         return new LoggingMessage(
+            logger,
             loggingLevel,
             timestamp,
             message,
@@ -58,18 +62,27 @@ public final class LoggingMessage implements HasLoggingLevel,
         );
     }
 
-    private LoggingMessage(final LoggingLevel loggingLevel,
+    private LoggingMessage(final Optional<LoggerPath> logger,
+                           final LoggingLevel loggingLevel,
                            final LocalDateTime timestamp,
                            final String message,
                            final Optional<Throwable> throwable,
                            final Optional<EmailAddress> user) {
         super();
+
+        this.logger = logger;
         this.loggingLevel = loggingLevel;
         this.timestamp = timestamp;
         this.message = message;
         this.throwable = throwable;
         this.user = user;
     }
+
+    public Optional<LoggerPath> logger() {
+        return this.logger;
+    }
+
+    private final Optional<LoggerPath> logger;
 
     @Override
     public LoggingLevel loggingLevel() {
@@ -108,6 +121,7 @@ public final class LoggingMessage implements HasLoggingLevel,
     @Override
     public int hashCode() {
         return Objects.hash(
+            this.logger,
             this.loggingLevel,
             this.timestamp,
             this.message,
@@ -124,7 +138,8 @@ public final class LoggingMessage implements HasLoggingLevel,
     }
 
     private boolean equals0(final LoggingMessage other) {
-        return this.loggingLevel.equals(other.loggingLevel) &&
+        return this.logger.equals(other.logger) &&
+            this.loggingLevel.equals(other.loggingLevel) &&
             this.timestamp.equals(other.timestamp) &&
             this.message.equals(other.message) &&
             this.throwable.equals(other.throwable) &&
@@ -141,6 +156,7 @@ public final class LoggingMessage implements HasLoggingLevel,
     @Override
     public void buildToString(final ToStringBuilder b) {
         b.enable(ToStringBuilderOption.QUOTE)
+            .value(this.logger)
             .value(this.loggingLevel)
             .value(this.timestamp)
             .value(this.message)

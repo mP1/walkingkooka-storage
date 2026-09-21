@@ -23,6 +23,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.HasUserTesting;
 import walkingkooka.logging.HasLoggingLevelTesting;
+import walkingkooka.logging.LoggerPath;
 import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasTextTesting;
 
@@ -38,6 +39,10 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     HasUserTesting,
     HasLoggingLevelTesting {
 
+    private final static Optional<LoggerPath> LOGGER = Optional.of(
+        LoggerPath.parse("Logger123")
+    );
+
     private final static String MESSAGE = "message123";
 
     private final static Optional<Throwable> THROWABLE = Optional.of(
@@ -47,10 +52,26 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     // with.............................................................................................................
 
     @Test
+    public void testWithNullLoggerFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> LoggingMessage.with(
+                null,
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                THROWABLE,
+                OPTIONAL_USER
+            )
+        );
+    }
+
+    @Test
     public void testWithNullLoggingLevelFails() {
         assertThrows(
             NullPointerException.class,
             () -> LoggingMessage.with(
+                LOGGER,
                 null,
                 NOW,
                 MESSAGE,
@@ -65,6 +86,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         assertThrows(
             NullPointerException.class,
             () -> LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 null,
                 MESSAGE,
@@ -79,6 +101,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         assertThrows(
             NullPointerException.class,
             () -> LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 NOW,
                 null,
@@ -93,6 +116,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         assertThrows(
             NullPointerException.class,
             () -> LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 NOW,
                 MESSAGE,
@@ -107,6 +131,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         assertThrows(
             NullPointerException.class,
             () -> LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 NOW,
                 MESSAGE,
@@ -119,11 +144,18 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     @Test
     public void testWith() {
         final LoggingMessage loggingMessage = LoggingMessage.with(
-                LOGGING_LEVEL,
-                NOW,
-                MESSAGE,
-                THROWABLE,
-                OPTIONAL_USER
+            LOGGER,
+            LOGGING_LEVEL,
+            NOW,
+            MESSAGE,
+            THROWABLE,
+            OPTIONAL_USER
+        );
+
+        this.checkEquals(
+            LOGGER,
+            loggingMessage.logger(),
+            "logger"
         );
 
         this.loggingLevelAndCheck(
@@ -158,9 +190,24 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     // hashEquals/equals................................................................................................
 
     @Test
+    public void testEqualsDifferentLogger() {
+        this.checkNotEquals(
+            LoggingMessage.with(
+                Optional.empty(),
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                THROWABLE,
+                OPTIONAL_USER
+            )
+        );
+    }
+
+    @Test
     public void testEqualsDifferentLoggingLevel() {
         this.checkNotEquals(
             LoggingMessage.with(
+                LOGGER,
                 DIFFERENT_LOGGING_LEVEL,
                 NOW,
                 MESSAGE,
@@ -174,6 +221,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testEqualsDifferentTimestamp() {
         this.checkNotEquals(
             LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 DIFFERENT_NOW,
                 MESSAGE,
@@ -187,6 +235,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testEqualsDifferentMessage() {
         this.checkNotEquals(
             LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 NOW,
                 "Different " + MESSAGE,
@@ -200,6 +249,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testEqualsDifferentThrowable() {
         this.checkNotEquals(
             LoggingMessage.with(
+                LOGGER,
                 LOGGING_LEVEL,
                 NOW,
                 MESSAGE,
@@ -214,6 +264,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     @Override
     public LoggingMessage createObject() {
         return LoggingMessage.with(
+            LOGGER,
             LOGGING_LEVEL,
             NOW,
             MESSAGE,
@@ -228,14 +279,15 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
         );
     }
 
     @Test
-    public void testToStringWithoutUser() {
+    public void testToStringWithoutLogger() {
         this.toStringAndCheck(
             LoggingMessage.with(
+                Optional.empty(),
                 LOGGING_LEVEL,
                 NOW,
                 MESSAGE,
@@ -246,13 +298,28 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         );
     }
 
+    @Test
+    public void testToStringWithoutUser() {
+        this.toStringAndCheck(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                THROWABLE,
+                Optional.empty()
+            ),
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234"
+        );
+    }
+
     // HasText..........................................................................................................
 
     @Test
     public void testText() {
         this.textAndCheck(
             this.createObject(),
-            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
         );
     }
 
@@ -262,7 +329,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testPrintTree() {
         this.treePrintAndCheck(
             this.createObject(),
-            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com\n"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com\n"
         );
     }
 
