@@ -17,24 +17,11 @@
 
 package walkingkooka.storage.logging;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.logging.FakeLoggingContext;
 
-/**
- * A collection of {@link StorageLoggingContext}
- */
-public final class StorageLoggingContexts implements PublicStaticHelper {
+public class FakeStorageLoggingContext extends FakeLoggingContext implements StorageLoggingContext {
 
-    /**
-     * {@link FakeStorageLoggingContext}
-     */
-    public static FakeStorageLoggingContext fake() {
-        return new FakeStorageLoggingContext();
-    }
-
-    /**
-     * Stop creation
-     */
-    private StorageLoggingContexts() {
-        throw new UnsupportedOperationException();
+    public FakeStorageLoggingContext() {
+        super();
     }
 }
