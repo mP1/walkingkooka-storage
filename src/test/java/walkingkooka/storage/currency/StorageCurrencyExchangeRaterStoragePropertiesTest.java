@@ -24,6 +24,7 @@ import walkingkooka.currency.CurrencyCode;
 import walkingkooka.currency.CurrencyExchange;
 import walkingkooka.currency.CurrencyExchangeRaterTesting2;
 import walkingkooka.currency.FakeCurrencyExchangeRaterContext;
+import walkingkooka.currency.HasCurrencyCodeTesting;
 import walkingkooka.net.header.MediaTypeDetectorTesting;
 import walkingkooka.props.Properties;
 import walkingkooka.storage.FakeStorageContext;
@@ -43,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
     HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStorageProperties>,
+    HasCurrencyCodeTesting,
     MediaTypeDetectorTesting,
     StorageEnvironmentContextTesting {
 
@@ -67,11 +69,11 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
         "AUD-NZD=0.9\nAUD-CAD=1.1"
     );
 
-    private final static CurrencyCode AUD = CurrencyCode.parse("AUD");
+    private final static CurrencyCode AUD = CURRENCY_CODE;
 
     private final static CurrencyCode CAD = CurrencyCode.parse("CAD");
 
-    private final static CurrencyCode NZD = CurrencyCode.parse("NZD");
+    private final static CurrencyCode NZD = DIFFERENT_CURRENCY_CODE;
 
     // with.............................................................................................................
 
