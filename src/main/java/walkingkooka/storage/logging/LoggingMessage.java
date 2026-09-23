@@ -20,6 +20,8 @@ package walkingkooka.storage.logging;
 import walkingkooka.ToStringBuilder;
 import walkingkooka.ToStringBuilderOption;
 import walkingkooka.UsesToStringBuilder;
+import walkingkooka.collect.list.CsvStringList;
+import walkingkooka.collect.list.HasCsvStringList;
 import walkingkooka.environment.HasUser;
 import walkingkooka.logging.HasLoggingLevel;
 import walkingkooka.logging.LoggerPath;
@@ -27,7 +29,10 @@ import walkingkooka.logging.LoggingLevel;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
+import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.Printer;
+import walkingkooka.text.printer.Printers;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.time.LocalDateTime;
@@ -35,6 +40,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class LoggingMessage implements HasLoggingLevel,
+    HasCsvStringList,
     HasText,
     HasUser,
     TreePrintable,
@@ -162,6 +168,47 @@ public final class LoggingMessage implements HasLoggingLevel,
             .value(this.message)
             .value(this.throwable)
             .value(this.user);
+    }
+
+    // HasCsvStringList.................................................................................................
+
+    /**
+     * The {@link Throwable} dump will be used as the {@link String} representation.
+     */
+    @Override
+    public CsvStringList csvStringList() {
+        return CsvStringList.EMPTY.concat(
+            this.logger.map(HasText::text).orElse("")
+        ).concat(
+            this.loggingLevel.name()
+        ).concat(
+            this.timestamp.toString()
+        ).concat(
+            CharSequences.nullToEmpty(this.message)
+                .toString()
+        ).concat(
+            this.throwableToString()
+        ).concat(
+            this.user.map(HasText::text).orElse("")
+        );
+    }
+
+    private String throwableToString() {
+        String string = "";
+
+        final Throwable throwable = this.throwable.orElse(null);
+        if (null != throwable) {
+            final StringBuilder builder = new StringBuilder();
+
+            // which LineEnding ???
+            try (final Printer printer = Printers.stringBuilder(builder, LineEnding.NL)) {
+                printer.printThrowable(throwable);
+            }
+
+            string = builder.toString();
+        }
+
+        return string;
     }
 
     // HasText..........................................................................................................
