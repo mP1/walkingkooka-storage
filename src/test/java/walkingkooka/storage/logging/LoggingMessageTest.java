@@ -375,7 +375,9 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testText() {
         this.textAndCheck(
             this.createObject(),
-            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" walkingkooka.storage.logging.LoggingMessageTest$1: RuntimeExceptionMessage234 user123@example.com"
+            "Logger123,NONE,1999-12-31T12:58:59,message123,\"RuntimeExceptionMessage234\n" +
+                "  stack trace...\n" +
+                "\",user123@example.com"
         );
     }
 
