@@ -215,7 +215,8 @@ public final class LoggingMessage implements HasLoggingLevel,
 
     @Override
     public String text() {
-        return this.toString();
+        return this.csvStringList()
+            .text();
     }
 
     // TreePrintable....................................................................................................
