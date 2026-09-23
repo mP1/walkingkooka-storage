@@ -20,6 +20,8 @@ package walkingkooka.storage.logging;
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.collect.list.CsvStringList;
+import walkingkooka.collect.list.HasCsvStringListTesting;
 import walkingkooka.datetime.HasNowTesting;
 import walkingkooka.environment.HasUserTesting;
 import walkingkooka.logging.HasLoggingLevelTesting;
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class LoggingMessageTest implements PublicClassTesting<LoggingMessage>,
     HashCodeEqualsDefinedTesting2<LoggingMessage>,
     ToStringTesting<LoggingMessage>,
+    HasCsvStringListTesting,
     HasNowTesting,
     HasTextTesting,
     HasUserTesting,
@@ -445,6 +448,46 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
                 "    RuntimeExceptionMessage234\n" +
                 "      stack trace...\n" +
                 "  user123@example.com\n"
+        );
+    }
+
+    // HasCsvStringList.................................................................................................
+
+    @Test
+    public void testCsvStringListWithoutThrowable() {
+        this.csvStringListAndCheck(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                Optional.empty(),
+                OPTIONAL_USER
+            ),
+            CsvStringList.parse("Logger123,NONE,\"1999-12-31T12:58:59\",message123,,user123@example.com")
+        );
+    }
+
+    @Test
+    public void testCsvStringListWithThrowable() {
+        this.csvStringListAndCheck(
+            this.createObject(),
+            CsvStringList.parse("Logger123,NONE,\"1999-12-31T12:58:59\",message123,\"RuntimeExceptionMessage234\n  stack trace...\n\",user123@example.com")
+        );
+    }
+
+    @Test
+    public void testCsvStringListWithoutUser() {
+        this.csvStringListAndCheck(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                Optional.empty(),
+                Optional.empty() // no user
+            ),
+            CsvStringList.parse("Logger123,NONE,\"1999-12-31T12:58:59\",message123,,")
         );
     }
 
