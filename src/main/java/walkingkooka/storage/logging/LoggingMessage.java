@@ -25,6 +25,7 @@ import walkingkooka.logging.HasLoggingLevel;
 import walkingkooka.logging.LoggerPath;
 import walkingkooka.logging.LoggingLevel;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -175,6 +176,39 @@ public final class LoggingMessage implements HasLoggingLevel,
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        printer.println(this.toString());
+        printer.println(this.getClass().getSimpleName());
+
+        printer.indent();
+        {
+            this.logger.ifPresent(
+                (LoggerPath loggerPath) -> {
+                    printer.print(loggerPath.toString());
+                    printer.print(" ");
+                }
+            );
+
+            printer.print(this.loggingLevel.toString());
+            printer.print(" ");
+            printer.println(this.timestamp.toString());
+
+            printer.indent();
+            {
+                final String message = this.message;
+                if (false == CharSequences.isNullOrEmpty(message)) {
+                    printer.println(message);
+                }
+
+                final Throwable throwable = this.throwable.orElse(null);
+                if(null != throwable) {
+                    printer.printThrowable(throwable);
+                }
+            }
+            printer.outdent();
+
+            this.user.ifPresent(
+                (EmailAddress user) -> printer.println(user.toString())
+            );
+        }
+        printer.outdent();
     }
 }

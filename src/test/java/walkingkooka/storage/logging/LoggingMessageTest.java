@@ -27,6 +27,7 @@ import walkingkooka.logging.LoggerPath;
 import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasTextTesting;
 
+import java.io.PrintWriter;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +47,14 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     private final static String MESSAGE = "message123";
 
     private final static Optional<Throwable> THROWABLE = Optional.of(
-        new RuntimeException("RuntimeExceptionMessage234")
+        new RuntimeException("RuntimeExceptionMessage234") {
+            @Override
+            public void printStackTrace(final PrintWriter printWriter) {
+                printWriter.println(this.getMessage());
+                printWriter.println("  stack trace...");
+                printWriter.flush();
+            }
+        }
     );
 
     // with.............................................................................................................
@@ -279,7 +287,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testToString() {
         this.toStringAndCheck(
             this.createObject(),
-            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" walkingkooka.storage.logging.LoggingMessageTest$1: RuntimeExceptionMessage234 user123@example.com"
         );
     }
 
@@ -294,7 +302,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
                 THROWABLE,
                 Optional.empty()
             ),
-            "NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234"
+            "NONE 1999-12-31T12:58:59 \"message123\" walkingkooka.storage.logging.LoggingMessageTest$1: RuntimeExceptionMessage234"
         );
     }
 
@@ -309,7 +317,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
                 THROWABLE,
                 Optional.empty()
             ),
-            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" walkingkooka.storage.logging.LoggingMessageTest$1: RuntimeExceptionMessage234"
         );
     }
 
@@ -319,7 +327,7 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testText() {
         this.textAndCheck(
             this.createObject(),
-            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com"
+            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" walkingkooka.storage.logging.LoggingMessageTest$1: RuntimeExceptionMessage234 user123@example.com"
         );
     }
 
@@ -329,7 +337,69 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     public void testPrintTree() {
         this.treePrintAndCheck(
             this.createObject(),
-            "Logger123 NONE 1999-12-31T12:58:59 \"message123\" java.lang.RuntimeException: RuntimeExceptionMessage234 user123@example.com\n"
+            "LoggingMessage\n" +
+                "  Logger123 NONE 1999-12-31T12:58:59\n" +
+                "    message123\n" +
+                "    RuntimeExceptionMessage234\n" +
+                "      stack trace...\n" +
+                "  user123@example.com\n"
+        );
+    }
+
+    @Test
+    public void testPrintTreeEmptyMessage() {
+        this.treePrintAndCheck(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                "",
+                THROWABLE,
+                OPTIONAL_USER
+            ),
+            "LoggingMessage\n" +
+                "  Logger123 NONE 1999-12-31T12:58:59\n" +
+                "    RuntimeExceptionMessage234\n" +
+                "      stack trace...\n" +
+                "  user123@example.com\n"
+        );
+    }
+
+    @Test
+    public void testPrintTreeWithoutThrowable() {
+        this.treePrintAndCheck(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                Optional.empty(),
+                OPTIONAL_USER
+            ),
+            "LoggingMessage\n" +
+                "  Logger123 NONE 1999-12-31T12:58:59\n" +
+                "    message123\n" +
+                "  user123@example.com\n"
+        );
+    }
+
+    @Test
+    public void testPrintTreeWithoutLogger() {
+        this.treePrintAndCheck(
+            LoggingMessage.with(
+                Optional.empty(),
+                LOGGING_LEVEL,
+                NOW,
+                MESSAGE,
+                THROWABLE,
+                OPTIONAL_USER
+            ),
+            "LoggingMessage\n" +
+                "  NONE 1999-12-31T12:58:59\n" +
+                "    message123\n" +
+                "    RuntimeExceptionMessage234\n" +
+                "      stack trace...\n" +
+                "  user123@example.com\n"
         );
     }
 
