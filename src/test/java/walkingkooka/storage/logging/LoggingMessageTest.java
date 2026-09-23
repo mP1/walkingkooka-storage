@@ -105,21 +105,6 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
     }
 
     @Test
-    public void testWithNullMessageFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> LoggingMessage.with(
-                LOGGER,
-                LOGGING_LEVEL,
-                NOW,
-                null,
-                THROWABLE,
-                OPTIONAL_USER
-            )
-        );
-    }
-
-    @Test
     public void testWithNullThrowableFails() {
         assertThrows(
             NullPointerException.class,
@@ -195,6 +180,52 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
         );
     }
 
+    @Test
+    public void testWithNullMessage() {
+        final LoggingMessage loggingMessage = LoggingMessage.with(
+            LOGGER,
+            LOGGING_LEVEL,
+            NOW,
+            null,
+            THROWABLE,
+            OPTIONAL_USER
+        );
+
+        this.checkEquals(
+            LOGGER,
+            loggingMessage.logger(),
+            "logger"
+        );
+
+        this.loggingLevelAndCheck(
+            loggingMessage,
+            LOGGING_LEVEL
+        );
+
+        this.checkEquals(
+            NOW,
+            loggingMessage.timestamp(),
+            "timestamp"
+        );
+
+        this.checkEquals(
+            null,
+            loggingMessage.message(),
+            "message"
+        );
+
+        this.checkEquals(
+            THROWABLE,
+            loggingMessage.throwable(),
+            "throwable"
+        );
+
+        this.userAndCheck(
+            loggingMessage,
+            USER
+        );
+    }
+
     // hashEquals/equals................................................................................................
 
     @Test
@@ -247,6 +278,20 @@ public final class LoggingMessageTest implements PublicClassTesting<LoggingMessa
                 LOGGING_LEVEL,
                 NOW,
                 "Different " + MESSAGE,
+                THROWABLE,
+                OPTIONAL_USER
+            )
+        );
+    }
+
+    @Test
+    public void testEqualsDifferentNullMessage() {
+        this.checkNotEquals(
+            LoggingMessage.with(
+                LOGGER,
+                LOGGING_LEVEL,
+                NOW,
+                null, // message
                 THROWABLE,
                 OPTIONAL_USER
             )

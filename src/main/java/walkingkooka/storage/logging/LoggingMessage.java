@@ -49,7 +49,6 @@ public final class LoggingMessage implements HasLoggingLevel,
         Objects.requireNonNull(logger, "logger");
         Objects.requireNonNull(loggingLevel, "loggingLevel");
         Objects.requireNonNull(timestamp, "timestamp");
-        Objects.requireNonNull(message, "message");
         Objects.requireNonNull(throwable, "throwable");
         Objects.requireNonNull(user, "user");
 
@@ -142,7 +141,7 @@ public final class LoggingMessage implements HasLoggingLevel,
         return this.logger.equals(other.logger) &&
             this.loggingLevel.equals(other.loggingLevel) &&
             this.timestamp.equals(other.timestamp) &&
-            this.message.equals(other.message) &&
+            Objects.equals(this.message, other.message) &&
             this.throwable.equals(other.throwable) &&
             this.user.equals(other.user);
     }
