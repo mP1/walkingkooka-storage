@@ -36,6 +36,7 @@ import walkingkooka.text.printer.Printers;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -182,7 +183,7 @@ public final class LoggingMessage implements HasLoggingLevel,
         ).concat(
             this.loggingLevel.name()
         ).concat(
-            this.timestamp.toString()
+            this.timestampToIsoDateTimeString()
         ).concat(
             CharSequences.nullToEmpty(this.message)
                 .toString()
@@ -236,7 +237,7 @@ public final class LoggingMessage implements HasLoggingLevel,
 
             printer.print(this.loggingLevel.toString());
             printer.print(" ");
-            printer.println(this.timestamp.toString());
+            printer.println(this.timestampToIsoDateTimeString());
 
             printer.indent();
             {
@@ -257,5 +258,9 @@ public final class LoggingMessage implements HasLoggingLevel,
             );
         }
         printer.outdent();
+    }
+
+    private String timestampToIsoDateTimeString() {
+        return DateTimeFormatter.ISO_DATE_TIME.format(this.timestamp);
     }
 }
