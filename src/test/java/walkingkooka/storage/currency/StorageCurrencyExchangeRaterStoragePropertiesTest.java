@@ -43,7 +43,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements CurrencyExchangeRaterTesting2<StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext>, FakeCurrencyExchangeRaterContext>,
-    HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStorageProperties>,
+    HashCodeEqualsDefinedTesting2<StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext>>,
     HasCurrencyCodeTesting,
     MediaTypeDetectorTesting,
     StorageEnvironmentContextTesting {
@@ -146,7 +146,7 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
     public void testCurrencyExchangeRateAfterPropertiesChange() {
         final StorageContext storageContext = this.createStorageContext();
 
-        final StorageCurrencyExchangeRaterStorageProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+        final StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext> currencyExchangeRater = this.createCurrencyExchangeRater(
             storageContext
         );
 
@@ -176,7 +176,7 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
     public void testCurrencyExchangeRateAfterPropertiesDeleted() {
         final StorageContext storageContext = this.createStorageContext();
 
-        final StorageCurrencyExchangeRaterStorageProperties currencyExchangeRater = this.createCurrencyExchangeRater(
+        final StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext> currencyExchangeRater = this.createCurrencyExchangeRater(
             storageContext
         );
 
@@ -208,7 +208,7 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
     }
 
     @Override
-    public StorageCurrencyExchangeRaterStorageProperties createCurrencyExchangeRater() {
+    public StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext> createCurrencyExchangeRater() {
         return this.createCurrencyExchangeRater(
             this.createStorageContext()
         );
@@ -234,7 +234,7 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
         return context;
     }
 
-    private StorageCurrencyExchangeRaterStorageProperties createCurrencyExchangeRater(final StorageContext context) {
+    private StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext> createCurrencyExchangeRater(final StorageContext context) {
         return StorageCurrencyExchangeRaterStorageProperties.with(
             STORAGE_PATH,
             NUMBER_PARSER,
@@ -294,7 +294,7 @@ public final class StorageCurrencyExchangeRaterStoragePropertiesTest implements 
     }
 
     @Override
-    public StorageCurrencyExchangeRaterStorageProperties createObject() {
+    public StorageCurrencyExchangeRaterStorageProperties<FakeCurrencyExchangeRaterContext> createObject() {
         return StorageCurrencyExchangeRaterStorageProperties.with(
             STORAGE_PATH,
             NUMBER_PARSER,

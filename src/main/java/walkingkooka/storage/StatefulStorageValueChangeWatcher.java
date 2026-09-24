@@ -36,7 +36,7 @@ public final class StatefulStorageValueChangeWatcher<T> implements HasPath<Stora
     public static <T> StatefulStorageValueChangeWatcher<T> with(final StoragePath path,
                                                                 final ValueChangeWatcher<T> watcher,
                                                                 final StorageContext context) {
-        return new StatefulStorageValueChangeWatcher(
+        return new StatefulStorageValueChangeWatcher<>(
             Objects.requireNonNull(path, "path"),
             Objects.requireNonNull(watcher, "watcher"),
             Objects.requireNonNull(context, "context")
