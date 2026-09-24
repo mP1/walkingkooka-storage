@@ -124,7 +124,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
-            new ValueChangeWatcher<JsonNode>() {
+            new ValueChangeWatcher<>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
@@ -177,7 +177,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
-            new ValueChangeWatcher<JsonNode>() {
+            new ValueChangeWatcher<>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
@@ -216,7 +216,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
-            new ValueChangeWatcher<JsonNode>() {
+            new ValueChangeWatcher<>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
@@ -258,7 +258,7 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
 
         final StatefulStorageValueChangeWatcher<JsonNode> statefulStorageValueChangeWatcher = StatefulStorageValueChangeWatcher.with(
             STORAGE_PATH,
-            new ValueChangeWatcher<JsonNode>() {
+            new ValueChangeWatcher<>() {
                 @Override
                 public void onValueChange(final Optional<JsonNode> oldValue,
                                           final Optional<JsonNode> newValue) {
