@@ -78,7 +78,7 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
 
         try {
             this.watcher = root.getFileSystem()
-                .newWatchService();;
+                .newWatchService();
         } catch (final IOException rethrow) {
             // Unable to open watch service "/temp/": File not found
             throw new IllegalArgumentException(
@@ -544,7 +544,7 @@ final class StorageShared2NativeFile<C extends StorageContext> extends StorageSh
     public void stop() {
         if(false == this.stopped.close()) {
             // kill background thread
-        };
+        }
     }
 
     private final OpenChecker<IllegalStateException> stopped = OpenChecker.with(
