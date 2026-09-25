@@ -348,6 +348,11 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
             cloned,
             DIFFERENT_HOME_DIRECTORY
         );
+
+        this.homeDirectoryAndCheck(
+            storageEnvironmentContext,
+            HOME_DIRECTORY
+        );
     }
 
     // setEnvironmentContext............................................................................................
