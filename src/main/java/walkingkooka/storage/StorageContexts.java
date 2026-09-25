@@ -49,6 +49,13 @@ public final class StorageContexts implements PublicStaticHelper {
     }
 
     /**
+     * {@see StorageContextLogging}
+     */
+    public static StorageContext logging(final StorageContext storageContext) {
+        return StorageContextLogging.with(storageContext);
+    }
+
+    /**
      * Stop creation
      */
     private StorageContexts() {
