@@ -24,6 +24,7 @@ import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.watch.ValueChangeWatcher;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
@@ -31,6 +32,16 @@ public interface StorageContext extends StorageEnvironmentContext,
     MediaTypeDetector {
 
     LoggerPath STORAGE_LOGGER = LoggerPath.parse("storage");
+
+    /**
+     * Convenience method that calls {@link #logEnterAndExit(LoggerPath, Supplier)} with {@link #EXPRESSION_LOGGER}.
+     */
+    default <T> T logEnterAndExitStorage(final Supplier<T> supplier) {
+        return this.logEnterAndExit(
+            STORAGE_LOGGER,
+            supplier
+        );
+    }
 
     /**
      * {@link Storage#canRead(StoragePath, StorageContext)}
