@@ -41,6 +41,8 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
     DecimalNumberContextTesting,
     HashCodeEqualsDefinedTesting2<StorageContextLogging> {
 
+    private final static LoggingLevel LOGGING_LEVEL = LoggingLevel.DEBUG;
+
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
@@ -291,7 +293,7 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
     }
 
-//    // currentWorkingDirectory..........................................................................................
+    // currentWorkingDirectory..........................................................................................
 
     @Test
     public void testCurrentWorkingDirectory() {
@@ -343,6 +345,20 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
     }
 
+    @Test
+    @Override
+    public void testLoggingLevel() {
+        this.loggingLevelAndCheck(
+            this.createContext(),
+            LOGGING_LEVEL
+        );
+    }
+
+    @Override
+    public void testSetLoggingLevelWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
     // ConverterLike....................................................................................................
 
     @Test
@@ -376,7 +392,7 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
                 INDENTATION,
                 LINE_ENDING,
                 LOCALE,
-                LoggingLevel.DEBUG,
+                LOGGING_LEVEL,
                 HAS_NOW,
                 OPTIONAL_USER
             )
