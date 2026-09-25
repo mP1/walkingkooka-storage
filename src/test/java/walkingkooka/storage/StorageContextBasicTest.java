@@ -358,6 +358,17 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
     // setEnvironmentContext............................................................................................
 
     @Test
+    public void testSetEnvironmentContextWithSelf() {
+        final StorageContextBasic context = this.createContext();
+
+        this.setEnvironmentContextAndCheck(
+            context,
+            context,
+            context
+        );
+    }
+
+    @Test
     public void testSetEnvironmentContextWithSameEnvironmentContext() {
         final StorageContextBasic context = this.createContext();
 
