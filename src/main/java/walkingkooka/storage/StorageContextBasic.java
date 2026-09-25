@@ -19,6 +19,8 @@ package walkingkooka.storage;
 
 import walkingkooka.Binary;
 import walkingkooka.Cast;
+import walkingkooka.ToStringBuilder;
+import walkingkooka.UsesToStringBuilder;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
@@ -35,7 +37,8 @@ import java.util.Optional;
  */
 final class StorageContextBasic implements StorageContext,
     ConverterLikeDelegator,
-    StorageEnvironmentContextDelegator {
+    StorageEnvironmentContextDelegator,
+    UsesToStringBuilder {
 
     static StorageContextBasic with(final ConverterLike converterLike,
                                     final MediaTypeDetector mediaTypeDetector,
@@ -253,8 +256,18 @@ final class StorageContextBasic implements StorageContext,
 
     @Override
     public String toString() {
-        return this.mediaTypeDetector + " " +
-            this.storage + " " +
-            this.storageEnvironmentContext;
+        return ToStringBuilder.buildFrom(this);
+    }
+
+    // UsesToStringBuilder..............................................................................................
+
+    @Override
+    public void buildToString(final ToStringBuilder toStringBuilder) {
+        toStringBuilder.label("mediaTypeDetector")
+            .value(this.mediaTypeDetector)
+            .label("storage")
+            .value(this.storage)
+            .label("storageEnvironmentContext")
+            .value(this.storageEnvironmentContext);
     }
 }

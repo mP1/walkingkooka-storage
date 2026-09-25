@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.ToStringTesting;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
@@ -38,7 +39,8 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
-    HashCodeEqualsDefinedTesting2<StorageContextBasic> {
+    HashCodeEqualsDefinedTesting2<StorageContextBasic>,
+    ToStringTesting<StorageContextBasic> {
 
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
@@ -551,6 +553,16 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
         this.environmentContextAndCheck(
             context,
             context.storageEnvironmentContext
+        );
+    }
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+            this.createContext(),
+            "mediaTypeDetector=application/octet-stream storage={/=user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59, /value111=111 user123@example.com 1999-12-31T12:58:59 user123@example.com 1999-12-31T12:58:59} storageEnvironmentContext={charset=UTF-8, currency=AUD, currentWorkingDirectory=/current1/working2/directory3, homeDirectory=/users/user123@example.com, indentation=\"  \", lineEnding=\"\\n\", locale=en_AU, loggingLevel=NONE, timeOffset=Z, user=user123@example.com}"
         );
     }
 
