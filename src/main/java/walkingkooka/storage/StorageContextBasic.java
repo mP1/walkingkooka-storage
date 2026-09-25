@@ -197,17 +197,24 @@ final class StorageContextBasic implements StorageContext,
 
     @Override
     public StorageContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        final StorageEnvironmentContext before = this.storageEnvironmentContext;
-        final StorageEnvironmentContext after = before.setEnvironmentContext(environmentContext);
+        StorageContext storageContext = this;
 
-        return before == after ?
-            this :
-            new StorageContextBasic(
-                this.converterLike,
-                this.mediaTypeDetector,
-                this.storage,
-                after
-            );
+        if (this != environmentContext) {
+            final StorageEnvironmentContext before = this.storageEnvironmentContext;
+            final StorageEnvironmentContext after = before.setEnvironmentContext(environmentContext);
+
+            storageContext = before == after ?
+                this :
+                new StorageContextBasic(
+                    this.converterLike,
+                    this.mediaTypeDetector,
+                    this.storage,
+                    after
+                );
+
+        }
+
+        return storageContext;
     }
 
     @Override
