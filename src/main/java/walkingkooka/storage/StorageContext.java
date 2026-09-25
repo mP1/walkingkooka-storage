@@ -34,7 +34,7 @@ public interface StorageContext extends StorageEnvironmentContext,
     LoggerPath STORAGE_LOGGER = LoggerPath.parse("storage");
 
     /**
-     * Convenience method that calls {@link #logEnterAndExit(LoggerPath, Supplier)} with {@link #EXPRESSION_LOGGER}.
+     * Convenience method that calls {@link #logEnterAndExit(LoggerPath, Supplier)} with {@link #STORAGE_LOGGER}.
      */
     default <T> T logEnterAndExitStorage(final Supplier<T> supplier) {
         return this.logEnterAndExit(
