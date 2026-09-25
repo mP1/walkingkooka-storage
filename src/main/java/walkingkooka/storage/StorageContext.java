@@ -19,6 +19,7 @@ package walkingkooka.storage;
 
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.logging.LoggerPath;
 import walkingkooka.net.header.MediaTypeDetector;
 import walkingkooka.watch.ValueChangeWatcher;
 
@@ -28,6 +29,8 @@ public interface StorageContext extends StorageEnvironmentContext,
     ConverterLike,
     CanLoadStorage,
     MediaTypeDetector {
+
+    LoggerPath STORAGE_LOGGER = LoggerPath.parse("storage");
 
     /**
      * {@link Storage#canRead(StoragePath, StorageContext)}
