@@ -92,7 +92,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
 
         this.checkEquals(
-            "storage INFO canRead /value111\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO canRead /value111\n" +
                 "storage INFO canRead /value111=true\n",
             logs.toString()
         );
@@ -111,7 +113,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
 
         this.checkEquals(
-            "storage INFO canWrite /value111\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO canWrite /value111\n" +
                 "storage INFO canWrite /value111=true\n",
             logs.toString()
         );
@@ -130,7 +134,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
 
         this.checkEquals(
-            "storage INFO load /value111\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO load /value111\n" +
                 "storage INFO load /value111=Optional[/value111=111]\n",
             logs.toString()
         );
@@ -149,7 +155,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
 
         this.checkEquals(
-            "storage INFO save /value111=111\n",
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO save /value111=111\n",
             logs.toString()
         );
     }
@@ -165,7 +173,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
             .deleteStorage(STORAGE_PATH);
 
         this.checkEquals(
-            "storage INFO delete /value111\n",
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO delete /value111\n",
             logs.toString()
         );
     }
@@ -193,7 +203,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         );
 
         this.checkEquals(
-            "storage INFO setAuditInfo /value111 different-user-456@example.com 2000-01-31T12:58:59 different-user-456@example.com 2000-01-31T12:58:59\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO setAuditInfo /value111 different-user-456@example.com 2000-01-31T12:58:59 different-user-456@example.com 2000-01-31T12:58:59\n" +
                 "storage INFO list / 0 2\n" +
                 "storage INFO list / 0 2 [/value111 different-user-456@example.com 2000-01-31T12:58:59 different-user-456@example.com 2000-01-31T12:58:59]\n",
             logs.toString()
@@ -225,7 +237,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         context.saveStorage(DIFFERENT_STORAGE_VALUE);
 
         this.checkEquals(
-            "storage INFO addWatcher WATCHER123\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO addWatcher WATCHER123\n" +
                 "storage INFO save /value222=222\n",
             logs.toString()
         );
@@ -254,7 +268,9 @@ public final class StorageContextLoggingTest implements StorageContextTesting2<S
         context.saveStorage(DIFFERENT_STORAGE_VALUE);
 
         this.checkEquals(
-            "storage INFO addWatcherOnce WATCHER123\n" +
+            "DEBUG fire value change null to currentWorkingDirectory=/current1/working2/directory3\n" +
+                "DEBUG fire value change null to homeDirectory=/users/user123@example.com\n" +
+                "storage INFO addWatcherOnce WATCHER123\n" +
                 "storage INFO save /value222=222\n",
             logs.toString()
         );
