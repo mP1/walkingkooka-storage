@@ -242,7 +242,7 @@ public final class LoggingMessage implements HasLoggingLevel,
             printer.indent();
             {
                 final String message = this.message;
-                if (false == CharSequences.isNullOrEmpty(message)) {
+                if (CharSequences.isNotNullOrEmpty(message)) {
                     printer.println(message);
                 }
 
