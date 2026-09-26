@@ -219,6 +219,11 @@ final class StorageShared2Environment<C extends StorageContext> extends StorageS
                     toStorageValue(newValue)
                 );
             }
+
+            @Override
+            public String toString() {
+                return watcher.toString();
+            }
         };
     }
 
