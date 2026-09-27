@@ -28,6 +28,9 @@ import walkingkooka.net.header.MediaType;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageBinaryTest implements HasPathTesting,
     HasBinaryTesting,
     HasContentTypeTesting,
+    JsonNodeMarshallerTesting<StorageBinary>,
     TreePrintableTesting,
     HashCodeEqualsDefinedTesting2<StorageBinary>,
     ClassTesting<StorageBinary>,
@@ -270,6 +274,49 @@ public final class StorageBinaryTest implements HasPathTesting,
                 "    6a 75 6d 70 73 20 6f 76 65 72 20 74 68 65 20 6c 61 7a 79 20 jumps over the lazy \n" +
                 "    64 6f 67                                                    dog                 \n"
         );
+    }
+
+    // json.............................................................................................................
+
+    @Test
+    public void testMarshall() {
+        this.marshallAndCheck(
+            this.createJsonNodeMarshallingValue(),
+            "{\n" +
+                "  \"path\": \"/file.txt\",\n" +
+                "  \"binary\": \"\"\n" +
+                "}"
+        );
+    }
+
+    @Test
+    public void testMarshallWithNotEmptyBinary() {
+        this.marshallAndCheck(
+            StorageBinary.with(
+                PATH,
+                Binary.with(
+                    "Hello".getBytes(Charset.defaultCharset())
+                )
+            ),
+            "{\n" +
+                "  \"path\": \"/file.txt\",\n" +
+                "  \"binary\": \"SGVsbG8=\"\n" +
+                "}"
+        );
+    }
+
+    @Override
+    public StorageBinary unmarshall(final JsonNode jsonNode,
+                                    final JsonNodeUnmarshallContext context) {
+        return StorageBinary.unmarshall(
+            jsonNode,
+            context
+        );
+    }
+
+    @Override
+    public StorageBinary createJsonNodeMarshallingValue() {
+        return this.createObject();
     }
 
     // with.............................................................................................................
