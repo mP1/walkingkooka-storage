@@ -24,6 +24,11 @@ import walkingkooka.net.header.HasContentType;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonPropertyName;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -149,5 +154,74 @@ public final class StorageBinary implements HasPath<StoragePath>,
             }
         }
         printer.outdent();
+    }
+
+    // json.............................................................................................................
+
+    static StorageBinary unmarshall(final JsonNode node,
+                                    final JsonNodeUnmarshallContext context) {
+        StoragePath storagePath = null;
+        Binary binary = null;
+
+        for (final JsonNode child : node.objectOrFail().children()) {
+            final JsonPropertyName name = child.name();
+            switch (name.value()) {
+                case PATH_PROPERTY_STRING:
+                    storagePath = context.unmarshall(
+                        child,
+                        StoragePath.class
+                    );
+                    break;
+                case BINARY_PROPERTY_STRING:
+                    binary = context.unmarshall(
+                        child,
+                        Binary.class
+                    );
+                    break;
+                default:
+                    JsonNodeUnmarshallContext.unknownPropertyPresent(
+                        name,
+                        node
+                    );
+                    break;
+            }
+        }
+
+        return with(
+            storagePath,
+            binary
+        );
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        return JsonNode.object()
+            .set(
+                PATH_PROPERTY,
+                context.marshall(
+                    this.path
+                )
+            ).set(
+                BINARY_PROPERTY,
+                context.marshall(
+                    this.binary
+                )
+            );
+    }
+
+    private final static String PATH_PROPERTY_STRING = "path";
+
+    private final static String BINARY_PROPERTY_STRING = "binary";
+
+    final static JsonPropertyName PATH_PROPERTY = JsonPropertyName.with(PATH_PROPERTY_STRING);
+
+    final static JsonPropertyName BINARY_PROPERTY = JsonPropertyName.with(BINARY_PROPERTY_STRING);
+
+    static {
+        JsonNodeContext.register(
+            JsonNodeContext.computeTypeName(StorageBinary.class),
+            StorageBinary::unmarshall,
+            StorageBinary::marshall,
+            StorageBinary.class
+        );
     }
 }
