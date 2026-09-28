@@ -25,8 +25,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.naming.HasPathTesting;
 import walkingkooka.net.header.HasContentTypeTesting;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
@@ -46,7 +45,7 @@ public final class StorageBinaryTest implements HasPathTesting,
     JsonNodeMarshallerTesting<StorageBinary>,
     TreePrintableTesting,
     HashCodeEqualsDefinedTesting2<StorageBinary>,
-    ClassTesting<StorageBinary>,
+    PublicClassTesting<StorageBinary>,
     ToStringTesting<StorageBinary> {
 
     private final static StoragePath PATH = StoragePath.parse("/file.txt");
@@ -324,10 +323,5 @@ public final class StorageBinaryTest implements HasPathTesting,
     @Override
     public Class<StorageBinary> type() {
         return StorageBinary.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }
