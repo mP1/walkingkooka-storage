@@ -25,7 +25,6 @@ import walkingkooka.datetime.HasLastModifiedTesting;
 import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.HasAuditInfo;
 import walkingkooka.environment.HasAuditInfoTesting;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
@@ -33,7 +32,6 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -50,28 +48,6 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
     IteratorTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
-
-    private final static EmailAddress CREATED_BY = EmailAddress.parse("created-by@example.com");
-
-    private final static LocalDateTime CREATED_TIMESTAMP = LocalDateTime.parse("1999-12-31T12:58:59");
-
-    private final static EmailAddress MODIFIED_BY = EmailAddress.parse("modified-by@example.com");
-
-    private final static LocalDateTime MODIFIED_TIMESTAMP = LocalDateTime.parse("2000-01-02T12:58:59");
-
-    private final static AuditInfo AUDIT_INFO = AuditInfo.with(
-        CREATED_BY,
-        CREATED_TIMESTAMP,
-        MODIFIED_BY,
-        MODIFIED_TIMESTAMP
-    );
-
-    private final static AuditInfo DIFFERENT_AUDIT_INFO = AuditInfo.with(
-        CREATED_BY,
-        CREATED_TIMESTAMP,
-        EmailAddress.parse("different-modified-by@example.com"),
-        MODIFIED_TIMESTAMP
-    );
 
     // with.............................................................................................................
 
@@ -305,10 +281,10 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
             "{\n" +
                 "  \"path\": \"/path123\",\n" +
                 "  \"auditInfo\": {\n" +
-                "    \"createdBy\": \"created-by@example.com\",\n" +
+                "    \"createdBy\": \"user123@example.com\",\n" +
                 "    \"createdTimestamp\": \"1999-12-31T12:58:59\",\n" +
-                "    \"modifiedBy\": \"modified-by@example.com\",\n" +
-                "    \"modifiedTimestamp\": \"2000-01-02T12:58:59\"\n" +
+                "    \"modifiedBy\": \"user123@example.com\",\n" +
+                "    \"modifiedTimestamp\": \"1999-12-31T12:58:59\"\n" +
                 "  }\n" +
                 "}"
         );
@@ -337,9 +313,9 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
             "/path123\n" +
                 "  AuditInfo\n" +
                 "    created\n" +
-                "      created-by@example.com 1999-12-31T12:58:59\n" +
+                "      user123@example.com 1999-12-31T12:58:59\n" +
                 "    modified\n" +
-                "      modified-by@example.com 2000-01-02T12:58:59\n"
+                "      user123@example.com 1999-12-31T12:58:59\n"
         );
     }
 
