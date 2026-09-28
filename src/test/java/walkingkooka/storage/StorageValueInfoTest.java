@@ -26,8 +26,7 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.environment.HasAuditInfo;
 import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
@@ -42,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueInfoTest implements ComparableTesting2<StorageValueInfo>,
-    ClassTesting2<StorageValueInfo>,
+    PublicClassTesting<StorageValueInfo>,
     HasAuditInfoTesting,
     HasLastModifiedTesting,
     HasTextTesting,
@@ -349,10 +348,5 @@ public final class StorageValueInfoTest implements ComparableTesting2<StorageVal
     @Override
     public Class<StorageValueInfo> type() {
         return StorageValueInfo.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }
