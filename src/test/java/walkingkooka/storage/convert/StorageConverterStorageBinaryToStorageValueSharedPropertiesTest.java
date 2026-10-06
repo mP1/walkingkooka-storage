@@ -23,6 +23,7 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.HasCharsetTesting;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.color.ColorProperties;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.ConverterContext;
 import walkingkooka.convert.Converters;
@@ -40,6 +41,29 @@ import java.util.Optional;
 public final class StorageConverterStorageBinaryToStorageValueSharedPropertiesTest extends StorageConverterStorageBinaryToStorageValueSharedTestCase<StorageConverterStorageBinaryToStorageValueSharedProperties<FakeStorageConverterContext>>
     implements HasCharsetTesting,
     HasDateTimeSymbolsTesting {
+
+    @Test
+    public void testConvertStorageBinaryColorPropertiesToStorageValue() {
+        final ColorProperties colorProperties = ColorProperties.parse("hello.world=RED");
+
+        final StoragePath storagePath = StoragePath.parse("/ColorProperties.color.properties");
+
+        this.convertAndCheck(
+            StorageBinary.with(
+                storagePath,
+                Binary.with(
+                    colorProperties.text()
+                        .getBytes(CHARSET)
+                )
+            ),
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(colorProperties.properties())
+                ).setContentType(
+                    Optional.of(MediaType.TEXT_PROPERTIES)
+                )
+        );
+    }
 
     @Test
     public void testConvertStorageBinaryDateTimeSymbolsPropertiesToStorageValue() {
