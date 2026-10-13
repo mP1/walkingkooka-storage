@@ -33,5 +33,10 @@ public interface HasUserDirectoriesTesting extends HasCurrentWorkingDirectoryTes
         public Optional<StoragePath> homeDirectory() {
             return OPTIONAL_HOME_DIRECTORY;
         }
+
+        @Override
+        public String toString() {
+            return "HAS_USER_DIRECTORIES";
+        }
     };
 }
