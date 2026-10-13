@@ -17,10 +17,19 @@
 
 package walkingkooka.storage;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.reflect.PublicClassTesting;
 
 public final class HasUserDirectoriesTestingTest implements HasUserDirectoriesTesting,
     PublicClassTesting<HasUserDirectoriesTesting> {
+
+    @Test
+    public void testHasUserDirectoriesToString() {
+        this.checkEquals(
+            "HAS_USER_DIRECTORIES",
+            HAS_USER_DIRECTORIES.toString()
+        );
+    }
 
     // class............................................................................................................
 
