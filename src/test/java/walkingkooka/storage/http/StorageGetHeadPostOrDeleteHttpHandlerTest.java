@@ -464,6 +464,7 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
                 JsonNodeConverterContexts.basic(
                     ExpressionNumberConverterContexts.basic(
                         Converters.fake(),
+                        EXPRESSION_NUMBER_KIND,
                         ExpressionNumberBinaryNumberConverterFunctions.multiply(), // multiplier
                         ConverterContexts.basic(
                             false, // canNumbersHaveGroupSeparator
@@ -475,8 +476,7 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
                             CURRENCY_LOCALE_CONTEXT,
                             DATE_TIME_CONTEXT,
                             DECIMAL_NUMBER_CONTEXT
-                        ),
-                        EXPRESSION_NUMBER_KIND
+                        )
                     ),
                     ENVIRONMENT_CONTEXT,
                     JSON_NODE_MARSHALL_UNMARSHALL_CONTEXT
