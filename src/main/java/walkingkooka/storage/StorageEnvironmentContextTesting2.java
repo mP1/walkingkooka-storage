@@ -31,12 +31,12 @@ public interface StorageEnvironmentContextTesting2<C extends StorageEnvironmentC
 
     @Test
     default void testParseEnvironmentValueNameWithCurrentWorkingDirectory() {
-        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY);
+        this.parseEnvironmentValueNameAndCachedCheck(StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY);
     }
 
     @Test
     default void testParseEnvironmentValueNameWithHomeDirectory() {
-        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.HOME_DIRECTORY);
+        this.parseEnvironmentValueNameAndCachedCheck(StorageEnvironmentContext.HOME_DIRECTORY);
     }
 
     // currentWorkingDirectory..........................................................................................
