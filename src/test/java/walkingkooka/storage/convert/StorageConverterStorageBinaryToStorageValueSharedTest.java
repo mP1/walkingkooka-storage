@@ -18,18 +18,12 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
-public final class StorageConverterStorageBinaryToStorageValueSharedTest implements ClassTesting<StorageConverterStorageBinaryToStorageValueShared<?>> {
+public final class StorageConverterStorageBinaryToStorageValueSharedTest implements PackagePrivateClassTesting<StorageConverterStorageBinaryToStorageValueShared<?>> {
 
     @Override
     public Class<StorageConverterStorageBinaryToStorageValueShared<?>> type() {
         return Cast.to(StorageConverterStorageBinaryToStorageValueShared.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

@@ -22,8 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageMountPointPathsTest implements StorageTesting2<StorageMountPointPaths<FakeStorageContext>, FakeStorageContext>,
     ToStringTesting<StorageMountPointPaths<FakeStorageContext>>,
-    ClassTesting<StorageMountPointPaths<FakeStorageContext>> {
+    PackagePrivateClassTesting<StorageMountPointPaths<FakeStorageContext>> {
 
     @Test
     public void testCanReadExisting() {
@@ -168,10 +167,5 @@ public final class StorageMountPointPathsTest implements StorageTesting2<Storage
     @Override
     public Class<StorageMountPointPaths<FakeStorageContext>> type() {
         return Cast.to(StorageMountPointPaths.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

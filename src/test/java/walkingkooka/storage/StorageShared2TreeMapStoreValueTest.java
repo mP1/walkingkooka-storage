@@ -24,8 +24,7 @@ import walkingkooka.environment.AuditInfo;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.header.CharsetName;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 import walkingkooka.reflect.ThrowableTesting;
 
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageShared2TreeMapStoreValueTest implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStoreValue>,
-    ClassTesting2<StorageShared2TreeMapStoreValue>,
+    PackagePrivateClassTesting<StorageShared2TreeMapStoreValue>,
     ThrowableTesting,
     ToStringTesting<StorageShared2TreeMapStoreValue> {
 
@@ -370,10 +369,5 @@ public final class StorageShared2TreeMapStoreValueTest implements HashCodeEquals
     @Override
     public Class<StorageShared2TreeMapStoreValue> type() {
         return StorageShared2TreeMapStoreValue.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

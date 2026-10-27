@@ -20,8 +20,7 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.naming.HasPathTesting;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
@@ -33,7 +32,7 @@ public final class StorageMountPointTest implements TreePrintableTesting,
     HasPathTesting,
     HasTextTesting,
     HasMultiLineTextTesting,
-    ClassTesting2<StorageMountPoint<StorageContext>> {
+    PublicClassTesting<StorageMountPoint<StorageContext>> {
 
     private final static Storage<StorageContext> STORAGE = Storages.fake();
 
@@ -435,10 +434,5 @@ public final class StorageMountPointTest implements TreePrintableTesting,
     @Override
     public Class<StorageMountPoint<StorageContext>> type() {
         return Cast.to(StorageMountPoint.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

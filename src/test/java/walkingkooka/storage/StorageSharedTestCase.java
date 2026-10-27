@@ -19,8 +19,10 @@ package walkingkooka.storage;
 
 import walkingkooka.ToStringTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
 public abstract class StorageSharedTestCase<S extends StorageShared<C>, C extends StorageContext> implements StorageTesting2<S, C>,
+    PackagePrivateClassTesting<S>,
     ToStringTesting<S> {
 
     StorageSharedTestCase() {

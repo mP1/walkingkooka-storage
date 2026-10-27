@@ -18,18 +18,12 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
-public final class StorageConverterTest implements ClassTesting<StorageConverter<?>> {
+public final class StorageConverterTest implements PackagePrivateClassTesting<StorageConverter<?>> {
 
     @Override
     public Class<StorageConverter<?>> type() {
         return Cast.to(StorageConverter.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

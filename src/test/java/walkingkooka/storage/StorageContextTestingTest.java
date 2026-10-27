@@ -18,11 +18,10 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 public final class StorageContextTestingTest implements StorageContextTesting,
-    ClassTesting2<StorageContextTesting> {
+    PublicClassTesting<StorageContextTesting> {
 
     @Test
     public void testStorageContextConstant() {
@@ -45,10 +44,5 @@ public final class StorageContextTestingTest implements StorageContextTesting,
     @Override
     public Class<StorageContextTesting> type() {
         return StorageContextTesting.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

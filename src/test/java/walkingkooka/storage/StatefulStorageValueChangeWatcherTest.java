@@ -22,8 +22,7 @@ import walkingkooka.Cast;
 import walkingkooka.HasValueTesting;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.naming.HasPathTesting;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.watch.FakeValueChangeWatcher;
 import walkingkooka.watch.ValueChangeWatcher;
@@ -35,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StatefulStorageValueChangeWatcherTest implements StorageContextTesting,
     HasPathTesting,
     HasValueTesting,
-    ClassTesting<StatefulStorageValueChangeWatcher<JsonNode>> {
+    PublicClassTesting<StatefulStorageValueChangeWatcher<JsonNode>> {
 
     private final static StoragePath STORAGE_PATH = StoragePath.parse("/watch/file.properties");
 
@@ -307,10 +306,5 @@ public final class StatefulStorageValueChangeWatcherTest implements StorageConte
     @Override
     public Class<StatefulStorageValueChangeWatcher<JsonNode>> type() {
         return Cast.to(StatefulStorageValueChangeWatcher.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

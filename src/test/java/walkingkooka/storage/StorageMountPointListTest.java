@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
@@ -32,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageMountPointListTest implements ListTesting2<StorageMountPointList, StorageMountPoint<?>>,
-    ClassTesting<StorageMountPointList>,
     HasTextTesting,
     HasMultiLineTextTesting,
     ImmutableListTesting<StorageMountPointList, StorageMountPoint<?>>,
+    PublicClassTesting<StorageMountPointList>,
     TreePrintableTesting {
 
     private final static StorageMountPoint<?> MOUNT_POINT1 = StorageMountPoint.with(
@@ -224,10 +223,5 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     @Override
     public Class<StorageMountPointList> type() {
         return StorageMountPointList.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

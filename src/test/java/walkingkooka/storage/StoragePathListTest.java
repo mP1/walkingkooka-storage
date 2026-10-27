@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
@@ -35,11 +34,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StoragePathListTest implements ListTesting2<StoragePathList, StoragePath>,
-    ClassTesting<StoragePathList>,
     HasTextTesting,
     HasMultiLineTextTesting,
     ImmutableListTesting<StoragePathList, StoragePath>,
     JsonNodeMarshallerTesting<StoragePathList>,
+    PublicClassTesting<StoragePathList>,
     TreePrintableTesting {
 
     private final static StoragePath STORAGE_PATH1 = StoragePath.parse("/value111");
@@ -256,10 +255,5 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
     @Override
     public Class<StoragePathList> type() {
         return StoragePathList.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

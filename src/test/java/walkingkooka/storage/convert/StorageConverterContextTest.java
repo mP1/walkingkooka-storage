@@ -19,10 +19,9 @@ package walkingkooka.storage.convert;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.net.header.MediaTypeDetector;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
-public final class StorageConverterContextTest implements ClassTesting2<StorageConverterContext> {
+public final class StorageConverterContextTest implements PublicClassTesting<StorageConverterContext> {
 
     @Test
     public void testImplementsMediaTypeDetector() {
@@ -37,10 +36,5 @@ public final class StorageConverterContextTest implements ClassTesting2<StorageC
     @Override
     public Class<StorageConverterContext> type() {
         return StorageConverterContext.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

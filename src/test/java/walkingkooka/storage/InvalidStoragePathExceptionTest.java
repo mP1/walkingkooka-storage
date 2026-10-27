@@ -18,12 +18,13 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.reflect.ThrowableTesting2;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class InvalidStoragePathExceptionTest implements ThrowableTesting2<InvalidStoragePathException> {
+public final class InvalidStoragePathExceptionTest implements ThrowableTesting2<InvalidStoragePathException>,
+    PublicClassTesting<InvalidStoragePathException> {
 
     @Override
     public void testAllConstructorsVisibility() {
@@ -84,10 +85,5 @@ public final class InvalidStoragePathExceptionTest implements ThrowableTesting2<
     @Override
     public Class<InvalidStoragePathException> type() {
         return InvalidStoragePathException.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

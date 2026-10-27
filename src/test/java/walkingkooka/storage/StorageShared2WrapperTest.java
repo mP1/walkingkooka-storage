@@ -18,18 +18,12 @@
 package walkingkooka.storage;
 
 import walkingkooka.Cast;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
-public final class StorageShared2WrapperTest implements ClassTesting2<StorageShared2Wrapper<?>> {
+public final class StorageShared2WrapperTest implements PackagePrivateClassTesting<StorageShared2Wrapper<?>> {
 
     @Override
     public Class<StorageShared2Wrapper<?>> type() {
         return Cast.to(StorageShared2Wrapper.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

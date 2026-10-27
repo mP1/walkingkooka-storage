@@ -17,20 +17,14 @@
 
 package walkingkooka.storage;
 
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
-public final class StorageEnvironmentContextTest implements ClassTesting<StorageEnvironmentContext> {
+public final class StorageEnvironmentContextTest implements PublicClassTesting<StorageEnvironmentContext> {
     
     // class............................................................................................................
     
     @Override
     public Class<StorageEnvironmentContext> type() {
         return StorageEnvironmentContext.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

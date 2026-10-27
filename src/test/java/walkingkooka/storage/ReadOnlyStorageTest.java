@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -32,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorage<FakeStorageContext>, FakeStorageContext>,
     ToStringTesting<ReadOnlyStorage<FakeStorageContext>>,
-    ClassTesting<ReadOnlyStorage<FakeStorageContext>> {
+    PackagePrivateClassTesting<ReadOnlyStorage<FakeStorageContext>> {
 
     // with.............................................................................................................
 
@@ -251,10 +250,5 @@ public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorag
     @Override
     public Class<ReadOnlyStorage<FakeStorageContext>> type() {
         return Cast.to(ReadOnlyStorage.class);
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }
