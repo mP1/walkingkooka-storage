@@ -19,8 +19,7 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.MissingEnvironmentValueException;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.reflect.ThrowableTesting;
 
 import java.util.Optional;
@@ -28,7 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class HasHomeDirectoryTest implements HasHomeDirectoryTesting,
-    ClassTesting2<HasHomeDirectory>,
+    PublicClassTesting<HasHomeDirectory>,
     StorageContextTesting,
     ThrowableTesting {
 
@@ -64,10 +63,5 @@ public final class HasHomeDirectoryTest implements HasHomeDirectoryTesting,
     @Override
     public Class<HasHomeDirectory> type() {
         return HasHomeDirectory.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

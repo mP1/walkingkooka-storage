@@ -19,15 +19,14 @@ package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.ReadOnlyEnvironmentValueException;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageEnvironmentContextTestingTest implements StorageEnvironmentContextTesting,
-    ClassTesting2<StorageEnvironmentContextTesting> {
+    PublicClassTesting<StorageEnvironmentContextTesting> {
 
     @Test
     public void testStorageEnvironmentContextConstantReadOnly() {
@@ -128,10 +127,5 @@ public final class StorageEnvironmentContextTestingTest implements StorageEnviro
     @Override
     public Class<StorageEnvironmentContextTesting> type() {
         return StorageEnvironmentContextTesting.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

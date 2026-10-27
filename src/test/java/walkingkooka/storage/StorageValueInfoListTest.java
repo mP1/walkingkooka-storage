@@ -23,8 +23,7 @@ import walkingkooka.collect.list.ListTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.datetime.HasOptionalLastModifiedTesting;
 import walkingkooka.environment.HasAuditInfoTesting;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.HasMultiLineTextTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
@@ -37,13 +36,13 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
-    ClassTesting<StorageValueInfoList>,
     HasAuditInfoTesting,
     HasOptionalLastModifiedTesting,
     HasTextTesting,
     HasMultiLineTextTesting,
     ImmutableListTesting<StorageValueInfoList, StorageValueInfo>,
     JsonNodeMarshallerTesting<StorageValueInfoList>,
+    PublicClassTesting<StorageValueInfoList>,
     TreePrintableTesting {
 
     private final static StorageValueInfo FILE1 = StorageValueInfo.with(
@@ -339,10 +338,5 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Override
     public Class<StorageValueInfoList> type() {
         return StorageValueInfoList.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

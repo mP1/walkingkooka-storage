@@ -18,15 +18,14 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2> {
+public final class StorageWatcher2Test implements PublicClassTesting<StorageWatcher2> {
 
     private final static StoragePath PATH = StoragePath.parse("/file123.txt");
 
@@ -178,10 +177,5 @@ public final class StorageWatcher2Test implements ClassTesting2<StorageWatcher2>
     @Override
     public Class<StorageWatcher2> type() {
         return StorageWatcher2.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

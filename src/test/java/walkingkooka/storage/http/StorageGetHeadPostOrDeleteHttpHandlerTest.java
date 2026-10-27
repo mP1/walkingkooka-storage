@@ -40,6 +40,7 @@ import walkingkooka.net.http.server.GetHeadPostOrDeleteHttpHandlerTesting;
 import walkingkooka.net.http.server.HttpRequests;
 import walkingkooka.net.http.server.HttpResponses;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.storage.FakeStorageContext;
 import walkingkooka.storage.Storage;
 import walkingkooka.storage.StoragePath;
@@ -70,7 +71,8 @@ public final class StorageGetHeadPostOrDeleteHttpHandlerTest implements GetHeadP
     CurrencyLocaleContextTesting,
     DateTimeContextTesting,
     DecimalNumberContextTesting,
-    JsonNodeMarshallUnmarshallContextTesting {
+    JsonNodeMarshallUnmarshallContextTesting,
+    PublicClassTesting<StorageGetHeadPostOrDeleteHttpHandler<TestStorageHttpHandlerContext>> {
 
     @Test
     public void testHandleGetMissingAccept() {

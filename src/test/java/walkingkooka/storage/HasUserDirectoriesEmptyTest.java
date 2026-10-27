@@ -18,11 +18,10 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
 public final class HasUserDirectoriesEmptyTest implements HasUserDirectoriesTesting,
-    ClassTesting<HasUserDirectoriesEmpty> {
+    PackagePrivateClassTesting<HasUserDirectoriesEmpty> {
 
     @Test
     public void testCurrentWorkingDirectory() {
@@ -43,10 +42,5 @@ public final class HasUserDirectoriesEmptyTest implements HasUserDirectoriesTest
     @Override
     public Class<HasUserDirectoriesEmpty> type() {
         return HasUserDirectoriesEmpty.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }

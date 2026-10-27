@@ -20,8 +20,8 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.io.FileExtension;
 import walkingkooka.naming.NameTesting2;
-import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.CharSequences;
 
@@ -30,7 +30,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageNameTest implements ClassTesting2<StorageName>,
+public final class StorageNameTest implements PublicClassTesting<StorageName>,
     NameTesting2<StorageName, StorageName> {
 
     // with.............................................................................................................

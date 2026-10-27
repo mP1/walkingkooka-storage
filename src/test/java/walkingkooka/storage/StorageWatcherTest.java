@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.naming.HasPathTesting;
 import walkingkooka.predicate.Predicates;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -32,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>,
     HasPathTesting,
-    ClassTesting<StorageWatcher> {
+    PublicClassTesting<StorageWatcher> {
 
     final StoragePath STORAGE_PATH = StoragePath.parse("/path222/path333");
 
@@ -240,10 +239,5 @@ public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>
     @Override
     public Class<StorageWatcher> type() {
         return StorageWatcher.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

@@ -20,15 +20,14 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.naming.HasPathTesting;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StoragePathStorageWatcherTest implements HasPathTesting,
-    ClassTesting<StoragePathStorageWatcher>,
+    PublicClassTesting<StoragePathStorageWatcher>,
     ToStringTesting<StoragePathStorageWatcher> {
 
     private final static StoragePath PATH = StoragePath.ROOT;
@@ -248,10 +247,5 @@ public final class StoragePathStorageWatcherTest implements HasPathTesting,
     @Override
     public Class<StoragePathStorageWatcher> type() {
         return StoragePathStorageWatcher.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

@@ -18,14 +18,9 @@
 package walkingkooka.storage.convert;
 
 import walkingkooka.Cast;
-import walkingkooka.reflect.ClassTesting;
-import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 
-public final class StorageConverterStorageBinaryToStorageValueTest implements ClassTesting<StorageConverterStorageBinaryToStorageValue<?>> {
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
-    }
+public final class StorageConverterStorageBinaryToStorageValueTest implements PackagePrivateClassTesting<StorageConverterStorageBinaryToStorageValue<?>> {
 
     @Override
     public Class<StorageConverterStorageBinaryToStorageValue<?>> type() {
