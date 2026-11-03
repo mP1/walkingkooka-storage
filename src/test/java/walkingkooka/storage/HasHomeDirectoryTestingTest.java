@@ -18,10 +18,12 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Optional;
 
-public final class HasHomeDirectoryTestingTest implements HasHomeDirectoryTesting {
+public final class HasHomeDirectoryTestingTest implements HasHomeDirectoryTesting,
+    PublicClassTesting<HasHomeDirectoryTesting> {
 
     private final static String CWD = "/current/home/directory/";
 
@@ -63,5 +65,12 @@ public final class HasHomeDirectoryTestingTest implements HasHomeDirectoryTestin
             true,
             failed
         );
+    }
+
+    // class............................................................................................................
+
+    @Override
+    public Class<HasHomeDirectoryTesting> type() {
+        return HasHomeDirectoryTesting.class;
     }
 }
