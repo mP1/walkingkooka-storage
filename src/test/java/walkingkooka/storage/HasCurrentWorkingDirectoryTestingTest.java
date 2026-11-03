@@ -18,10 +18,12 @@
 package walkingkooka.storage;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Optional;
 
-public final class HasCurrentWorkingDirectoryTestingTest implements HasCurrentWorkingDirectoryTesting {
+public final class HasCurrentWorkingDirectoryTestingTest implements HasCurrentWorkingDirectoryTesting,
+    PublicClassTesting<HasCurrentWorkingDirectoryTesting> {
 
     private final static String CWD = "/current/working/directory/";
 
@@ -63,5 +65,12 @@ public final class HasCurrentWorkingDirectoryTestingTest implements HasCurrentWo
             true,
             failed
         );
+    }
+
+    // class............................................................................................................
+
+    @Override
+    public Class<HasCurrentWorkingDirectoryTesting> type() {
+        return HasCurrentWorkingDirectoryTesting.class;
     }
 }
