@@ -60,7 +60,8 @@ final class StorageConverterStorageValueToStorageBinarySharedTsv<C extends Stora
     boolean testValue(final Object value,
                       final C context) {
         return context.canConvert(value, TsvStringList.class) &&
-            context.canConvert(TsvStringList.EMPTY, Binary.class);
+            context.canConvert(TsvStringList.EMPTY, String.class) &&
+            context.canConvert("", Binary.class);
     }
 
     @Override
