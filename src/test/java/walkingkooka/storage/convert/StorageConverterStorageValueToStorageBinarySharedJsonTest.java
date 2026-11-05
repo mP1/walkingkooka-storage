@@ -150,7 +150,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
 
             private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     JsonNodeConverters.toJsonNode(),
                     Converters.toText(),
                     Converters.textToBinary()

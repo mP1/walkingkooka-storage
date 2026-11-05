@@ -47,7 +47,7 @@ public final class StorageConverterContextBasicTest implements StorageConverterC
 
     private final static Converter<StorageConverterContext> CONVERTER = Converters.collection(
         Lists.of(
-            Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+            Converters.toText(),
             StorageConverters.textToStoragePath()
         )
     );

@@ -727,7 +727,7 @@ public final class StorageShared2NativeFileTest extends StorageShared2TestCase<S
             private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.simple(),
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     Converters.toText(),
                     Converters.binaryToString(),
                     Converters.textToBinary(),

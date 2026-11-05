@@ -141,7 +141,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
             private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.simple(),
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     new ShortCircuitingConverter<>() {
 
                         @Override

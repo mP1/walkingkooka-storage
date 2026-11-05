@@ -109,7 +109,7 @@ public class StorageConverterStorageValueInfoListToTextTest extends StorageConve
                 );
             }
 
-            private final Converter<ConverterContext> converter = Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString();
+            private final Converter<ConverterContext> converter = Converters.toText();
         };
     }
 
