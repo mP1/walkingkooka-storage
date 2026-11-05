@@ -60,7 +60,8 @@ final class StorageConverterStorageValueToStorageBinarySharedCsv<C extends Stora
     boolean testValue(final Object value,
                       final C context) {
         return context.canConvert(value, CsvStringList.class) &&
-            context.canConvert(CsvStringList.EMPTY, Binary.class);
+            context.canConvert(CsvStringList.EMPTY, String.class) &&
+            context.canConvert("", Binary.class);
     }
 
     @Override
@@ -74,7 +75,8 @@ final class StorageConverterStorageValueToStorageBinarySharedCsv<C extends Stora
 
         return csvStringList.isLeft() ?
             context.convert(
-                csvStringList.leftValue(),
+                csvStringList.leftValue()
+                    .text(),
                 Binary.class
             ) :
             Cast.to(csvStringList);
