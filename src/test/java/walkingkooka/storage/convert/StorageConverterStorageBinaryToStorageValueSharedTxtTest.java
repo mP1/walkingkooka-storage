@@ -125,7 +125,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedTxtTest exte
 
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     Converters.binaryToString()
                 )
             );

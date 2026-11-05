@@ -46,7 +46,7 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1904_DATE_SYSTEM_OFFSET,
         ',', // valueSeparator
-        Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+        Converters.toText(),
         BinaryNumberConverterFunctions.fake(), // multiplier
         BINARY_TEXT_CONTEXT,
         CURRENCY_LOCALE_CONTEXT,

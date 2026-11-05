@@ -143,7 +143,7 @@ public final class StorageConverterTextToStoragePathTest extends StorageConverte
                 );
             }
 
-            private final Converter<ConverterContext> converter = Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString();
+            private final Converter<ConverterContext> converter = Converters.toText();
 
             @Override
             public Optional<StoragePath> currentWorkingDirectory() {

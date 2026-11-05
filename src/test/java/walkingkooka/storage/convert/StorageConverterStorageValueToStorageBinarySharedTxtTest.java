@@ -184,7 +184,7 @@ implements HasDateTimeSymbolsTesting {
 
             private final Converter<ConverterContext> converter = Converters.collection(
                 Lists.of(
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     Converters.toText(),
                     Converters.textToBinary()
                 )

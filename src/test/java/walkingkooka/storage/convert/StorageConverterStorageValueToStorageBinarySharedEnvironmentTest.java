@@ -141,7 +141,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
             private final Converter<StorageConverterContext> converter = Converters.collection(
                 Lists.of(
                     Converters.simple(),
-                    Converters.characterOrCharSequenceOrHasTextOrStringToCharacterOrCharSequenceOrString(),
+                    Converters.toText(),
                     EnvironmentConverters.environmentToString(),
                     Converters.textToCurrencyCode(),
                     Converters.textToCurrency(),
