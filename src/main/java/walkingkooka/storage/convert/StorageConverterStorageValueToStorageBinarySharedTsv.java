@@ -66,15 +66,17 @@ final class StorageConverterStorageValueToStorageBinarySharedTsv<C extends Stora
     @Override
     Either<Binary, String> toBinary(final StorageValue storageValue,
                                     final C context) {
-        Either<TsvStringList, String> tsvStringList = context.convert(
+        final Either<TsvStringList, String> tsvStringList = context.convert(
             storageValue.value()
                 .orElse(null),
             TsvStringList.class
         );
 
+        // Convert TsStringList.text NOT TsvStringList to Binary
         return tsvStringList.isLeft() ?
             context.convert(
-                tsvStringList.leftValue(),
+                tsvStringList.leftValue()
+                    .text(),
                 Binary.class
             ) :
             Cast.to(tsvStringList);
