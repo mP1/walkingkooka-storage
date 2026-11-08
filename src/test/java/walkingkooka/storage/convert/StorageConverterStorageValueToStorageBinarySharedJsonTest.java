@@ -43,7 +43,11 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
     DateTimeContextTesting,
     LocaleContextTesting,
     JsonNodeMarshallContextTesting {
-    
+
+    private final static StoragePath STORAGE_PATH_JSON = StoragePath.parse("/dir/DateTimeSymbols.json");
+
+    private final static Optional<walkingkooka.net.header.MediaType> CONTENT_TYPE = Optional.of(JsonNode.CONTENT_TYPE);
+
     @Test
     public void testConvertEmptyStorageValueJsonToStorageBinaryFails() {
         this.convertFails(
@@ -56,37 +60,27 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
 
     @Test
     public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStringFails() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_JSON)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
-                ).setContentType(
-                    Optional.of(JsonNode.CONTENT_TYPE)
-                ),
+                ).setContentType(CONTENT_TYPE),
             String.class
         );
     }
 
     @Test
     public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_JSON)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
-                ).setContentType(
-                    Optional.of(JsonNode.CONTENT_TYPE)
-                ),
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_JSON,
                 JSON_NODE_MARSHALL_CONTEXT.marshall(DATE_TIME_SYMBOLS)
                     .binary(CHARSET)
-            ).setContentType(
-                Optional.of(JsonNode.CONTENT_TYPE)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
@@ -104,15 +98,11 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(json)
-                ).setContentType(
-                    Optional.of(JsonNode.CONTENT_TYPE)
-                ),
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
                 storagePath,
                 json.binary(CHARSET)
-            ).setContentType(
-                Optional.of(JsonNode.CONTENT_TYPE)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
