@@ -42,12 +42,12 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
     implements DateTimeContextTesting,
     EnvironmentContextTesting {
 
+    private final static StoragePath STORAGE_PATH = StoragePath.parse("/path123/EnvironmentContext.env");
+
     @Test
     public void testConvertStorageValueEnvironmentWithCurrencyAndEnvFileExtensionWithoutContentTypeToStringFails() {
-        final StoragePath storagePath = StoragePath.parse("/path123/EnvironmentContext.env");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(
                         Environment.empty()
@@ -63,10 +63,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
 
     @Test
     public void testConvertStorageValueEnvironmentWithCurrencyAndEnvFileExtensionWithoutContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/path123/EnvironmentContext.env");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(
                         Environment.empty()
@@ -77,7 +75,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
                     )
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH,
                 Binary.with(
                     "currency=AUD\n".getBytes(CHARSET)
                 )
@@ -89,15 +87,13 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
 
     @Test
     public void testConvertStorageValueEnvironmentWithEnvFileExtensionWithoutContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/path123/EnvironmentContext.env");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(ENVIRONMENT_CONTEXT.environment())
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH,
                 Binary.with(
                     "charset=UTF-8\ncurrency=AUD\nindentation=\"  \"\nlineEnding=\"\\n\"\nlocale=en_AU\nloggingLevel=NONE\nnow=1999-12-31T12:58:59\ntimeOffset=Z\nuser=user123@example.com\n"
                         .getBytes(CHARSET)
