@@ -37,22 +37,23 @@ import java.util.Optional;
 public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedProperties<FakeStorageConverterContext>>
     implements DateTimeContextTesting {
 
+    private final static StoragePath STORAGE_PATH_PROPERTIES = StoragePath.parse("/dir/DateTimeSymbols.properties");
+    private static final Optional<MediaType> CONTENT_TYPE = Optional.of(MediaType.TEXT_PROPERTIES);
+
     @Test
     public void testConvertEmptyStorageValuePropertiesToStorageBinaryFails() {
         this.convertFails(
             StorageValue.with(
-                    StoragePath.parse("/dir/DateTimeSymbols.properties")
-                ),
+                StoragePath.parse("/dir/DateTimeSymbols.properties")
+            ),
             StorageBinary.class
         );
     }
 
     @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStringFails() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_PROPERTIES)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
@@ -62,47 +63,37 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
 
     @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_PROPERTIES)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_PROPERTIES,
                 Binary.with(
                     DATE_TIME_SYMBOLS.properties()
                         .text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_PROPERTIES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithTextPropertiesContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_PROPERTIES)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_PROPERTIES)
-                ),
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_PROPERTIES,
                 Binary.with(
                     DATE_TIME_SYMBOLS.properties()
                         .text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_PROPERTIES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
@@ -114,9 +105,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
             StorageValue.with(storagePath)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_PROPERTIES)
-                ),
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
@@ -124,9 +113,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
                         .text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_PROPERTIES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
