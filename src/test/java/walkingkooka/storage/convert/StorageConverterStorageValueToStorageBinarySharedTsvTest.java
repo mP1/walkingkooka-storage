@@ -36,16 +36,17 @@ import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedTsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> {
 
+    private final static StoragePath STORAGE_PATH_TSV = StoragePath.parse("/dir/letters.tsv");
+
     @Test
     public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStringFails() {
         final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")
             .concat("g h i");
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
 
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
                     Optional.of(list)
                 ).clearContentType(),
@@ -59,15 +60,13 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
             .concat("def")
             .concat("g h i");
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
                     Optional.of(list)
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_TSV,
                 Binary.with(
                     list.text()
                         .getBytes(CHARSET)
@@ -84,17 +83,15 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
             .concat("def")
             .concat("g h i");
 
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
                     Optional.of(list)
                 ).setContentType(
                     Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
                 ),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_TSV,
                 Binary.with(
                     list.text()
                         .getBytes(CHARSET)
