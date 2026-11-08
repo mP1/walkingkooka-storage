@@ -39,16 +39,46 @@ public final class StorageConverterStorageValueToStorageBinaryBinaryTest extends
     implements HasCharsetTesting,
     ToStringTesting<StorageConverterStorageValueToStorageBinaryBinary<FakeStorageConverterContext>> {
 
-    @Test
-    public void testConvertStorageValueWithBinary() {
-        final StoragePath path = StoragePath.parse("/file123.bin");
+    private final static StoragePath STORAGE_PATH = StoragePath.parse("/file123.bin");
 
+    @Test
+    public void testConvertStorageValueWithBinaryToBinaryFails() {
+        final Binary binary = Binary.with(
+            "Hello".getBytes(CHARSET)
+        );
+
+        this.convertFails(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(binary)
+                ),
+            String.class
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithBinaryToStringFails() {
+        final Binary binary = Binary.with(
+            "Hello".getBytes(CHARSET)
+        );
+
+        this.convertFails(
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.of(binary)
+                ),
+            String.class
+        );
+    }
+
+    @Test
+    public void testConvertStorageValueWithBinaryToBinary() {
         final Binary binary = Binary.with(
             "Hello".getBytes(CHARSET)
         );
 
         this.convertAndCheck(
-            StorageValue.with(path)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(
                         new HasBinary() {
@@ -61,7 +91,7 @@ public final class StorageConverterStorageValueToStorageBinaryBinaryTest extends
                 ),
             StorageBinary.class,
             StorageBinary.with(
-                path,
+                STORAGE_PATH,
                 binary
             )
         );

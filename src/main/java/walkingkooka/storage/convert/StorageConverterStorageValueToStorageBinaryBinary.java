@@ -48,7 +48,8 @@ final class StorageConverterStorageValueToStorageBinaryBinary<C extends StorageC
     public boolean canConvert(final Object value,
                               final Class<?> type,
                               final C context) {
-        return value instanceof StorageValue &&
+        return StorageBinary.class == type &&
+            value instanceof StorageValue &&
             this.testStorageValue(
                 (StorageValue) value,
                 context
