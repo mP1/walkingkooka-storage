@@ -37,6 +37,23 @@ import java.util.Optional;
 public final class StorageConverterStorageValueToStorageBinarySharedTsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTsv<FakeStorageConverterContext>> {
 
     @Test
+    public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStringFails() {
+        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.tsv");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStorageBinary() {
         final TsvStringList list = TsvStringList.EMPTY.concat("abc")
             .concat("def")

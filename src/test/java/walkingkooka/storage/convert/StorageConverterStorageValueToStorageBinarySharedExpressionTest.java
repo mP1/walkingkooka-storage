@@ -43,6 +43,19 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
     private final static String EXPRESSION_STRING = "111+222";
 
     @Test
+    public void testConvertStorageValueWithFileExtensionWithoutContentTypeToStringFails() {
+        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(EXPRESSION)
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueWithFileExtensionWithoutContentTypeToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
 

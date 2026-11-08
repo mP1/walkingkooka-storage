@@ -53,6 +53,19 @@ implements HasDateTimeSymbolsTesting {
     }
 
     @Test
+    public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStringFails() {
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(DATE_TIME_SYMBOLS)
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
 

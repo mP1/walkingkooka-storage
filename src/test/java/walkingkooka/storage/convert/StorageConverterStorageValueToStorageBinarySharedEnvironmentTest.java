@@ -43,6 +43,25 @@ public final class StorageConverterStorageValueToStorageBinarySharedEnvironmentT
     EnvironmentContextTesting {
 
     @Test
+    public void testConvertStorageValueEnvironmentWithCurrencyAndEnvFileExtensionWithoutContentTypeToStringFails() {
+        final StoragePath storagePath = StoragePath.parse("/path123/EnvironmentContext.env");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(
+                        Environment.empty()
+                            .set(
+                                EnvironmentValueName.CURRENCY,
+                                CURRENCY
+                            )
+                    )
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueEnvironmentWithCurrencyAndEnvFileExtensionWithoutContentTypeToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/path123/EnvironmentContext.env");
 
