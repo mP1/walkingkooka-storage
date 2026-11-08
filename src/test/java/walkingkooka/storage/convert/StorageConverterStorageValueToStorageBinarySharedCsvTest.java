@@ -36,18 +36,20 @@ import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedCsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedCsv<FakeStorageConverterContext>> {
 
+    private final static CsvStringList CSV_STRING_LIST = CsvStringList.EMPTY.concat("abc")
+        .concat("def")
+        .concat("g h i");
+
+    private final static StoragePath STORAGE_PATH_CSV = StoragePath.parse("/dir/letters.csv");
+
+    private final static Optional<MediaType> CONTENT_TYPE = Optional.of(MediaType.TEXT_CSV);
+
     @Test
     public void testConvertStorageValueCsvWithoutContentTypeToStringFails() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_CSV)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(CSV_STRING_LIST)
                 ).clearContentType(),
             String.class
         );
@@ -55,80 +57,54 @@ public final class StorageConverterStorageValueToStorageBinarySharedCsvTest exte
 
     @Test
     public void testConvertStorageValueCsvWithoutContentTypeToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_CSV)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(CSV_STRING_LIST)
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_CSV,
                 Binary.with(
-                    list.text()
+                    CSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_CSV)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValueCsvWithContentTypeToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_CSV)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_CSV)
-                ),
+                    Optional.of(CSV_STRING_LIST)
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_CSV,
                 Binary.with(
-                    list.text()
+                    CSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_CSV)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValueWithoutFileExtensionToStorageBinary() {
-        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
         final StoragePath storagePath = StoragePath.parse("/dir/letters");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_CSV)
-                ),
+                    Optional.of(CSV_STRING_LIST)
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
+                    CSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_CSV)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
