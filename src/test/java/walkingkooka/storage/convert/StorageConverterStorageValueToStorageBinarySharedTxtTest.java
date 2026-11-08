@@ -38,26 +38,27 @@ import java.util.Locale;
 import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedTxtTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedTxt<FakeStorageConverterContext>>
-implements HasDateTimeSymbolsTesting {
+    implements HasDateTimeSymbolsTesting {
+
+    private final static StoragePath STORAGE_PATH = StoragePath.parse("/dir/DateTimeSymbols.txt");
+
+    private final static Optional<MediaType> CONTENT_TYPE = Optional.of(MediaType.TEXT_PLAIN);
 
     @Test
     public void testConvertEmptyStorageValueTxtToStorageBinaryFails() {
         this.convertFails(
-            StorageValue.with(
-                StoragePath.parse("/dir/DateTimeSymbols.txt")
-            ).setValue(
-                Optional.empty()
-            ),
+            StorageValue.with(STORAGE_PATH)
+                .setValue(
+                    Optional.empty()
+                ),
             StorageBinary.class
         );
     }
 
     @Test
     public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStringFails() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
@@ -67,22 +68,18 @@ implements HasDateTimeSymbolsTesting {
 
     @Test
     public void testConvertStorageValueWithFileExtensionTxtWithoutContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(DATE_TIME_SYMBOLS)
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH,
                 Binary.with(
                     DATE_TIME_SYMBOLS.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_PLAIN)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
@@ -94,46 +91,39 @@ implements HasDateTimeSymbolsTesting {
             )
         );
 
-        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.txt");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(dateTimeSymbols)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_PLAIN)
-                ),
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH,
                 Binary.with(
                     dateTimeSymbols.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_PLAIN)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValueTxtWithTextPlainContentTypeAndStringToStorageBinary() {
         final String value = "Hello world";
-        final StoragePath storagePath = StoragePath.parse("/dir/text-file.txt");
 
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH)
                 .setValue(
                     Optional.of(value)
                 ).setContentType(
-                    Optional.of(MediaType.TEXT_PLAIN)
+                    CONTENT_TYPE
                 ),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH,
                 Binary.with(
                     value.getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(MediaType.TEXT_PLAIN)
+                CONTENT_TYPE
             )
         );
     }
@@ -148,7 +138,7 @@ implements HasDateTimeSymbolsTesting {
                 .setValue(
                     Optional.of(value)
                 ).setContentType(
-                    Optional.of(MediaType.TEXT_PLAIN)
+                    CONTENT_TYPE
                 ),
             StorageBinary.with(
                 storagePath,
@@ -156,7 +146,7 @@ implements HasDateTimeSymbolsTesting {
                     value.getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(MediaType.TEXT_PLAIN)
+                CONTENT_TYPE
             )
         );
     }
