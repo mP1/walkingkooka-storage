@@ -43,6 +43,7 @@ abstract class StorageConverterStorageValueToStorageBinaryShared<C extends Stora
                                     final Class<?> type,
                                     final C context) {
         return value instanceof StorageValue &&
+            StorageBinary.class == type &&
             this.testStorageValue(
                 (StorageValue) value,
                 context

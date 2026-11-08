@@ -48,6 +48,19 @@ public final class StorageConverterStorageValueToStorageBinarySharedPropertiesTe
     }
 
     @Test
+    public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStringFails() {
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(DATE_TIME_SYMBOLS)
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValuePropertiesWithFileExtensionWithoutContentTypeToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.properties");
 

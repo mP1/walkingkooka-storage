@@ -55,6 +55,21 @@ public final class StorageConverterStorageValueToStorageBinarySharedJsonTest ext
     }
 
     @Test
+    public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStringFails() {
+        final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(DATE_TIME_SYMBOLS)
+                ).setContentType(
+                    Optional.of(JsonNode.CONTENT_TYPE)
+                ),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueFileExtensionJsonWithApplicationJsonContentTypeToStorageBinary() {
         final StoragePath storagePath = StoragePath.parse("/dir/DateTimeSymbols.json");
 

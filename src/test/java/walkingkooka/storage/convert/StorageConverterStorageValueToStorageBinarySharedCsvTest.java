@@ -37,6 +37,23 @@ import java.util.Optional;
 public final class StorageConverterStorageValueToStorageBinarySharedCsvTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedCsv<FakeStorageConverterContext>> {
 
     @Test
+    public void testConvertStorageValueCsvWithoutContentTypeToStringFails() {
+        final CsvStringList list = CsvStringList.EMPTY.concat("abc")
+            .concat("def")
+            .concat("g h i");
+
+        final StoragePath storagePath = StoragePath.parse("/dir/letters.csv");
+
+        this.convertFails(
+            StorageValue.with(storagePath)
+                .setValue(
+                    Optional.of(list)
+                ).clearContentType(),
+            String.class
+        );
+    }
+
+    @Test
     public void testConvertStorageValueCsvWithoutContentTypeToStorageBinary() {
         final CsvStringList list = CsvStringList.EMPTY.concat("abc")
             .concat("def")
