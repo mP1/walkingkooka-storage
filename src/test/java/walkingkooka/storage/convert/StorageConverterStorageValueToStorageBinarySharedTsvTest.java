@@ -38,17 +38,18 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
 
     private final static StoragePath STORAGE_PATH_TSV = StoragePath.parse("/dir/letters.tsv");
 
+    private final static TsvStringList TSV_STRING_LIST = TsvStringList.EMPTY.concat("abc")
+        .concat("def")
+        .concat("g h i");
+
+    private final static Optional<MediaType> CONTENT_TYPE = Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES);
+
     @Test
     public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStringFails() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
-
         this.convertFails(
             StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(TSV_STRING_LIST)
                 ).clearContentType(),
             String.class
         );
@@ -56,76 +57,54 @@ public final class StorageConverterStorageValueToStorageBinarySharedTsvTest exte
 
     @Test
     public void testConvertStorageValueTsvFileExtensionWithoutContentTypeToStorageBinary() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
         this.convertAndCheck(
             StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
-                    Optional.of(list)
+                    Optional.of(TSV_STRING_LIST)
                 ).clearContentType(),
             StorageBinary.with(
                 STORAGE_PATH_TSV,
                 Binary.with(
-                    list.text()
+                    TSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValueTsvFileExtensionWithTextTsvContentTypeToStorageBinary() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
         this.convertAndCheck(
             StorageValue.with(STORAGE_PATH_TSV)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
-                ),
+                    Optional.of(TSV_STRING_LIST)
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
                 STORAGE_PATH_TSV,
                 Binary.with(
-                    list.text()
+                    TSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
     @Test
     public void testConvertStorageValueWithOnlyContentTypeToStorageBinary() {
-        final TsvStringList list = TsvStringList.EMPTY.concat("abc")
-            .concat("def")
-            .concat("g h i");
-
         final StoragePath storagePath = StoragePath.parse("/dir/letters");
 
         this.convertAndCheck(
             StorageValue.with(storagePath)
                 .setValue(
-                    Optional.of(list)
-                ).setContentType(
-                    Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
-                ),
+                    Optional.of(TSV_STRING_LIST)
+                ).setContentType(CONTENT_TYPE),
             StorageBinary.with(
                 storagePath,
                 Binary.with(
-                    list.text()
+                    TSV_STRING_LIST.text()
                         .getBytes(CHARSET)
                 )
-            ).setContentType(
-                Optional.of(MediaType.TEXT_TAB_SEPARATED_VALUES)
-            )
+            ).setContentType(CONTENT_TYPE)
         );
     }
 
