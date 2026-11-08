@@ -35,6 +35,8 @@ import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinarySharedExpressionTest extends StorageConverterStorageValueToStorageBinarySharedTestCase<StorageConverterStorageValueToStorageBinarySharedExpression<FakeStorageConverterContext>> {
 
+    private final static StoragePath STORAGE_PATH_EXPRESSION_TXT = StoragePath.parse("/dir/add.expression.txt");
+
     private final static Expression EXPRESSION = Expression.add(
         Expression.value(111),
         Expression.value(222)
@@ -44,10 +46,8 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
 
     @Test
     public void testConvertStorageValueWithFileExtensionWithoutContentTypeToStringFails() {
-        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
-
         this.convertFails(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_EXPRESSION_TXT)
                 .setValue(
                     Optional.of(EXPRESSION)
                 ).clearContentType(),
@@ -57,15 +57,13 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
 
     @Test
     public void testConvertStorageValueWithFileExtensionWithoutContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_EXPRESSION_TXT)
                 .setValue(
                     Optional.of(EXPRESSION)
                 ).clearContentType(),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_EXPRESSION_TXT,
                 Binary.with(
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
@@ -77,17 +75,15 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
 
     @Test
     public void testConvertStorageValueWithFileExtensionWithExpressionContentTypeToStorageBinary() {
-        final StoragePath storagePath = StoragePath.parse("/dir/add.expression.txt");
-
         this.convertAndCheck(
-            StorageValue.with(storagePath)
+            StorageValue.with(STORAGE_PATH_EXPRESSION_TXT)
                 .setValue(
                     Optional.of(EXPRESSION)
                 ).setContentType(
                     Optional.of(Expression.MEDIA_TYPE)
                 ),
             StorageBinary.with(
-                storagePath,
+                STORAGE_PATH_EXPRESSION_TXT,
                 Binary.with(
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
