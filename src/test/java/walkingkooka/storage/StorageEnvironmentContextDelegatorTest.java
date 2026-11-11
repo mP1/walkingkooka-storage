@@ -20,12 +20,14 @@ package walkingkooka.storage;
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.storage.StorageEnvironmentContextDelegatorTest.TestStorageEnvironmentContextDelegator;
+import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.PublicClassTesting;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public final class StorageEnvironmentContextDelegatorTest implements StorageEnvironmentContextTesting2<TestStorageEnvironmentContextDelegator> {
+public final class StorageEnvironmentContextDelegatorTest implements StorageEnvironmentContextTesting2<StorageEnvironmentContextDelegator>,
+    PublicClassTesting<StorageEnvironmentContextDelegator> {
 
     @Test
     public void testSetCurrentWorkingDirectory() {
@@ -57,8 +59,13 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
     }
 
     @Override
-    public Class<TestStorageEnvironmentContextDelegator> type() {
-        return TestStorageEnvironmentContextDelegator.class;
+    public Class<StorageEnvironmentContextDelegator> type() {
+        return StorageEnvironmentContextDelegator.class;
+    }
+
+    @Override
+    public JavaVisibility typeVisibility() {
+        return JavaVisibility.PUBLIC;
     }
 
     @Override
@@ -68,6 +75,11 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
 
     @Override
     public void testTypeNaming() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testCheckToStringOverridden() {
         throw new UnsupportedOperationException();
     }
 
