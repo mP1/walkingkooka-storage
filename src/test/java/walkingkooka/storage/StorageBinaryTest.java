@@ -46,7 +46,7 @@ public final class StorageBinaryTest implements HasPathTesting,
     TreePrintableTesting,
     HashCodeEqualsDefinedTesting2<StorageBinary>,
     PublicClassTesting<StorageBinary>,
-    ToStringTesting<StorageBinary> {
+    ToStringTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/file.txt");
 

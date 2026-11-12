@@ -78,11 +78,6 @@ public final class StorageEnvironmentContextDelegatorTest implements StorageEnvi
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public void testCheckToStringOverridden() {
-        throw new UnsupportedOperationException();
-    }
-
     final static class TestStorageEnvironmentContextDelegator implements StorageEnvironmentContextDelegator {
 
         @Override

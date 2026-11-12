@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>,
+public final class StorageWatcherTest implements ToStringTesting,
     HasPathTesting,
     PublicClassTesting<StorageWatcher> {
 
@@ -227,11 +227,6 @@ public final class StorageWatcherTest implements ToStringTesting<StorageWatcher>
             watcher.setFilter(filter),
             "if " + filter + " " + watcher
         );
-    }
-
-    @Override
-    public void testCheckToStringOverridden() {
-        throw new UnsupportedOperationException();
     }
 
     // class............................................................................................................

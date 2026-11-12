@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StoragePathStorageWatcherTest implements HasPathTesting,
     PublicClassTesting<StoragePathStorageWatcher>,
-    ToStringTesting<StoragePathStorageWatcher> {
+    ToStringTesting {
 
     private final static StoragePath PATH = StoragePath.ROOT;
 

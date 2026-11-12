@@ -23,7 +23,7 @@ import walkingkooka.reflect.PackagePrivateClassTesting;
 
 public abstract class StorageSharedTestCase<S extends StorageShared<C>, C extends StorageContext> implements StorageTesting2<S, C>,
     PackagePrivateClassTesting<S>,
-    ToStringTesting<S> {
+    ToStringTesting {
 
     StorageSharedTestCase() {
         super();
