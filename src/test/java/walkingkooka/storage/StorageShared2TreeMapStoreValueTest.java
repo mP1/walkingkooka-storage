@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class StorageShared2TreeMapStoreValueTest implements HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStoreValue>,
     PackagePrivateClassTesting<StorageShared2TreeMapStoreValue>,
     ThrowableTesting,
-    ToStringTesting<StorageShared2TreeMapStoreValue> {
+    ToStringTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 

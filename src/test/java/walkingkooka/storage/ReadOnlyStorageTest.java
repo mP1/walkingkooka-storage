@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ReadOnlyStorageTest implements StorageTesting2<ReadOnlyStorage<FakeStorageContext>, FakeStorageContext>,
-    ToStringTesting<ReadOnlyStorage<FakeStorageContext>>,
+    ToStringTesting,
     PackagePrivateClassTesting<ReadOnlyStorage<FakeStorageContext>> {
 
     // with.............................................................................................................

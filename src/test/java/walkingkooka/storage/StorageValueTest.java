@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageValueTest implements HasContentTypeTesting,
     HashCodeEqualsDefinedTesting2<StorageValue>,
-    ToStringTesting<StorageValue>,
+    ToStringTesting,
     TreePrintableTesting,
     JsonNodeMarshallerTesting<StorageValue>,
     HasValueTesting {

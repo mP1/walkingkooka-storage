@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class LoggingMessageTest implements PublicClassTesting<LoggingMessage>,
     HashCodeEqualsDefinedTesting2<LoggingMessage>,
-    ToStringTesting<LoggingMessage>,
+    ToStringTesting,
     HasCsvStringListTesting,
     HasNowTesting,
     HasTextTesting,

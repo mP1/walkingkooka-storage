@@ -23,7 +23,7 @@ import walkingkooka.reflect.ClassTesting;
 import walkingkooka.text.CharSequences;
 
 public abstract class StorageConverterTestCase<C extends StorageConverter<FakeStorageConverterContext>> implements ConverterTesting2<C, FakeStorageConverterContext>,
-    ToStringTesting<C>,
+    ToStringTesting,
     ClassTesting<C> {
 
     StorageConverterTestCase() {

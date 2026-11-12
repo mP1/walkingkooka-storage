@@ -40,7 +40,7 @@ public final class StorageContextBasicTest implements StorageContextTesting2<Sto
     DateTimeContextTesting,
     DecimalNumberContextTesting,
     HashCodeEqualsDefinedTesting2<StorageContextBasic>,
-    ToStringTesting<StorageContextBasic> {
+    ToStringTesting {
 
     private final static ConverterLike CONVERTER_LIKE = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator

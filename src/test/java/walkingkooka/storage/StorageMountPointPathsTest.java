@@ -31,7 +31,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class StorageMountPointPathsTest implements StorageTesting2<StorageMountPointPaths<FakeStorageContext>, FakeStorageContext>,
-    ToStringTesting<StorageMountPointPaths<FakeStorageContext>>,
+    ToStringTesting,
     PackagePrivateClassTesting<StorageMountPointPaths<FakeStorageContext>> {
 
     @Test

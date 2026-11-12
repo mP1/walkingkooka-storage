@@ -37,7 +37,7 @@ import java.util.Optional;
 
 public final class StorageConverterStorageValueToStorageBinaryBinaryTest extends StorageConverterTestCase<StorageConverterStorageValueToStorageBinaryBinary<FakeStorageConverterContext>>
     implements HasCharsetTesting,
-    ToStringTesting<StorageConverterStorageValueToStorageBinaryBinary<FakeStorageConverterContext>> {
+    ToStringTesting {
 
     private final static StoragePath STORAGE_PATH = StoragePath.parse("/file123.bin");
 

@@ -36,7 +36,7 @@ public class StorageShared2TreeMapStoreTest extends StorageShared2TestCase<Stora
     implements CanBeEmptyTesting,
     HashCodeEqualsDefinedTesting2<StorageShared2TreeMapStore<TestStorageContext>>,
     ThrowableTesting,
-    ToStringTesting<StorageShared2TreeMapStore<TestStorageContext>> {
+    ToStringTesting {
 
     private final static StoragePath PATH = StoragePath.parse("/path123");
 
