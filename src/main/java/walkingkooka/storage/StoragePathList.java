@@ -139,7 +139,7 @@ public final class StoragePathList extends AbstractList<StoragePath>
     private MultiLineText textWithLineBreaks(final LineEnding lineEnding) {
         Objects.requireNonNull(lineEnding, "lineEnding");
 
-        return MultiLineText.with(
+        return MultiLineText.EMPTY.setText(
             this.paths.stream()
                 .map(HasText::text)
                 .collect(
