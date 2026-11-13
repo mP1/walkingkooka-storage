@@ -212,7 +212,7 @@ public final class StorageMountPoint<C extends StorageContext> implements Compar
     public MultiLineText multiLineText(final TextContext context) {
         Objects.requireNonNull(context, "context");
 
-        return MultiLineText.with(
+        return MultiLineText.EMPTY.setText(
             this.path + "=" + this.storage + context.lineEnding()
         );
     }

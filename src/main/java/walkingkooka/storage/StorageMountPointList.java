@@ -133,7 +133,7 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
     }
 
     private MultiLineText textWithLineBreaks(final LineEnding lineEnding) {
-        return MultiLineText.with(
+        return MultiLineText.EMPTY.setText(
             this.storageMountPoints.stream()
                 .map(HasText::text)
                 .collect(

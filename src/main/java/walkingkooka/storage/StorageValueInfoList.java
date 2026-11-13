@@ -163,7 +163,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     }
 
     private MultiLineText textWithLineBreaks(final LineEnding lineEnding) {
-        return MultiLineText.with(
+        return MultiLineText.EMPTY.setText(
             this.infos.stream()
                 .map(HasText::text)
                 .collect(
