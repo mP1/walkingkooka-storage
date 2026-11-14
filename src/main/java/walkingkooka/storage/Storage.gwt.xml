@@ -19,5 +19,6 @@
 <module>
     <inherits name="walkingkooka.environment.Environment"/>
     <inherits name="walkingkooka.store.Store"/>
+    <inherits name="walkingkooka.tree.json.Json"/>
     <source path=""/>
 </module>
