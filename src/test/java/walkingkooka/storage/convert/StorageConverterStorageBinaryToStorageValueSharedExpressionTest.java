@@ -60,7 +60,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
             StorageValue.class,
             StorageValue.with(path)
                 .setContentType(
-                    Optional.of(Expression.MEDIA_TYPE)
+                    Optional.of(MediaType.EXPRESSION)
                 ).setValue(
                     Optional.of(EXPRESSION)
                 )
@@ -84,7 +84,7 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
             StorageValue.class,
             StorageValue.with(path)
                 .setContentType(
-                    Optional.of(Expression.MEDIA_TYPE)
+                    Optional.of(MediaType.EXPRESSION)
                 ).setValue(
                     Optional.of(EXPRESSION)
                 ).setContentType(
@@ -105,16 +105,16 @@ public final class StorageConverterStorageBinaryToStorageValueSharedExpressionTe
                         .getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(Expression.MEDIA_TYPE)
+                Optional.of(MediaType.EXPRESSION)
             ),
             StorageValue.class,
             StorageValue.with(path)
                 .setContentType(
-                    Optional.of(Expression.MEDIA_TYPE)
+                    Optional.of(MediaType.EXPRESSION)
                 ).setValue(
                     Optional.of(EXPRESSION)
                 ).setContentType(
-                    Optional.of(Expression.MEDIA_TYPE)
+                    Optional.of(MediaType.EXPRESSION)
                 )
         );
     }
