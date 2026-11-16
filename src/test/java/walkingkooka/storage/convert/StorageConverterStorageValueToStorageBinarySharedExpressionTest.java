@@ -25,6 +25,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.convert.Converter;
 import walkingkooka.convert.Converters;
 import walkingkooka.convert.ShortCircuitingConverter;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.storage.StorageBinary;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -68,7 +69,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(Expression.MEDIA_TYPE)
+                Optional.of(MediaType.EXPRESSION)
             )
         );
     }
@@ -80,7 +81,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
                 .setValue(
                     Optional.of(EXPRESSION)
                 ).setContentType(
-                    Optional.of(Expression.MEDIA_TYPE)
+                    Optional.of(MediaType.EXPRESSION)
                 ),
             StorageBinary.with(
                 STORAGE_PATH_EXPRESSION_TXT,
@@ -88,7 +89,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(Expression.MEDIA_TYPE)
+                Optional.of(MediaType.EXPRESSION)
             )
         );
     }
@@ -108,7 +109,7 @@ public final class StorageConverterStorageValueToStorageBinarySharedExpressionTe
                     EXPRESSION_STRING.getBytes(CHARSET)
                 )
             ).setContentType(
-                Optional.of(Expression.MEDIA_TYPE)
+                Optional.of(MediaType.EXPRESSION)
             )
         );
     }

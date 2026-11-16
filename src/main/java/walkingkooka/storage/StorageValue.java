@@ -26,6 +26,7 @@ import walkingkooka.net.header.HasContentType;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.tree.expression.Expression;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonObject;
 import walkingkooka.tree.json.JsonPropertyName;
@@ -96,13 +97,27 @@ public final class StorageValue implements HasContentType,
                 this.path,
                 Objects.requireNonNull(value, "value"),
                 this.contentType.isEmpty() ?
-                    value.filter(v -> v instanceof HasContentType)
-                        .flatMap(
-                            (Object hasContentType) -> ((HasContentType) hasContentType)
-                                .contentType()
-                        ) :
+                    contentType(value) :
                     this.contentType
             );
+    }
+
+    private static Optional<MediaType> contentType(final Optional<Object> value) {
+        Optional<MediaType> contentType;
+
+        final Object valueOrNull = value.orElse(null);
+        if (valueOrNull instanceof Expression) {
+            contentType = Optional.of(MediaType.EXPRESSION);
+        } else {
+            if (valueOrNull instanceof HasContentType) {
+                contentType = ((HasContentType) valueOrNull)
+                    .contentType();
+            } else {
+                contentType = Optional.empty();
+            }
+        }
+
+        return contentType;
     }
 
     // HasId............................................................................................................

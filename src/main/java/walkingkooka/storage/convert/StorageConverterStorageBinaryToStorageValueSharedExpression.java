@@ -54,7 +54,7 @@ final class StorageConverterStorageBinaryToStorageValueSharedExpression<C extend
 
     @Override
     MediaType contentType() {
-        return Expression.MEDIA_TYPE;
+        return MediaType.EXPRESSION;
     }
 
     @Override
