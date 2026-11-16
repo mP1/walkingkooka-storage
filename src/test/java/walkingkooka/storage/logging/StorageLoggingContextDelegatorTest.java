@@ -72,6 +72,12 @@ public final class StorageLoggingContextDelegatorTest implements StorageLoggingC
         }
 
         @Override
+        public void setLoggingLevel(final LoggingLevel loggingLevel) {
+            Objects.requireNonNull(loggingLevel, "loggingLevel");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public StorageLoggingContext storageLoggingContext() {
             return new FakeStorageLoggingContext();
         }
