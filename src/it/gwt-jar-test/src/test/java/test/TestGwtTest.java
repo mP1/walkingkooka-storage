@@ -21,6 +21,10 @@ import com.google.gwt.junit.client.GWTTestCase;
 import walkingkooka.Cast;
 import walkingkooka.HasId;
 import walkingkooka.ToStringBuilder;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.expression.FakeStorageExpressionEvaluationContext;
+import walkingkooka.storage.expression.StorageExpressionEvaluationContext;
 import walkingkooka.store.Store;
 import walkingkooka.store.Stores;
 
@@ -120,6 +124,32 @@ public class TestGwtTest extends GWTTestCase {
                     .value(this.email)
                     .build();
         }
+    }
+
+    public void testLoadStorage() {
+        final StoragePath path = StoragePath.parse("/hello");
+
+        final Optional<StorageValue> storageValue = Optional.of(
+            StorageValue.with(path)
+                .setValue(
+                    Optional.of(1)
+                )
+        );
+
+        final StorageExpressionEvaluationContext context = new FakeStorageExpressionEvaluationContext() {
+
+            @Override
+            public Optional<StorageValue> loadStorage(final StoragePath path) {
+                return storageValue;
+            }
+        };
+
+        checkEquals(
+            storageValue,
+            context.loadStorage(
+                path
+            )
+        );
     }
 
     private void checkEquals(final Object expected,
