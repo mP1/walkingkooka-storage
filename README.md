@@ -20,7 +20,7 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - the cell A1 or its contents, the file extension *.json requests the value as JSON.
 - the [label](https://github.com/mP1/walkingkooka-spreadsheet/blob/master/src/main/java/walkingkooka/spreadsheet/reference/SpreadsheetLabelName.java) (named range)
 
-# [Converters](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverters.java)
+## [Converters](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverters.java)
 
 - [storage-binary-to-storage-value-binary](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueBinary.java)
 - [storage-binary-to-storage-value-csv](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageBinaryToStorageValueSharedCsv.java)
@@ -41,11 +41,11 @@ Using the above paths, one can interact or perform CRUD operations from a shell 
 - [storage-value-to-storage-binary-txt](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterStorageValueToStorageBinarySharedTxt.java)
 - [text-to-storage-path](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/convert/StorageConverterTextToStoragePath.java)
 
-# [CurrencyExchangeRater](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/currency/StorageCurrencyExchangeRaters.java)
+## [CurrencyExchangeRater](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/currency/StorageCurrencyExchangeRaters.java)
 
 - [storagePathProperties](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/currency/StorageCurrencyExchangeRaterStoragePathProperties.java)
 
-# [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
+## [Storages](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/Storages.java)
 
 - [currentWorkingDirectory](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2ExpandedCurrentWorkingDirectory.java)
 - [empty](https://github.com/mP1/walkingkooka-storage/blob/master/src/main/java/walkingkooka/storage/StorageShared2Empty.java)
