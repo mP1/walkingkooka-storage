@@ -130,7 +130,7 @@
 
     <dependency>
       <groupId>walkingkooka</groupId>
-      <artifactId>walkingkooka-environment-expression-function</artifactId>
+      <artifactId>walkingkooka-environment</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
