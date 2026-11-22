@@ -34,7 +34,7 @@ public final class StorageExpressionFunctionListTest extends StorageExpressionFu
 
     private final static StoragePath PATH = StoragePath.parse("/dir1/");
 
-    private final static StorageValueInfoList LIST = StorageValueInfoList.with(
+    private final static StorageValueInfoList LIST = StorageValueInfoList.EMPTY.setElements(
         Lists.of(
             StorageValueInfo.with(
                 StoragePath.parse("/dir1/file1.txt"),
