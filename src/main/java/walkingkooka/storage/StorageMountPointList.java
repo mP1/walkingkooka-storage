@@ -49,41 +49,8 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
         Lists.empty()
     );
 
-    /**
-     * Factory that creates a {@link StorageMountPointList} from the list of {@link StorageMountPoint infos}.
-     */
-    public static StorageMountPointList with(final Collection<StorageMountPoint<?>> mountPoints) {
-        Objects.requireNonNull(mountPoints, "mountPoints");
-
-        StorageMountPointList StorageMountPointList;
-
-        if (mountPoints instanceof StorageMountPointList) {
-            StorageMountPointList = (StorageMountPointList) mountPoints;
-        } else {
-            final List<StorageMountPoint<?>> copy = Lists.array();
-            for (final StorageMountPoint<?> mountPoint : mountPoints) {
-                copy.add(
-                    Objects.requireNonNull(
-                        mountPoint,
-                        "includes null " + StorageMountPoint.class.getSimpleName()
-                    )
-                );
-            }
-
-            switch (mountPoints.size()) {
-                case 0:
-                    StorageMountPointList = EMPTY;
-                    break;
-                default:
-                    StorageMountPointList = new StorageMountPointList(copy);
-                    break;
-            }
-        }
-
-        return StorageMountPointList;
-    }
-
-    private StorageMountPointList(final List<StorageMountPoint<?>> storageMountPoints) {
+    // @VisibleForTesting
+    StorageMountPointList(final List<StorageMountPoint<?>> storageMountPoints) {
         this.storageMountPoints = storageMountPoints;
     }
 
@@ -105,12 +72,37 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
     }
 
     @Override
-    public StorageMountPointList setElements(final Collection<StorageMountPoint<?>> storageMountPoints) {
-        final StorageMountPointList copy = with(storageMountPoints);
+    public StorageMountPointList setElements(final Collection<StorageMountPoint<?>> mountPoints) {
+        Objects.requireNonNull(mountPoints, "mountPoints");
 
-        return this.equals(copy) ?
+        StorageMountPointList after;
+
+        if (mountPoints instanceof StorageMountPointList) {
+            after = (StorageMountPointList) mountPoints;
+        } else {
+            final List<StorageMountPoint<?>> copy = Lists.array();
+            for (final StorageMountPoint<?> mountPoint : mountPoints) {
+                copy.add(
+                    Objects.requireNonNull(
+                        mountPoint,
+                        "includes null " + StorageMountPoint.class.getSimpleName()
+                    )
+                );
+            }
+
+            switch (mountPoints.size()) {
+                case 0:
+                    after = EMPTY;
+                    break;
+                default:
+                    after = new StorageMountPointList(copy);
+                    break;
+            }
+        }
+
+        return this.equals(after) ?
             this :
-            copy;
+            after;
     }
 
     // HasText..........................................................................................................
