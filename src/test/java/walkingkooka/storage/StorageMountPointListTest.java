@@ -27,7 +27,6 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageMountPointListTest implements ListTesting2<StorageMountPointList, StorageMountPoint<?>>,
@@ -46,33 +45,6 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         StoragePath.parse("/mount2"),
         Storages.empty()
     );
-
-    @Test
-    public void testWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageMountPointList.with(null)
-        );
-    }
-
-    @Test
-    public void testWithDoesntDoubleWrap() {
-        final StorageMountPointList list = this.createList();
-        assertSame(
-            list,
-            StorageMountPointList.with(list)
-        );
-    }
-
-    @Test
-    public void testWithEmpty() {
-        assertSame(
-            StorageMountPointList.EMPTY,
-            StorageMountPointList.with(
-                Lists.empty()
-            )
-        );
-    }
 
     // list.............................................................................................................
 
@@ -141,9 +113,31 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         );
     }
 
+    @Test
+    public void testSetElementsWithStorageMountPointList() {
+        final StorageMountPointList list = this.createList();
+
+        this.setElementsAndCheck(
+            list,
+            new StorageMountPointList(list),
+            list
+        );
+    }
+
+    @Test
+    public void testSetElementsWithEmpty() {
+        final StorageMountPointList list = this.createList();
+
+        this.setElementsAndCheck(
+            list,
+            StorageMountPointList.EMPTY,
+            StorageMountPointList.EMPTY
+        );
+    }
+
     @Override
     public StorageMountPointList createList() {
-        return StorageMountPointList.with(
+        return new StorageMountPointList(
             Lists.of(
                 MOUNT_POINT1,
                 MOUNT_POINT2
