@@ -22,7 +22,6 @@ import walkingkooka.environment.expression.EnvironmentExpressionEvaluationContex
 import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.storage.StorageContextTesting2;
 import walkingkooka.storage.StorageEnvironmentContextTesting2;
-import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.convert.StorageConverterContextTesting2;
 import walkingkooka.tree.expression.ExpressionEvaluationContextTesting2;
 
@@ -72,57 +71,6 @@ public interface StorageExpressionEvaluationContextTesting2<C extends StorageExp
             NullPointerException.class,
             () -> this.createContext()
                 .deleteStorage(null)
-        );
-    }
-
-    // listStorage......................................................................................................
-
-    @Test
-    default void testListStorageWithNullParentFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> this.createContext()
-                .listStorage(
-                    null,
-                    0,
-                    0
-                )
-        );
-    }
-
-    @Test
-    default void testListStorageWithNegativeOffsetFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> this.createContext()
-                .listStorage(
-                    StoragePath.ROOT,
-                    -1,
-                    1
-                )
-        );
-
-        this.getMessageAndCheck(
-            thrown,
-            "Invalid offset -1 < 0"
-        );
-    }
-
-    @Test
-    default void testListStorageWithNegativeCountFails() {
-        final IllegalArgumentException thrown = assertThrows(
-            IllegalArgumentException.class,
-            () -> this.createContext()
-                .listStorage(
-                    StoragePath.ROOT,
-                    0,
-                    -1
-                )
-        );
-
-        this.getMessageAndCheck(
-            thrown,
-            "Invalid count -1 < 0"
         );
     }
 
