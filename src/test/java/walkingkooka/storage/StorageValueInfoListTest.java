@@ -32,7 +32,6 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
@@ -54,33 +53,6 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         StoragePath.parse("/file2"),
         AUDIT_INFO
     );
-
-    @Test
-    public void testWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StorageValueInfoList.with(null)
-        );
-    }
-
-    @Test
-    public void testWithDoesntDoubleWrap() {
-        final StorageValueInfoList list = this.createList();
-        assertSame(
-            list,
-            StorageValueInfoList.with(list)
-        );
-    }
-
-    @Test
-    public void testWithEmpty() {
-        assertSame(
-            StorageValueInfoList.EMPTY,
-            StorageValueInfoList.with(
-                Lists.empty()
-            )
-        );
-    }
 
     // list.............................................................................................................
 
@@ -149,9 +121,30 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         );
     }
 
+    @Test
+    public void testSetElementsWithStorageValueInfoList() {
+        final StorageValueInfoList list = this.createList();
+        final StorageValueInfoList expected = this.createList();
+
+        this.setElementsAndCheck(
+            list,
+            expected,
+            expected
+        );
+    }
+
+    @Test
+    public void testSetElementsWithEmpty() {
+        this.setElementsAndCheck(
+            new StorageValueInfoList(Lists.empty()),
+            StorageValueInfoList.EMPTY,
+            StorageValueInfoList.EMPTY
+        );
+    }
+
     @Override
     public StorageValueInfoList createList() {
-        return StorageValueInfoList.with(
+        return new StorageValueInfoList(
             Lists.of(
                 FILE1,
                 FILE2

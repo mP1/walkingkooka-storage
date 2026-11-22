@@ -190,7 +190,7 @@ final class StorageShared2TreeMapStore<C extends StorageContext> extends Storage
                     .collect(
                         Collectors.collectingAndThen(
                             Collectors.toList(),
-                            StorageValueInfoList::with
+                            StorageValueInfoList.EMPTY::setElements
                         )
                     );
 

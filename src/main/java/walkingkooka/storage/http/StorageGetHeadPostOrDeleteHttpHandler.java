@@ -161,7 +161,7 @@ final class StorageGetHeadPostOrDeleteHttpHandler<C extends StorageHttpHandlerCo
             HttpEntity.EMPTY.setContentType(HATEOS_CONTENT_TYPE)
                 .setBodyText(
                     context.convertOrFail(
-                        StorageValueInfoList.with(infos),
+                        StorageValueInfoList.EMPTY.setElements(infos),
                         JsonNode.class
                     ).multiLineText(context)
                         .text()

@@ -58,38 +58,8 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
         Lists.empty()
     );
 
-    /**
-     * Factory that creates a {@link StorageValueInfoList} from the list of {@link StorageValueInfo infos}.
-     */
-    public static StorageValueInfoList with(final Collection<StorageValueInfo> infos) {
-        Objects.requireNonNull(infos, "infos");
-
-        StorageValueInfoList StorageValueInfoList;
-
-        if (infos instanceof StorageValueInfoList) {
-            StorageValueInfoList = (StorageValueInfoList) infos;
-        } else {
-            final List<StorageValueInfo> copy = Lists.array();
-            for (final StorageValueInfo info : infos) {
-                copy.add(
-                    Objects.requireNonNull(info, "includes null " + StorageValueInfo.class.getSimpleName())
-                );
-            }
-
-            switch (infos.size()) {
-                case 0:
-                    StorageValueInfoList = EMPTY;
-                    break;
-                default:
-                    StorageValueInfoList = new StorageValueInfoList(copy);
-                    break;
-            }
-        }
-
-        return StorageValueInfoList;
-    }
-
-    private StorageValueInfoList(final List<StorageValueInfo> infos) {
+    // @VisibleForTesting
+    StorageValueInfoList(final List<StorageValueInfo> infos) {
         this.infos = infos;
     }
 
@@ -112,17 +82,41 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
 
     @Override
     public StorageValueInfoList setElements(final Collection<StorageValueInfo> infos) {
-        final StorageValueInfoList copy = with(infos);
-        return this.equals(copy) ?
-            this :
-            copy;
+        Objects.requireNonNull(infos, "infos");
+
+        StorageValueInfoList storageValueInfoList;
+
+        if (infos instanceof StorageValueInfoList) {
+            storageValueInfoList = (StorageValueInfoList) infos;
+        } else {
+            final List<StorageValueInfo> copy = Lists.array();
+            for (final StorageValueInfo info : infos) {
+                copy.add(
+                    Objects.requireNonNull(info, "includes null " + StorageValueInfo.class.getSimpleName())
+                );
+            }
+
+            switch (infos.size()) {
+                case 0:
+                    storageValueInfoList = EMPTY;
+                    break;
+                default:
+                    storageValueInfoList = new StorageValueInfoList(copy);
+                    if (this.equals(storageValueInfoList)) {
+                        storageValueInfoList = this;
+                    }
+                    break;
+            }
+        }
+
+        return storageValueInfoList;
     }
 
     // json.............................................................................................................
 
     static StorageValueInfoList unmarshall(final JsonNode node,
                                            final JsonNodeUnmarshallContext context) {
-        return with(
+        return EMPTY.setElements(
             context.unmarshallList(
                 node,
                 StorageValueInfo.class
