@@ -30,7 +30,6 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StoragePathListTest implements ListTesting2<StoragePathList, StoragePath>,
@@ -44,33 +43,6 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
     private final static StoragePath STORAGE_PATH1 = StoragePath.parse("/value111");
 
     private final static StoragePath STORAGE_PATH2 = StoragePath.parse("/value222");
-
-    @Test
-    public void testWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> StoragePathList.with(null)
-        );
-    }
-
-    @Test
-    public void testWithDoesntDoubleWrap() {
-        final StoragePathList list = this.createList();
-        assertSame(
-            list,
-            StoragePathList.with(list)
-        );
-    }
-
-    @Test
-    public void testWithEmpty() {
-        assertSame(
-            StoragePathList.EMPTY,
-            StoragePathList.with(
-                Lists.empty()
-            )
-        );
-    }
 
     // list.............................................................................................................
 
@@ -139,9 +111,24 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
         );
     }
 
+    @Test
+    public void testSetElementsWithStoragePathList() {
+        final StoragePathList expected = new StoragePathList(
+            Lists.of(
+                STORAGE_PATH1
+            )
+        );
+
+        this.setElementsAndCheck(
+            this.createList(),
+            expected,
+            expected
+        );
+    }
+
     @Override
     public StoragePathList createList() {
-        return StoragePathList.with(
+        return new StoragePathList(
             Lists.of(
                 STORAGE_PATH1,
                 STORAGE_PATH2
