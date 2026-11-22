@@ -53,41 +53,8 @@ public final class StoragePathList extends AbstractList<StoragePath>
         Lists.empty()
     );
 
-    /**
-     * Factory that creates a {@link StoragePathList} from the list of {@link StoragePath paths}.
-     */
-    public static StoragePathList with(final Collection<StoragePath> paths) {
-        Objects.requireNonNull(paths, "paths");
-
-        StoragePathList storagePathList;
-
-        if (paths instanceof StoragePathList) {
-            storagePathList = (StoragePathList) paths;
-        } else {
-            final List<StoragePath> copy = Lists.array();
-            for (final StoragePath mountPoint : paths) {
-                copy.add(
-                    Objects.requireNonNull(
-                        mountPoint,
-                        "includes null " + StoragePath.class.getSimpleName()
-                    )
-                );
-            }
-
-            switch (paths.size()) {
-                case 0:
-                    storagePathList = EMPTY;
-                    break;
-                default:
-                    storagePathList = new StoragePathList(copy);
-                    break;
-            }
-        }
-
-        return storagePathList;
-    }
-
-    private StoragePathList(final List<StoragePath> paths) {
+    // @VisibleForTesting
+    StoragePathList(final List<StoragePath> paths) {
         this.paths = paths;
     }
 
@@ -110,11 +77,36 @@ public final class StoragePathList extends AbstractList<StoragePath>
 
     @Override
     public StoragePathList setElements(final Collection<StoragePath> paths) {
-        final StoragePathList copy = with(paths);
+        Objects.requireNonNull(paths, "paths");
 
-        return this.equals(copy) ?
-            this :
-            copy;
+        final StoragePathList storagePathList;
+
+        if (paths instanceof StoragePathList) {
+            storagePathList = (StoragePathList) paths;
+        } else {
+            final List<StoragePath> copy = Lists.array();
+            for (final StoragePath mountPoint : paths) {
+                copy.add(
+                    Objects.requireNonNull(
+                        mountPoint,
+                        "includes null " + StoragePath.class.getSimpleName()
+                    )
+                );
+            }
+
+            switch (paths.size()) {
+                case 0:
+                    storagePathList = EMPTY;
+                    break;
+                default:
+                    storagePathList = this.equals(copy) ?
+                        this :
+                        new StoragePathList(copy);
+                    break;
+            }
+        }
+
+        return storagePathList;
     }
 
     // HasText..........................................................................................................
@@ -169,7 +161,7 @@ public final class StoragePathList extends AbstractList<StoragePath>
 
     static StoragePathList unmarshall(final JsonNode node,
                                       final JsonNodeUnmarshallContext context) {
-        return with(
+        return EMPTY.setElements(
             context.unmarshallList(
                 node,
                 StoragePath.class
