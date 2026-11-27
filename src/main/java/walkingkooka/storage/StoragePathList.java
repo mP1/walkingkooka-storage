@@ -76,26 +76,14 @@ public final class StoragePathList extends AbstractList<StoragePath>
     }
 
     @Override
-    public StoragePathList setElements(final Collection<StoragePath> storagePaths) {
-        final StoragePathList storagePathList;
-
-        if (storagePaths instanceof StoragePathList) {
-            storagePathList = (StoragePathList) storagePaths;
-        } else {
-            Objects.requireNonNull(storagePaths, "storagePaths");
-
-            final List<StoragePath> copy = Lists.array();
-            for (final StoragePath storagePath : storagePaths) {
-                this.elementCheck(storagePath);
-                copy.add(storagePath);
-            }
-
-            storagePathList = this.equals(copy) ?
-                this :
-                this.replaceStoragePath(copy);
-        }
-
-        return storagePathList;
+    public StoragePathList setElements(final Collection<StoragePath> elements) {
+        return (StoragePathList)
+            this.setElementsMaybeCreate(
+                elements,
+                (final Collection<StoragePath> collection) -> collection instanceof StoragePathList,
+                this::elementCheck,
+                this::replaceStoragePaths
+            );
     }
 
     @Override
@@ -103,7 +91,7 @@ public final class StoragePathList extends AbstractList<StoragePath>
                                    final int to) {
         return 0 == from && this.size() == to ?
             this :
-            this.replaceStoragePath(
+            this.replaceStoragePaths(
                 this.paths.subList(
                     from,
                     to
@@ -111,7 +99,7 @@ public final class StoragePathList extends AbstractList<StoragePath>
             );
     }
 
-    private StoragePathList replaceStoragePath(final List<StoragePath> storagePaths) {
+    private StoragePathList replaceStoragePaths(final List<StoragePath> storagePaths) {
         return storagePaths.isEmpty() ?
             EMPTY :
             new StoragePathList(storagePaths);

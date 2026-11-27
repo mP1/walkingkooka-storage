@@ -81,26 +81,14 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     }
 
     @Override
-    public StorageValueInfoList setElements(final Collection<StorageValueInfo> storageValueInfos) {
-        final StorageValueInfoList storageValueInfoList;
-
-        if (storageValueInfos instanceof StorageValueInfoList) {
-            storageValueInfoList = (StorageValueInfoList) storageValueInfos;
-        } else {
-            Objects.requireNonNull(storageValueInfos, "storageValueInfos");
-
-            final List<StorageValueInfo> copy = Lists.array();
-            for (final StorageValueInfo storageValueInfo : storageValueInfos) {
-                this.elementCheck(storageValueInfo);
-                copy.add(storageValueInfo);
-            }
-
-            storageValueInfoList = this.equals(copy) ?
-                this :
-                this.replaceStorageValueInfo(copy);
-        }
-
-        return storageValueInfoList;
+    public StorageValueInfoList setElements(final Collection<StorageValueInfo> elements) {
+        return (StorageValueInfoList)
+            this.setElementsMaybeCreate(
+                elements,
+                (final Collection<StorageValueInfo> collection) -> collection instanceof StorageValueInfoList,
+                this::elementCheck,
+                this::replaceStorageValueInfos
+            );
     }
 
     @Override
@@ -108,7 +96,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
                                         final int to) {
         return 0 == from && this.size() == to ?
             this :
-            this.replaceStorageValueInfo(
+            this.replaceStorageValueInfos(
                 this.infos.subList(
                     from,
                     to
@@ -116,7 +104,7 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
             );
     }
 
-    private StorageValueInfoList replaceStorageValueInfo(final List<StorageValueInfo> storageValueInfos) {
+    private StorageValueInfoList replaceStorageValueInfos(final List<StorageValueInfo> storageValueInfos) {
         return storageValueInfos.isEmpty() ?
             EMPTY :
             new StorageValueInfoList(storageValueInfos);

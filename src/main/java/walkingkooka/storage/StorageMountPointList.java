@@ -72,26 +72,14 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
     }
 
     @Override
-    public StorageMountPointList setElements(final Collection<StorageMountPoint<?>> storageMountPoints) {
-        final StorageMountPointList storageMountPointList;
-
-        if (storageMountPoints instanceof StorageMountPointList) {
-            storageMountPointList = (StorageMountPointList) storageMountPoints;
-        } else {
-            Objects.requireNonNull(storageMountPoints, "storageMountPoints");
-
-            final List<StorageMountPoint<?>> copy = Lists.array();
-            for (final StorageMountPoint<?> storageMountPoint : storageMountPoints) {
-                this.elementCheck(storageMountPoint);
-                copy.add(storageMountPoint);
-            }
-
-            storageMountPointList = this.equals(copy) ?
-                this :
-                this.replaceStorageMountPoint(copy);
-        }
-
-        return storageMountPointList;
+    public StorageMountPointList setElements(final Collection<StorageMountPoint<?>> elements) {
+        return (StorageMountPointList)
+            this.setElementsMaybeCreate(
+                elements,
+                (final Collection<StorageMountPoint<?>> collection) -> collection instanceof StorageMountPointList,
+                this::elementCheck,
+                this::replaceStorageMountPoints
+            );
     }
 
     @Override
@@ -99,7 +87,7 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
                                          final int to) {
         return 0 == from && this.size() == to ?
             this :
-            this.replaceStorageMountPoint(
+            this.replaceStorageMountPoints(
                 this.storageMountPoints.subList(
                     from,
                     to
@@ -107,7 +95,7 @@ public final class StorageMountPointList extends AbstractList<StorageMountPoint<
             );
     }
 
-    private StorageMountPointList replaceStorageMountPoint(final List<StorageMountPoint<?>> storageMountPoints) {
+    private StorageMountPointList replaceStorageMountPoints(final List<StorageMountPoint<?>> storageMountPoints) {
         return storageMountPoints.isEmpty() ?
             EMPTY :
             new StorageMountPointList(storageMountPoints);
