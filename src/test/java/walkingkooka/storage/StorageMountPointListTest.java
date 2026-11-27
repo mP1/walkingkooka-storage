@@ -27,6 +27,8 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageMountPointListTest implements ListTesting2<StorageMountPointList, StorageMountPoint<?>>,
@@ -36,13 +38,28 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     PublicClassTesting<StorageMountPointList>,
     TreePrintableTesting {
 
-    private final static StorageMountPoint<?> MOUNT_POINT1 = StorageMountPoint.with(
+    private final static StorageMountPoint<?> STORAGE_MOUNT_POINT1 = StorageMountPoint.with(
         StoragePath.parse("/mount1"),
         Storages.empty()
     );
 
-    private final static StorageMountPoint<?> MOUNT_POINT2 = StorageMountPoint.with(
+    private final static StorageMountPoint<?> STORAGE_MOUNT_POINT2 = StorageMountPoint.with(
         StoragePath.parse("/mount2"),
+        Storages.empty()
+    );
+
+    private final static StorageMountPoint<?> STORAGE_MOUNT_POINT3 = StorageMountPoint.with(
+        StoragePath.parse("/mount3"),
+        Storages.empty()
+    );
+
+    private final static StorageMountPoint<?> STORAGE_MOUNT_POINT4 = StorageMountPoint.with(
+        StoragePath.parse("/mount4"),
+        Storages.empty()
+    );
+
+    private final static StorageMountPoint<?> STORAGE_MOUNT_POINT5 = StorageMountPoint.with(
+        StoragePath.parse("/mount5"),
         Storages.empty()
     );
 
@@ -53,7 +70,7 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         this.getAndCheck(
             this.createList(),
             0, // index
-            MOUNT_POINT1 // expected
+            STORAGE_MOUNT_POINT1 // expected
         );
     }
 
@@ -62,7 +79,7 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         this.getAndCheck(
             this.createList(),
             1, // index
-            MOUNT_POINT2 // expected
+            STORAGE_MOUNT_POINT2 // expected
         );
     }
 
@@ -71,7 +88,7 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         this.setFails(
             this.createList(),
             0, // index
-            MOUNT_POINT1 // expected
+            STORAGE_MOUNT_POINT1 // expected
         );
     }
 
@@ -102,25 +119,14 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
             () -> this.createList()
                 .setElements(
                     Lists.of(
-                        MOUNT_POINT1,
+                        STORAGE_MOUNT_POINT1,
                         null
                     )
                 )
         );
         this.checkEquals(
-            "includes null StorageMountPoint",
+            "Includes null StorageMountPoint",
             thrown.getMessage()
-        );
-    }
-
-    @Test
-    public void testSetElementsWithStorageMountPointList() {
-        final StorageMountPointList list = this.createList();
-
-        this.setElementsAndCheck(
-            list,
-            new StorageMountPointList(list),
-            list
         );
     }
 
@@ -135,12 +141,71 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
         );
     }
 
+    // subList..........................................................................................................
+
+    private final static List<StorageMountPoint<?>> ELEMENTS = Lists.of(
+        STORAGE_MOUNT_POINT1,
+        STORAGE_MOUNT_POINT2,
+        STORAGE_MOUNT_POINT3,
+        STORAGE_MOUNT_POINT4,
+        STORAGE_MOUNT_POINT5
+    );
+
+    @Test
+    public void testSubList() {
+        this.subListAndCheck(
+            new StorageMountPointList(ELEMENTS),
+            0,
+            2,
+            new StorageMountPointList(
+                Lists.of(
+                    STORAGE_MOUNT_POINT1,
+                    STORAGE_MOUNT_POINT2
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubList2() {
+        this.subListAndCheck(
+            new StorageMountPointList(ELEMENTS),
+            2,
+            4,
+            new StorageMountPointList(
+                Lists.of(
+                    STORAGE_MOUNT_POINT3,
+                    STORAGE_MOUNT_POINT4
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubListSubList() {
+        this.subListAndCheck(
+            new StorageMountPointList(ELEMENTS)
+                .subList(
+                    1,
+                    4
+                ), // 2, 3, 4
+            1,
+            3,
+            new StorageMountPointList(
+                Lists.of(
+                    STORAGE_MOUNT_POINT3,
+                    STORAGE_MOUNT_POINT4
+                )
+            )
+        );
+    }
+
     @Override
     public StorageMountPointList createList() {
         return new StorageMountPointList(
             Lists.of(
-                MOUNT_POINT1,
-                MOUNT_POINT2
+                STORAGE_MOUNT_POINT1,
+                STORAGE_MOUNT_POINT2
             )
         );
     }
@@ -206,9 +271,9 @@ public class StorageMountPointListTest implements ListTesting2<StorageMountPoint
     @Test
     public void testFirstOrEmptyWhenNotEmpty() {
         this.firstOrEmptyAndCheck(
-            StorageMountPointList.EMPTY.concat(MOUNT_POINT1)
-                .concat(MOUNT_POINT2),
-            MOUNT_POINT1
+            StorageMountPointList.EMPTY.concat(STORAGE_MOUNT_POINT1)
+                .concat(STORAGE_MOUNT_POINT2),
+            STORAGE_MOUNT_POINT1
         );
     }
 

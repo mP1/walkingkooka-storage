@@ -30,6 +30,8 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StoragePathListTest implements ListTesting2<StoragePathList, StoragePath>,
@@ -43,6 +45,12 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
     private final static StoragePath STORAGE_PATH1 = StoragePath.parse("/value111");
 
     private final static StoragePath STORAGE_PATH2 = StoragePath.parse("/value222");
+
+    private final static StoragePath STORAGE_PATH3 = StoragePath.parse("/value333");
+
+    private final static StoragePath STORAGE_PATH4 = StoragePath.parse("/value444");
+
+    private final static StoragePath STORAGE_PATH5 = StoragePath.parse("/value555");
 
     // list.............................................................................................................
 
@@ -106,7 +114,7 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
                 )
         );
         this.checkEquals(
-            "includes null StoragePath",
+            "Includes null StoragePath",
             thrown.getMessage()
         );
     }
@@ -123,6 +131,65 @@ public class StoragePathListTest implements ListTesting2<StoragePathList, Storag
             this.createList(),
             expected,
             expected
+        );
+    }
+
+    // subList..........................................................................................................
+
+    private final static List<StoragePath> ELEMENTS = Lists.of(
+        STORAGE_PATH1,
+        STORAGE_PATH2,
+        STORAGE_PATH3,
+        STORAGE_PATH4,
+        STORAGE_PATH5
+    );
+
+    @Test
+    public void testSubList() {
+        this.subListAndCheck(
+            new StoragePathList(ELEMENTS),
+            0,
+            2,
+            new StoragePathList(
+                Lists.of(
+                    STORAGE_PATH1,
+                    STORAGE_PATH2
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubList2() {
+        this.subListAndCheck(
+            new StoragePathList(ELEMENTS),
+            2,
+            4,
+            new StoragePathList(
+                Lists.of(
+                    STORAGE_PATH3,
+                    STORAGE_PATH4
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubListSubList() {
+        this.subListAndCheck(
+            new StoragePathList(ELEMENTS)
+                .subList(
+                    1,
+                    4
+                ), // 2, 3, 4
+            1,
+            3,
+            new StoragePathList(
+                Lists.of(
+                    STORAGE_PATH3,
+                    STORAGE_PATH4
+                )
+            )
         );
     }
 

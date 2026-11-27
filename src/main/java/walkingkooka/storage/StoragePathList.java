@@ -71,42 +71,50 @@ public final class StoragePathList extends AbstractList<StoragePath>
     private final List<StoragePath> paths;
 
     @Override
-    public void elementCheck(final StoragePath paths) {
-        Objects.requireNonNull(paths, "paths");
+    public void elementCheck(final StoragePath storagePath) {
+        Objects.requireNonNull(storagePath, "Includes null StoragePath");
     }
 
     @Override
-    public StoragePathList setElements(final Collection<StoragePath> paths) {
-        Objects.requireNonNull(paths, "paths");
-
+    public StoragePathList setElements(final Collection<StoragePath> storagePaths) {
         final StoragePathList storagePathList;
 
-        if (paths instanceof StoragePathList) {
-            storagePathList = (StoragePathList) paths;
+        if (storagePaths instanceof StoragePathList) {
+            storagePathList = (StoragePathList) storagePaths;
         } else {
+            Objects.requireNonNull(storagePaths, "storagePaths");
+
             final List<StoragePath> copy = Lists.array();
-            for (final StoragePath mountPoint : paths) {
-                copy.add(
-                    Objects.requireNonNull(
-                        mountPoint,
-                        "includes null " + StoragePath.class.getSimpleName()
-                    )
-                );
+            for (final StoragePath storagePath : storagePaths) {
+                this.elementCheck(storagePath);
+                copy.add(storagePath);
             }
 
-            switch (paths.size()) {
-                case 0:
-                    storagePathList = EMPTY;
-                    break;
-                default:
-                    storagePathList = this.equals(copy) ?
-                        this :
-                        new StoragePathList(copy);
-                    break;
-            }
+            storagePathList = this.equals(copy) ?
+                this :
+                this.replaceStoragePath(copy);
         }
 
         return storagePathList;
+    }
+
+    @Override
+    public StoragePathList subList(final int from,
+                                   final int to) {
+        return 0 == from && this.size() == to ?
+            this :
+            this.replaceStoragePath(
+                this.paths.subList(
+                    from,
+                    to
+                )
+            );
+    }
+
+    private StoragePathList replaceStoragePath(final List<StoragePath> storagePaths) {
+        return storagePaths.isEmpty() ?
+            EMPTY :
+            new StoragePathList(storagePaths);
     }
 
     // HasText..........................................................................................................
