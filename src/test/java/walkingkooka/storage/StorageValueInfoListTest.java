@@ -32,6 +32,8 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoList, StorageValueInfo>,
@@ -44,13 +46,28 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     PublicClassTesting<StorageValueInfoList>,
     TreePrintableTesting {
 
-    private final static StorageValueInfo FILE1 = StorageValueInfo.with(
+    private final static StorageValueInfo STORAGE_VALUE_INFO1 = StorageValueInfo.with(
         StoragePath.parse("/file1"),
         AUDIT_INFO
     );
 
-    private final static StorageValueInfo FILE2 = StorageValueInfo.with(
+    private final static StorageValueInfo STORAGE_VALUE_INFO2 = StorageValueInfo.with(
         StoragePath.parse("/file2"),
+        AUDIT_INFO
+    );
+
+    private final static StorageValueInfo STORAGE_VALUE_INFO3 = StorageValueInfo.with(
+        StoragePath.parse("/file3"),
+        AUDIT_INFO
+    );
+
+    private final static StorageValueInfo STORAGE_VALUE_INFO4 = StorageValueInfo.with(
+        StoragePath.parse("/file4"),
+        AUDIT_INFO
+    );
+
+    private final static StorageValueInfo STORAGE_VALUE_INFO5 = StorageValueInfo.with(
+        StoragePath.parse("/file5"),
         AUDIT_INFO
     );
 
@@ -61,7 +78,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         this.getAndCheck(
             this.createList(),
             0, // index
-            FILE1 // expected
+            STORAGE_VALUE_INFO1 // expected
         );
     }
 
@@ -70,7 +87,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         this.getAndCheck(
             this.createList(),
             1, // index
-            FILE2 // expected
+            STORAGE_VALUE_INFO2 // expected
         );
     }
 
@@ -79,7 +96,7 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         this.setFails(
             this.createList(),
             0, // index
-            FILE1 // expected
+            STORAGE_VALUE_INFO1 // expected
         );
     }
 
@@ -110,13 +127,13 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
             () -> this.createList()
                 .setElements(
                     Lists.of(
-                        FILE1,
+                        STORAGE_VALUE_INFO1,
                         null
                     )
                 )
         );
         this.checkEquals(
-            "includes null StorageValueInfo",
+            "Includes null StorageValueInfo",
             thrown.getMessage()
         );
     }
@@ -142,12 +159,71 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
         );
     }
 
+    // subList..........................................................................................................
+
+    private final static List<StorageValueInfo> ELEMENTS = Lists.of(
+        STORAGE_VALUE_INFO1,
+        STORAGE_VALUE_INFO2,
+        STORAGE_VALUE_INFO3,
+        STORAGE_VALUE_INFO4,
+        STORAGE_VALUE_INFO5
+    );
+
+    @Test
+    public void testSubList() {
+        this.subListAndCheck(
+            new StorageValueInfoList(ELEMENTS),
+            0,
+            2,
+            new StorageValueInfoList(
+                Lists.of(
+                    STORAGE_VALUE_INFO1,
+                    STORAGE_VALUE_INFO2
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubList2() {
+        this.subListAndCheck(
+            new StorageValueInfoList(ELEMENTS),
+            2,
+            4,
+            new StorageValueInfoList(
+                Lists.of(
+                    STORAGE_VALUE_INFO3,
+                    STORAGE_VALUE_INFO4
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testSubListSubList() {
+        this.subListAndCheck(
+            new StorageValueInfoList(ELEMENTS)
+                .subList(
+                    1,
+                    4
+                ), // 2, 3, 4
+            1,
+            3,
+            new StorageValueInfoList(
+                Lists.of(
+                    STORAGE_VALUE_INFO3,
+                    STORAGE_VALUE_INFO4
+                )
+            )
+        );
+    }
+
     @Override
     public StorageValueInfoList createList() {
         return new StorageValueInfoList(
             Lists.of(
-                FILE1,
-                FILE2
+                STORAGE_VALUE_INFO1,
+                STORAGE_VALUE_INFO2
             )
         );
     }
@@ -289,9 +365,9 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Test
     public void testFirstOrEmptyWhenNotEmpty() {
         this.firstOrEmptyAndCheck(
-            StorageValueInfoList.EMPTY.concat(FILE1)
-                .concat(FILE2),
-            FILE1
+            StorageValueInfoList.EMPTY.concat(STORAGE_VALUE_INFO1)
+                .concat(STORAGE_VALUE_INFO2),
+            STORAGE_VALUE_INFO1
         );
     }
 
@@ -307,18 +383,18 @@ public class StorageValueInfoListTest implements ListTesting2<StorageValueInfoLi
     @Test
     public void testLastModifiedWhenOneStorageValueInfo() {
         this.lastModifiedAndCheck(
-            StorageValueInfoList.EMPTY.concat(FILE1),
-            FILE1.lastModified()
+            StorageValueInfoList.EMPTY.concat(STORAGE_VALUE_INFO1),
+            STORAGE_VALUE_INFO1.lastModified()
         );
     }
 
     @Test
     public void testLastModifiedWhenNotEmpty2() {
         this.lastModifiedAndCheck(
-            StorageValueInfoList.EMPTY.concat(FILE1)
+            StorageValueInfoList.EMPTY.concat(STORAGE_VALUE_INFO1)
                 .concat(
-                    FILE2.setAuditInfo(
-                        FILE2.auditInfo()
+                    STORAGE_VALUE_INFO2.setAuditInfo(
+                        STORAGE_VALUE_INFO2.auditInfo()
                             .setModifiedTimestamp(DIFFERENT_LAST_MODIFIED)
                     )
                 ),

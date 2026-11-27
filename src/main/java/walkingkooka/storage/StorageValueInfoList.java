@@ -76,40 +76,50 @@ public final class StorageValueInfoList extends AbstractList<StorageValueInfo>
     private final List<StorageValueInfo> infos;
 
     @Override
-    public void elementCheck(final StorageValueInfo infos) {
-        Objects.requireNonNull(infos, "infos");
+    public void elementCheck(final StorageValueInfo storageValueInfo) {
+        Objects.requireNonNull(storageValueInfo, "Includes null StorageValueInfo");
     }
 
     @Override
-    public StorageValueInfoList setElements(final Collection<StorageValueInfo> infos) {
-        Objects.requireNonNull(infos, "infos");
+    public StorageValueInfoList setElements(final Collection<StorageValueInfo> storageValueInfos) {
+        final StorageValueInfoList storageValueInfoList;
 
-        StorageValueInfoList storageValueInfoList;
-
-        if (infos instanceof StorageValueInfoList) {
-            storageValueInfoList = (StorageValueInfoList) infos;
+        if (storageValueInfos instanceof StorageValueInfoList) {
+            storageValueInfoList = (StorageValueInfoList) storageValueInfos;
         } else {
+            Objects.requireNonNull(storageValueInfos, "storageValueInfos");
+
             final List<StorageValueInfo> copy = Lists.array();
-            for (final StorageValueInfo info : infos) {
-                copy.add(
-                    Objects.requireNonNull(info, "includes null " + StorageValueInfo.class.getSimpleName())
-                );
+            for (final StorageValueInfo storageValueInfo : storageValueInfos) {
+                this.elementCheck(storageValueInfo);
+                copy.add(storageValueInfo);
             }
 
-            switch (infos.size()) {
-                case 0:
-                    storageValueInfoList = EMPTY;
-                    break;
-                default:
-                    storageValueInfoList = new StorageValueInfoList(copy);
-                    if (this.equals(storageValueInfoList)) {
-                        storageValueInfoList = this;
-                    }
-                    break;
-            }
+            storageValueInfoList = this.equals(copy) ?
+                this :
+                this.replaceStorageValueInfo(copy);
         }
 
         return storageValueInfoList;
+    }
+
+    @Override
+    public StorageValueInfoList subList(final int from,
+                                        final int to) {
+        return 0 == from && this.size() == to ?
+            this :
+            this.replaceStorageValueInfo(
+                this.infos.subList(
+                    from,
+                    to
+                )
+            );
+    }
+
+    private StorageValueInfoList replaceStorageValueInfo(final List<StorageValueInfo> storageValueInfos) {
+        return storageValueInfos.isEmpty() ?
+            EMPTY :
+            new StorageValueInfoList(storageValueInfos);
     }
 
     // json.............................................................................................................
